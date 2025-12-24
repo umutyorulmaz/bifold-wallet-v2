@@ -210,10 +210,16 @@ export interface ChatHeaderProps {
   onBack?: () => void
   /** Callback when info button is pressed */
   onInfo?: () => void
+  /** Callback when video call button is pressed */
+  onVideoCall?: () => void
   /** Whether to show menu button (bell icon) */
   showMenuButton?: boolean
   /** Whether to show info button */
   showInfoButton?: boolean
+  /** Whether to show video call button */
+  showVideoButton?: boolean
+  /** Whether capability discovery is still loading */
+  isLoadingCapabilities?: boolean
   /** Callback when menu button is pressed (sends :menu message to connection) */
   onMenuPress?: () => void | Promise<void>
 }
@@ -249,6 +255,14 @@ export interface IChatScreenConfig {
   showMenuButton?: boolean
   /** Show info icon in header */
   showInfoButton?: boolean
+  /** Show video call button in header */
+  showVideoButton?: boolean
+  /**
+   * When true, renders the header inside the background renderer
+   * instead of as a separate navigation header. This allows gradients
+   * to flow through the entire screen including the header area.
+   */
+  headerInsideBackground?: boolean
 }
 
 /**

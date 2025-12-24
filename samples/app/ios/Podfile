@@ -27,7 +27,7 @@ setup_permissions([
   # 'LocationAlways',
   # 'LocationWhenInUse',
   # 'MediaLibrary',
-  # 'Microphone',
+  'Microphone',  # Required for WebRTC video calls
   # 'Motion',
   # 'Notifications'
   # 'PhotoLibrary',

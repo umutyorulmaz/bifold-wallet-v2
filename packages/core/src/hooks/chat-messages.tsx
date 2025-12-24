@@ -12,7 +12,7 @@ import { useNavigation } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { Fragment, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Linking } from 'react-native'
+import { Linking, View } from 'react-native'
 
 import { ChatEvent } from '../components/chat/ChatEvent'
 import { ExtendedChatMessage, CallbackType } from '../components/chat/ChatMessage'
@@ -35,6 +35,7 @@ import {
 
 import { useCredentialsByConnectionId } from './credentials'
 import { useProofsByConnectionId } from './proofs'
+import { useWorkflows } from './useWorkflows'
 
 /**
  * Determines the callback type for a credential or proof record
@@ -86,6 +87,9 @@ export const useChatMessagesByConnection = (connection: ConnectionRecord): Exten
   const proofs = useProofsByConnectionId(connection?.id)
   const [theirLabel, setTheirLabel] = useState(getConnectionName(connection, store.preferences.alternateContactNames))
 
+  // Get DIDComm workflow instances for this connection
+  const { instances: workflowInstances, isAvailable: workflowsAvailable } = useWorkflows(connection?.id)
+
   // Get logger from container - useContainer returns undefined if not available
   const container = useContainer()
   const logger = container?.resolve(TOKENS.UTIL_LOGGER) ?? undefined
@@ -115,9 +119,22 @@ export const useChatMessagesByConnection = (connection: ConnectionRecord): Exten
   useEffect(() => {
     let transformedMessages: Array<ExtendedChatMessage> = []
 
+    console.log('[useChatMessagesByConnection] useEffect triggered')
+    console.log('[useChatMessagesByConnection] basicMessages:', basicMessages.length)
+    console.log('[useChatMessagesByConnection] credentials:', credentials.length, credentials.map(c => ({ id: c.id, state: c.state })))
+    console.log('[useChatMessagesByConnection] proofs:', proofs.length, proofs.map(p => ({ id: p.id, state: p.state })))
+    console.log('[useChatMessagesByConnection] workflowInstances:', workflowInstances.length, workflowsAvailable ? '(available)' : '(not available)')
+    console.log('[useChatMessagesByConnection] registry available:', !!registry)
+
     // If registry is available, use it
     if (registry) {
-      const allRecords = [...basicMessages, ...credentials, ...proofs]
+      // Include DIDComm workflow instances if available
+      const allRecords = [
+        ...basicMessages,
+        ...credentials,
+        ...proofs,
+        ...(workflowsAvailable ? workflowInstances : []),
+      ]
       transformedMessages = registry.toMessages(allRecords, connection, messageContext)
     } else {
       // Fallback to legacy implementation
@@ -134,27 +151,39 @@ export const useChatMessagesByConnection = (connection: ConnectionRecord): Exten
     }
 
     // Add connected message
+    const connectedBubbleStyle = {
+      backgroundColor: ColorPalette.brand.secondaryBackground,
+      borderRadius: 12,
+      padding: 12,
+      borderWidth: 1,
+      borderColor: ColorPalette.brand.primary,
+      maxWidth: 280,
+    }
+
     const connectedMessage = connection
       ? {
           _id: 'connected',
           text: `${t('Chat.YouConnected')} ${theirLabel}`,
           renderEvent: () => (
-            <ThemedText style={theme.rightText}>
-              {t('Chat.YouConnected')}
-              <ThemedText style={[theme.rightText, theme.rightTextHighlighted]}> {theirLabel}</ThemedText>
-            </ThemedText>
+            <View style={connectedBubbleStyle}>
+              <ThemedText style={theme.rightText}>
+                {t('Chat.YouConnected')}
+                <ThemedText style={[theme.rightText, theme.rightTextHighlighted]}> {theirLabel}</ThemedText>
+              </ThemedText>
+            </View>
           ),
           createdAt: connection.createdAt,
           user: { _id: Role.me },
         }
       : undefined
 
-    setMessages(
-      connectedMessage
-        ? [...transformedMessages.sort((a: any, b: any) => b.createdAt - a.createdAt), connectedMessage]
-        : transformedMessages.sort((a: any, b: any) => b.createdAt - a.createdAt)
-    )
-  }, [ColorPalette, basicMessages, theme, credentials, t, navigation, proofs, theirLabel, connection, registry, messageContext])
+    const finalMessages = connectedMessage
+      ? [...transformedMessages.sort((a: any, b: any) => b.createdAt - a.createdAt), connectedMessage]
+      : transformedMessages.sort((a: any, b: any) => b.createdAt - a.createdAt)
+
+    console.log('[useChatMessagesByConnection] Setting messages:', finalMessages.length)
+    setMessages(finalMessages)
+  }, [ColorPalette, basicMessages, theme, credentials, t, navigation, proofs, theirLabel, connection, registry, messageContext, workflowInstances, workflowsAvailable])
 
   return messages
 }

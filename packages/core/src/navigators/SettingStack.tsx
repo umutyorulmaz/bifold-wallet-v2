@@ -3,19 +3,7 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { useTheme } from '../contexts/theme'
-import HistorySettings from '../modules/history/ui/HistorySettings'
-import DataRetention from '../screens/DataRetention'
-import Language from '../screens/Language'
-import RenameWallet from '../screens/RenameWallet'
-import Onboarding from '../screens/Onboarding'
 import { createCarouselStyle } from '../screens/OnboardingPages'
-import PINChange from '../screens/PINChange'
-import TogglePushNotifications from '../screens/TogglePushNotifications'
-import Settings from '../screens/Settings'
-import Tours from '../screens/Tours'
-import AutoLock from '../screens/AutoLock'
-import ConfigureMediator from '../screens/ConfigureMediator'
-import PINChangeSuccessScreen from '../screens/PINChangeSuccess'
 import { Screens, SettingStackParams } from '../types/navigators'
 import { testIdWithKey } from '../utils/testable'
 
@@ -26,12 +14,44 @@ const SettingStack: React.FC = () => {
   const Stack = createStackNavigator<SettingStackParams>()
   const theme = useTheme()
   const { t } = useTranslation()
-  const [pages, { screen: terms }, ToggleBiometry, developer, ScreenOptionsDictionary] = useServices([
+  const [
+    pages,
+    { screen: terms },
+    ToggleBiometry,
+    developer,
+    ScreenOptionsDictionary,
+    Onboarding,
+    // New injectable screens
+    Settings,
+    RenameWallet,
+    Language,
+    ConfigureMediator,
+    AutoLock,
+    DataRetention,
+    Tours,
+    PINChange,
+    PINChangeSuccessScreen,
+    TogglePushNotifications,
+    HistorySettings,
+  ] = useServices([
     TOKENS.SCREEN_ONBOARDING_PAGES,
     TOKENS.SCREEN_TERMS,
     TOKENS.SCREEN_TOGGLE_BIOMETRY,
     TOKENS.SCREEN_DEVELOPER,
     TOKENS.OBJECT_SCREEN_CONFIG,
+    TOKENS.SCREEN_ONBOARDING,
+    // New injectable screens
+    TOKENS.SCREEN_SETTINGS,
+    TOKENS.SCREEN_RENAME_WALLET,
+    TOKENS.SCREEN_LANGUAGE,
+    TOKENS.SCREEN_CONFIGURE_MEDIATOR,
+    TOKENS.SCREEN_AUTO_LOCK,
+    TOKENS.SCREEN_DATA_RETENTION,
+    TOKENS.SCREEN_TOURS,
+    TOKENS.SCREEN_PIN_CHANGE,
+    TOKENS.SCREEN_PIN_CHANGE_SUCCESS,
+    TOKENS.SCREEN_TOGGLE_PUSH_NOTIFICATIONS,
+    TOKENS.SCREEN_HISTORY_SETTINGS,
   ])
   const defaultStackOptions = useDefaultStackOptions(theme)
   const OnboardingTheme = theme.OnboardingTheme

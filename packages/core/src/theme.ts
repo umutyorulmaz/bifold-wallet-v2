@@ -1,6 +1,9 @@
 import { StyleSheet, ViewStyle } from 'react-native'
 import { SvgProps } from 'react-native-svg'
 
+// Import DigiCred theme from modular theme system
+import { digicredTheme } from './modules/theme/themes/teal-dark/digicredTheme'
+
 import Arrow from './assets/icons/large-arrow.svg'
 import IconDelete from './assets/icons/trash.svg'
 import IconEdit from './assets/icons/pencil.svg'
@@ -21,6 +24,7 @@ import IconInfoSentLight from './assets/img/icon-info-sent-light.svg'
 import IconProofRequestDark from './assets/img/icon-proof-request-dark.svg'
 import IconProofRequestLight from './assets/img/icon-proof-request-light.svg'
 import Logo from './assets/img/logo.svg'
+import DigiCredLogo from './assets/img/digicred-logo.svg'
 import NoInfoShared from './assets/img/no_information_shared.svg'
 import Preface from './assets/img/preface.svg'
 import UpdateAvailable from './assets/img/update-available.svg'
@@ -904,14 +908,14 @@ export function createSettingsTheme(theme: { ColorPalette: IColorPalette; TextTh
     groupBackground: theme.ColorPalette.brand.secondaryBackground,
     iconColor: theme.ColorPalette.brand.text,
     newSettingColors: {
-      bgColorUp: '#D9D9D933',
-      bgColorDown: '#E0E0F5',
-      headerTitle: '#424242',
-      buttonColor: '#6666CC',
-      bgSection: '#FFFFFF66',
-      textColor: '#7C7C7C',
-      textBody: '#1B1B1B',
-      deleteBtn: '#F35242',
+      bgColorUp: `${theme.ColorPalette.brand.secondaryBackground}33`,
+      bgColorDown: theme.ColorPalette.brand.secondaryBackground,
+      headerTitle: theme.ColorPalette.brand.text,
+      buttonColor: theme.ColorPalette.brand.primary,
+      bgSection: `${theme.ColorPalette.grayscale.white}66`,
+      textColor: theme.ColorPalette.grayscale.mediumGrey,
+      textBody: theme.ColorPalette.brand.text,
+      deleteBtn: theme.ColorPalette.semantic.error,
     },
   }
 }
@@ -936,25 +940,26 @@ export function createChatTheme(theme: { ColorPalette: IColorPalette; TextTheme:
       marginTop: 8,
     },
     leftText: {
-      color: theme.ColorPalette.brand.secondary,
+      color: theme.ColorPalette.brand.text,
       fontSize: theme.TextTheme.normal.fontSize,
     },
     leftTextHighlighted: {
       ...theme.TextTheme.bold,
-      color: theme.ColorPalette.brand.secondary,
+      color: theme.ColorPalette.brand.text,
     },
     rightText: {
-      color: theme.ColorPalette.brand.secondary,
+      color: theme.ColorPalette.brand.text,
       fontSize: theme.TextTheme.normal.fontSize,
     },
     rightTextHighlighted: {
       ...theme.TextTheme.bold,
-      color: theme.ColorPalette.brand.secondary,
+      color: theme.ColorPalette.brand.text,
     },
     inputText: {
       lineHeight: undefined,
       fontWeight: '500',
       fontSize: theme.TextTheme.normal.fontSize,
+      color: theme.ColorPalette.brand.text,
     },
     openButtonTextStyle: {
       fontSize: theme.TextTheme.normal.fontSize,
@@ -977,15 +982,19 @@ export function createChatTheme(theme: { ColorPalette: IColorPalette; TextTheme:
     },
     leftBubble: {
       backgroundColor: theme.ColorPalette.brand.secondaryBackground,
-      borderRadius: 4,
+      borderRadius: 16,
       padding: 16,
       marginLeft: 16,
+      borderWidth: 1,
+      borderColor: theme.ColorPalette.brand.primary,
     },
     rightBubble: {
-      backgroundColor: theme.ColorPalette.brand.primaryLight,
-      borderRadius: 4,
+      backgroundColor: theme.ColorPalette.brand.secondaryBackground,
+      borderRadius: 16,
       padding: 16,
       marginRight: 16,
+      borderWidth: 1,
+      borderColor: theme.ColorPalette.brand.primary,
     },
     sendContainer: {
       marginBottom: 4,
@@ -1243,6 +1252,7 @@ export const Assets = {
     emptyWallet: EmptyWallet,
     contactBook: ContactBook,
     logo: Logo,
+    digicredLogo: DigiCredLogo,
     proofRequestDeclined: ProofRequestDeclined,
     arrow: Arrow,
     iconCredentialOfferDark: IconCredentialOfferDark,
@@ -1388,7 +1398,12 @@ export const bifoldTheme: ITheme = {
   Assets,
 }
 
-export const themes: ITheme[] = [bifoldTheme]
+export { digicredTheme }
+
+// Default theme is now DigiCred
+export const defaultTheme = digicredTheme
+
+export const themes: ITheme[] = [digicredTheme, bifoldTheme]
 
 // Backwards compatible exports
 export type {

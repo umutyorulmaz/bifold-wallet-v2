@@ -78,18 +78,23 @@ export class WorkflowRegistry implements IWorkflowRegistry {
       if (handler) {
         // Check if the record should be displayed
         if (handler.shouldDisplay && !handler.shouldDisplay(record)) {
+          console.log(`[WorkflowRegistry] Record filtered by shouldDisplay: ${handler.type}`)
           continue
         }
 
         try {
           const message = handler.toMessage(record, connection, context)
           messages.push(message)
+          console.log(`[WorkflowRegistry] Message created by ${handler.type}:`, message._id)
         } catch (error) {
-          console.warn(`Failed to convert record to message:`, error)
+          console.warn(`[WorkflowRegistry] Failed to convert record to message:`, error)
         }
+      } else {
+        console.warn(`[WorkflowRegistry] No handler found for record:`, (record as any)?.type || typeof record)
       }
     }
 
+    console.log(`[WorkflowRegistry] Total messages created: ${messages.length} from ${records.length} records`)
     return messages
   }
 

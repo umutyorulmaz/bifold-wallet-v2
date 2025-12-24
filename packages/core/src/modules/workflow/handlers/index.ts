@@ -12,6 +12,7 @@ export { CredentialWorkflowHandler, createCredentialHandler } from './Credential
 export { ProofWorkflowHandler, createProofHandler } from './ProofHandler'
 export { BasicMessageWorkflowHandler, createBasicMessageHandler } from './BasicMessageHandler'
 export { ActionMenuWorkflowHandler, createActionMenuHandler } from './ActionMenuHandler'
+export { DIDCommWorkflowHandler, createDIDCommWorkflowHandler } from './DIDCommWorkflowHandler'
 
 // Components
 export { ActionMenuBubble } from './components/ActionMenuBubble'

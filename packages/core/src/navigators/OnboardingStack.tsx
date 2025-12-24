@@ -12,12 +12,7 @@ import { DispatchAction } from '../contexts/reducers/store'
 import { useStore } from '../contexts/store'
 import { useTheme } from '../contexts/theme'
 import { useOnboardingState } from '../hooks/useOnboardingState'
-import AttemptLockout from '../screens/AttemptLockout'
-import NameWallet from '../screens/NameWallet'
 import { createCarouselStyle } from '../screens/OnboardingPages'
-import PINCreate from '../screens/PINCreate'
-import PINEnter from '../screens/PINEnter'
-import PushNotifications from '../screens/PushNotifications'
 import { Config } from '../types/config'
 import { OnboardingStackParams } from '../types/navigators'
 import { WalletSecret } from '../types/security'
@@ -51,6 +46,12 @@ const OnboardingStack: React.FC<OnboardingStackProps> = ({ initializeAgent, agen
     UpdateAvailable,
     versionMonitor,
     generateOnboardingWorkflowSteps,
+    // New injectable screens
+    PINCreate,
+    PINEnter,
+    NameWallet,
+    PushNotifications,
+    AttemptLockout,
   ] = useServices([
     TOKENS.CONFIG,
     TOKENS.SCREEN_SPLASH,
@@ -64,6 +65,12 @@ const OnboardingStack: React.FC<OnboardingStackProps> = ({ initializeAgent, agen
     TOKENS.SCREEN_UPDATE_AVAILABLE,
     TOKENS.UTIL_APP_VERSION_MONITOR,
     TOKENS.ONBOARDING,
+    // New injectable screens
+    TOKENS.SCREEN_PIN_CREATE,
+    TOKENS.SCREEN_PIN_ENTER,
+    TOKENS.SCREEN_NAME_WALLET,
+    TOKENS.SCREEN_PUSH_NOTIFICATIONS,
+    TOKENS.SCREEN_ATTEMPT_LOCKOUT,
   ])
   const defaultStackOptions = useDefaultStackOptions(theme)
   const navigation = useNavigation<StackNavigationProp<OnboardingStackParams>>()

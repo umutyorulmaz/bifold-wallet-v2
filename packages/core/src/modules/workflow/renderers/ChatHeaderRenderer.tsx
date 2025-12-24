@@ -6,8 +6,9 @@
  */
 
 import React from 'react'
-import { View, Text, TouchableOpacity, StyleSheet, Platform } from 'react-native'
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
 import { SvgProps } from 'react-native-svg'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import { useTheme } from '../../../contexts/theme'
 import { ChatHeaderIconButton, ChatHeaderProps, IChatHeaderRenderer } from '../types'
@@ -19,10 +20,14 @@ interface HeaderProps extends ChatHeaderProps {
   BellIconComponent?: React.FC<SvgProps>
   /** Info icon component */
   InfoIconComponent?: React.FC<SvgProps>
+  /** Video icon component */
+  VideoIconComponent?: React.FC<SvgProps>
   /** Background color */
   backgroundColor?: string
   /** Title color */
   titleColor?: string
+  /** Icon color */
+  iconColor?: string
 }
 
 /**
@@ -34,21 +39,36 @@ export const ChatHeader: React.FC<HeaderProps> = ({
   LogoComponent,
   BellIconComponent,
   InfoIconComponent,
+  VideoIconComponent,
   onShowMenu,
   onBack,
   onInfo,
+  onVideoCall,
   showMenuButton,
   showInfoButton,
+  showVideoButton,
   onMenuPress,
   backgroundColor,
   titleColor,
+  iconColor,
 }) => {
-  const { SettingsTheme } = useTheme()
-  const bgColor = backgroundColor || SettingsTheme.newSettingColors.bgColorDown
-  const textColor = titleColor || SettingsTheme.newSettingColors.headerTitle
+  const { ColorPalette } = useTheme()
+  const insets = useSafeAreaInsets()
+  const bgColor = backgroundColor || ColorPalette.brand.secondaryBackground
+  const textColor = titleColor || ColorPalette.brand.text
+  const iconsColor = iconColor || ColorPalette.brand.text
 
   // Build right icons array
   const icons: ChatHeaderIconButton[] = [...rightIcons]
+
+  // Add video call icon if provided and showVideoButton is true
+  if (VideoIconComponent && (showVideoButton || onVideoCall)) {
+    icons.push({
+      IconComponent: VideoIconComponent,
+      onPress: onVideoCall || (() => {}),
+      accessibilityLabel: 'Start video call',
+    })
+  }
 
   // Add bell icon if provided and showMenuButton is true
   if (BellIconComponent && (showMenuButton || onShowMenu)) {
@@ -69,15 +89,18 @@ export const ChatHeader: React.FC<HeaderProps> = ({
   }
 
   return (
-    <View style={[styles.container, { backgroundColor: bgColor }]}>
-      {/* Left section - Back button or Logo */}
+    <View style={[styles.container, { backgroundColor: bgColor, paddingTop: insets.top + 12 }]}>
+      {/* Left section - Back button */}
       <View style={styles.leftSection}>
-        {onBack ? (
-          <TouchableOpacity onPress={onBack} accessibilityLabel="Go back" accessibilityRole="button">
-            {LogoComponent ? <LogoComponent width={40} height={40} /> : <Text style={styles.backText}>{'<'}</Text>}
+        {onBack && (
+          <TouchableOpacity
+            onPress={onBack}
+            accessibilityLabel="Go back"
+            accessibilityRole="button"
+            style={styles.backButton}
+          >
+            <Text style={[styles.backArrow, { color: textColor }]}>{'‹'}</Text>
           </TouchableOpacity>
-        ) : (
-          LogoComponent && <LogoComponent width={40} height={40} />
         )}
       </View>
 
@@ -98,7 +121,7 @@ export const ChatHeader: React.FC<HeaderProps> = ({
             accessibilityLabel={icon.accessibilityLabel}
             accessibilityRole="button"
           >
-            <icon.IconComponent width={24} height={24} />
+            <icon.IconComponent width={24} height={24} fill={iconsColor} color={iconsColor} />
           </TouchableOpacity>
         ))}
       </View>
@@ -112,10 +135,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 16,
-    paddingVertical: 12,
-    paddingTop: Platform.OS === 'ios' ? 50 : 12,
-    borderBottomWidth: 0.5,
-    borderBottomColor: 'rgba(0,0,0,0.1)',
+    paddingBottom: 12,
+    borderBottomWidth: 0,
   },
   leftSection: {
     flex: 0,
@@ -144,9 +165,14 @@ const styles = StyleSheet.create({
     padding: 8,
     marginLeft: 4,
   },
-  backText: {
-    fontSize: 24,
-    fontWeight: '600',
+  backButton: {
+    padding: 8,
+    marginLeft: -8,
+  },
+  backArrow: {
+    fontSize: 32,
+    fontWeight: '300',
+    lineHeight: 32,
   },
 })
 
@@ -157,10 +183,14 @@ interface ChatHeaderRendererOptions {
   BellIconComponent?: React.FC<SvgProps>
   /** Info icon component */
   InfoIconComponent?: React.FC<SvgProps>
+  /** Video icon component */
+  VideoIconComponent?: React.FC<SvgProps>
   /** Background color */
   backgroundColor?: string
   /** Title color */
   titleColor?: string
+  /** Icon color */
+  iconColor?: string
 }
 
 /**
@@ -180,8 +210,10 @@ export class ChatHeaderRenderer implements IChatHeaderRenderer {
         LogoComponent={this.options.LogoComponent}
         BellIconComponent={this.options.BellIconComponent}
         InfoIconComponent={this.options.InfoIconComponent}
+        VideoIconComponent={this.options.VideoIconComponent}
         backgroundColor={this.options.backgroundColor}
         titleColor={this.options.titleColor}
+        iconColor={this.options.iconColor}
       />
     )
   }

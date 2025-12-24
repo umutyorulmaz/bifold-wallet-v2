@@ -107,7 +107,7 @@ export class ProofWorkflowHandler extends BaseWorkflowHandler<ProofExchangeRecor
     return {
       ...this.createBaseMessage(record, context, renderEvent),
       messageOpensCallbackType: this.getCallbackType(record),
-      onDetails: this.createOnDetails(record),
+      onDetails: this.createOnDetails(record, context.navigation),
     }
   }
 
@@ -145,10 +145,34 @@ export class ProofWorkflowHandler extends BaseWorkflowHandler<ProofExchangeRecor
   /**
    * Create the onDetails callback for navigation
    */
-  private createOnDetails(record: ProofExchangeRecord): (() => void) | undefined {
-    // This will be replaced in the refactored chat-messages.tsx
-    // For now, return undefined as the navigation will be handled there
-    return undefined
+  private createOnDetails(
+    record: ProofExchangeRecord,
+    navigation?: StackNavigationProp<any>
+  ): (() => void) | undefined {
+    if (!navigation) return undefined
+
+    const navResult = this.getDetailNavigation(record, navigation)
+    if (!navResult) return undefined
+
+    return () => {
+      if (navResult.stack) {
+        // Navigate to a specific stack and screen
+        const parent = navigation.getParent()
+        if (parent) {
+          parent.navigate(navResult.stack, {
+            screen: navResult.screen,
+            params: navResult.params,
+          })
+        } else {
+          navigation.navigate(navResult.stack as any, {
+            screen: navResult.screen,
+            params: navResult.params,
+          })
+        }
+      } else {
+        navigation.navigate(navResult.screen as any, navResult.params)
+      }
+    }
   }
 
   isNotification(record: ProofExchangeRecord): boolean {

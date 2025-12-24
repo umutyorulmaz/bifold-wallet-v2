@@ -7,8 +7,9 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { GiftedChat, IMessage } from 'react-native-gifted-chat'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { View } from 'react-native'
+import { View, TouchableOpacity } from 'react-native'
 
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import InfoIcon from '../components/buttons/InfoIcon'
 import { renderComposer, renderInputToolbar, renderSend } from '../components/chat'
 import ActionSlider from '../components/chat/ActionSlider'
@@ -18,6 +19,7 @@ import { useNetwork } from '../contexts/network'
 import { useStore } from '../contexts/store'
 import { useTheme } from '../contexts/theme'
 import { useChatMessagesByConnection } from '../hooks/chat-messages'
+import { useConnectionCapabilities } from '../hooks/useConnectionCapabilities'
 import { useOptionalWorkflowRegistry } from '../modules/workflow'
 import { ActionContext, WorkflowAction } from '../modules/workflow/types'
 import { Role } from '../types/chat'
@@ -47,6 +49,9 @@ const Chat: React.FC<ChatProps> = ({ route }) => {
   const { ChatTheme: theme, Assets } = useTheme()
   const [theirLabel, setTheirLabel] = useState(getConnectionName(connection, store.preferences.alternateContactNames))
   const headerHeight = useHeaderHeight()
+
+  // Check if the connection supports WebRTC for video calls
+  const { capabilities } = useConnectionCapabilities(connectionId)
 
   // Try to get the workflow registry for chat actions
   const registry = useOptionalWorkflowRegistry()
@@ -78,8 +83,13 @@ const Chat: React.FC<ChatProps> = ({ route }) => {
   }, [agent, connectionId])
 
   useEffect(() => {
-    // Use custom header from config if available
-    if (chatScreenConfig?.headerRenderer) {
+    // If header should be inside background, hide navigation header
+    if (chatScreenConfig?.headerInsideBackground && chatScreenConfig?.headerRenderer) {
+      navigation.setOptions({
+        headerShown: false,
+      })
+    } else if (chatScreenConfig?.headerRenderer) {
+      // Use custom header from config if available (rendered by navigation)
       navigation.setOptions({
         header: () =>
           chatScreenConfig.headerRenderer!.render({
@@ -89,8 +99,14 @@ const Chat: React.FC<ChatProps> = ({ route }) => {
             onInfo: () => {
               navigation.navigate(Screens.ContactDetails as any, { connectionId: connection?.id })
             },
+            onVideoCall: () => {
+              navigation.navigate(Screens.VideoCall as any, { connectionId: connection?.id, video: true })
+            },
             showMenuButton: chatScreenConfig.showMenuButton,
             showInfoButton: chatScreenConfig.showInfoButton,
+            // Only show video button if config allows AND remote supports WebRTC
+            showVideoButton: chatScreenConfig.showVideoButton && capabilities.supportsWebRTC,
+            isLoadingCapabilities: capabilities.isLoading,
             // Bell icon sends :menu message to request action menu from the connection
             onMenuPress: onShowMenu,
           }),
@@ -98,10 +114,49 @@ const Chat: React.FC<ChatProps> = ({ route }) => {
     } else {
       navigation.setOptions({
         title: theirLabel,
-        headerRight: () => <InfoIcon connectionId={connection?.id as string} />,
+        headerRight: () => (
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 16, marginRight: 8 }}>
+            {/* Only show video button if remote supports WebRTC */}
+            {capabilities.supportsWebRTC && (
+              <TouchableOpacity
+                onPress={() => navigation.navigate(Screens.VideoCall as any, { connectionId: connection?.id, video: true })}
+                accessibilityLabel={t('ContactDetails.StartVideoCall')}
+                accessibilityRole="button"
+                hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+              >
+                <Icon name="video" size={24} color="#007AFF" />
+              </TouchableOpacity>
+            )}
+            <InfoIcon connectionId={connection?.id as string} />
+          </View>
+        ),
       })
     }
-  }, [navigation, theirLabel, connection, chatScreenConfig, onShowMenu])
+  }, [navigation, theirLabel, connection, chatScreenConfig, onShowMenu, t, capabilities.supportsWebRTC, capabilities.isLoading])
+
+  // Render header inside content when headerInsideBackground is enabled
+  const renderInlineHeader = useCallback(() => {
+    if (!chatScreenConfig?.headerInsideBackground || !chatScreenConfig?.headerRenderer) {
+      return null
+    }
+    return chatScreenConfig.headerRenderer.render({
+      title: theirLabel,
+      connectionId: connection?.id,
+      onBack: () => navigation.goBack(),
+      onInfo: () => {
+        navigation.navigate(Screens.ContactDetails as any, { connectionId: connection?.id })
+      },
+      onVideoCall: () => {
+        navigation.navigate(Screens.VideoCall as any, { connectionId: connection?.id, video: true })
+      },
+      showMenuButton: chatScreenConfig.showMenuButton,
+      showInfoButton: chatScreenConfig.showInfoButton,
+      // Only show video button if config allows AND remote supports WebRTC
+      showVideoButton: chatScreenConfig.showVideoButton && capabilities.supportsWebRTC,
+      isLoadingCapabilities: capabilities.isLoading,
+      onMenuPress: onShowMenu,
+    })
+  }, [chatScreenConfig, theirLabel, connection, navigation, onShowMenu, capabilities.supportsWebRTC, capabilities.isLoading])
 
   // when chat is open, mark messages as seen
   useEffect(() => {
@@ -198,6 +253,12 @@ const Chat: React.FC<ChatProps> = ({ route }) => {
         }}
         renderActions={(props) => renderActions(props, theme, actions as any)}
         onPressActionButton={actions && actions.length > 0 ? () => setShowActionSlider(true) : undefined}
+        bottomOffset={Platform.OS === 'ios' ? 34 : 0}
+        minInputToolbarHeight={60}
+        messagesContainerStyle={{
+          paddingBottom: 80,
+          paddingHorizontal: 12,
+        }}
       />
       {showActionSlider && <ActionSlider onDismiss={onDismiss} actions={actions as any} />}
     </KeyboardAvoidingView>
@@ -205,12 +266,20 @@ const Chat: React.FC<ChatProps> = ({ route }) => {
 
   // Use custom background if available, otherwise use default SafeAreaView
   if (chatScreenConfig?.backgroundRenderer) {
+    // When header is inside background, render header as first child of the gradient
+    const headerInsideBackground = chatScreenConfig.headerInsideBackground
     return (
       <View style={{ flex: 1 }}>
         {chatScreenConfig.backgroundRenderer.render(
-          <SafeAreaView edges={['bottom', 'left', 'right']} style={{ flex: 1, paddingTop: 20 }}>
-            {chatContent}
-          </SafeAreaView>
+          <>
+            {headerInsideBackground && renderInlineHeader()}
+            <SafeAreaView
+              edges={headerInsideBackground ? ['bottom', 'left', 'right'] : ['bottom', 'left', 'right']}
+              style={{ flex: 1, paddingTop: headerInsideBackground ? 0 : 20 }}
+            >
+              {chatContent}
+            </SafeAreaView>
+          </>
         )}
       </View>
     )

@@ -62,6 +62,8 @@ export enum Screens {
   AutoLock = 'AutoLock',
   UpdateAvailable = 'Update Available',
   ConfigureMediator = 'Configure Mediator',
+  IncomingCall = 'Incoming Call',
+  VideoCall = 'Video Call',
 }
 
 export enum Stacks {
@@ -98,6 +100,18 @@ export type RootStackParams = {
   [Screens.CredentialDetails]: { credentialId: string }
   [Screens.OpenIDCredentialDetails]: { credentialId: string; type: OpenIDCredentialType }
   [Stacks.CustomNavStack1]: undefined
+  [Screens.IncomingCall]: {
+    connectionId: string
+    threadId: string
+    sdp: string
+    callerLabel?: string
+    iceServers?: Array<{ urls: string | string[]; username?: string; credential?: string }>
+  }
+  [Screens.VideoCall]: {
+    connectionId: string
+    threadId?: string
+    video?: boolean
+  }
 }
 
 export type TabStackParams = {

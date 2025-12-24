@@ -434,6 +434,7 @@ export interface IChatTheme {
     fontWeight: TextStyle['fontWeight']
     fontSize: number
     lineHeight?: number
+    color?: string
   }
   openButtonTextStyle: TextStyle & {
     fontSize: number
@@ -457,12 +458,16 @@ export interface IChatTheme {
     borderRadius: number
     padding: number
     marginLeft: number
+    borderWidth?: number
+    borderColor?: string
   }
   rightBubble: ViewStyle & {
     backgroundColor: string
     borderRadius: number
     padding: number
     marginRight: number
+    borderWidth?: number
+    borderColor?: string
   }
   sendContainer: ViewStyle & {
     marginBottom: number

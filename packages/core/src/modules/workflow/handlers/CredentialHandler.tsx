@@ -28,7 +28,11 @@ export class CredentialWorkflowHandler extends BaseWorkflowHandler<CredentialExc
   private renderer?: ICredentialRenderer
 
   canHandle(record: unknown): record is CredentialExchangeRecord {
-    return record instanceof CredentialExchangeRecord
+    const result = record instanceof CredentialExchangeRecord
+    if (result) {
+      console.log(`[CredentialHandler] canHandle: true, state: ${(record as CredentialExchangeRecord).state}`)
+    }
+    return result
   }
 
   getRole(record: CredentialExchangeRecord): Role {
@@ -99,7 +103,7 @@ export class CredentialWorkflowHandler extends BaseWorkflowHandler<CredentialExc
     return {
       ...this.createBaseMessage(record, context, renderEvent),
       messageOpensCallbackType: this.getCallbackType(record),
-      onDetails: this.createOnDetails(record),
+      onDetails: this.createOnDetails(record, context.navigation),
     }
   }
 
@@ -129,10 +133,34 @@ export class CredentialWorkflowHandler extends BaseWorkflowHandler<CredentialExc
   /**
    * Create the onDetails callback for navigation
    */
-  private createOnDetails(record: CredentialExchangeRecord): (() => void) | undefined {
-    // This will be replaced in the refactored chat-messages.tsx
-    // For now, return undefined as the navigation will be handled there
-    return undefined
+  private createOnDetails(
+    record: CredentialExchangeRecord,
+    navigation?: StackNavigationProp<any>
+  ): (() => void) | undefined {
+    if (!navigation) return undefined
+
+    const navResult = this.getDetailNavigation(record, navigation)
+    if (!navResult) return undefined
+
+    return () => {
+      if (navResult.stack) {
+        // Navigate to a specific stack and screen
+        const parent = navigation.getParent()
+        if (parent) {
+          parent.navigate(navResult.stack, {
+            screen: navResult.screen,
+            params: navResult.params,
+          })
+        } else {
+          navigation.navigate(navResult.stack as any, {
+            screen: navResult.screen,
+            params: navResult.params,
+          })
+        }
+      } else {
+        navigation.navigate(navResult.screen as any, navResult.params)
+      }
+    }
   }
 
   isNotification(record: CredentialExchangeRecord): boolean {

@@ -5,9 +5,10 @@
  * Can render as visual cards (VDCard, TranscriptCard) or default text.
  */
 
-import { CredentialExchangeRecord, CredentialState } from '@credo-ts/core'
-import React from 'react'
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { CredentialExchangeRecord, CredentialPreviewAttribute, CredentialState } from '@credo-ts/core'
+import { useAgent } from '@credo-ts/react-hooks'
+import React, { useEffect, useState } from 'react'
+import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native'
 
 import { useTheme } from '../../../contexts/theme'
 import { ICredentialRenderer, RenderContext } from '../types'
@@ -89,14 +90,66 @@ interface CredentialCardProps {
 }
 
 /**
+ * Custom hook to fetch credential attributes from offer data
+ * For credentials in OfferReceived state, attributes need to be fetched from format data
+ */
+function useCredentialAttributes(credential: CredentialExchangeRecord) {
+  const { agent } = useAgent()
+  const [attributes, setAttributes] = useState<CredentialPreviewAttribute[]>(
+    credential.credentialAttributes || []
+  )
+  const [loading, setLoading] = useState(false)
+  const [credDefId, setCredDefId] = useState<string>(
+    (credential as any).metadata?.data?.['_anoncreds/credential']?.credentialDefinitionId || ''
+  )
+
+  useEffect(() => {
+    // If we already have attributes, use them
+    if (credential.credentialAttributes && credential.credentialAttributes.length > 0) {
+      setAttributes(credential.credentialAttributes)
+      return
+    }
+
+    // For offers without attributes, fetch from format data
+    if (agent && credential.state === CredentialState.OfferReceived) {
+      setLoading(true)
+      agent.credentials
+        .getFormatData(credential.id)
+        .then((formatData) => {
+          const { offer, offerAttributes } = formatData
+          const offerData = (offer?.anoncreds ?? offer?.indy) as { cred_def_id?: string } | undefined
+
+          // Update credDefId if available
+          if (offerData?.cred_def_id) {
+            setCredDefId(offerData.cred_def_id)
+          }
+
+          if (offerAttributes && offerAttributes.length > 0) {
+            const attrs = offerAttributes.map((item) => new CredentialPreviewAttribute(item))
+            setAttributes(attrs)
+          }
+        })
+        .catch((err) => {
+          console.warn('[useCredentialAttributes] Failed to fetch offer attributes:', err)
+        })
+        .finally(() => {
+          setLoading(false)
+        })
+    }
+  }, [agent, credential.id, credential.state, credential.credentialAttributes])
+
+  return { attributes, loading, credDefId }
+}
+
+/**
  * Default credential card component
  * This is a simplified version - can be extended with VDCard, TranscriptCard etc.
  */
 export const DefaultCredentialCard: React.FC<CredentialCardProps> = ({ credential, context, onPress }) => {
   const { SettingsTheme } = useTheme()
+  const { attributes: credentialAttributes, loading, credDefId } = useCredentialAttributes(credential)
 
   // Extract basic credential info
-  const credentialAttributes = credential.credentialAttributes || []
   const fullName = credentialAttributes.find(
     (attr) => attr.name.toLowerCase() === 'fullname' || attr.name.toLowerCase() === 'studentfullname'
   )?.value
@@ -107,7 +160,7 @@ export const DefaultCredentialCard: React.FC<CredentialCardProps> = ({ credentia
   )?.value
   const school = credentialAttributes.find((attr) => attr.name.toLowerCase() === 'schoolname')?.value
 
-  const displayName = fullName || (firstName && lastName ? `${firstName} ${lastName}` : 'Unknown')
+  const displayName = fullName || (firstName && lastName ? `${firstName} ${lastName}` : '')
 
   // Determine state label
   const getStateLabel = () => {
@@ -123,8 +176,21 @@ export const DefaultCredentialCard: React.FC<CredentialCardProps> = ({ credentia
     }
   }
 
+  // Get credential name from credDefId
+  const getCredentialName = () => {
+    if (!credDefId) return context.t('Credentials.Credential')
+    // Extract the last part of the credential definition ID
+    const parts = credDefId.split(':')
+    return parts[parts.length - 1] || context.t('Credentials.Credential')
+  }
+
+  // Get all credential attributes to display (excluding photos)
+  const allAttributes = credentialAttributes.filter(
+    (attr) => !['studentphoto', 'photo', 'student_photo'].includes(attr.name.toLowerCase())
+  )
+
   const content = (
-    <View style={[styles.card, { backgroundColor: 'white' }]}>
+    <View style={[styles.card, { backgroundColor: SettingsTheme.newSettingColors.bgColorUp || '#1a2634' }]}>
       {/* Header with state */}
       <View style={[styles.header, { backgroundColor: SettingsTheme.newSettingColors.buttonColor }]}>
         <Text style={styles.headerText}>{getStateLabel()}</Text>
@@ -132,12 +198,53 @@ export const DefaultCredentialCard: React.FC<CredentialCardProps> = ({ credentia
 
       {/* Body */}
       <View style={styles.body}>
-        {school && <Text style={[styles.school, { color: SettingsTheme.newSettingColors.headerTitle }]}>{school}</Text>}
-        <Text style={[styles.name, { color: SettingsTheme.newSettingColors.textBody }]}>{displayName}</Text>
-        {studentId && (
-          <Text style={[styles.detail, { color: SettingsTheme.newSettingColors.textColor }]}>
-            {context.t('Chat.StudentID' as any) as string}: {studentId}
-          </Text>
+        {loading ? (
+          <View style={styles.loadingContainer}>
+            <ActivityIndicator size="small" color={SettingsTheme.newSettingColors.buttonColor} />
+            <Text style={[styles.loadingText, { color: SettingsTheme.newSettingColors.textColor || '#cccccc' }]}>
+              {context.t('Global.Loading' as any)}
+            </Text>
+          </View>
+        ) : (
+          <>
+            {/* Show credential name if we have it */}
+            <Text style={[styles.credentialName, { color: SettingsTheme.newSettingColors.headerTitle }]}>
+              {getCredentialName()}
+            </Text>
+
+            {/* Show school if available */}
+            {school && (
+              <Text style={[styles.school, { color: SettingsTheme.newSettingColors.headerTitle }]}>{school}</Text>
+            )}
+
+            {/* Show display name if available */}
+            {displayName && (
+              <Text style={[styles.name, { color: SettingsTheme.newSettingColors.textBody || '#ffffff' }]}>
+                {displayName}
+              </Text>
+            )}
+
+            {/* Show student ID if available */}
+            {studentId && (
+              <Text style={[styles.detail, { color: SettingsTheme.newSettingColors.textColor || '#cccccc' }]}>
+                {context.t('Chat.StudentID' as any) as string}: {studentId}
+              </Text>
+            )}
+
+            {/* Show first few attributes if no specific ones found */}
+            {!school && !studentId && !displayName && allAttributes.slice(0, 4).map((attr, index) => (
+              <Text key={index} style={[styles.detail, { color: SettingsTheme.newSettingColors.textColor || '#cccccc' }]}>
+                {attr.name}: {attr.value}
+              </Text>
+            ))}
+
+            {/* Show tap to view message */}
+            {allAttributes.length > 0 && (
+              <Text style={[styles.tapToView, { color: SettingsTheme.newSettingColors.textColor || '#888888' }]}>
+                {context.t('Chat.TapToView' as any) || 'Tap to view details'}
+              </Text>
+            )}
+          </>
         )}
       </View>
 
@@ -182,6 +289,20 @@ const styles = StyleSheet.create({
     padding: 12,
     flex: 1,
   },
+  loadingContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 20,
+  },
+  loadingText: {
+    fontSize: 12,
+    marginTop: 8,
+  },
+  credentialName: {
+    fontSize: 14,
+    fontWeight: '700',
+    marginBottom: 8,
+  },
   school: {
     fontSize: 10,
     marginBottom: 4,
@@ -194,6 +315,12 @@ const styles = StyleSheet.create({
   detail: {
     fontSize: 12,
     marginBottom: 2,
+  },
+  tapToView: {
+    fontSize: 10,
+    fontStyle: 'italic',
+    marginTop: 8,
+    opacity: 0.7,
   },
   bottomLine: {
     height: 4,
@@ -254,28 +381,54 @@ function getAttributeValue(credential: CredentialExchangeRecord, ...names: strin
  * Automatically chooses between VDCard, TranscriptCard, or Default based on credential type
  */
 export const VDCredentialCard: React.FC<CredentialCardProps> = ({ credential, context, onPress }) => {
-  const credentialType = detectCredentialType(credential)
-  const credDefId = (credential as any).metadata?.data?.['_anoncreds/credential']?.credentialDefinitionId || ''
+  const { SettingsTheme } = useTheme()
+  const { attributes, loading, credDefId } = useCredentialAttributes(credential)
 
-  // Extract common attributes
-  const firstName = getAttributeValue(credential, 'first', 'firstname', 'first_name') || ''
-  const lastName = getAttributeValue(credential, 'last', 'lastname', 'last_name') || ''
-  const fullName = getAttributeValue(credential, 'fullname', 'studentfullname', 'full_name')
-  const studentId = getAttributeValue(credential, 'studentid', 'studentnumber', 'student_id') || ''
-  const school = getAttributeValue(credential, 'schoolname', 'school', 'institution')
-  const issueDate = getAttributeValue(credential, 'issuedate', 'issue_date', 'expirationdate', 'expiration_date') || ''
-  const studentPhoto = getAttributeValue(credential, 'studentphoto', 'photo', 'student_photo')
+  // Create a helper to get attribute values from the loaded attributes
+  const getAttrValue = (...names: string[]): string | undefined => {
+    for (const name of names) {
+      const attr = attributes.find((a) => a.name.toLowerCase() === name.toLowerCase())
+      if (attr?.value) return attr.value
+    }
+    return undefined
+  }
+
+  // Extract common attributes using the loaded attributes
+  const firstName = getAttrValue('first', 'firstname', 'first_name') || ''
+  const lastName = getAttrValue('last', 'lastname', 'last_name') || ''
+  const fullName = getAttrValue('fullname', 'studentfullname', 'full_name')
+  const studentId = getAttrValue('studentid', 'studentnumber', 'student_id') || ''
+  const school = getAttrValue('schoolname', 'school', 'institution')
+  const issueDate = getAttrValue('issuedate', 'issue_date', 'expirationdate', 'expiration_date') || ''
+  const studentPhoto = getAttrValue('studentphoto', 'photo', 'student_photo')
 
   // Transcript-specific attributes
-  const yearStart = getAttributeValue(credential, 'yearstart', 'year_start')
-  const yearEnd = getAttributeValue(credential, 'yearend', 'year_end')
-  const termGPA = getAttributeValue(credential, 'termgpa', 'term_gpa')
-  const cumulativeGPA = getAttributeValue(credential, 'cumulativegpa', 'cumulative_gpa')
+  const yearStart = getAttrValue('yearstart', 'year_start')
+  const yearEnd = getAttrValue('yearend', 'year_end')
+  const termGPA = getAttrValue('termgpa', 'term_gpa')
+  const cumulativeGPA = getAttrValue('cumulativegpa', 'cumulative_gpa')
+
+  // Detect credential type based on loaded attributes
+  const credentialType = detectCredentialTypeFromAttributes(attributes, credDefId)
 
   const handlePress = () => {
     if (onPress) {
       onPress()
     }
+  }
+
+  // Show loading state while fetching attributes
+  if (loading) {
+    return (
+      <View style={[styles.card, { backgroundColor: SettingsTheme.newSettingColors.bgColorUp || '#1a2634' }]}>
+        <View style={[styles.header, { backgroundColor: SettingsTheme.newSettingColors.buttonColor }]}>
+          <Text style={styles.headerText}>{context.t('CredentialOffer.CredentialOffer')}</Text>
+        </View>
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="small" color={SettingsTheme.newSettingColors.buttonColor} />
+        </View>
+      </View>
+    )
   }
 
   const renderCard = () => {
@@ -323,6 +476,63 @@ export const VDCredentialCard: React.FC<CredentialCardProps> = ({ credential, co
   }
 
   return renderCard()
+}
+
+/**
+ * Detect credential type from attributes array (for use after async loading)
+ */
+function detectCredentialTypeFromAttributes(
+  attributes: CredentialPreviewAttribute[],
+  credDefId: string
+): CredentialDisplayType {
+  // Check for transcript attributes
+  const hasGPA = attributes.some(
+    (attr) =>
+      attr.name.toLowerCase().includes('gpa') ||
+      attr.name.toLowerCase().includes('termgpa') ||
+      attr.name.toLowerCase().includes('cumulativegpa')
+  )
+  const hasYearStart = attributes.some(
+    (attr) => attr.name.toLowerCase() === 'yearstart' || attr.name.toLowerCase() === 'year_start'
+  )
+
+  if (hasGPA || hasYearStart || credDefId.toLowerCase().includes('transcript')) {
+    return CredentialDisplayType.TRANSCRIPT
+  }
+
+  // Check for student ID attributes
+  const hasStudentId = attributes.some(
+    (attr) =>
+      attr.name.toLowerCase() === 'studentid' ||
+      attr.name.toLowerCase() === 'studentnumber' ||
+      attr.name.toLowerCase() === 'student_id'
+  )
+  const hasStudentName = attributes.some(
+    (attr) =>
+      attr.name.toLowerCase() === 'fullname' ||
+      attr.name.toLowerCase() === 'studentfullname' ||
+      attr.name.toLowerCase() === 'first' ||
+      attr.name.toLowerCase() === 'last'
+  )
+
+  if (hasStudentId && hasStudentName) {
+    return CredentialDisplayType.STUDENT_ID
+  }
+
+  // Check credDefId for known patterns
+  if (
+    credDefId.includes('NHCS') ||
+    credDefId.includes('PCS') ||
+    credDefId.includes('M-DCPS') ||
+    credDefId.includes('CFCC') ||
+    credDefId.includes('Pender') ||
+    credDefId.includes('Miami') ||
+    credDefId.includes('Hanover')
+  ) {
+    return CredentialDisplayType.STUDENT_ID
+  }
+
+  return CredentialDisplayType.DEFAULT
 }
 
 /**

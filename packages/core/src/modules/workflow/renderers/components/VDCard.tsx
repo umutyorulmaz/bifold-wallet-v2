@@ -225,8 +225,17 @@ export const VDCard: React.FC<VDCardProps> = ({
       ? '#23408F'
       : SettingsTheme.newSettingColors.buttonColor
 
+  // Cape Fear has dark blue background, branded school cards (Pender, NHCS, Miami) are light,
+  // DEFAULT type adapts to theme
+  const getCardBackgroundColor = () => {
+    if (cardType === CardType.CAPE_FEAR) return '#043564'
+    if (cardType === CardType.PENDER || cardType === CardType.NHCS || cardType === CardType.MIAMI) return 'white'
+    // DEFAULT type uses theme color
+    return SettingsTheme.newSettingColors.bgColorUp || '#1a2634'
+  }
+
   const cardContainerStyle: ViewStyle = {
-    backgroundColor: cardType === CardType.CAPE_FEAR ? '#043564' : 'white',
+    backgroundColor: getCardBackgroundColor(),
     padding: cardType === CardType.CAPE_FEAR ? 0 : 10,
   }
 

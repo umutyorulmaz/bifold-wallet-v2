@@ -67,6 +67,8 @@ import Scan from './screens/Scan'
 import Splash from './screens/Splash'
 import Terms from './screens/Terms'
 import UpdateAvailable from './screens/UpdateAvailable'
+import VideoCall from './screens/VideoCall'
+import IncomingCall from './screens/IncomingCall'
 import { AbstractBifoldLogger } from './services/AbstractBifoldLogger'
 import { bifoldLoggerInstance } from './services/bifoldLogger'
 import { isBiometricsActive, loadLoginAttempt } from './services/keychain'
@@ -79,6 +81,21 @@ import { QrCodeScanError } from './types/error'
 import { RefreshOrchestrator } from './modules/openid/refresh/refreshOrchestrator'
 import { AgentBridge } from './services/AgentBridge'
 import * as workflow from './modules/workflow'
+
+// Workflow hooks
+import { useWorkflowEvents, useWorkflowInstanceEvents, useNewWorkflowEvents } from './hooks/useWorkflowEvents'
+import { useWorkflows, useWorkflowTemplates, usePendingWorkflows } from './hooks/useWorkflows'
+import { useWorkflowInstance } from './hooks/useWorkflowInstance'
+
+// WebRTC hooks
+import { useCallService } from './hooks/useCallService'
+import { useWebRTCEvents } from './hooks/useWebRTCEvents'
+import { useIncomingCallHandler } from './hooks/useIncomingCallHandler'
+import { useConnectionCapabilities, checkWebRTCSupport, clearCapabilityCache } from './hooks/useConnectionCapabilities'
+
+// Services
+import { MobileWorkflowService } from './services/WorkflowService'
+import { CallService } from './services/CallService'
 
 export { animatedComponents } from './animated-components'
 export { EventTypes, LocalStorageKeys } from './constants'
@@ -111,6 +128,7 @@ export { getIndyLedgers, IndyLedger, readIndyLedgersFromFile, writeIndyLedgersTo
 export { statusBarStyleForColor, StatusBarStyles } from './utils/luminance'
 export { migrateToAskar } from './utils/migration'
 export { buildFieldsFromAnonCredsCredential } from './utils/oca'
+export { KanonOCABundleResolver, createKanonOCABundleResolver } from './utils/KanonOCABundleResolver'
 export { testIdForAccessabilityLabel, testIdWithKey } from './utils/testable'
 
 export type { AnimatedComponents } from './animated-components'
@@ -149,8 +167,9 @@ export type {
   Tours as ToursState,
   VersionInfo,
 } from './types/state'
-export type { BifoldAgent } from './utils/agent'
+export type { BifoldAgent, WebRTCIceServer } from './utils/agent'
 export type { IndyLedgerConfig, IndyLedgerFileSystem, IndyLedgerJSON, IndyLedgersRecord } from './utils/ledger'
+export type { KanonOCABundleResolverOptions } from './utils/KanonOCABundleResolver'
 export type { OnboardingStyleSheet }
 
 export type { InlineMessageProps } from './components/inputs/InlineErrorText'
@@ -258,6 +277,8 @@ export {
   tours,
   types,
   UpdateAvailable,
+  VideoCall,
+  IncomingCall,
   useActivity,
   useBifoldAgentSetup,
   useDefaultStackOptions,
@@ -267,5 +288,43 @@ export {
   walletTimeout,
   RefreshOrchestrator,
   AgentBridge,
+  // Workflow hooks
+  useWorkflowEvents,
+  useWorkflowInstanceEvents,
+  useNewWorkflowEvents,
+  useWorkflows,
+  useWorkflowTemplates,
+  usePendingWorkflows,
+  useWorkflowInstance,
+  // WebRTC hooks
+  useCallService,
+  useWebRTCEvents,
+  useIncomingCallHandler,
+  useConnectionCapabilities,
+  checkWebRTCSupport,
+  clearCapabilityCache,
+  // Services
+  MobileWorkflowService,
+  CallService,
 }
 export type { BannerMessage, DeepPartial, IButton }
+
+// Re-export WebRTC event types
+export type {
+  IncomingOfferEvent,
+  IncomingAnswerEvent,
+  IncomingIceEvent,
+  CallEndedEvent,
+  IncomingProposeEvent,
+  RenegotiateRequestedEvent,
+} from './hooks/useWebRTCEvents'
+
+// Re-export CallService types
+export type { CallState } from './services/CallService'
+
+// Re-export connection capabilities types
+export type { ConnectionCapabilities, ProtocolURI } from './hooks/useConnectionCapabilities'
+export { ProtocolURIs } from './hooks/useConnectionCapabilities'
+
+// Re-export workflow hook types
+export type { EnrichedWorkflowStatus, WorkflowAction, WorkflowUiHint } from './hooks/useWorkflowInstance'

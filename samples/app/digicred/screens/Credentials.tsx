@@ -1,0 +1,211 @@
+import React, { useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  StatusBar,
+} from 'react-native'
+import { useNavigation, useIsFocused } from '@react-navigation/native'
+import { StackNavigationProp } from '@react-navigation/stack'
+import { AnonCredsCredentialMetadataKey } from '@credo-ts/anoncreds'
+import { CredentialExchangeRecord, CredentialState, SdJwtVcRecord, W3cCredentialRecord } from '@credo-ts/core'
+import { useCredentialByState } from '@credo-ts/react-hooks'
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+
+import {
+  Screens,
+  useStore,
+  TOKENS,
+  useServices,
+  CredentialCard,
+  useTour,
+  DispatchAction,
+} from '@bifold/core'
+import { useOpenIDCredentials } from '@bifold/core/src/modules/openid/context/OpenIDCredentialRecordProvider'
+import { GenericCredentialExchangeRecord, CredentialErrors } from '@bifold/core/src/types/credentials'
+import { OpenIDCredentialType } from '@bifold/core/src/modules/openid/types'
+import { BaseTourID } from '@bifold/core/src/types/tour'
+import { EmptyListProps } from '@bifold/core/src/components/misc/EmptyList'
+import { CredentialListFooterProps } from '@bifold/core/src/types/credential-list-footer'
+
+import { GradientBackground } from '../components'
+import { DigiCredColors } from '../theme'
+
+const Credentials: React.FC = () => {
+  const { t } = useTranslation()
+  const navigation = useNavigation<StackNavigationProp<any>>()
+  const [store, dispatch] = useStore()
+  const { start, stop } = useTour()
+  const screenIsFocused = useIsFocused()
+
+  const [
+    CredentialListOptions,
+    credentialEmptyList,
+    credentialListFooter,
+    { enableTours: enableToursConfig, credentialHideList },
+  ] = useServices([
+    TOKENS.COMPONENT_CRED_LIST_OPTIONS,
+    TOKENS.COMPONENT_CRED_EMPTY_LIST,
+    TOKENS.COMPONENT_CRED_LIST_FOOTER,
+    TOKENS.CONFIG,
+  ])
+
+  const {
+    openIdState: { w3cCredentialRecords, sdJwtVcRecords },
+  } = useOpenIDCredentials()
+
+  let credentials: GenericCredentialExchangeRecord[] = [
+    ...useCredentialByState(CredentialState.CredentialReceived),
+    ...useCredentialByState(CredentialState.Done),
+    ...w3cCredentialRecords,
+    ...sdJwtVcRecords,
+  ]
+
+  const CredentialEmptyList = credentialEmptyList as React.FC<EmptyListProps>
+  const CredentialListFooter = credentialListFooter as React.FC<CredentialListFooterProps>
+
+  // Filter out hidden credentials when not in dev mode
+  if (!store.preferences.developerModeEnabled) {
+    credentials = credentials.filter((r) => {
+      const credDefId = r.metadata.get(AnonCredsCredentialMetadataKey)?.credentialDefinitionId
+      return !credentialHideList?.includes(credDefId)
+    })
+  }
+
+  useEffect(() => {
+    const shouldShowTour = enableToursConfig && store.tours.enableTours && !store.tours.seenCredentialsTour
+
+    if (shouldShowTour && screenIsFocused) {
+      start(BaseTourID.CredentialsTour)
+      dispatch({
+        type: DispatchAction.UPDATE_SEEN_CREDENTIALS_TOUR,
+        payload: [true],
+      })
+    }
+  }, [enableToursConfig, store.tours.enableTours, store.tours.seenCredentialsTour, screenIsFocused, start, dispatch])
+
+  // stop the tour when the screen unmounts
+  useEffect(() => {
+    return stop
+  }, [stop])
+
+  const renderCardItem = (cred: GenericCredentialExchangeRecord) => {
+    return (
+      <CredentialCard
+        credential={cred as CredentialExchangeRecord}
+        credentialErrors={
+          (cred as CredentialExchangeRecord).revocationNotification?.revocationDate && [CredentialErrors.Revoked]
+        }
+        onPress={() => {
+          if (cred instanceof W3cCredentialRecord) {
+            navigation.navigate(Screens.OpenIDCredentialDetails, {
+              credentialId: cred.id,
+              type: OpenIDCredentialType.W3cCredential,
+            })
+          } else if (cred instanceof SdJwtVcRecord) {
+            navigation.navigate(Screens.OpenIDCredentialDetails, {
+              credentialId: cred.id,
+              type: OpenIDCredentialType.SdJwtVc,
+            })
+          } else {
+            navigation.navigate(Screens.CredentialDetails, { credentialId: cred.id })
+          }
+        }}
+      />
+    )
+  }
+
+  const renderEmptyState = () => (
+    <View style={styles.emptyState}>
+      <Icon name="card-multiple-outline" size={64} color={DigiCredColors.text.secondary} />
+      <Text style={styles.emptyTitle}>
+        {t('Credentials.EmptyList') || 'No Credentials Yet'}
+      </Text>
+      <Text style={styles.emptySubtitle}>
+        {t('Credentials.EmptyListMessage') || 'Your credentials will appear here once received'}
+      </Text>
+    </View>
+  )
+
+  return (
+    <GradientBackground>
+      <StatusBar barStyle="light-content" translucent backgroundColor="transparent" />
+      <View style={styles.container}>
+        {/* Header */}
+        <View style={styles.header}>
+          <Text style={styles.headerTitle}>{t('Screens.Credentials') || 'Credentials'}</Text>
+        </View>
+
+        {/* Credentials List */}
+        <FlatList
+          data={credentials.sort((a, b) => new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf())}
+          keyExtractor={(credential) => credential.id}
+          renderItem={({ item: credential, index }) => (
+            <View style={[styles.cardContainer, index === credentials.length - 1 && styles.lastCard]}>
+              {renderCardItem(credential)}
+            </View>
+          )}
+          ListEmptyComponent={credentials.length === 0 ? renderEmptyState : null}
+          ListFooterComponent={() => <CredentialListFooter credentialsCount={credentials.length} />}
+          contentContainerStyle={styles.listContent}
+          showsVerticalScrollIndicator={false}
+        />
+        <CredentialListOptions />
+      </View>
+    </GradientBackground>
+  )
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingTop: 50, // Account for status bar
+  },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingVertical: 16,
+  },
+  headerTitle: {
+    fontSize: 28,
+    fontWeight: '700',
+    color: DigiCredColors.text.primary,
+  },
+  listContent: {
+    paddingHorizontal: 16,
+    paddingBottom: 100,
+    flexGrow: 1,
+  },
+  cardContainer: {
+    marginTop: 15,
+  },
+  lastCard: {
+    marginBottom: 45,
+  },
+  emptyState: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 40,
+    paddingTop: 100,
+  },
+  emptyTitle: {
+    fontSize: 20,
+    fontWeight: '600',
+    color: DigiCredColors.text.primary,
+    marginTop: 24,
+    marginBottom: 8,
+  },
+  emptySubtitle: {
+    fontSize: 14,
+    color: DigiCredColors.text.secondary,
+    textAlign: 'center',
+    lineHeight: 20,
+  },
+})
+
+export default Credentials

@@ -109,6 +109,8 @@ export class ActionMenuWorkflowHandler extends BaseWorkflowHandler<ActionMenuRec
     if (parsed) {
       // Attach parsed data to record for later use
       ;(record as ActionMenuRecord)._parsedActionMenu = parsed
+      const role = record.role === BasicMessageRole.Sender ? 'SENT' : 'RECEIVED'
+      console.log(`[ActionMenuHandler] canHandle: true, role: ${role}, displayData: ${parsed.displayData.length} items`)
       return true
     }
 
@@ -137,22 +139,13 @@ export class ActionMenuWorkflowHandler extends BaseWorkflowHandler<ActionMenuRec
   toMessage(record: ActionMenuRecord, connection: ConnectionRecord, context: MessageContext): ExtendedChatMessage {
     const parsed = record._parsedActionMenu ?? this.parseActionMenu(record)
 
-    // Configure handler from context if not manually configured
-    if (context.agent && !this.agent) {
-      this.agent = context.agent
-    }
-    if (connection?.id && !this.connectionId) {
-      this.connectionId = connection.id
-    }
-    if (context.navigation && !this.navigation) {
-      this.navigation = context.navigation as StackNavigationProp<RootStackParams | ContactStackParams>
-    }
-    if (context.logger && !this.logger) {
-      this.logger = context.logger
-    }
-    if (context.t && !this.t) {
-      this.t = context.t
-    }
+    // Capture current context values for the closure
+    // These are captured fresh each time to ensure correct connection is used
+    const currentAgent = context.agent ?? this.agent
+    const currentConnectionId = connection?.id ?? this.connectionId
+    const currentNavigation = (context.navigation as StackNavigationProp<RootStackParams | ContactStackParams>) ?? this.navigation
+    const currentLogger = context.logger ?? this.logger
+    const currentT = context.t ?? this.t
 
     if (!parsed) {
       // Fallback to basic text if parsing fails
@@ -167,11 +160,37 @@ export class ActionMenuWorkflowHandler extends BaseWorkflowHandler<ActionMenuRec
       }
     }
 
+    // Create handler bound with current context values
+    const handlePress = async (actionId: string, workflowID: string, invitationLink?: string) => {
+      if (!currentAgent || !currentConnectionId) {
+        console.warn('[ActionMenuHandler] Agent or connectionId not available for action press')
+        return
+      }
+
+      if (invitationLink) {
+        await this.handleConnectToInvitationWithContext(
+          invitationLink,
+          currentAgent,
+          currentNavigation,
+          currentLogger,
+          currentT
+        )
+      } else {
+        const actionJSON = {
+          workflowID,
+          actionID: actionId,
+          data: {},
+        }
+        console.log('[ActionMenuHandler] Sending action message:', actionId, 'to connection:', currentConnectionId)
+        await currentAgent.basicMessages.sendMessage(currentConnectionId, JSON.stringify(actionJSON))
+      }
+    }
+
     const renderEvent = () => (
       <ActionMenuBubble
         content={parsed.displayData}
         workflowID={parsed.workflowID}
-        onActionPress={this.handleActionButtonPress.bind(this)}
+        onActionPress={handlePress}
       />
     )
 
@@ -196,7 +215,10 @@ export class ActionMenuWorkflowHandler extends BaseWorkflowHandler<ActionMenuRec
 
   shouldDisplay(record: ActionMenuRecord): boolean {
     // Only show action menus from the other party (them)
-    return this.getRole(record) === Role.them
+    const role = this.getRole(record)
+    const shouldShow = role === Role.them
+    console.log(`[ActionMenuHandler] shouldDisplay: ${shouldShow}, role: ${role === Role.me ? 'me' : 'them'}`)
+    return shouldShow
   }
 
   /**
@@ -221,42 +243,48 @@ export class ActionMenuWorkflowHandler extends BaseWorkflowHandler<ActionMenuRec
   }
 
   /**
-   * Handle connecting to an invitation from an action menu button
-   * Ported from bifold-wallet-1 with full error handling and navigation support
+   * Handle connecting to an invitation from an action menu button with context values
+   * This version uses passed-in context to avoid stale closure issues
    */
-  private async handleConnectToInvitation(invitationLink: string): Promise<void> {
-    const errorTitle = (this.t?.('Global.Error' as any) as string) ?? 'Error'
+  private async handleConnectToInvitationWithContext(
+    invitationLink: string,
+    agent: Agent,
+    navigation?: StackNavigationProp<RootStackParams | ContactStackParams>,
+    logger?: BifoldLogger,
+    t?: TFunction
+  ): Promise<void> {
+    const errorTitle = (t?.('Global.Error' as any) as string) ?? 'Error'
 
-    if (!this.agent) {
-      this.logger?.error('Agent is not initialized')
+    if (!agent) {
+      logger?.error('Agent is not initialized')
       Alert.alert(
         errorTitle,
-        (this.t?.('Global.UnableToConnect' as any) as string) ?? 'Unable to connect. Please try again later.'
+        (t?.('Global.UnableToConnect' as any) as string) ?? 'Unable to connect. Please try again later.'
       )
       return
     }
 
-    if (!this.logger) {
+    if (!logger) {
       console.warn('Logger not set for ActionMenuHandler, using console')
     }
 
     try {
       // Parse the invitation first
-      const parsedInvitation = await this.agent.oob.parseInvitation(invitationLink)
+      const parsedInvitation = await agent.oob.parseInvitation(invitationLink)
       const invitationId = parsedInvitation.id
 
       // Check if we already have an existing connection via this invitation
-      const existingOutOfBandRecord = await this.agent.oob.findByReceivedInvitationId(invitationId)
+      const existingOutOfBandRecord = await agent.oob.findByReceivedInvitationId(invitationId)
       if (existingOutOfBandRecord) {
-        const existingConnections = await this.agent.connections.findAllByOutOfBandId(existingOutOfBandRecord.id)
+        const existingConnections = await agent.connections.findAllByOutOfBandId(existingOutOfBandRecord.id)
 
         if (existingConnections && existingConnections.length > 0) {
           const existingConnection = existingConnections[0]
-          this.logger?.info('Already connected via this invitation, navigating to existing chat')
+          logger?.info('Already connected via this invitation, navigating to existing chat')
 
           // Navigate to the existing connection's chat
-          if (this.navigation) {
-            this.navigation.reset({
+          if (navigation) {
+            navigation.reset({
               index: 0,
               routes: [
                 {
@@ -272,28 +300,42 @@ export class ActionMenuWorkflowHandler extends BaseWorkflowHandler<ActionMenuRec
 
       // Use the connectFromScanOrDeepLink helper which handles all the connection logic
       // and navigates to the Connection screen to show progress
-      if (this.navigation && this.logger) {
+      if (navigation && logger) {
         await connectFromScanOrDeepLink(
           invitationLink,
-          this.agent,
-          this.logger,
-          this.navigation,
+          agent,
+          logger,
+          navigation,
           false, // isDeepLink
           false, // implicitInvitations
           true // reuseConnection
         )
       } else {
         // Fallback: receive invitation directly without navigation
-        const receivedInvitation = await this.agent.oob.receiveInvitation(parsedInvitation)
-        this.logger?.info(`Invitation received, oob record id: ${receivedInvitation.outOfBandRecord.id}`)
+        const receivedInvitation = await agent.oob.receiveInvitation(parsedInvitation)
+        logger?.info(`Invitation received, oob record id: ${receivedInvitation.outOfBandRecord.id}`)
       }
     } catch (error) {
-      this.logger?.error('Error processing the invitation:', error as Error)
+      logger?.error('Error processing the invitation:', error as Error)
       Alert.alert(
         errorTitle,
-        (this.t?.('Global.ConnectionError' as any) as string) ?? 'An error occurred while connecting. Please try again.'
+        (t?.('Global.ConnectionError' as any) as string) ?? 'An error occurred while connecting. Please try again.'
       )
     }
+  }
+
+  /**
+   * Handle connecting to an invitation from an action menu button
+   * @deprecated Use handleConnectToInvitationWithContext instead
+   */
+  private async handleConnectToInvitation(invitationLink: string): Promise<void> {
+    return this.handleConnectToInvitationWithContext(
+      invitationLink,
+      this.agent!,
+      this.navigation,
+      this.logger,
+      this.t
+    )
   }
 
   /**

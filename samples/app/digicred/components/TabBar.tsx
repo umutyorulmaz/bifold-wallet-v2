@@ -1,0 +1,179 @@
+import React from 'react'
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+import { BottomTabBarProps } from '@react-navigation/bottom-tabs'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
+
+import { DigiCredColors } from '../theme'
+
+interface TabItemProps {
+  label: string
+  icon: string
+  iconOutline: string
+  isActive: boolean
+  badge?: number
+  onPress: () => void
+}
+
+const TabItem: React.FC<TabItemProps> = ({
+  label,
+  icon,
+  iconOutline,
+  isActive,
+  badge,
+  onPress,
+}) => {
+  return (
+    <TouchableOpacity
+      style={styles.tabItem}
+      onPress={onPress}
+      accessibilityRole="tab"
+      accessibilityLabel={label}
+      accessibilityState={{ selected: isActive }}
+    >
+      <View style={styles.iconContainer}>
+        <Icon
+          name={isActive ? icon : iconOutline}
+          size={26}
+          color={isActive ? '#FFFFFF' : 'rgba(255, 255, 255, 0.5)'}
+        />
+        {badge !== undefined && badge > 0 && (
+          <View style={styles.badge}>
+            <Text style={styles.badgeText}>{badge > 99 ? '99+' : badge}</Text>
+          </View>
+        )}
+      </View>
+    </TouchableOpacity>
+  )
+}
+
+const tabConfig = [
+  { key: 'Tab Home Stack', label: 'Home', icon: 'home', iconOutline: 'home-outline' },
+  { key: 'Tab Credential Stack', label: 'Credentials', icon: 'text-box-multiple', iconOutline: 'text-box-multiple-outline' },
+  { key: 'Tab Connect Stack', label: 'Settings', icon: 'cog', iconOutline: 'cog-outline' },
+]
+
+// Map route names to tab config keys (using actual TabStacks enum values)
+const routeToTabKey: Record<string, string> = {
+  'Tab Home Stack': 'Tab Home Stack',
+  'Tab Credential Stack': 'Tab Credential Stack',
+  'Tab Connect Stack': 'Tab Connect Stack',
+}
+
+interface DigiCredTabBarProps extends Partial<BottomTabBarProps> {
+  badges?: Record<string, number>
+}
+
+const DigiCredTabBar: React.FC<DigiCredTabBarProps> = ({
+  state,
+  navigation,
+  badges = {},
+}) => {
+  const insets = useSafeAreaInsets()
+
+  if (!state || !navigation) {
+    return (
+      <View style={[styles.wrapper, { paddingBottom: Math.max(insets.bottom, 16) }]}>
+        <View style={styles.container}>
+          {tabConfig.map((tab, index) => (
+            <TabItem
+              key={tab.key}
+              label={tab.label}
+              icon={tab.icon}
+              iconOutline={tab.iconOutline}
+              isActive={index === 0}
+              badge={badges[tab.key]}
+              onPress={() => {}}
+            />
+          ))}
+        </View>
+      </View>
+    )
+  }
+
+  return (
+    <View style={[styles.wrapper, { paddingBottom: Math.max(insets.bottom, 16) }]}>
+      <View style={styles.container}>
+        {state.routes.map((route, index) => {
+          const isFocused = state.index === index
+          const tabKey = routeToTabKey[route.name] || route.name
+          const config = tabConfig.find(t => t.key === tabKey) || tabConfig[index % tabConfig.length]
+
+          const onPress = () => {
+            const event = navigation.emit({
+              type: 'tabPress',
+              target: route.key,
+              canPreventDefault: true,
+            })
+
+            if (!isFocused && !event.defaultPrevented) {
+              navigation.navigate(route.name)
+            }
+          }
+
+          return (
+            <TabItem
+              key={route.key}
+              label={config?.label || route.name}
+              icon={config?.icon || 'circle'}
+              iconOutline={config?.iconOutline || 'circle-outline'}
+              isActive={isFocused}
+              badge={badges[route.name]}
+              onPress={onPress}
+            />
+          )
+        })}
+      </View>
+    </View>
+  )
+}
+
+const styles = StyleSheet.create({
+  wrapper: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    paddingHorizontal: 16,
+  },
+  container: {
+    flexDirection: 'row',
+    backgroundColor: 'rgba(20, 45, 45, 0.95)',
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 32,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 8,
+  },
+  tabItem: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 8,
+  },
+  iconContainer: {
+    position: 'relative',
+  },
+  badge: {
+    position: 'absolute',
+    top: -8,
+    right: -12,
+    backgroundColor: '#FF6B6B',
+    borderRadius: 10,
+    minWidth: 20,
+    height: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 4,
+  },
+  badgeText: {
+    color: '#FFFFFF',
+    fontSize: 11,
+    fontWeight: '600',
+  },
+})
+
+export default DigiCredTabBar
