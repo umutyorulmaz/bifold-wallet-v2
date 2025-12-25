@@ -1,365 +1,125 @@
 import { StackScreenProps } from '@react-navigation/stack'
-import React from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
   ScrollView,
-  SectionList,
   StyleSheet,
   TouchableOpacity,
-  TouchableWithoutFeedback,
-  useWindowDimensions,
-  Vibration,
   View,
   Text,
   StatusBar,
+  Switch,
+  Animated,
 } from 'react-native'
-import { getBuildNumber, getVersion } from 'react-native-device-info'
-import Icon from 'react-native-vector-icons/MaterialIcons'
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 import {
-  TOKENS,
-  useServices,
   useStore,
-  useTheme,
   Screens,
   Stacks,
   testIdWithKey,
-  useAuth,
-  LockoutReason,
 } from '@bifold/core'
-import { AutoLockTime } from '@bifold/core/src/contexts/activity'
-import { useDeveloperMode } from '@bifold/core/src/hooks/developer-mode'
-import { Locales } from '@bifold/core/src/localization'
-import { SettingIcon, SettingSection } from '@bifold/core/src/types/settings'
 import { SettingStackParams } from '@bifold/core/src/types/navigators'
-import { GenericFn } from '@bifold/core/src/types/fn'
-import IconButton, { ButtonLocation } from '@bifold/core/src/components/buttons/IconButton'
+import { DispatchAction } from '@bifold/core/src/contexts/reducers/store'
+import { getBuildNumber, getVersion } from 'react-native-device-info'
 
 import { GradientBackground } from '../components'
 import { DigiCredColors } from '../theme'
 
 type SettingsProps = StackScreenProps<SettingStackParams>
 
-const Settings: React.FC<SettingsProps> = ({ navigation }) => {
-  const { t, i18n } = useTranslation()
-  const [store] = useStore()
-  const { lockOutUser } = useAuth()
-  const onDevModeTriggered = () => {
-    Vibration.vibrate()
-    navigation.navigate(Screens.Developer)
-  }
-  const { incrementDeveloperMenuCounter } = useDeveloperMode(onDevModeTriggered)
-  const { SettingsTheme, TextTheme, ColorPalette, Assets, maxFontSizeMultiplier } = useTheme()
-  const [{ settings, enableTours, enablePushNotifications, disableContactsInSettings }, historyEnabled] = useServices([
-    TOKENS.CONFIG,
-    TOKENS.HISTORY_ENABLED,
-  ])
-  const { fontScale } = useWindowDimensions()
-  const fontIsGreaterThanCap = fontScale >= maxFontSizeMultiplier
-  const defaultIconSize = 24
+interface ExpandableCardProps {
+  title: string
+  description: string
+  isEnabled: boolean
+  onToggle: (value: boolean) => void
+  expanded: boolean
+  onPress: () => void
+}
 
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      paddingTop: 50,
-    },
-    header: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      paddingHorizontal: 20,
-      paddingVertical: 16,
-    },
-    headerTitle: {
-      fontSize: 28,
-      fontWeight: '700',
-      color: DigiCredColors.text.primary,
-    },
-    section: {
-      backgroundColor: 'rgba(30, 50, 50, 0.6)',
-      paddingVertical: 16,
-      borderRadius: 16,
-      marginHorizontal: 16,
-      marginBottom: 16,
-    },
-    sectionHeader: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      paddingHorizontal: 16,
-      paddingBottom: 12,
-      borderBottomWidth: 1,
-      borderBottomColor: 'rgba(255, 255, 255, 0.1)',
-      marginBottom: 8,
-    },
-    sectionRow: {
-      flexDirection: fontIsGreaterThanCap ? 'column' : 'row',
-      alignItems: fontIsGreaterThanCap ? 'flex-start' : 'center',
-      justifyContent: 'space-between',
-      paddingHorizontal: 16,
-      paddingVertical: 14,
-    },
-    itemSeparator: {
-      borderBottomWidth: 1,
-      borderBottomColor: 'rgba(255, 255, 255, 0.1)',
-      marginHorizontal: 16,
-    },
-    footer: {
-      marginVertical: 25,
-      alignItems: 'center',
-      paddingBottom: 100,
-    },
-    sectionTitle: {
-      fontSize: 16,
-      fontWeight: '600',
-      color: DigiCredColors.text.primary,
-      marginLeft: 10,
-    },
-    rowTitle: {
-      fontSize: 15,
-      color: DigiCredColors.text.primary,
-      flex: 1,
-    },
-    rowValue: {
-      fontSize: 15,
-      color: DigiCredColors.button.primary,
-    },
-    versionText: {
-      fontSize: 14,
-      color: DigiCredColors.text.secondary,
-      marginBottom: 16,
-    },
+const ExpandableCard: React.FC<ExpandableCardProps> = ({
+  title,
+  description,
+  isEnabled,
+  onToggle,
+  expanded,
+  onPress,
+}) => {
+  const rotation = useRef(new Animated.Value(expanded ? 1 : 0)).current
+
+  useEffect(() => {
+    Animated.timing(rotation, {
+      toValue: expanded ? 1 : 0,
+      duration: 200,
+      useNativeDriver: true,
+    }).start()
+  }, [expanded, rotation])
+
+  const rotateInterpolate = rotation.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['0deg', '180deg'],
   })
 
-  const currentLanguage = i18n.t('Language.code', { context: i18n.language as Locales })
+  return (
+    <View style={styles.expandableCard}>
+      <TouchableOpacity
+        style={styles.expandableHeader}
+        onPress={onPress}
+        activeOpacity={0.7}
+      >
+        <Text style={styles.cardTitle}>{title}</Text>
+        <Animated.View style={{ transform: [{ rotate: rotateInterpolate }] }}>
+          <Icon name="chevron-down" size={24} color={DigiCredColors.text.secondary} />
+        </Animated.View>
+      </TouchableOpacity>
 
-  const settingsSections: SettingSection[] = [
-    {
-      header: {
-        icon: { name: store.preferences.useConnectionInviterCapability ? 'person' : 'apartment', size: 30 },
-        title: store.preferences.useConnectionInviterCapability ? store.preferences.walletName : t('Screens.Contacts'),
-        iconRight: {
-          name: 'edit',
-          action: () => {
-            navigation.navigate(Screens.RenameWallet)
-          },
-          accessibilityLabel: t('NameWallet.EditWalletName'),
-          testID: testIdWithKey('EditWalletName'),
-          style: { color: ColorPalette.brand.primary },
-        },
-        titleTestID: store.preferences.useConnectionInviterCapability ? testIdWithKey('WalletName') : undefined,
-      },
-      data: [
-        {
-          title: t('Screens.Contacts'),
-          accessibilityLabel: t('Screens.Contacts'),
-          testID: testIdWithKey('Contacts'),
-          onPress: () => navigation.getParent()?.navigate(Stacks.ContactStack, { screen: Screens.Contacts }),
-        },
-        {
-          title: t('Settings.WhatAreContacts'),
-          accessibilityLabel: t('Settings.WhatAreContacts'),
-          testID: testIdWithKey('WhatAreContacts'),
-          onPress: () => navigation.getParent()?.navigate(Stacks.ContactStack, { screen: Screens.WhatAreContacts }),
-          value: undefined,
-        },
-      ],
-    },
-    {
-      header: {
-        icon: { name: 'settings' },
-        title: t('Settings.AppSettings'),
-      },
-      data: [
-        {
-          title: t('Global.Biometrics'),
-          value: store.preferences.useBiometry ? t('Global.On') : t('Global.Off'),
-          accessibilityLabel: t('Global.Biometrics'),
-          testID: testIdWithKey('Biometrics'),
-          onPress: () => navigation.navigate(Screens.ToggleBiometry),
-        },
-        {
-          title: t('Settings.ChangePin'),
-          accessibilityLabel: t('Settings.ChangePin'),
-          testID: testIdWithKey('Change Pin'),
-          onPress: () => navigation.navigate(Screens.ChangePIN),
-        },
-        {
-          title: t('Settings.Language'),
-          value: currentLanguage,
-          accessibilityLabel: t('Settings.Language'),
-          testID: testIdWithKey('Language'),
-          onPress: () => navigation.navigate(Screens.Language),
-        },
-        {
-          title: t('Settings.AutoLockTime'),
-          value:
-            store.preferences.autoLockTime !== AutoLockTime.Never ? `${store.preferences.autoLockTime} min` : 'Never',
-          accessibilityLabel: t('Settings.AutoLockTime'),
-          testID: testIdWithKey('Lockout'),
-          onPress: () => navigation.navigate(Screens.AutoLock),
-        },
-      ],
-    },
-    ...(settings || []),
-  ]
-
-  // Remove the Contact section from Setting per TOKENS.CONFIG
-  if (disableContactsInSettings) {
-    settingsSections.shift()
-  }
-
-  // add optional push notifications menu to settings
-  if (enablePushNotifications) {
-    settingsSections
-      .find((item) => item.header.title === t('Settings.AppSettings'))
-      ?.data.push({
-        title: t('Settings.Notifications'),
-        value: undefined,
-        accessibilityLabel: t('Settings.Notifications'),
-        testID: testIdWithKey('Notifications'),
-        onPress: () => navigation.navigate(Screens.TogglePushNotifications),
-      })
-  }
-
-  // add optional history menu to settings
-  if (historyEnabled) {
-    settingsSections
-      .find((item) => item.header.title === t('Settings.AppSettings'))
-      ?.data.push({
-        title: t('Global.History'),
-        value: undefined,
-        accessibilityLabel: t('Global.History'),
-        testID: testIdWithKey('History'),
-        onPress: () => navigation.navigate(Screens.HistorySettings),
-      })
-  }
-
-  if (enableTours) {
-    const section = settingsSections.find((item) => item.header.title === t('Settings.AppSettings'))
-    if (section) {
-      section.data = [
-        ...section.data,
-        {
-          title: t('Settings.AppGuides'),
-          value: store.tours.enableTours ? t('Global.On') : t('Global.Off'),
-          accessibilityLabel: t('Settings.AppGuides'),
-          testID: testIdWithKey('AppGuides'),
-          onPress: () => navigation.navigate(Screens.Tours),
-        },
-      ]
-    }
-  }
-
-  if (store.preferences.developerModeEnabled) {
-    const section = settingsSections.find((item) => item.header.title === t('Settings.AppSettings'))
-    if (section) {
-      section.data = [
-        ...section.data,
-        {
-          title: t('Settings.Developer'),
-          accessibilityLabel: t('Settings.Developer'),
-          testID: testIdWithKey('DeveloperOptions'),
-          onPress: () => navigation.navigate(Screens.Developer),
-        },
-        {
-          title: t('Settings.ConfigureMediator'),
-          value: store.preferences.selectedMediator,
-          accessibilityLabel: t('Settings.ConfigureMediator'),
-          testID: testIdWithKey('ConfigureMediator'),
-          onPress: () => navigation.navigate(Screens.ConfigureMediator),
-        },
-        {
-          title: t('Settings.Logout'),
-          accessibilityLabel: t('Settings.Logout'),
-          testID: testIdWithKey('Logout'),
-          onPress: () => lockOutUser(LockoutReason.Logout),
-        },
-      ]
-    }
-  }
-
-  if (store.preferences.useVerifierCapability) {
-    settingsSections.splice(1, 0, {
-      header: {
-        icon: { name: 'send' },
-        title: t('Screens.ProofRequests'),
-      },
-      data: [
-        {
-          title: t('Screens.SendProofRequest'),
-          accessibilityLabel: t('Screens.ProofRequests'),
-          testID: testIdWithKey('ProofRequests'),
-          onPress: () =>
-            navigation.getParent()?.navigate(Stacks.ProofRequestsStack, {
-              screen: Screens.ProofRequests,
-            }),
-        },
-      ],
-    })
-    if (!store.preferences.disableDataRetentionOption) {
-      const section = settingsSections.find((item) => item.header.title === t('Settings.AppSettings'))
-      if (section) {
-        section.data.splice(3, 0, {
-          title: t('Settings.DataRetention'),
-          value: store.preferences.useDataRetention ? t('Global.On') : t('Global.Off'),
-          accessibilityLabel: t('Settings.DataRetention'),
-          testID: testIdWithKey('DataRetention'),
-          onPress: () => navigation.navigate(Screens.DataRetention),
-        })
-      }
-    }
-  }
-
-  if (store.preferences.useConnectionInviterCapability) {
-    const section = settingsSections.find((item) => item.header.title === store.preferences.walletName)
-    if (section) {
-      section.data.splice(1, 0, {
-        title: t('Settings.ScanMyQR'),
-        accessibilityLabel: t('Settings.ScanMyQR'),
-        testID: testIdWithKey('ScanMyQR'),
-        onPress: () =>
-          navigation.getParent()?.navigate(Stacks.ConnectStack, {
-            screen: Screens.Scan,
-            params: { defaultToConnect: true },
-          }),
-      })
-    }
-  }
-
-  const SectionHeader: React.FC<{
-    icon: SettingIcon
-    title: string
-  }> = ({ icon, title }) => (
-    <View style={styles.sectionHeader}>
-      <Icon
-        name={icon.name}
-        size={icon.size ?? defaultIconSize}
-        color={DigiCredColors.button.primary}
-      />
-      <Text style={styles.sectionTitle}>{title}</Text>
+      {expanded && (
+        <View style={styles.expandableContent}>
+          <Text style={styles.cardDescription}>{description}</Text>
+          <View style={styles.toggleRow}>
+            <Switch
+              value={isEnabled}
+              onValueChange={onToggle}
+              trackColor={{ false: '#3e3e3e', true: DigiCredColors.button.primary }}
+              thumbColor={isEnabled ? '#FFFFFF' : '#f4f3f4'}
+              ios_backgroundColor="#3e3e3e"
+            />
+            <Text style={styles.toggleLabel}>Enable</Text>
+          </View>
+        </View>
+      )}
     </View>
   )
+}
 
-  const SectionRow: React.FC<{
-    title: string
-    value?: string
-    accessibilityLabel?: string
-    testID?: string
-    onPress?: GenericFn
-  }> = ({ title, value, accessibilityLabel, testID, onPress }) => (
-    <TouchableOpacity
-      accessible={true}
-      accessibilityLabel={accessibilityLabel}
-      accessibilityRole="button"
-      testID={testID}
-      style={styles.sectionRow}
-      onPress={onPress}
-    >
-      <Text style={styles.rowTitle}>{title}</Text>
-      {value && <Text style={styles.rowValue}>{value}</Text>}
-      <Icon name="chevron-right" size={20} color={DigiCredColors.text.secondary} />
-    </TouchableOpacity>
-  )
+interface MenuCardProps {
+  title: string
+  onPress: () => void
+  testID?: string
+}
+
+const MenuCard: React.FC<MenuCardProps> = ({ title, onPress, testID }) => (
+  <TouchableOpacity
+    style={styles.menuCard}
+    onPress={onPress}
+    activeOpacity={0.7}
+    testID={testID}
+  >
+    <Text style={styles.menuCardTitle}>{title}</Text>
+  </TouchableOpacity>
+)
+
+const Settings: React.FC<SettingsProps> = ({ navigation }) => {
+  const { t } = useTranslation()
+  const [store, dispatch] = useStore()
+  const [biometricsExpanded, setBiometricsExpanded] = useState(true)
+
+  const handleBiometryToggle = async (value: boolean) => {
+    dispatch({
+      type: DispatchAction.USE_BIOMETRY,
+      payload: [value],
+    })
+  }
 
   return (
     <GradientBackground>
@@ -367,46 +127,168 @@ const Settings: React.FC<SettingsProps> = ({ navigation }) => {
       <View style={styles.container}>
         {/* Header */}
         <View style={styles.header}>
-          <Text style={styles.headerTitle}>{t('Screens.Settings') || 'Settings'}</Text>
+          <Text style={styles.headerTitle}>Settings</Text>
         </View>
 
-        <ScrollView showsVerticalScrollIndicator={false}>
-          {settingsSections.map((section, sectionIndex) => (
-            <View key={sectionIndex} style={styles.section}>
-              <SectionHeader icon={section.header.icon} title={section.header.title} />
-              {section.data.map((item, itemIndex) => (
-                <React.Fragment key={itemIndex}>
-                  <SectionRow
-                    title={item.title}
-                    value={item.value}
-                    accessibilityLabel={item.accessibilityLabel}
-                    testID={item.testID}
-                    onPress={item.onPress}
-                  />
-                  {itemIndex < section.data.length - 1 && <View style={styles.itemSeparator} />}
-                </React.Fragment>
-              ))}
-            </View>
-          ))}
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.scrollContent}
+        >
+          {/* Section: Contacts */}
+          <Text style={styles.sectionTitle}>Contacts</Text>
+          <MenuCard
+            title="Contacts"
+            onPress={() => navigation.getParent()?.navigate(Stacks.ContactStack, { screen: Screens.Contacts })}
+            testID={testIdWithKey('Contacts')}
+          />
 
-          {/* Footer */}
-          <View style={styles.footer}>
-            <TouchableWithoutFeedback
-              onPress={incrementDeveloperMenuCounter}
-              disabled={store.preferences.developerModeEnabled}
-            >
-              <View style={{ alignItems: 'center' }}>
-                <Text style={styles.versionText} testID={testIdWithKey('Version')}>
-                  {`${t('Settings.Version')} ${getVersion()} ${t('Settings.Build')} (${getBuildNumber()})`}
-                </Text>
-                <Assets.svg.logo width={150} height={75} />
-              </View>
-            </TouchableWithoutFeedback>
+          {/* Section: App Settings */}
+          <Text style={styles.sectionTitle}>App Settings</Text>
+
+          {/* Biometrics Expandable Card */}
+          <ExpandableCard
+            title="Biometrics"
+            description="The DigiCred wallet defaults to using your biometrics (face recognition or fingerprint) to unlock the application. We use a PIN as a backup if your biometrics are not working. You can use this control to turn off the biometric unlock."
+            isEnabled={store.preferences.useBiometry}
+            onToggle={handleBiometryToggle}
+            expanded={biometricsExpanded}
+            onPress={() => setBiometricsExpanded(!biometricsExpanded)}
+          />
+
+          <MenuCard
+            title="Change PIN"
+            onPress={() => navigation.navigate(Screens.ChangePIN)}
+            testID={testIdWithKey('ChangePIN')}
+          />
+
+          <MenuCard
+            title="Language"
+            onPress={() => navigation.navigate(Screens.Language)}
+            testID={testIdWithKey('Language')}
+          />
+
+          {/* Section: Wallet Management */}
+          <Text style={styles.sectionTitle}>Wallet Management</Text>
+
+          <MenuCard
+            title="Transfer Wallet"
+            onPress={() => navigation.navigate(Screens.ExportWalletIntro)}
+            testID={testIdWithKey('TransferWallet')}
+          />
+
+          <MenuCard
+            title="Restore Wallet"
+            onPress={() => navigation.navigate(Screens.ImportWallet)}
+            testID={testIdWithKey('RestoreWallet')}
+          />
+
+          {/* Section: About */}
+          <Text style={styles.sectionTitle}>About</Text>
+
+          <MenuCard
+            title="Demographics"
+            onPress={() => {
+              // TODO: Navigate to demographics screen
+            }}
+            testID={testIdWithKey('Demographics')}
+          />
+
+          {/* Version Info */}
+          <View style={styles.versionContainer}>
+            <Text style={styles.versionText}>
+              Version {getVersion()} Build ({getBuildNumber()})
+            </Text>
           </View>
         </ScrollView>
       </View>
     </GradientBackground>
   )
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingTop: 50,
+  },
+  header: {
+    paddingHorizontal: 20,
+    paddingVertical: 16,
+  },
+  headerTitle: {
+    fontSize: 32,
+    fontWeight: '700',
+    color: DigiCredColors.text.primary,
+  },
+  scrollContent: {
+    paddingHorizontal: 16,
+    paddingBottom: 120,
+  },
+  expandableCard: {
+    backgroundColor: 'rgba(30, 50, 50, 0.6)',
+    borderRadius: 12,
+    marginBottom: 12,
+    overflow: 'hidden',
+  },
+  expandableHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 16,
+  },
+  expandableContent: {
+    paddingHorizontal: 16,
+    paddingBottom: 16,
+  },
+  cardTitle: {
+    fontSize: 16,
+    fontWeight: '500',
+    color: DigiCredColors.text.primary,
+  },
+  cardDescription: {
+    fontSize: 14,
+    lineHeight: 22,
+    color: DigiCredColors.text.secondary,
+    marginBottom: 16,
+  },
+  toggleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  toggleLabel: {
+    fontSize: 14,
+    color: DigiCredColors.text.primary,
+    marginLeft: 12,
+  },
+  menuCard: {
+    backgroundColor: 'rgba(30, 50, 50, 0.6)',
+    borderRadius: 12,
+    padding: 16,
+    marginBottom: 12,
+  },
+  menuCardTitle: {
+    fontSize: 16,
+    fontWeight: '500',
+    color: DigiCredColors.text.primary,
+  },
+  sectionTitle: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: DigiCredColors.text.secondary,
+    marginTop: 16,
+    marginBottom: 8,
+    marginLeft: 4,
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+  },
+  versionContainer: {
+    alignItems: 'center',
+    marginTop: 32,
+    marginBottom: 20,
+  },
+  versionText: {
+    fontSize: 13,
+    color: DigiCredColors.text.secondary,
+  },
+})
 
 export default Settings

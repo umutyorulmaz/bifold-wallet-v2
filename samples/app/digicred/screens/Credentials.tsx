@@ -6,6 +6,7 @@ import {
   StyleSheet,
   FlatList,
   StatusBar,
+  TouchableOpacity,
 } from 'react-native'
 import { useNavigation, useIsFocused } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
@@ -16,12 +17,14 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 import {
   Screens,
+  Stacks,
   useStore,
   TOKENS,
   useServices,
   CredentialCard,
   useTour,
   DispatchAction,
+  testIdWithKey,
 } from '@bifold/core'
 import { useOpenIDCredentials } from '@bifold/core/src/modules/openid/context/OpenIDCredentialRecordProvider'
 import { GenericCredentialExchangeRecord, CredentialErrors } from '@bifold/core/src/types/credentials'
@@ -91,6 +94,10 @@ const Credentials: React.FC = () => {
     return stop
   }, [stop])
 
+  const handleScanPress = () => {
+    navigation.navigate(Stacks.ConnectStack as any, { screen: Screens.Scan })
+  }
+
   const renderCardItem = (cred: GenericCredentialExchangeRecord) => {
     return (
       <CredentialCard
@@ -119,13 +126,21 @@ const Credentials: React.FC = () => {
 
   const renderEmptyState = () => (
     <View style={styles.emptyState}>
-      <Icon name="card-multiple-outline" size={64} color={DigiCredColors.text.secondary} />
-      <Text style={styles.emptyTitle}>
-        {t('Credentials.EmptyList') || 'No Credentials Yet'}
-      </Text>
+      <View style={styles.emptyIconContainer}>
+        <Icon name="card-multiple-outline" size={48} color={DigiCredColors.button.primary} />
+      </View>
+      <Text style={styles.emptyTitle}>No Credentials Yet</Text>
       <Text style={styles.emptySubtitle}>
-        {t('Credentials.EmptyListMessage') || 'Your credentials will appear here once received'}
+        Connect with an organization to receive your first credential.
       </Text>
+      <TouchableOpacity
+        style={styles.scanActionButton}
+        onPress={handleScanPress}
+        testID={testIdWithKey('ScanToConnect')}
+      >
+        <Icon name="qrcode-scan" size={20} color="#FFFFFF" />
+        <Text style={styles.scanActionButtonText}>Scan QR Code</Text>
+      </TouchableOpacity>
     </View>
   )
 
@@ -191,20 +206,43 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 40,
-    paddingTop: 100,
+    marginTop: -60,
+  },
+  emptyIconContainer: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    backgroundColor: 'rgba(30, 50, 50, 0.6)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 24,
   },
   emptyTitle: {
     fontSize: 20,
     fontWeight: '600',
     color: DigiCredColors.text.primary,
-    marginTop: 24,
-    marginBottom: 8,
+    marginBottom: 12,
   },
   emptySubtitle: {
-    fontSize: 14,
+    fontSize: 15,
     color: DigiCredColors.text.secondary,
     textAlign: 'center',
-    lineHeight: 20,
+    lineHeight: 22,
+    marginBottom: 32,
+  },
+  scanActionButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: DigiCredColors.button.primary,
+    borderRadius: 12,
+    paddingVertical: 14,
+    paddingHorizontal: 24,
+  },
+  scanActionButtonText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: '600',
+    marginLeft: 8,
   },
 })
 

@@ -1,10 +1,12 @@
-import React from 'react'
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
+import React, { useEffect, useRef } from 'react'
+import { StyleSheet, Text, View, TouchableOpacity, Animated, Dimensions, LayoutChangeEvent } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import { DigiCredColors } from '../theme'
+
+const { width: screenWidth } = Dimensions.get('window')
 
 interface TabItemProps {
   label: string
@@ -13,6 +15,8 @@ interface TabItemProps {
   isActive: boolean
   badge?: number
   onPress: () => void
+  onLayout?: (event: LayoutChangeEvent) => void
+  animatedScale: Animated.Value
 }
 
 const TabItem: React.FC<TabItemProps> = ({
@@ -22,16 +26,24 @@ const TabItem: React.FC<TabItemProps> = ({
   isActive,
   badge,
   onPress,
+  onLayout,
+  animatedScale,
 }) => {
   return (
     <TouchableOpacity
       style={styles.tabItem}
       onPress={onPress}
+      onLayout={onLayout}
       accessibilityRole="tab"
       accessibilityLabel={label}
       accessibilityState={{ selected: isActive }}
     >
-      <View style={styles.iconContainer}>
+      <Animated.View
+        style={[
+          styles.iconContainer,
+          { transform: [{ scale: animatedScale }] }
+        ]}
+      >
         <Icon
           name={isActive ? icon : iconOutline}
           size={26}
@@ -42,7 +54,7 @@ const TabItem: React.FC<TabItemProps> = ({
             <Text style={styles.badgeText}>{badge > 99 ? '99+' : badge}</Text>
           </View>
         )}
-      </View>
+      </Animated.View>
     </TouchableOpacity>
   )
 }
@@ -70,11 +82,68 @@ const DigiCredTabBar: React.FC<DigiCredTabBarProps> = ({
   badges = {},
 }) => {
   const insets = useSafeAreaInsets()
+  const tabCount = state?.routes.length || tabConfig.length
 
+  // Animation values
+  const pillPosition = useRef(new Animated.Value(0)).current
+  const pillWidth = useRef(new Animated.Value(60)).current
+  const tabScales = useRef(tabConfig.map(() => new Animated.Value(1))).current
+
+  // Track tab positions for pill animation
+  const tabPositions = useRef<{ x: number; width: number }[]>([]).current
+
+  // Current focused index
+  const currentIndex = state?.index || 0
+
+  // Animate pill and icon when tab changes
+  useEffect(() => {
+    if (tabPositions.length > currentIndex && tabPositions[currentIndex]) {
+      const targetTab = tabPositions[currentIndex]
+
+      // Animate pill to new position
+      Animated.parallel([
+        Animated.spring(pillPosition, {
+          toValue: targetTab.x + (targetTab.width / 2) - 30, // Center the pill
+          useNativeDriver: true,
+          friction: 8,
+          tension: 80,
+        }),
+        // Scale animation for the active tab icon
+        ...tabScales.map((scale, index) =>
+          Animated.spring(scale, {
+            toValue: index === currentIndex ? 1.1 : 1,
+            useNativeDriver: true,
+            friction: 6,
+            tension: 100,
+          })
+        ),
+      ]).start()
+    }
+  }, [currentIndex, tabPositions])
+
+  // Handle tab layout to track positions
+  const handleTabLayout = (index: number) => (event: LayoutChangeEvent) => {
+    const { x, width } = event.nativeEvent.layout
+    tabPositions[index] = { x, width }
+
+    // Set initial pill position if this is the active tab
+    if (index === currentIndex && tabPositions.length > 0) {
+      pillPosition.setValue(x + (width / 2) - 30)
+    }
+  }
+
+  // Render fallback if no navigation state
   if (!state || !navigation) {
     return (
       <View style={[styles.wrapper, { paddingBottom: Math.max(insets.bottom, 16) }]}>
         <View style={styles.container}>
+          {/* Selection pill indicator */}
+          <Animated.View
+            style={[
+              styles.selectionPill,
+              { transform: [{ translateX: pillPosition }] }
+            ]}
+          />
           {tabConfig.map((tab, index) => (
             <TabItem
               key={tab.key}
@@ -84,6 +153,8 @@ const DigiCredTabBar: React.FC<DigiCredTabBarProps> = ({
               isActive={index === 0}
               badge={badges[tab.key]}
               onPress={() => {}}
+              onLayout={handleTabLayout(index)}
+              animatedScale={tabScales[index]}
             />
           ))}
         </View>
@@ -94,6 +165,14 @@ const DigiCredTabBar: React.FC<DigiCredTabBarProps> = ({
   return (
     <View style={[styles.wrapper, { paddingBottom: Math.max(insets.bottom, 16) }]}>
       <View style={styles.container}>
+        {/* Animated selection pill indicator */}
+        <Animated.View
+          style={[
+            styles.selectionPill,
+            { transform: [{ translateX: pillPosition }] }
+          ]}
+        />
+
         {state.routes.map((route, index) => {
           const isFocused = state.index === index
           const tabKey = routeToTabKey[route.name] || route.name
@@ -120,6 +199,8 @@ const DigiCredTabBar: React.FC<DigiCredTabBarProps> = ({
               isActive={isFocused}
               badge={badges[route.name]}
               onPress={onPress}
+              onLayout={handleTabLayout(index)}
+              animatedScale={tabScales[index]}
             />
           )
         })}
@@ -147,12 +228,23 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 8,
     elevation: 8,
+    position: 'relative',
+  },
+  selectionPill: {
+    position: 'absolute',
+    width: 60,
+    height: 44,
+    backgroundColor: 'rgba(40, 80, 80, 0.8)',
+    borderRadius: 22,
+    top: 10,
+    left: 0,
   },
   tabItem: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 8,
+    zIndex: 1,
   },
   iconContainer: {
     position: 'relative',

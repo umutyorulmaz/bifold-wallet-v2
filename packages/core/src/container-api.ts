@@ -127,6 +127,13 @@ export const SCREEN_TOKENS = {
 
   // History Screens
   SCREEN_HISTORY_PAGE: 'screen.history-page',
+
+  // Wallet Backup/Restore Screens
+  SCREEN_EXPORT_WALLET_INTRO: 'screen.export-wallet-intro',
+  SCREEN_EXPORT_WALLET: 'screen.export-wallet',
+  SCREEN_IMPORT_WALLET: 'screen.import-wallet',
+  SCREEN_IMPORT_WALLET_SCAN: 'screen.import-wallet-scan',
+  SCREEN_IMPORT_WALLET_RESULT: 'screen.import-wallet-result',
 } as const
 
 export const NAV_TOKENS = {
@@ -355,6 +362,13 @@ export type TokenMapping = {
 
   // History Screens
   [TOKENS.SCREEN_HISTORY_PAGE]: React.FC
+
+  // Wallet Backup/Restore Screens
+  [TOKENS.SCREEN_EXPORT_WALLET_INTRO]: React.FC
+  [TOKENS.SCREEN_EXPORT_WALLET]: React.FC
+  [TOKENS.SCREEN_IMPORT_WALLET]: React.FC
+  [TOKENS.SCREEN_IMPORT_WALLET_SCAN]: React.FC<any>
+  [TOKENS.SCREEN_IMPORT_WALLET_RESULT]: React.FC<any>
 
   // New Stack Tokens
   [TOKENS.STACK_TAB]: React.FC

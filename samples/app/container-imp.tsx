@@ -35,6 +35,15 @@ import {
   DigiCredSettings,
 } from './digicred'
 
+// Import screens directly to avoid barrel file circular dependency
+import DigiCredExportWalletIntro from './digicred/screens/ExportWalletIntro'
+import DigiCredExportWallet from './digicred/screens/ExportWallet'
+import DigiCredImportWallet from './digicred/screens/ImportWallet'
+import DigiCredImportWalletScan from './digicred/screens/ImportWalletScan'
+import DigiCredImportWalletResult from './digicred/screens/ImportWalletResult'
+import DigiCredContacts from './digicred/screens/Contacts'
+import DigiCredScan from './digicred/screens/Scan'
+
 // DigiCred icons for chat header
 import BellIcon from './digicred/assets/bell-icon.svg'
 import InfoIcon from './digicred/assets/info-icon.svg'
@@ -135,6 +144,15 @@ export class AppContainer implements Container {
     this._container.registerInstance(TOKENS.SCREEN_HOME, DigiCredHome)
     this._container.registerInstance(TOKENS.SCREEN_LIST_CREDENTIALS, DigiCredCredentials)
     this._container.registerInstance(TOKENS.SCREEN_SETTINGS, DigiCredSettings)
+    this._container.registerInstance(TOKENS.SCREEN_LIST_CONTACTS, DigiCredContacts)
+    this._container.registerInstance(TOKENS.SCREEN_SCAN, DigiCredScan)
+
+    // Wallet transfer screens
+    this._container.registerInstance(TOKENS.SCREEN_EXPORT_WALLET_INTRO, DigiCredExportWalletIntro)
+    this._container.registerInstance(TOKENS.SCREEN_EXPORT_WALLET, DigiCredExportWallet)
+    this._container.registerInstance(TOKENS.SCREEN_IMPORT_WALLET, DigiCredImportWallet)
+    this._container.registerInstance(TOKENS.SCREEN_IMPORT_WALLET_SCAN, DigiCredImportWalletScan)
+    this._container.registerInstance(TOKENS.SCREEN_IMPORT_WALLET_RESULT, DigiCredImportWalletResult)
 
     // Custom Tab Stack with floating tab bar
     this._container.registerInstance(TOKENS.STACK_TAB, DigiCredTabStack)
@@ -158,6 +176,27 @@ export class AppContainer implements Container {
         headerShown: false,
       },
       [Screens.Settings]: {
+        headerShown: false,
+      },
+      [Screens.ExportWalletIntro]: {
+        headerShown: false,
+      },
+      [Screens.ExportWallet]: {
+        headerShown: false,
+      },
+      [Screens.ImportWallet]: {
+        headerShown: false,
+      },
+      [Screens.ImportWalletScan]: {
+        headerShown: false,
+      },
+      [Screens.ImportWalletResult]: {
+        headerShown: false,
+      },
+      [Screens.Contacts]: {
+        headerShown: false,
+      },
+      [Screens.Scan]: {
         headerShown: false,
       },
     })

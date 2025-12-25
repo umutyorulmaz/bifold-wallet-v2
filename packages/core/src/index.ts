@@ -11,6 +11,7 @@ import IconButton, { ButtonLocation } from './components/buttons/IconButton'
 import BulletPoint from './components/inputs/BulletPoint'
 import CheckBoxRow from './components/inputs/CheckBoxRow'
 import LimitedTextInput from './components/inputs/LimitedTextInput'
+import PINInput from './components/inputs/PINInput'
 import NotificationListItem from './components/listItems/NotificationListItem'
 import ContentGradient from './components/misc/ContentGradient'
 import CredentialCard from './components/misc/CredentialCard'
@@ -42,7 +43,7 @@ import { Banner, BannerMessage, BannerSection } from './components/views/Banner'
 import HomeFooterView from './components/views/HomeFooterView'
 import KeyboardView from './components/views/KeyboardView'
 import ScreenWrapper from './components/views/ScreenWrapper'
-import { attemptLockoutConfig, PINRules, tours, walletTimeout } from './constants'
+import { attemptLockoutConfig, PINRules, tours, walletTimeout, minPINLength } from './constants'
 import { defaultConfig, defaultHistoryEventsLogger } from './container-impl'
 import * as contexts from './contexts'
 import { ActivityProvider, AutoLockTime, useActivity } from './contexts/activity'
@@ -71,7 +72,8 @@ import VideoCall from './screens/VideoCall'
 import IncomingCall from './screens/IncomingCall'
 import { AbstractBifoldLogger } from './services/AbstractBifoldLogger'
 import { bifoldLoggerInstance } from './services/bifoldLogger'
-import { isBiometricsActive, loadLoginAttempt } from './services/keychain'
+import { isBiometricsActive, loadLoginAttempt, loadWalletSalt, storeWalletSecret } from './services/keychain'
+import { hashPIN } from './utils/crypto'
 import { BifoldLogger } from './services/logger'
 import { MockLogger } from './testing/MockLogger'
 import { DeepPartial, ThemeBuilder } from './theme-builder'
@@ -155,7 +157,7 @@ export type {
 export type { GenericFn } from './types/fn'
 export { BasicMessageMetadata, CredentialMetadata } from './types/metadata'
 export type { basicMessageCustomMetadata, credentialCustomMetadata } from './types/metadata'
-export type { ContactStackParams, NotificationStackParams, OnboardingStackParams } from './types/navigators'
+export type { ContactStackParams, NotificationStackParams, OnboardingStackParams, SettingStackParams } from './types/navigators'
 export type { WalletSecret } from './types/security'
 export type {
   LoginAttempt as LoginAttemptState,
@@ -245,6 +247,9 @@ export {
   LimitedTextInput,
   Link,
   loadLoginAttempt,
+  loadWalletSalt,
+  storeWalletSecret,
+  hashPIN,
   MaskType,
   MockLogger,
   NavContainer,
@@ -253,7 +258,9 @@ export {
   Onboarding,
   OnboardingPages,
   OpenIDCredentialRecordProvider,
+  PINInput,
   PINRules,
+  minPINLength,
   Preface,
   proofRequestTourSteps,
   QrCodeScanError,

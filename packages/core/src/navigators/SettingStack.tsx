@@ -33,6 +33,12 @@ const SettingStack: React.FC = () => {
     PINChangeSuccessScreen,
     TogglePushNotifications,
     HistorySettings,
+    // Wallet Backup/Restore Screens
+    ExportWalletIntro,
+    ExportWallet,
+    ImportWallet,
+    ImportWalletScan,
+    ImportWalletResult,
   ] = useServices([
     TOKENS.SCREEN_ONBOARDING_PAGES,
     TOKENS.SCREEN_TERMS,
@@ -52,6 +58,12 @@ const SettingStack: React.FC = () => {
     TOKENS.SCREEN_PIN_CHANGE_SUCCESS,
     TOKENS.SCREEN_TOGGLE_PUSH_NOTIFICATIONS,
     TOKENS.SCREEN_HISTORY_SETTINGS,
+    // Wallet Backup/Restore Screens
+    TOKENS.SCREEN_EXPORT_WALLET_INTRO,
+    TOKENS.SCREEN_EXPORT_WALLET,
+    TOKENS.SCREEN_IMPORT_WALLET,
+    TOKENS.SCREEN_IMPORT_WALLET_SCAN,
+    TOKENS.SCREEN_IMPORT_WALLET_RESULT,
   ])
   const defaultStackOptions = useDefaultStackOptions(theme)
   const OnboardingTheme = theme.OnboardingTheme
@@ -196,6 +208,47 @@ const SettingStack: React.FC = () => {
           title: t('Screens.HistorySettings'),
           headerBackTestID: testIdWithKey('Back'),
           ...ScreenOptionsDictionary[Screens.HistorySettings],
+        }}
+      />
+      <Stack.Screen
+        name={Screens.ExportWalletIntro}
+        component={ExportWalletIntro}
+        options={{
+          title: t('ExportWallet.TransferWallet'),
+          headerBackTestID: testIdWithKey('Back'),
+        }}
+      />
+      <Stack.Screen
+        name={Screens.ExportWallet}
+        component={ExportWallet}
+        options={{
+          title: t('ExportWallet.TransferWallet'),
+          headerBackTestID: testIdWithKey('Back'),
+        }}
+      />
+      <Stack.Screen
+        name={Screens.ImportWallet}
+        component={ImportWallet}
+        options={{
+          title: t('ImportWallet.RestoreWallet'),
+          headerBackTestID: testIdWithKey('Back'),
+        }}
+      />
+      <Stack.Screen
+        name={Screens.ImportWalletScan}
+        component={ImportWalletScan}
+        options={{
+          title: t('ImportWallet.ScanQRCode'),
+          headerBackTestID: testIdWithKey('Back'),
+        }}
+      />
+      <Stack.Screen
+        name={Screens.ImportWalletResult}
+        component={ImportWalletResult}
+        options={{
+          title: '',
+          headerBackTestID: testIdWithKey('Back'),
+          headerLeft: () => null,
         }}
       />
     </Stack.Navigator>

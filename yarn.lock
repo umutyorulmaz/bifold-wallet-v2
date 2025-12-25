@@ -8905,6 +8905,8 @@ __metadata:
     eslint-plugin-react: "npm:~7.35.2"
     eslint-plugin-react-hooks: "npm:~4.6.2"
     prettier: "npm:~2.8.8"
+    react-native-network-info: "npm:^5.2.2"
+    react-native-qrcode-svg: "npm:^6.3.21"
     ts-node: "npm:~10.0.0"
     typescript: "npm:~5.5.4"
     typescript-eslint: "npm:~7.18.0"
@@ -17861,7 +17863,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"qrcode@npm:^1.5.1":
+"qrcode@npm:^1.5.1, qrcode@npm:^1.5.4":
   version: 1.5.4
   resolution: "qrcode@npm:1.5.4"
   dependencies:
@@ -18317,6 +18319,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-native-network-info@npm:^5.2.2":
+  version: 5.2.2
+  resolution: "react-native-network-info@npm:5.2.2"
+  peerDependencies:
+    react-native: ">=0.47"
+  checksum: 10c0/c2930972e82f4043b5f3529e2be70088b67147aae06f66273f0b9b23bd518f48d43f0f016cbc415a11e5588508d34f411f25d1005b22fb5245d651de21e30005
+  languageName: node
+  linkType: hard
+
 "react-native-orientation-locker@npm:~1.6.0":
   version: 1.6.0
   resolution: "react-native-orientation-locker@npm:1.6.0"
@@ -18354,6 +18365,21 @@ __metadata:
     react-native-windows:
       optional: true
   checksum: 10c0/9b56261eeb22ac57fe5e30a65bab0c06306fb022170fdddc5227979495002c2468671e74b74f75e8c97b7c3015e5c54cf6f1b3edd1abf922fda5b6a654bd5c88
+  languageName: node
+  linkType: hard
+
+"react-native-qrcode-svg@npm:^6.3.21":
+  version: 6.3.21
+  resolution: "react-native-qrcode-svg@npm:6.3.21"
+  dependencies:
+    prop-types: "npm:^15.8.0"
+    qrcode: "npm:^1.5.4"
+    text-encoding: "npm:^0.7.0"
+  peerDependencies:
+    react: "*"
+    react-native: ">=0.63.4"
+    react-native-svg: ">=14.0.0"
+  checksum: 10c0/2d227996de5d95148146033940a8f16fd9a7f5b72f10b64da5e20738fc139d386469e850b60cb0eec9e8dc54d3cabe32fd99be18685f90f2e1fc406fb9cdd2e2
   languageName: node
   linkType: hard
 
@@ -20397,6 +20423,13 @@ __metadata:
     glob: "npm:^7.1.4"
     minimatch: "npm:^3.0.4"
   checksum: 10c0/019d33d81adff3f9f1bfcff18125fb2d3c65564f437d9be539270ee74b994986abb8260c7c2ce90e8f30162178b09dbbce33c6389273afac4f36069c48521f57
+  languageName: node
+  linkType: hard
+
+"text-encoding@npm:^0.7.0":
+  version: 0.7.0
+  resolution: "text-encoding@npm:0.7.0"
+  checksum: 10c0/6c20f5d19f996501677cc60b79bc4af550f840b426eacc5f67bd2bd5a7a7a058ab58679f851e0afee879aaaaf7fdb95cfe4de35ab29f9b34f9ce2a7b8de9bacb
   languageName: node
   linkType: hard
 

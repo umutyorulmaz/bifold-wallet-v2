@@ -65,6 +65,11 @@ export enum Screens {
   IncomingCall = 'Incoming Call',
   VideoCall = 'Video Call',
   WorkflowDetails = 'Workflow Details',
+  ExportWalletIntro = 'Export Wallet Intro',
+  ExportWallet = 'Export Wallet',
+  ImportWallet = 'Import Wallet',
+  ImportWalletScan = 'Import Wallet Scan',
+  ImportWalletResult = 'Import Wallet Result',
 }
 
 export enum Stacks {
@@ -195,6 +200,11 @@ export type SettingStackParams = {
   [Screens.HistorySettings]: undefined
   [Screens.AutoLock]: undefined
   [Screens.ConfigureMediator]: { scannedMediatorUri: string } | undefined
+  [Screens.ExportWalletIntro]: undefined
+  [Screens.ExportWallet]: undefined
+  [Screens.ImportWallet]: undefined
+  [Screens.ImportWalletScan]: { pin: string }
+  [Screens.ImportWalletResult]: { status: 'success' | 'error'; errorMessage?: string }
 }
 
 export type NotificationStackParams = {
