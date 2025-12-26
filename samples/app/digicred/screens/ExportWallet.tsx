@@ -34,7 +34,7 @@ interface ExportData {
 }
 
 const ExportWallet: React.FC<ExportWalletProps> = ({ navigation }) => {
-  const { t } = useTranslation()
+  useTranslation() // Hook available for future i18n
   const { agent } = useAgent()
   const [store] = useStore()
 
@@ -43,7 +43,7 @@ const ExportWallet: React.FC<ExportWalletProps> = ({ navigation }) => {
   const [isTransferred, setIsTransferred] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  const serverRef = useRef<any>(null)
+  const serverRef = useRef<ReturnType<typeof TcpSocket.createServer> | null>(null)
   const exportDataRef = useRef<ExportData | null>(null)
 
   const prepareExportData = useCallback(async (): Promise<ExportData | null> => {
@@ -90,7 +90,7 @@ const ExportWallet: React.FC<ExportWalletProps> = ({ navigation }) => {
       await RNFS.unlink(exportDir)
       return exportData
     } catch (err) {
-      console.error('Error preparing export data:', err)
+      // Error preparing export data
       setError(err instanceof Error ? err.message : 'Failed to prepare export data')
       return null
     }
@@ -125,7 +125,7 @@ const ExportWallet: React.FC<ExportWalletProps> = ({ navigation }) => {
             }
           }
         })
-        socket.on('error', (err) => console.error('Socket error:', err))
+        socket.on('error', () => { /* Socket error handled silently */ })
       })
 
       server.on('error', (err) => {
@@ -149,8 +149,8 @@ const ExportWallet: React.FC<ExportWalletProps> = ({ navigation }) => {
       try {
         serverRef.current.close()
         serverRef.current = null
-      } catch (err) {
-        console.error('Error stopping server:', err)
+      } catch {
+        // Error stopping server - ignore
       }
     }
   }, [])

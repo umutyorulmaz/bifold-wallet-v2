@@ -33,19 +33,19 @@ export function deepMerge<T extends Record<string, unknown>>(
 
       if (sourceValue === undefined) {
         // Explicitly set undefined to allow clearing values
-        ;(result as Record<string, unknown>)[key] = undefined
+        (result as Record<string, unknown>)[key] = undefined
       } else if (isPlainObject(sourceValue) && isPlainObject(targetValue)) {
         // Recursively merge objects
-        ;(result as Record<string, unknown>)[key] = deepMerge(
+        (result as Record<string, unknown>)[key] = deepMerge(
           targetValue as Record<string, unknown>,
           sourceValue as DeepPartial<Record<string, unknown>>
         )
       } else if (Array.isArray(sourceValue)) {
         // Replace arrays entirely
-        ;(result as Record<string, unknown>)[key] = [...sourceValue]
+        (result as Record<string, unknown>)[key] = [...sourceValue]
       } else {
         // Replace primitive values
-        ;(result as Record<string, unknown>)[key] = sourceValue
+        (result as Record<string, unknown>)[key] = sourceValue
       }
     }
   }

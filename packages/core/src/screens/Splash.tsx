@@ -1,7 +1,7 @@
 import { RemoteOCABundleResolver } from '@bifold/oca/build/legacy'
 import React, { useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
-import { DeviceEventEmitter, StyleSheet, View } from 'react-native'
+import { DeviceEventEmitter, StyleSheet } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 import { EventTypes } from '../constants'

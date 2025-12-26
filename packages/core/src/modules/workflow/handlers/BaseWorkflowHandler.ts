@@ -50,35 +50,40 @@ export abstract class BaseWorkflowHandler<T = unknown> implements IWorkflowHandl
   /**
    * Default: no actions available
    */
-  getActions(_record: T, _context: ActionContext): WorkflowAction[] {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  getActions(record: T, context: ActionContext): WorkflowAction[] {
     return []
   }
 
   /**
    * Default: no action handling
    */
-  async handleAction(_record: T, _actionId: string, _data?: Record<string, unknown>): Promise<void> {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  async handleAction(record: T, actionId: string, data?: Record<string, unknown>): Promise<void> {
     // Default: do nothing
   }
 
   /**
    * Default: not a notification
    */
-  isNotification(_record: T): boolean {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  isNotification(record: T): boolean {
     return false
   }
 
   /**
    * Default: no notification conversion
    */
-  toNotification(_record: T): NotificationItem {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  toNotification(record: T): NotificationItem {
     throw new Error('toNotification not implemented')
   }
 
   /**
    * Default: always display
    */
-  shouldDisplay(_record: T): boolean {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  shouldDisplay(record: T): boolean {
     return true
   }
 

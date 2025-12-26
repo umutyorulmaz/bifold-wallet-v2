@@ -7,7 +7,6 @@ import {
   Modal,
   DeviceEventEmitter,
   Keyboard,
-  TextInput,
 } from 'react-native'
 
 import {

@@ -15,6 +15,7 @@ import { IChatBackgroundRenderer } from '../types'
 // If not available, falls back to View with background color
 let LinearGradient: any
 try {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
   LinearGradient = require('react-native-linear-gradient').default
 } catch {
   LinearGradient = null

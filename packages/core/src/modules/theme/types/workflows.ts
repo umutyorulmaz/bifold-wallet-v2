@@ -4,7 +4,7 @@
  * Credential card themes and workflow renderer configurations.
  */
 
-import { TextStyle, ViewStyle } from 'react-native'
+import { TextStyle } from 'react-native'
 
 // ============================================================================
 // CREDENTIAL CARDS

@@ -5,7 +5,7 @@
  * for backward compatibility with existing components.
  */
 
-import { StyleSheet, ViewStyle } from 'react-native'
+import { ViewStyle } from 'react-native'
 import {
   ITheme,
   IColorPalette,
@@ -14,7 +14,6 @@ import {
   INotificationColors,
   IGrayscaleColors,
   ISpacing,
-  ISVGAssets,
   IAssets,
   borderRadius,
   heavyOpacity,

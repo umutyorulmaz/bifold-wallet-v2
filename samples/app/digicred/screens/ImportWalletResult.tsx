@@ -19,7 +19,7 @@ type ImportWalletResultProps = StackScreenProps<SettingStackParams, Screens.Impo
 
 const ImportWalletResult: React.FC<ImportWalletResultProps> = ({ navigation, route }) => {
   const { status, errorMessage } = route.params
-  const { t } = useTranslation()
+  useTranslation() // Hook available for future i18n
 
   const isSuccess = status === 'success'
 

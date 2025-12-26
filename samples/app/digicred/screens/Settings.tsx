@@ -110,7 +110,7 @@ const MenuCard: React.FC<MenuCardProps> = ({ title, onPress, testID }) => (
 )
 
 const Settings: React.FC<SettingsProps> = ({ navigation }) => {
-  const { t } = useTranslation()
+  useTranslation() // Hook available for future i18n
   const [store, dispatch] = useStore()
   const [biometricsExpanded, setBiometricsExpanded] = useState(true)
 

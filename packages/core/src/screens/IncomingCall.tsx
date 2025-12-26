@@ -62,7 +62,6 @@ const IncomingCall: React.FC<Props> = ({ route, navigation }) => {
   }, [pulseAnim])
 
   const handleAccept = () => {
-    console.log('[IncomingCall] Accepting call with ICE servers:', iceServers?.length || 0)
     Vibration.cancel()
     navigation.replace(Screens.VideoCall as any, {
       connectionId,
@@ -75,7 +74,6 @@ const IncomingCall: React.FC<Props> = ({ route, navigation }) => {
   }
 
   const handleReject = async () => {
-    console.log('[IncomingCall] Rejecting call')
     Vibration.cancel()
     try {
       const agentModules = (agent as any)?.modules
@@ -86,9 +84,7 @@ const IncomingCall: React.FC<Props> = ({ route, navigation }) => {
           reason: 'rejected',
         })
       }
-    } catch (err) {
-      console.error('[IncomingCall] Error rejecting call:', err)
-    }
+    } catch { /* reject error ignored */ }
     navigation.goBack()
   }
 

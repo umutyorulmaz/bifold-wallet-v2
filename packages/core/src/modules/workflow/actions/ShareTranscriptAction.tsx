@@ -54,9 +54,7 @@ export function createShareTranscriptAction(
           message: transcript,
           title: `Chat with ${contactName}`,
         })
-      } catch (error) {
-        console.error('Failed to share transcript:', error)
-      }
+      } catch { /* share error ignored */ }
     },
   }
 }

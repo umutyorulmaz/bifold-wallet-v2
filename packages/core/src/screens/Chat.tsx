@@ -132,7 +132,8 @@ const Chat: React.FC<ChatProps> = ({ route }) => {
         ),
       })
     }
-  }, [navigation, theirLabel, connection, chatScreenConfig, onShowMenu, t, capabilities.supportsWebRTC, capabilities.isLoading])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [navigation, theirLabel, connection, chatScreenConfig, onShowMenu, t, capabilities.supportsWebRTC, capabilities.isLoading, ColorPalette.brand.primary])
 
   // Render header inside content when headerInsideBackground is enabled
   const renderInlineHeader = useCallback(() => {

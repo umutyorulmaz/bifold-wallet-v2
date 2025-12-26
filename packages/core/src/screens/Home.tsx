@@ -41,7 +41,7 @@ const Home: React.FC<HomeProps> = () => {
   ])
   const notifications = useNotifications({})
   const { t } = useTranslation()
-  const { ColorPalette } = useTheme()
+  useTheme() // Hook called for theme context but ColorPalette not directly used
   const [store, dispatch] = useStore()
   const { start, stop } = useTour()
   const [showTourPopup, setShowTourPopup] = useState(false)

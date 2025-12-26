@@ -109,7 +109,6 @@ export function useConnectionCapabilities(
       if (useCache && !skipCache) {
         const cached = capabilityCache.get(connectionId)
         if (cached && Date.now() - cached.timestamp < CACHE_TTL_MS) {
-          console.log('[useConnectionCapabilities] Using cached capabilities for', connectionId)
           setCapabilities(cached.capabilities)
           return
         }
@@ -118,8 +117,6 @@ export function useConnectionCapabilities(
       setCapabilities((prev) => ({ ...prev, isLoading: true, error: null }))
 
       try {
-        console.log('[useConnectionCapabilities] Querying capabilities for connection:', connectionId)
-
         // Use V2 Discover Features protocol to query all protocols
         const result = await agent.discovery.queryFeatures({
           connectionId,
@@ -133,8 +130,6 @@ export function useConnectionCapabilities(
 
         const features = result.features || []
         const protocols = features.filter((f: any) => f.type === 'protocol').map((f: any) => f.id)
-
-        console.log('[useConnectionCapabilities] Discovered protocols:', protocols)
 
         const newCapabilities: ConnectionCapabilities = {
           supportsWebRTC: protocols.some((p: string) => p.startsWith('https://didcomm.org/webrtc/')),
@@ -154,8 +149,6 @@ export function useConnectionCapabilities(
           timestamp: Date.now(),
         })
       } catch (err) {
-        console.error('[useConnectionCapabilities] Error discovering capabilities:', err)
-
         // On error, assume basic capabilities (fallback for older agents)
         const fallbackCapabilities: ConnectionCapabilities = {
           supportsWebRTC: false, // Conservative default
@@ -246,8 +239,7 @@ export async function checkWebRTCSupport(agent: any, connectionId: string, timeo
     )
 
     return hasWebRTC
-  } catch (err) {
-    console.error('[checkWebRTCSupport] Error:', err)
+  } catch {
     return false
   }
 }

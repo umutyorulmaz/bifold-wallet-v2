@@ -25,7 +25,7 @@ export const TermsVersion = '1.0'
 const Terms: React.FC = () => {
   const { t } = useTranslation()
   const [store, dispatch] = useStore()
-  const navigation = useNavigation<StackNavigationProp<any>>()
+  useNavigation<StackNavigationProp<Record<string, object | undefined>>>() // Navigation available if needed
   const [checked, setChecked] = useState(false)
 
   const agreedToPreviousTerms = store.onboarding.didAgreeToTerms

@@ -12,8 +12,6 @@ import {
   useStore,
   DispatchAction,
   testIdWithKey,
-  TOKENS,
-  useServices,
 } from '@bifold/core'
 
 import { GradientBackground, CardModal, DigiCredButton, DigiCredToggle } from '../components'
@@ -21,8 +19,8 @@ import { DigiCredColors } from '../theme'
 
 const PushNotifications: React.FC = () => {
   const { t } = useTranslation()
-  const [store, dispatch] = useStore()
-  const navigation = useNavigation<StackNavigationProp<any>>()
+  const [, dispatch] = useStore()
+  useNavigation<StackNavigationProp<Record<string, object | undefined>>>() // Navigation available if needed
 
   const [notificationsEnabled, setNotificationsEnabled] = useState(false)
   const [isLoading, setIsLoading] = useState(false)

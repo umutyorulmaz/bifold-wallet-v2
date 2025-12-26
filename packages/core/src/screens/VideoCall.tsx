@@ -59,15 +59,12 @@ const VideoCall: React.FC<Props> = ({ route, navigation }) => {
     const initCall = async () => {
       try {
         if (isIncoming && threadId && remoteSdp) {
-          console.log('[VideoCall] Accepting incoming call with ICE servers:', iceServers?.length || 0)
           await acceptCall(connectionId, threadId, remoteSdp, video, iceServers)
         } else {
-          console.log('[VideoCall] Starting outgoing call')
           await startCall(connectionId, video)
         }
         setCallInitialized(true)
-      } catch (err) {
-        console.error('[VideoCall] Error initializing call:', err)
+      } catch {
         navigation.goBack()
       }
     }
@@ -78,7 +75,6 @@ const VideoCall: React.FC<Props> = ({ route, navigation }) => {
   // Handle call ended by remote party
   useEffect(() => {
     if (callState === 'ended' && callInitialized && !isNavigatingRef.current) {
-      console.log('[VideoCall] Call ended by remote, navigating back')
       isNavigatingRef.current = true
       navigation.goBack()
     }
@@ -86,7 +82,6 @@ const VideoCall: React.FC<Props> = ({ route, navigation }) => {
 
   const handleEndCall = async () => {
     if (isNavigatingRef.current) return
-    console.log('[VideoCall] End call pressed')
     isNavigatingRef.current = true
     await endCall()
     navigation.goBack()

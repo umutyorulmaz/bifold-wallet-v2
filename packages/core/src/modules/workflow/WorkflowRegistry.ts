@@ -78,29 +78,17 @@ export class WorkflowRegistry implements IWorkflowRegistry {
       if (handler) {
         // Check if the record should be displayed
         if (handler.shouldDisplay && !handler.shouldDisplay(record)) {
-          console.log(`[WorkflowRegistry] Record filtered by shouldDisplay: ${handler.type}`)
           continue
         }
 
         try {
           const message = handler.toMessage(record, connection, context)
           messages.push(message)
-          console.log(`[WorkflowRegistry] Message created by ${handler.type}:`, message._id)
-        } catch (error) {
-          console.warn(`[WorkflowRegistry] Failed to convert record to message:`, error)
+        } catch {
+          // Failed to convert record to message - skip
         }
-      } else {
-        console.warn(`[WorkflowRegistry] No handler found for record:`, {
-          type: (record as any)?.type,
-          id: (record as any)?.id,
-          instanceId: (record as any)?.instanceId,
-          state: (record as any)?.state,
-          constructor: (record as any)?.constructor?.name,
-        })
       }
     }
-
-    console.log(`[WorkflowRegistry] Total messages created: ${messages.length} from ${records.length} records`)
     return messages
   }
 
@@ -114,9 +102,7 @@ export class WorkflowRegistry implements IWorkflowRegistry {
           try {
             const notification = handler.toNotification(record)
             notifications.push(notification)
-          } catch (error) {
-            console.warn(`Failed to convert record to notification:`, error)
-          }
+          } catch { /* notification conversion error */ }
         }
       }
     }

@@ -30,7 +30,6 @@ import { useOpenIDCredentials } from '@bifold/core/src/modules/openid/context/Op
 import { GenericCredentialExchangeRecord, CredentialErrors } from '@bifold/core/src/types/credentials'
 import { OpenIDCredentialType } from '@bifold/core/src/modules/openid/types'
 import { BaseTourID } from '@bifold/core/src/types/tour'
-import { EmptyListProps } from '@bifold/core/src/components/misc/EmptyList'
 import { CredentialListFooterProps } from '@bifold/core/src/types/credential-list-footer'
 
 import { GradientBackground } from '../components'
@@ -38,14 +37,15 @@ import { DigiCredColors } from '../theme'
 
 const Credentials: React.FC = () => {
   const { t } = useTranslation()
-  const navigation = useNavigation<StackNavigationProp<any>>()
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const navigation = useNavigation<StackNavigationProp<Record<string, object | undefined>>>()
   const [store, dispatch] = useStore()
   const { start, stop } = useTour()
   const screenIsFocused = useIsFocused()
 
   const [
     CredentialListOptions,
-    credentialEmptyList,
+    ,
     credentialListFooter,
     { enableTours: enableToursConfig, credentialHideList },
   ] = useServices([
@@ -66,8 +66,8 @@ const Credentials: React.FC = () => {
     ...sdJwtVcRecords,
   ]
 
-  const CredentialEmptyList = credentialEmptyList as React.FC<EmptyListProps>
   const CredentialListFooter = credentialListFooter as React.FC<CredentialListFooterProps>
+  // CredentialEmptyList available via: credentialEmptyList as React.FC<EmptyListProps>
 
   // Filter out hidden credentials when not in dev mode
   if (!store.preferences.developerModeEnabled) {
@@ -95,7 +95,8 @@ const Credentials: React.FC = () => {
   }, [stop])
 
   const handleScanPress = () => {
-    navigation.navigate(Stacks.ConnectStack as any, { screen: Screens.Scan })
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    navigation.navigate(Stacks.ConnectStack as string, { screen: Screens.Scan } as Record<string, unknown>)
   }
 
   const renderCardItem = (cred: GenericCredentialExchangeRecord) => {

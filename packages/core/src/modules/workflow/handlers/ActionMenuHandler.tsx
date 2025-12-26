@@ -18,12 +18,10 @@ import { Screens, RootStackParams, ContactStackParams } from '../../../types/nav
 import { connectFromScanOrDeepLink } from '../../../utils/helpers'
 import { BifoldLogger } from '../../../services/logger'
 import {
-  ActionContext,
   ActionMenuContentItem,
   ActionMenuMessage,
   MessageContext,
   NavigationResult,
-  WorkflowAction,
   WorkflowType,
 } from '../types'
 
@@ -108,9 +106,7 @@ export class ActionMenuWorkflowHandler extends BaseWorkflowHandler<ActionMenuRec
     const parsed = this.parseActionMenu(record)
     if (parsed) {
       // Attach parsed data to record for later use
-      ;(record as ActionMenuRecord)._parsedActionMenu = parsed
-      const role = record.role === BasicMessageRole.Sender ? 'SENT' : 'RECEIVED'
-      console.log(`[ActionMenuHandler] canHandle: true, role: ${role}, displayData: ${parsed.displayData.length} items`)
+      (record as ActionMenuRecord)._parsedActionMenu = parsed
       return true
     }
 
@@ -121,7 +117,7 @@ export class ActionMenuWorkflowHandler extends BaseWorkflowHandler<ActionMenuRec
     return record.role === BasicMessageRole.Sender ? Role.me : Role.them
   }
 
-  getLabel(record: ActionMenuRecord, _t: TFunction): string {
+  getLabel(record: ActionMenuRecord): string {
     const parsed = record._parsedActionMenu ?? this.parseActionMenu(record)
     if (parsed) {
       // Find title in displayData
@@ -131,7 +127,7 @@ export class ActionMenuWorkflowHandler extends BaseWorkflowHandler<ActionMenuRec
     return 'Action Menu'
   }
 
-  getCallbackType(_record: ActionMenuRecord): CallbackType | undefined {
+  getCallbackType(): CallbackType | undefined {
     // Action menus have their own buttons, no need for callback type
     return undefined
   }
@@ -163,7 +159,6 @@ export class ActionMenuWorkflowHandler extends BaseWorkflowHandler<ActionMenuRec
     // Create handler bound with current context values
     const handlePress = async (actionId: string, workflowID: string, invitationLink?: string) => {
       if (!currentAgent || !currentConnectionId) {
-        console.warn('[ActionMenuHandler] Agent or connectionId not available for action press')
         return
       }
 
@@ -181,7 +176,6 @@ export class ActionMenuWorkflowHandler extends BaseWorkflowHandler<ActionMenuRec
           actionID: actionId,
           data: {},
         }
-        console.log('[ActionMenuHandler] Sending action message:', actionId, 'to connection:', currentConnectionId)
         await currentAgent.basicMessages.sendMessage(currentConnectionId, JSON.stringify(actionJSON))
       }
     }
@@ -205,10 +199,7 @@ export class ActionMenuWorkflowHandler extends BaseWorkflowHandler<ActionMenuRec
     }
   }
 
-  getDetailNavigation(
-    _record: ActionMenuRecord,
-    _navigation: StackNavigationProp<any>
-  ): NavigationResult | undefined {
+  getDetailNavigation(): NavigationResult | undefined {
     // Action menus handle their own navigation via buttons
     return undefined
   }
@@ -216,9 +207,7 @@ export class ActionMenuWorkflowHandler extends BaseWorkflowHandler<ActionMenuRec
   shouldDisplay(record: ActionMenuRecord): boolean {
     // Only show action menus from the other party (them)
     const role = this.getRole(record)
-    const shouldShow = role === Role.them
-    console.log(`[ActionMenuHandler] shouldDisplay: ${shouldShow}, role: ${role === Role.me ? 'me' : 'them'}`)
-    return shouldShow
+    return role === Role.them
   }
 
   /**
@@ -226,7 +215,6 @@ export class ActionMenuWorkflowHandler extends BaseWorkflowHandler<ActionMenuRec
    */
   async handleActionButtonPress(actionId: string, workflowID: string, invitationLink?: string): Promise<void> {
     if (!this.agent || !this.connectionId) {
-      console.warn('Agent or connectionId not set for ActionMenuHandler')
       return
     }
 
@@ -264,9 +252,6 @@ export class ActionMenuWorkflowHandler extends BaseWorkflowHandler<ActionMenuRec
       return
     }
 
-    if (!logger) {
-      console.warn('Logger not set for ActionMenuHandler, using console')
-    }
 
     try {
       // Parse the invitation first

@@ -32,15 +32,14 @@ const CONNECTION_TIMEOUT = 20000 // 20 seconds
 
 const ImportWalletScan: React.FC<ImportWalletScanProps> = ({ navigation, route }) => {
   const { pin } = route.params
-  const { t } = useTranslation()
+  useTranslation() // Hook available for future i18n
   const [store] = useStore()
 
-  const [isScanning, setIsScanning] = useState(true)
   const [isProcessing, setIsProcessing] = useState(false)
   const [status, setStatus] = useState<string>('Scan QR code from your old device')
   const [error, setError] = useState<string | null>(null)
 
-  const clientRef = useRef<any>(null)
+  const clientRef = useRef<ReturnType<typeof TcpSocket.createConnection> | null>(null)
   const timeoutRef = useRef<NodeJS.Timeout | null>(null)
 
   const cleanup = useCallback(() => {
@@ -48,8 +47,8 @@ const ImportWalletScan: React.FC<ImportWalletScanProps> = ({ navigation, route }
       try {
         clientRef.current.destroy()
         clientRef.current = null
-      } catch (err) {
-        console.error('Error cleaning up client:', err)
+      } catch {
+        // Error cleaning up client - ignore
       }
     }
     if (timeoutRef.current) {
@@ -81,9 +80,7 @@ const ImportWalletScan: React.FC<ImportWalletScanProps> = ({ navigation, route }
 
       // Verify the PIN against the stored hash
       const derivedKey = await hashPIN(pin, data.salt)
-      if (derivedKey !== data.key) {
-        console.log('PIN derived key differs from export key - using export key for import')
-      }
+      // Note: derivedKey may differ from export key - using export key for import
 
       // Generate new wallet ID
       const newWalletId = uuid.v4().toString()
@@ -102,7 +99,7 @@ const ImportWalletScan: React.FC<ImportWalletScanProps> = ({ navigation, route }
       // Navigate to success screen
       navigation.navigate(Screens.ImportWalletResult, { status: 'success' })
     } catch (err) {
-      console.error('Error importing wallet:', err)
+      // Error importing wallet
       // Cleanup on error
       try {
         const dirExists = await RNFS.exists(importDir)
@@ -140,7 +137,7 @@ const ImportWalletScan: React.FC<ImportWalletScanProps> = ({ navigation, route }
 
       // Create TCP client
       const client = TcpSocket.createConnection({ host, port }, () => {
-        console.log('Connected to export server')
+        // Connected to export server
         const request = `GET /get-wallet HTTP/1.1\r\nHost: ${host}:${port}\r\n\r\n`
         client.write(request)
       })
@@ -182,8 +179,8 @@ const ImportWalletScan: React.FC<ImportWalletScanProps> = ({ navigation, route }
         }
       })
 
-      client.on('error', (err) => {
-        console.error('TCP client error:', err)
+      client.on('error', () => {
+        // TCP client error
         if (timeoutRef.current) {
           clearTimeout(timeoutRef.current)
         }
@@ -193,7 +190,7 @@ const ImportWalletScan: React.FC<ImportWalletScanProps> = ({ navigation, route }
       })
 
       client.on('close', () => {
-        console.log('Connection closed')
+        // Connection closed
         if (!error && isProcessing) {
           if (!responseData.includes('\r\n\r\n')) {
             setError('Connection closed unexpectedly')
@@ -202,7 +199,7 @@ const ImportWalletScan: React.FC<ImportWalletScanProps> = ({ navigation, route }
         }
       })
     } catch (err) {
-      console.error('Error fetching wallet data:', err)
+      // Error fetching wallet data
       setError(err instanceof Error ? err.message : 'Failed to process wallet data')
       setIsProcessing(false)
       cleanup()

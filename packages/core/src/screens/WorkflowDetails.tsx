@@ -52,8 +52,7 @@ interface FlattenedField {
  */
 function flattenSchema(
   schema: SchemaProperty,
-  path: string[] = [],
-  _requiredFields: string[] = []
+  path: string[] = []
 ): FlattenedField[] {
   const fields: FlattenedField[] = []
 
@@ -131,7 +130,7 @@ function flattenContextForDisplay(
   return result
 }
 
-const WorkflowDetails: React.FC<WorkflowDetailsProps> = ({ route, navigation }) => {
+const WorkflowDetails: React.FC<WorkflowDetailsProps> = ({ route }) => {
   const { instanceId } = route.params as { instanceId: string }
   const { t } = useTranslation()
   const { ColorPalette, SettingsTheme } = useTheme()
@@ -203,12 +202,13 @@ const WorkflowDetails: React.FC<WorkflowDetailsProps> = ({ route, navigation }) 
     return stateConfig[statusValue] ?? stateConfig.default
   }, [status, stateConfig])
 
-  const templateName = useMemo(() => {
+  const _templateName = useMemo(() => {
     const templateId = (status as any)?.template_id ?? (instance as any)?.templateId ?? 'Workflow'
     return templateId
       .replace(/[-_]/g, ' ')
       .replace(/\b\w/g, (c: string) => c.toUpperCase())
   }, [status, instance])
+  void _templateName // Reserved for future use
 
   const currentState = useMemo(() => {
     const state = (status as any)?.state ?? 'Unknown'

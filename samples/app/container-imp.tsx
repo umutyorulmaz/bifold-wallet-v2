@@ -14,7 +14,6 @@ import {
   ChatHeaderRenderer,
   DefaultScreenOptionsDictionary,
   Screens,
-  createKanonOCABundleResolver,
 } from '@bifold/core'
 import { DependencyContainer } from 'tsyringe'
 import Config from 'react-native-config'

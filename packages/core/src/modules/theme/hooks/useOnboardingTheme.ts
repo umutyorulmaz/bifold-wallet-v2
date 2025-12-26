@@ -75,12 +75,15 @@ const defaultOnboardingTheme: IOnboardingTheme = {
 export function useOnboardingTheme(): IOnboardingTheme {
   const registry = useOptionalThemeRegistry()
 
+  // Registry available for future use when multiple onboarding themes are supported
+  void registry
+
   return useMemo(() => {
     // For now, always return the teal-dark onboarding theme
     // In the future, this could be extended to support multiple themes
     // by storing onboarding configurations in the registry
     return defaultOnboardingTheme
-  }, [registry])
+  }, [])
 }
 
 /**

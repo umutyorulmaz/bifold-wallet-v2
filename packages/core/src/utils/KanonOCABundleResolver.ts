@@ -11,7 +11,6 @@ import {
   OCABundleResolverOptions,
   OCABundleResolveParams,
   BrandingOverlayType,
-  Identifiers,
 } from '@bifold/oca/build/legacy'
 import { IOverlayBundleData, IBrandingOverlayData, IMetaOverlayData } from '@bifold/oca'
 import { OverlayBundle, OverlayType } from '@bifold/oca/build/types'
@@ -218,7 +217,8 @@ export class KanonOCABundleResolver extends DefaultOCABundleResolver {
 
       if (apiBundle) {
         // Store in bundles for future lookups within this session
-        ;(this as any).bundles[credDefId] = apiBundle
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (this as unknown as { bundles: Record<string, typeof apiBundle> }).bundles[credDefId] = apiBundle
 
         return new OCABundle(apiBundle, {
           brandingOverlayType: this.getBrandingOverlayType(),

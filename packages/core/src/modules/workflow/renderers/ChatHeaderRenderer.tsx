@@ -37,6 +37,7 @@ interface HeaderProps extends ChatHeaderProps {
 export const ChatHeader: React.FC<HeaderProps> = ({
   title,
   rightIcons = [],
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   LogoComponent,
   BellIconComponent,
   InfoIconComponent,

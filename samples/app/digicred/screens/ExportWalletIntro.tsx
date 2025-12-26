@@ -18,7 +18,7 @@ const Colors = {
 type ExportWalletIntroProps = StackScreenProps<SettingStackParams, Screens.ExportWalletIntro>
 
 const ExportWalletIntro: React.FC<ExportWalletIntroProps> = ({ navigation }) => {
-  const { t } = useTranslation()
+  useTranslation() // Hook available for future i18n
 
   const steps = [
     'Connect both devices to the same WiFi network',

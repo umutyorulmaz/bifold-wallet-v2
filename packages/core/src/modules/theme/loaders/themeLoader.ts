@@ -42,7 +42,6 @@ export function resolveVariables(value: unknown, context: IVariableContext): unk
         if (result && typeof result === 'object' && part in result) {
           result = (result as Record<string, unknown>)[part]
         } else {
-          console.warn(`Variable not found: ${path}`)
           return `\${${path}}`
         }
       }

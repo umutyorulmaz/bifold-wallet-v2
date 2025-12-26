@@ -8,8 +8,6 @@ import Toast from 'react-native-toast-message'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 import {
-  useStore,
-  Screens,
   testIdWithKey,
   TOKENS,
   useServices,
@@ -37,10 +35,9 @@ const Colors = {
 
 export type ScanProps = StackScreenProps<ConnectStackParams>
 
-const Scan: React.FC<ScanProps> = ({ navigation, route }) => {
+const Scan: React.FC<ScanProps> = ({ navigation }) => {
   const { agent } = useAgent()
   const { t } = useTranslation()
-  const [store] = useStore()
   const [loading, setLoading] = useState<boolean>(true)
   const [showDisclosureModal, setShowDisclosureModal] = useState<boolean>(true)
   const [qrCodeScanError, setQrCodeScanError] = useState<QrCodeScanError | null>(null)
@@ -50,10 +47,8 @@ const Scan: React.FC<ScanProps> = ({ navigation, route }) => {
     TOKENS.UTIL_LOGGER,
   ])
 
-  let defaultToConnect = false
-  if (route?.params && route.params['defaultToConnect']) {
-    defaultToConnect = route.params['defaultToConnect']
-  }
+  // Note: defaultToConnect parameter available in route.params if needed
+  // const defaultToConnect = route?.params?.['defaultToConnect'] ?? false
 
   const handleInvitation = useCallback(
     async (value: string): Promise<void> => {

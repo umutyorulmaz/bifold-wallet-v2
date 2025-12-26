@@ -1,7 +1,6 @@
 import React, { useState, useCallback, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
-  View,
   Text,
   StyleSheet,
   Keyboard,

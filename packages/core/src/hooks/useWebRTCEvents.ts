@@ -106,7 +106,7 @@ export function useWebRTCEvents(options: UseWebRTCEventsOptions) {
     }
 
     return () => {
-      subscriptions.forEach((sub) => { try { sub?.off?.() } catch {} })
+      subscriptions.forEach((sub) => { try { sub?.off?.() } catch { /* cleanup error */ } })
     }
   }, [agent])
 }

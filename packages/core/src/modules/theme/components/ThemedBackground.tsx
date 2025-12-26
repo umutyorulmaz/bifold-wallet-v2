@@ -8,7 +8,7 @@
  * It creates its own context reference inline rather than importing from the module.
  */
 
-import React, { useMemo, useContext, createContext } from 'react'
+import React, { useMemo } from 'react'
 import { View, StyleSheet, ImageBackground, ViewStyle } from 'react-native'
 
 // Inline type definition to avoid importing from ../types
@@ -31,9 +31,7 @@ interface IBackgroundConfig {
   screenIds?: string[]
 }
 
-// Inline context - matches the one in contexts/ThemeRegistryContext but standalone
-// This avoids the circular import that was causing the error
-const StandaloneThemeContext = createContext<any>(undefined)
+// Note: Standalone context was removed as it was unused
 
 // Optional: LinearGradient from react-native-linear-gradient
 // We'll make it optional to avoid hard dependency

@@ -111,7 +111,7 @@ export class ProofWorkflowHandler extends BaseWorkflowHandler<ProofExchangeRecor
     }
   }
 
-  getDetailNavigation(record: ProofExchangeRecord, _navigation: StackNavigationProp<any>): NavigationResult | undefined {
+  getDetailNavigation(record: ProofExchangeRecord): NavigationResult | undefined {
     const toProofDetails = (): NavigationResult => ({
       stack: Stacks.ContactStack,
       screen: Screens.ProofDetails,

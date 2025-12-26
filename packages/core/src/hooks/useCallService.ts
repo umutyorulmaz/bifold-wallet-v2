@@ -70,16 +70,13 @@ export function useCallService(): UseCallServiceReturn {
       // Check if WebRTC module is available
       const bifoldAgent = agent as BifoldAgent
       if (!bifoldAgent?.modules?.webrtc) {
-        console.warn('[useCallService] WebRTC module not available on agent - calls disabled')
         return
       }
 
       try {
-        console.log('[useCallService] Creating CallService')
         serviceRef.current = new CallService({
           agent: bifoldAgent,
           onStateChange: (state) => {
-            console.log('[useCallService] State changed:', state)
             setCallState(state)
             // Reset mute/camera states when call ends
             if (state === 'idle') {
@@ -90,28 +87,25 @@ export function useCallService(): UseCallServiceReturn {
             }
           },
           onLocalStream: (stream) => {
-            console.log('[useCallService] Local stream received')
             setLocalStream(stream)
           },
           onRemoteStream: (stream) => {
-            console.log('[useCallService] Remote stream received')
             setRemoteStream(stream)
           },
-          onError: (error) => {
-            console.error('[useCallService] Error:', error)
+          onError: () => {
+            // Error handled via state change
           },
         })
-      } catch (err) {
-        console.error('[useCallService] Failed to create CallService:', err)
+      } catch {
+        // Failed to create CallService - agent may not be ready
       }
     }
 
     return () => {
       if (serviceRef.current) {
-        console.log('[useCallService] Destroying CallService')
         try {
           serviceRef.current.destroy()
-        } catch {}
+        } catch { /* cleanup error */ }
         serviceRef.current = null
       }
     }

@@ -4,9 +4,8 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
-import { DigiCredColors } from '../theme'
-
 const { width: screenWidth } = Dimensions.get('window')
+void screenWidth // Available for future use
 
 interface TabItemProps {
   label: string
@@ -82,11 +81,9 @@ const DigiCredTabBar: React.FC<DigiCredTabBarProps> = ({
   badges = {},
 }) => {
   const insets = useSafeAreaInsets()
-  const tabCount = state?.routes.length || tabConfig.length
 
   // Animation values
   const pillPosition = useRef(new Animated.Value(0)).current
-  const pillWidth = useRef(new Animated.Value(60)).current
   const tabScales = useRef(tabConfig.map(() => new Animated.Value(1))).current
 
   // Track tab positions for pill animation
@@ -119,7 +116,8 @@ const DigiCredTabBar: React.FC<DigiCredTabBarProps> = ({
         ),
       ]).start()
     }
-  }, [currentIndex, tabPositions])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentIndex])
 
   // Handle tab layout to track positions
   const handleTabLayout = (index: number) => (event: LayoutChangeEvent) => {

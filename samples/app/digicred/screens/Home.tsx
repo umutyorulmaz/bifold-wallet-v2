@@ -69,7 +69,7 @@ const ContactCard: React.FC<ContactCardProps> = ({
 
 const Home: React.FC = () => {
   const { t } = useTranslation()
-  const navigation = useNavigation<StackNavigationProp<any>>()
+  const navigation = useNavigation<StackNavigationProp<Record<string, object | undefined>>>()
   const [refreshing, setRefreshing] = React.useState(false)
   const [store] = useStore()
   const [{ contactHideList }] = useServices([TOKENS.CONFIG])
@@ -103,7 +103,7 @@ const Home: React.FC = () => {
   }, [])
 
   const handleScanPress = useCallback(() => {
-    navigation.navigate(Stacks.ConnectStack as any, { screen: Screens.Scan })
+    navigation.navigate(Stacks.ConnectStack as string, { screen: Screens.Scan } as Record<string, unknown>)
   }, [navigation])
 
   const handleContactPress = useCallback((connectionId: string) => {
@@ -140,7 +140,7 @@ const Home: React.FC = () => {
     })
   }, [filteredConnections])
 
-  const renderContact = ({ item }: { item: any }) => {
+  const renderContact = ({ item }: { item: typeof sortedConnections[0] }) => {
     const contactName = getConnectionName(item, store.preferences.alternateContactNames) || 'Unknown Contact'
 
     return (

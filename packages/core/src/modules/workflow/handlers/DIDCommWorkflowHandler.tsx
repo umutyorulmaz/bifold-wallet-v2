@@ -38,13 +38,6 @@ function isWorkflowInstanceRecord(record: unknown): record is WorkflowInstanceRe
   const hasState = typeof r.state === 'string'
   const result = hasId && hasTemplateId && hasInstanceId && hasState
 
-  if (!result && r.type === 'WorkflowInstanceRecord') {
-    console.log('[isWorkflowInstanceRecord] WorkflowInstanceRecord failed check:', {
-      hasId, hasTemplateId, hasInstanceId, hasState,
-      id: r.id, templateId: r.templateId, instanceId: r.instanceId, state: r.state,
-    })
-  }
-
   return result
 }
 
@@ -53,15 +46,11 @@ export class DIDCommWorkflowHandler extends BaseWorkflowHandler<WorkflowInstance
   readonly displayName = 'DIDComm Workflow'
 
   canHandle(record: unknown): record is WorkflowInstanceRecord {
-    const result = isWorkflowInstanceRecord(record)
-    if (result) {
-      const r = record as WorkflowInstanceRecord
-      console.log(`[DIDCommWorkflowHandler] canHandle: true, templateId: ${r.templateId}, state: ${r.state}`)
-    }
-    return result
+    return isWorkflowInstanceRecord(record)
   }
 
-  getRole(_record: WorkflowInstanceRecord): Role {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  getRole(record: WorkflowInstanceRecord): Role {
     // Workflows are typically initiated by them (the issuer/verifier)
     return Role.them
   }
@@ -122,10 +111,7 @@ export class DIDCommWorkflowHandler extends BaseWorkflowHandler<WorkflowInstance
     }
   }
 
-  getDetailNavigation(
-    record: WorkflowInstanceRecord,
-    _navigation: StackNavigationProp<any>
-  ): NavigationResult | undefined {
+  getDetailNavigation(record: WorkflowInstanceRecord): NavigationResult | undefined {
     return {
       screen: Screens.WorkflowDetails,
       params: { instanceId: record.instanceId },

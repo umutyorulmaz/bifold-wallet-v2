@@ -74,8 +74,6 @@ const ContactItem: React.FC<ContactItemProps> = ({ contact, onPress }) => {
 }
 
 const EmptyContacts: React.FC<{ onAddContact: () => void }> = ({ onAddContact }) => {
-  const { t } = useTranslation()
-
   return (
     <View style={styles.emptyContainer}>
       <View style={styles.emptyIconContainer}>

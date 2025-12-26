@@ -119,13 +119,6 @@ export const useChatMessagesByConnection = (connection: ConnectionRecord): Exten
   useEffect(() => {
     let transformedMessages: Array<ExtendedChatMessage> = []
 
-    console.log('[useChatMessagesByConnection] useEffect triggered')
-    console.log('[useChatMessagesByConnection] basicMessages:', basicMessages.length)
-    console.log('[useChatMessagesByConnection] credentials:', credentials.length, credentials.map(c => ({ id: c.id, state: c.state })))
-    console.log('[useChatMessagesByConnection] proofs:', proofs.length, proofs.map(p => ({ id: p.id, state: p.state })))
-    console.log('[useChatMessagesByConnection] workflowInstances:', workflowInstances.length, workflowsAvailable ? '(available)' : '(not available)')
-    console.log('[useChatMessagesByConnection] registry available:', !!registry)
-
     // If registry is available, use it
     if (registry) {
       // Include DIDComm workflow instances if available
@@ -181,7 +174,6 @@ export const useChatMessagesByConnection = (connection: ConnectionRecord): Exten
       ? [...transformedMessages.sort((a: any, b: any) => b.createdAt - a.createdAt), connectedMessage]
       : transformedMessages.sort((a: any, b: any) => b.createdAt - a.createdAt)
 
-    console.log('[useChatMessagesByConnection] Setting messages:', finalMessages.length)
     setMessages(finalMessages)
   }, [ColorPalette, basicMessages, theme, credentials, t, navigation, proofs, theirLabel, connection, registry, messageContext, workflowInstances, workflowsAvailable])
 

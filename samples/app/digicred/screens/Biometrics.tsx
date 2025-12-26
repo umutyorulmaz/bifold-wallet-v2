@@ -4,7 +4,6 @@ import {
   View,
   Text,
   StyleSheet,
-  Platform,
   Alert,
 } from 'react-native'
 
@@ -65,7 +64,7 @@ const Biometrics: React.FC = () => {
     }
   }, [biometricsEnabled, commitWalletToKeychain, dispatch])
 
-  const biometricType = Platform.OS === 'ios' ? 'Face ID or Touch ID' : 'fingerprint'
+  // biometricType available for future use: Platform.OS === 'ios' ? 'Face ID or Touch ID' : 'fingerprint'
 
   return (
     <GradientBackground>

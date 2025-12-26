@@ -136,17 +136,19 @@ const OnboardingStack: React.FC<OnboardingStackProps> = ({ initializeAgent, agen
   // will unmount/remount which resets the component state in memory and causes
   // issues
   const CreatePINScreen = useCallback(
-    (props: any) => {
+    (props: Record<string, unknown>) => {
       return <PINCreate setAuthenticated={onAuthenticated} {...props} />
     },
-    [onAuthenticated]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [onAuthenticated, PINCreate]
   )
 
   const EnterPINScreen = useCallback(
-    (props: any) => {
+    (props: Record<string, unknown>) => {
       return <PINEnter setAuthenticated={onAuthenticated} {...props} />
     },
-    [onAuthenticated]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [onAuthenticated, PINEnter]
   )
 
   useEffect(() => {
@@ -182,6 +184,7 @@ const OnboardingStack: React.FC<OnboardingStackProps> = ({ initializeAgent, agen
         CreatePINScreen,
         EnterPINScreen,
       }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [
       SplashScreen,
       CreatePINScreen,
@@ -190,6 +193,9 @@ const OnboardingStack: React.FC<OnboardingStackProps> = ({ initializeAgent, agen
       Preface,
       Terms,
       Biometry,
+      NameWallet,
+      PushNotifications,
+      AttemptLockout,
       t,
       ScreenOptionsDictionary,
       UpdateAvailableScreen,

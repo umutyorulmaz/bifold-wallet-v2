@@ -7,10 +7,8 @@
 
 import { BasicMessageRecord, ConnectionRecord } from '@credo-ts/core'
 import { BasicMessageRole } from '@credo-ts/core/build/modules/basic-messages/BasicMessageRole'
-import { StackNavigationProp } from '@react-navigation/stack'
 import React, { Fragment } from 'react'
 import { Linking, View } from 'react-native'
-import { TFunction } from 'react-i18next'
 
 import { CallbackType, ExtendedChatMessage } from '../../../components/chat/ChatMessage'
 import { ThemedText } from '../../../components/texts/ThemedText'
@@ -35,12 +33,9 @@ export class BasicMessageWorkflowHandler extends BaseWorkflowHandler<BasicMessag
 
     // Don't handle action menu messages - let ActionMenuHandler handle those
     if (this.isActionMenuMessage(record)) {
-      console.log('[BasicMessageHandler] canHandle: false (is action menu message)')
       return false
     }
 
-    const role = record.role === BasicMessageRole.Sender ? 'SENT' : 'RECEIVED'
-    console.log(`[BasicMessageHandler] canHandle: true, role: ${role}, content: ${record.content.substring(0, 80)}`)
     return true
   }
 
@@ -48,11 +43,11 @@ export class BasicMessageWorkflowHandler extends BaseWorkflowHandler<BasicMessag
     return record.role === BasicMessageRole.Sender ? Role.me : Role.them
   }
 
-  getLabel(record: BasicMessageRecord, _t: TFunction): string {
+  getLabel(record: BasicMessageRecord): string {
     return record.content
   }
 
-  getCallbackType(_record: BasicMessageRecord): CallbackType | undefined {
+  getCallbackType(): CallbackType | undefined {
     // Basic messages don't have callback actions
     return undefined
   }
@@ -113,50 +108,40 @@ export class BasicMessageWorkflowHandler extends BaseWorkflowHandler<BasicMessag
     }
   }
 
-  getDetailNavigation(
-    _record: BasicMessageRecord,
-    _navigation: StackNavigationProp<any>
-  ): NavigationResult | undefined {
+  getDetailNavigation(): NavigationResult | undefined {
     // Basic messages don't navigate anywhere
     return undefined
   }
 
   shouldDisplay(record: BasicMessageRecord): boolean {
     const role = this.getRole(record)
-    const roleStr = role === Role.me ? 'me' : 'them'
 
     // Filter out certain messages
     // 1. Don't show ":menu" messages sent by user
     if (role === Role.me && record.content === ':menu') {
-      console.log(`[BasicMessageHandler] shouldDisplay: false (${roleStr} sent :menu)`)
       return false
     }
 
     // 2. Don't show JSON messages sent by user (workflow actions)
     if (role === Role.me && this.isJsonMessage(record.content)) {
-      console.log(`[BasicMessageHandler] shouldDisplay: false (${roleStr} sent JSON action)`)
       return false
     }
 
     // 3. Don't show empty messages
     if (!record.content || record.content.trim() === '') {
-      console.log(`[BasicMessageHandler] shouldDisplay: false (empty message)`)
       return false
     }
 
     // 4. Don't show "received your message" delivery confirmations
     if (record.content.includes(' received your message')) {
-      console.log(`[BasicMessageHandler] shouldDisplay: false (delivery confirmation)`)
       return false
     }
 
     // 5. Don't show workflow control messages (e.g., {"workflowID":"root-menu"})
     if (this.isWorkflowControlMessage(record.content)) {
-      console.log(`[BasicMessageHandler] shouldDisplay: false (workflow control message)`)
       return false
     }
 
-    console.log(`[BasicMessageHandler] shouldDisplay: true (${roleStr}): ${record.content.substring(0, 50)}`)
     return true
   }
 

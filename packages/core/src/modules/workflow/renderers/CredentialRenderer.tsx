@@ -130,8 +130,8 @@ function useCredentialAttributes(credential: CredentialExchangeRecord) {
             setAttributes(attrs)
           }
         })
-        .catch((err) => {
-          console.warn('[useCredentialAttributes] Failed to fetch offer attributes:', err)
+        .catch(() => {
+          // Failed to fetch offer attributes - using fallback
         })
         .finally(() => {
           setLoading(false)
@@ -368,7 +368,8 @@ export function createDefaultCredentialRenderer(options: CredentialRendererOptio
 /**
  * Helper function to extract credential attributes
  */
-function getAttributeValue(credential: CredentialExchangeRecord, ...names: string[]): string | undefined {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function _getAttributeValue(credential: CredentialExchangeRecord, ...names: string[]): string | undefined {
   const attrs = credential.credentialAttributes || []
   for (const name of names) {
     const attr = attrs.find((a) => a.name.toLowerCase() === name.toLowerCase())

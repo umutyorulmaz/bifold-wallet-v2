@@ -22,10 +22,8 @@ interface FormData {
 }
 
 export const ActionMenuBubble: React.FC<ActionMenuBubbleProps> = ({ content, workflowID, onActionPress }) => {
-  const { ColorPalette, TextTheme } = useTheme()
+  const { ColorPalette } = useTheme()
   const [formData, setFormData] = useState<FormData>({})
-
-  console.log(`[ActionMenuBubble] Rendering with ${content.length} items, workflowID: ${workflowID}`)
 
   // Dynamic styles based on theme
   const themedStyles = StyleSheet.create({

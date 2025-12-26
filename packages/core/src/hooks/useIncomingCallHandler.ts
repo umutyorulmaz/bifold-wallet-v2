@@ -25,7 +25,7 @@ interface UseIncomingCallHandlerOptions {
  *   useIncomingCallHandler({
  *     enabled: true,
  *     onIncomingCall: (event) => {
- *       console.log('Incoming call from:', event.context.connection?.theirLabel)
+ *       // Handle incoming call notification
  *     },
  *   })
  *
@@ -45,28 +45,22 @@ export function useIncomingCallHandler(options: UseIncomingCallHandlerOptions = 
     // Check if WebRTC module is available
     const agentModules = (agent as any)?.modules
     if (!agentModules?.webrtc) {
-      console.warn('[useIncomingCallHandler] WebRTC module not available - incoming calls disabled')
       return
     }
-
-    console.log('[useIncomingCallHandler] Setting up incoming call listener')
 
     let subscription: any
     try {
       // NOTE: Events are emitted with { type, payload: { thid, sdp, context, ... } } structure
       subscription = agent.events.on(WebRTCEvents.IncomingOffer, ((event: any) => {
         const payload = event.payload || event // Support both payload-wrapped and direct access
-        console.log('[useIncomingCallHandler] IncomingOffer event received, payload keys:', Object.keys(payload || {}))
 
         const connectionId = payload?.context?.connection?.id
         if (!connectionId) {
-          console.warn('[useIncomingCallHandler] Received offer without connection ID, payload:', JSON.stringify(payload, null, 2).slice(0, 500))
           return
         }
 
         // Prevent handling the same offer multiple times
         if (handledThreadIds.current.has(payload.thid)) {
-          console.log('[useIncomingCallHandler] Already handled thread:', payload.thid)
           return
         }
         handledThreadIds.current.add(payload.thid)
@@ -75,9 +69,6 @@ export function useIncomingCallHandler(options: UseIncomingCallHandlerOptions = 
         setTimeout(() => {
           handledThreadIds.current.delete(payload.thid)
         }, 30000)
-
-        console.log('[useIncomingCallHandler] Incoming call from:', payload.context?.connection?.theirLabel)
-        console.log('[useIncomingCallHandler] Thread ID:', payload.thid)
 
         // Call the optional callback with the unwrapped payload
         onIncomingCall?.(payload as IncomingOfferEvent)
@@ -91,16 +82,14 @@ export function useIncomingCallHandler(options: UseIncomingCallHandlerOptions = 
           iceServers: payload.iceServers,
         })
       }) as any)
-    } catch (err) {
-      console.error('[useIncomingCallHandler] Error setting up listener:', err)
+    } catch {
       return
     }
 
     return () => {
-      console.log('[useIncomingCallHandler] Cleaning up incoming call listener')
       try {
         subscription?.off?.()
-      } catch {}
+      } catch { /* cleanup error */ }
     }
   }, [agent, enabled, navigation, onIncomingCall])
 }

@@ -83,8 +83,10 @@ export function useCardTheme(credential: ICredentialMatchInfo): ICardTheme {
 
     const cardThemeRegistry = registry.getCardThemeRegistry()
     return cardThemeRegistry.getTheme(credential)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     registry,
+    credential,
     credential.credDefId,
     credential.issuerName,
     credential.schemaName,

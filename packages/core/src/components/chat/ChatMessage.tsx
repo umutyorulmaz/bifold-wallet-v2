@@ -38,20 +38,16 @@ const MessageTime: React.FC<{ message: ExtendedChatMessage }> = ({ message }) =>
   )
 }
 
-const MessageIcon: React.FC<{ type: CallbackType }> = ({ type }) => {
-  const { ChatTheme: theme, Assets } = useTheme()
-
-  // Don't show icon for PresentationSent (v1 behavior)
-  if (type === CallbackType.PresentationSent) {
-    return null
-  }
-
-  return (
-    <View style={type !== CallbackType.CredentialOffer ? theme.documentIconContainer : {}}>
-      {type === CallbackType.ProofRequest && <Assets.svg.iconProofRequestLight width={40} height={40} />}
-    </View>
-  )
-}
+// MessageIcon component - intentionally unused for now, kept for future use
+// const MessageIcon: React.FC<{ type: CallbackType }> = ({ type }) => {
+//   const { ChatTheme: theme, Assets } = useTheme()
+//   if (type === CallbackType.PresentationSent) return null
+//   return (
+//     <View style={type !== CallbackType.CredentialOffer ? theme.documentIconContainer : {}}>
+//       {type === CallbackType.ProofRequest && <Assets.svg.iconProofRequestLight width={40} height={40} />}
+//     </View>
+//   )
+// }
 
 export const ChatMessage: React.FC<ChatMessageProps> = ({ messageProps }) => {
   const { t } = useTranslation()

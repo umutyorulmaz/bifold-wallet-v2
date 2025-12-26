@@ -28,11 +28,7 @@ export class CredentialWorkflowHandler extends BaseWorkflowHandler<CredentialExc
   private renderer?: ICredentialRenderer
 
   canHandle(record: unknown): record is CredentialExchangeRecord {
-    const result = record instanceof CredentialExchangeRecord
-    if (result) {
-      console.log(`[CredentialHandler] canHandle: true, state: ${(record as CredentialExchangeRecord).state}`)
-    }
-    return result
+    return record instanceof CredentialExchangeRecord
   }
 
   getRole(record: CredentialExchangeRecord): Role {
@@ -107,10 +103,7 @@ export class CredentialWorkflowHandler extends BaseWorkflowHandler<CredentialExc
     }
   }
 
-  getDetailNavigation(
-    record: CredentialExchangeRecord,
-    _navigation: StackNavigationProp<any>
-  ): NavigationResult | undefined {
+  getDetailNavigation(record: CredentialExchangeRecord): NavigationResult | undefined {
     if (record.state === CredentialState.Done) {
       return {
         stack: Stacks.ContactStack,

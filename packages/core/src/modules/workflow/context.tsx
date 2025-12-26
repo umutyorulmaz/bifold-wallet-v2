@@ -91,6 +91,8 @@ export function useWorkflowRegistry(): IWorkflowRegistry {
  */
 export function useOptionalWorkflowRegistry(): IWorkflowRegistry | undefined {
   const contextRegistry = useContext(WorkflowRegistryContext)
+  // Get container outside conditional to satisfy React hooks rules
+  const container = useContainer()
 
   // If context has registry, use it
   if (contextRegistry) {
@@ -99,7 +101,6 @@ export function useOptionalWorkflowRegistry(): IWorkflowRegistry | undefined {
 
   // Otherwise, try to get from DI container
   try {
-    const container = useContainer()
     if (container) {
       return container.resolve(TOKENS.UTIL_WORKFLOW_REGISTRY)
     }

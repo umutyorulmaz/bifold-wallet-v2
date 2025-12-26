@@ -175,7 +175,6 @@ export class ThemeRegistry implements IThemeRegistry {
 
   setActive(id: string): void {
     if (!this.manifests.has(id)) {
-      console.warn(`[ThemeRegistry] Theme not found: ${id}`)
       return
     }
     this.activeThemeId = id

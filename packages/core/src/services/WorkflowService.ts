@@ -246,7 +246,8 @@ export class MobileWorkflowService {
   /**
    * Check if a DID belongs to this agent
    */
-  private isOurDid(_did: string): boolean {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  private isOurDid(did: string): boolean {
     // This is a simplified check - in production you'd check against agent's DIDs
     try {
       // For now, just return false and let the caller handle it
