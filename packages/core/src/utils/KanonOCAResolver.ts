@@ -266,7 +266,7 @@ export class KanonOCABundleResolver extends DefaultOCABundleResolver {
       expiryDateAttribute: rawBrandingOverlay.expiry_date_attribute || rawBrandingOverlay.expiryDateAttribute,
       header: rawBrandingOverlay.header,
       footer: rawBrandingOverlay.footer,
-    } as BrandingOverlay : undefined
+    } as unknown as BrandingOverlay : undefined
 
     console.log('[KanonOCA] processBundle - brandingOverlay:', JSON.stringify(brandingOverlay, null, 2))
 
