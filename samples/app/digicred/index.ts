@@ -7,6 +7,8 @@ export {
   DigiCredBiometrics,
   DigiCredPushNotifications,
   DigiCredHome,
+  DigiCredHomeNoChannels,
+  DigiCredHomeNoChannelModal,
   DigiCredTabStack,
   DigiCredHomeStack,
   DigiCredCredentials,

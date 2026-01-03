@@ -1,5 +1,6 @@
 import React from 'react'
-import { StyleSheet, Text, TouchableOpacity, ViewStyle, TextStyle, ActivityIndicator } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, ViewStyle, TextStyle, ActivityIndicator, View } from 'react-native'
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { DigiCredColors } from '../theme'
 
 export type ButtonVariant = 'primary' | 'secondary'
@@ -17,6 +18,11 @@ interface DigiCredButtonProps {
   testID?: string
   accessibilityLabel?: string
   fullWidth?: boolean
+
+  /** ICON */
+  iconName?: string
+  iconSize?: number
+  iconColor?: string
 }
 
 const DigiCredButton: React.FC<DigiCredButtonProps> = ({
@@ -32,6 +38,10 @@ const DigiCredButton: React.FC<DigiCredButtonProps> = ({
   testID,
   accessibilityLabel,
   fullWidth = false,
+
+  iconName,
+  iconSize = 24,
+  iconColor,
 }) => {
   const isPrimary = variant === 'primary'
 
@@ -40,8 +50,8 @@ const DigiCredButton: React.FC<DigiCredButtonProps> = ({
     isPrimary ? styles.primaryButton : styles.secondaryButton,
     disabled && styles.disabledButton,
     fullWidth && styles.fullWidth,
-    customStyle, // customStyle override
-    style, // style prop thông thường
+    customStyle,
+    style,
   ]
 
   const textStyles = [
@@ -52,6 +62,8 @@ const DigiCredButton: React.FC<DigiCredButtonProps> = ({
     textStyle,
   ]
 
+  const finalIconColor = iconColor ?? (isPrimary ? DigiCredColors.text.primary : DigiCredColors.text.secondary)
+
   return (
     <TouchableOpacity
       style={buttonStyles}
@@ -61,7 +73,15 @@ const DigiCredButton: React.FC<DigiCredButtonProps> = ({
       accessibilityLabel={accessibilityLabel}
       accessibilityRole="button"
     >
-      {loading ? <ActivityIndicator color={DigiCredColors.text.primary} /> : <Text style={textStyles}>{title}</Text>}
+      {loading ? (
+        <ActivityIndicator color={finalIconColor} />
+      ) : (
+        <View style={styles.content}>
+          <Text style={textStyles}>{title}</Text>
+
+          {iconName && <Icon name={iconName} size={iconSize} color={finalIconColor} style={styles.icon} />}
+        </View>
+      )}
     </TouchableOpacity>
   )
 }
@@ -73,6 +93,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 32,
+  },
+  content: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  icon: {
+    marginLeft: 8,
   },
   primaryButton: {
     backgroundColor: DigiCredColors.button.primary,

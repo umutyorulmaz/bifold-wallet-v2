@@ -1103,5 +1103,23 @@
     "CancelWorkflow": "Cancel Workflow",
     "CancelConfirmation": "Are you sure you want to cancel this workflow? This action cannot be undone.",
     "WorkflowActions": "Workflow Actions"
+  },
+  "homeNoChannels": {
+    "welcome": "Welcome to your",
+    "description": "Add your first credential by first joining a channel.",
+    "joinButton": "JOIN NEW CHANNEL",
+    "howItWorks": "How does it work?",
+    "item1": {
+      "title": "Digital Credentials",
+      "description": "Learn how they work"
+    },
+    "item2": {
+      "title": "Private and Confidential",
+      "description": "Your privacy is important"
+    },
+    "item3": {
+      "title": "Your Credential Wallet",
+      "description": "Safe and secure"
+    }
   }
 }

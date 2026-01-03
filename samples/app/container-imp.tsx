@@ -27,11 +27,13 @@ import {
   DigiCredBiometrics,
   DigiCredPushNotifications,
   DigiCredHome,
+  DigiCredHomeNoChannels,
   DigiCredTabStack,
   DigiCredHomeStack,
   DigiCredChatBackgroundRenderer,
   DigiCredCredentials,
   DigiCredSettings,
+  DigiCredHomeNoChannelModal,
 } from './digicred'
 
 // Import screens directly to avoid barrel file circular dependency
@@ -140,6 +142,8 @@ export class AppContainer implements Container {
     this._container.registerInstance(TOKENS.ONBOARDING, generateDigiCredOnboardingWorkflow)
 
     // Main app screens
+    this._container.registerInstance(TOKENS.SCREEN_HOME_NO_CHANNELS, DigiCredHomeNoChannels)
+    this._container.registerInstance(TOKENS.SCREEN_HOME_NO_CHANNEL_MODAL, DigiCredHomeNoChannelModal)
     this._container.registerInstance(TOKENS.SCREEN_HOME, DigiCredHome)
     this._container.registerInstance(TOKENS.SCREEN_LIST_CREDENTIALS, DigiCredCredentials)
     this._container.registerInstance(TOKENS.SCREEN_SETTINGS, DigiCredSettings)

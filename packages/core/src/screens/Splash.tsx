@@ -11,7 +11,7 @@ import { BifoldError } from '../types/error'
 import { WalletSecret } from '../types/security'
 import { useAuth } from '../contexts/auth'
 import { useStore } from '../contexts/store'
-import { ThemedBackground } from '../modules/theme/components/ThemedBackground'
+import { GradientBackground } from '../../../../samples/app/digicred'
 
 export type SplashProps = {
   initializeAgent: (walletSecret: WalletSecret) => Promise<void>
@@ -69,11 +69,11 @@ const Splash: React.FC<SplashProps> = ({ initializeAgent }) => {
   }, [initializeAgent, ocaBundleResolver, logger, walletSecret, t, store.authentication.didAuthenticate])
 
   return (
-    <ThemedBackground screenId="splash" style={{ flex: 1 }}>
+    <GradientBackground>
       <SafeAreaView style={styles.container}>
         <LoadingIndicator />
       </SafeAreaView>
-    </ThemedBackground>
+    </GradientBackground>
   )
 }
 

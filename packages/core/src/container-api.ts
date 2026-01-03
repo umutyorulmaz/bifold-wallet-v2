@@ -77,6 +77,8 @@ export const SCREEN_TOKENS = {
   SCREEN_ATTEMPT_LOCKOUT: 'screen.attempt-lockout',
 
   // Main Screens
+  SCREEN_HOME_NO_CHANNELS: 'screen.home-no-channels',
+  SCREEN_HOME_NO_CHANNEL_MODAL: 'screen.home-no-channel-modal',
   SCREEN_HOME: 'screen.home',
   SCREEN_CHAT: 'screen.chat',
   SCREEN_CONNECTION: 'screen.connection',

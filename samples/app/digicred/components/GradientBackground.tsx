@@ -15,6 +15,8 @@ const GradientBackground: React.FC<GradientBackgroundProps> = ({ children, style
       colors={DigiCredColors.gradient.colors}
       locations={DigiCredColors.gradient.locations}
       style={[styles.gradient, style]}
+      start={{ x: -0.28, y: 0.3 }}
+      end={{ x: 1.28, y: 0.7 }}
     >
       {children}
     </LinearGradient>

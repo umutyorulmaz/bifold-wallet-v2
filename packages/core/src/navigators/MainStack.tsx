@@ -18,6 +18,7 @@ import { useDeepLinks } from '../hooks/deep-links'
 import { useDefaultStackOptions } from './defaultStackOptions'
 import VideoCall from '../screens/VideoCall'
 import IncomingCall from '../screens/IncomingCall'
+import HomeNoChannels from '../../../../samples/app/digicred/screens/HomeNoChannels'
 
 const MainStack: React.FC = () => {
   const { t } = useTranslation()
@@ -89,12 +90,19 @@ const MainStack: React.FC = () => {
   return (
     <View style={{ flex: 1 }} importantForAccessibility={hideElements}>
       <Stack.Navigator
-        initialRouteName={Stacks.TabStack}
+        initialRouteName={Stacks.HomeNoChannelStack}
         screenOptions={{
           ...defaultStackOptions,
           headerShown: false,
         }}
       >
+        <Stack.Screen
+          name={Stacks.HomeNoChannelStack}
+          component={HomeNoChannels}
+          options={{
+            headerShown: false,
+          }}
+        />
         <Stack.Screen name={Stacks.TabStack} component={TabStack} />
         <Stack.Screen
           name={Screens.CredentialDetails}
