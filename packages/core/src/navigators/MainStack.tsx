@@ -43,6 +43,7 @@ const MainStack: React.FC = () => {
     CredentialDetails,
     OpenIDCredentialDetails,
     WorkflowDetails,
+    HomeNoChannels,
   ] = useServices([
     TOKENS.CUSTOM_NAV_STACK_1,
     TOKENS.OBJECT_SCREEN_CONFIG,
@@ -60,6 +61,7 @@ const MainStack: React.FC = () => {
     TOKENS.SCREEN_CREDENTIAL_DETAILS,
     TOKENS.SCREEN_OPENID_CREDENTIAL_DETAILS,
     TOKENS.SCREEN_WORKFLOW_DETAILS,
+    TOKENS.SCREEN_HOME_NO_CHANNELS,
   ])
   const declinedProofs = useProofByState([ProofState.Declined, ProofState.Abandoned])
   useDeepLinks()
@@ -89,12 +91,19 @@ const MainStack: React.FC = () => {
   return (
     <View style={{ flex: 1 }} importantForAccessibility={hideElements}>
       <Stack.Navigator
-        initialRouteName={Stacks.TabStack}
+        initialRouteName={Stacks.HomeNoChannelStack}
         screenOptions={{
           ...defaultStackOptions,
           headerShown: false,
         }}
       >
+        <Stack.Screen
+          name={Stacks.HomeNoChannelStack}
+          component={HomeNoChannels}
+          options={{
+            headerShown: false,
+          }}
+        />
         <Stack.Screen name={Stacks.TabStack} component={TabStack} />
         <Stack.Screen
           name={Screens.CredentialDetails}

@@ -1,6 +1,6 @@
 import React from 'react'
-import { StyleSheet, Text, TouchableOpacity, ViewStyle, ActivityIndicator } from 'react-native'
-
+import { StyleSheet, Text, TouchableOpacity, ViewStyle, TextStyle, ActivityIndicator, View } from 'react-native'
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { DigiCredColors } from '../theme'
 
 export type ButtonVariant = 'primary' | 'secondary'
@@ -12,9 +12,17 @@ interface DigiCredButtonProps {
   disabled?: boolean
   loading?: boolean
   style?: ViewStyle
+  customStyle?: ViewStyle
+  textStyle?: TextStyle
+  customTextStyle?: TextStyle
   testID?: string
   accessibilityLabel?: string
   fullWidth?: boolean
+
+  /** ICON */
+  iconName?: string
+  iconSize?: number
+  iconColor?: string
 }
 
 const DigiCredButton: React.FC<DigiCredButtonProps> = ({
@@ -24,21 +32,41 @@ const DigiCredButton: React.FC<DigiCredButtonProps> = ({
   disabled = false,
   loading = false,
   style,
+  customStyle,
+  textStyle,
+  customTextStyle,
   testID,
   accessibilityLabel,
   fullWidth = false,
+
+  iconName,
+  iconSize = 24,
+  iconColor,
 }) => {
   const isPrimary = variant === 'primary'
 
+  const buttonStyles = [
+    styles.button,
+    isPrimary ? styles.primaryButton : styles.secondaryButton,
+    disabled && styles.disabledButton,
+    fullWidth && styles.fullWidth,
+    customStyle,
+    style,
+  ]
+
+  const textStyles = [
+    styles.buttonText,
+    !isPrimary && styles.secondaryButtonText,
+    disabled && styles.disabledButtonText,
+    customTextStyle,
+    textStyle,
+  ]
+
+  const finalIconColor = iconColor ?? (isPrimary ? DigiCredColors.text.primary : DigiCredColors.text.secondary)
+
   return (
     <TouchableOpacity
-      style={[
-        styles.button,
-        isPrimary ? styles.primaryButton : styles.secondaryButton,
-        disabled && styles.disabledButton,
-        fullWidth && styles.fullWidth,
-        style,
-      ]}
+      style={buttonStyles}
       onPress={onPress}
       disabled={disabled || loading}
       testID={testID}
@@ -46,17 +74,14 @@ const DigiCredButton: React.FC<DigiCredButtonProps> = ({
       accessibilityRole="button"
     >
       {loading ? (
-        <ActivityIndicator color={DigiCredColors.text.primary} />
+        <View style={{marginHorizontal: 50}}>
+          <ActivityIndicator color={finalIconColor} />
+        </View>
       ) : (
-        <Text
-          style={[
-            styles.buttonText,
-            !isPrimary && styles.secondaryButtonText,
-            disabled && styles.disabledButtonText,
-          ]}
-        >
-          {title}
-        </Text>
+        <View style={styles.content}>
+          <Text style={textStyles}>{title}</Text>
+          {iconName && <Icon name={iconName} size={iconSize} color={finalIconColor} style={styles.icon} />}
+        </View>
       )}
     </TouchableOpacity>
   )
@@ -69,6 +94,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 32,
+  },
+  content: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  icon: {
+    marginLeft: 8,
   },
   primaryButton: {
     backgroundColor: DigiCredColors.button.primary,

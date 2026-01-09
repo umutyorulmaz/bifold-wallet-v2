@@ -95,6 +95,7 @@ function convertColorPalette(modular: ModularColorPalette): IColorPalette {
     lightGrey: modular.text.secondary,
     veryLightGrey: '#F2F2F2',
     white: '#FFFFFF',
+    digicredBackgroundModal: '#25272A',
   }
 
   const brand: IBrandColors = {

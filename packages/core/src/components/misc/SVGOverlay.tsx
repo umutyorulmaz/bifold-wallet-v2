@@ -1,6 +1,7 @@
 import React from 'react'
-import { useWindowDimensions } from 'react-native'
+import { useWindowDimensions, View } from 'react-native'
 import Svg, { Circle, Defs, Ellipse, Mask, Path, Rect } from 'react-native-svg'
+import ScanFrame from '../../assets/img/ScanFrame.svg'
 
 export enum MaskType {
   QR_CODE = 'qr-code',
@@ -22,33 +23,33 @@ const SVGOverlay: React.FC<ISVGOverlay> = ({
   maskType = MaskType.OVAL,
   customPath,
   strokeColor = undefined,
-  overlayColor = 'black',
-  overlayOpacity = 0.6,
+  overlayColor = 'white',
+  overlayOpacity = 0.3,
 }) => {
   const { width: screenWidth, height: screenHeight } = useWindowDimensions()
-  const renderCutOutShape = () => {
-    const centerX = screenWidth / 2
-    const centerY = screenHeight / 2
+  const centerX = screenWidth / 2
+  const centerY = screenHeight / 1.7
 
+  const renderCutOutShape = () => {
     switch (maskType) {
       case MaskType.OVAL:
         return (
           <Ellipse
             cx={centerX}
-            cy={centerY - 10}
-            rx={screenWidth * 0.45}
-            ry={screenHeight * 0.28}
+            cy={centerY}
+            rx={screenWidth * 0.4}
+            ry={screenHeight * 0.2}
             fill="transparent"
             stroke={strokeColor}
           />
         )
 
       case MaskType.RECTANGLE: {
-        const rectSize = screenWidth * 0.8
+        const rectSize = screenWidth * 0.9
         return (
           <Rect
-            x={centerX - rectSize / 2}
-            y={centerY - rectSize / 2}
+            x={centerX - rectSize / 2 - 1}
+            y={centerY - rectSize / 2 - 1}
             width={rectSize}
             height={rectSize}
             fill="transparent"
@@ -57,9 +58,8 @@ const SVGOverlay: React.FC<ISVGOverlay> = ({
       }
 
       case MaskType.ID_CARD: {
-        // ID card shape with rounded corners
         const cardWidth = screenWidth * 0.9
-        const cardHeight = cardWidth / 1.6 // Common ID/ Credit card size ratio
+        const cardHeight = cardWidth / 1.6
         return (
           <Rect
             x={centerX - cardWidth / 2}
@@ -75,7 +75,7 @@ const SVGOverlay: React.FC<ISVGOverlay> = ({
         )
       }
       case MaskType.QR_CODE: {
-        const qrSize = screenWidth * 0.9
+        const qrSize = screenWidth * 0.8
         return (
           <Rect
             x={centerX - qrSize / 2}
@@ -96,29 +96,50 @@ const SVGOverlay: React.FC<ISVGOverlay> = ({
     }
   }
 
+  const renderScanFrame = () => {
+    if (maskType !== MaskType.QR_CODE) return null
+
+    const qrSize = screenWidth * 0.9
+    const x = centerX - qrSize / 1.956 + 5
+    const y = centerY - qrSize / 1.553 + 5
+
+    return (
+      <View
+        style={{
+          position: 'absolute',
+          left: x,
+          top: y,
+          width: qrSize,
+          height: qrSize,
+        }}
+      >
+        <ScanFrame width="100%" height="100%" />
+      </View>
+    )
+  }
+
   return (
-    <Svg width={screenWidth} height={screenHeight} style={{ position: 'absolute' }}>
-      <Defs>
-        <Mask id="overlayMask">
-          {/* White background - visible area */}
-          <Rect width={screenWidth} height={screenHeight} fill="white" />
-          {/* Cutout  - transparent area */}
-          {React.cloneElement(renderCutOutShape() as React.ReactElement, { fill: 'black' })}
-        </Mask>
-      </Defs>
+    <View style={{ position: 'absolute', width: screenWidth, height: screenHeight }}>
+      <Svg width={screenWidth} height={screenHeight}>
+        <Defs>
+          <Mask id="overlayMask">
+            <Rect width={screenWidth} height={screenHeight} fill="white" />
+            {React.cloneElement(renderCutOutShape() as React.ReactElement, { fill: 'black' })}
+          </Mask>
+        </Defs>
 
-      {/* Semi-transparent overlay with cutout */}
-      <Rect
-        width={screenWidth}
-        height={screenHeight}
-        fill={overlayColor}
-        fillOpacity={overlayOpacity}
-        mask="url(#overlayMask)"
-      />
+        <Rect
+          width={screenWidth}
+          height={screenHeight}
+          fill={overlayColor}
+          fillOpacity={overlayOpacity}
+          mask="url(#overlayMask)"
+        />
 
-      {/* Guide lines or decorations */}
-      {renderCutOutShape()}
-    </Svg>
+        {renderCutOutShape()}
+      </Svg>
+      {renderScanFrame()}
+    </View>
   )
 }
 

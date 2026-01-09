@@ -27,11 +27,16 @@ import {
   DigiCredBiometrics,
   DigiCredPushNotifications,
   DigiCredHome,
+  DigiCredHomeNoChannels,
   DigiCredTabStack,
   DigiCredHomeStack,
   DigiCredChatBackgroundRenderer,
   DigiCredCredentials,
   DigiCredSettings,
+  DigiCredHomeNoChannelModal,
+  GradientBackground,
+  AboutInstitution,
+  CredentialButtons,
 } from './digicred'
 
 // Import screens directly to avoid barrel file circular dependency
@@ -69,7 +74,7 @@ const generateDigiCredOnboardingWorkflow = (
   const { servedPenalty } = state.loginAttempt
   const { didAuthenticate } = state.authentication
   const { enableWalletNaming } = state.preferences
-  const { showPreface, enablePushNotifications } = config
+  const { showPreface } = config
 
   // DigiCred onboarding workflow - skips the tutorial/carousel step
   // Using actual screen name values from Screens enum
@@ -87,11 +92,11 @@ const generateDigiCredOnboardingWorkflow = (
     // Biometry
     { name: Screens.Biometry, completed: didConsiderBiometry },
     // Push notifications
-    { name: Screens.PushNotifications, completed: !enablePushNotifications || (didConsiderPushNotifications && !!enablePushNotifications) },
+    { name: Screens.PushNotifications, completed:  (didConsiderPushNotifications) },
     // Name wallet
     { name: Screens.NameWallet, completed: didNameWallet || !enableWalletNaming },
     // Attempt lockout
-    { name: Screens.AttemptLockout, completed: servedPenalty !== false },
+    { name: Screens.AttemptLockout, completed: servedPenalty },
     // Authentication
     { name: Screens.EnterPIN, completed: didAuthenticate || !didCreatePIN },
     // Agent initialization
@@ -140,11 +145,18 @@ export class AppContainer implements Container {
     this._container.registerInstance(TOKENS.ONBOARDING, generateDigiCredOnboardingWorkflow)
 
     // Main app screens
+    this._container.registerInstance(TOKENS.SCREEN_HOME_NO_CHANNELS, DigiCredHomeNoChannels)
+    this._container.registerInstance(TOKENS.SCREEN_HOME_NO_CHANNEL_MODAL, DigiCredHomeNoChannelModal)
     this._container.registerInstance(TOKENS.SCREEN_HOME, DigiCredHome)
     this._container.registerInstance(TOKENS.SCREEN_LIST_CREDENTIALS, DigiCredCredentials)
     this._container.registerInstance(TOKENS.SCREEN_SETTINGS, DigiCredSettings)
     this._container.registerInstance(TOKENS.SCREEN_LIST_CONTACTS, DigiCredContacts)
     this._container.registerInstance(TOKENS.SCREEN_SCAN, DigiCredScan)
+
+    //Component
+    this._container.registerInstance(TOKENS.COMPONENT_GRADIENT_BACKGROUND, GradientBackground)
+    this._container.registerInstance(TOKENS.COMPONENT_ABOUT_INSTITUTION, AboutInstitution)
+    this._container.registerInstance(TOKENS.COMPONENT_CREDENTIAL_BUTTONS, CredentialButtons)
 
     // Wallet transfer screens
     this._container.registerInstance(TOKENS.SCREEN_EXPORT_WALLET_INTRO, DigiCredExportWalletIntro)

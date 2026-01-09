@@ -1,3 +1,4 @@
+
 import {
   BasicMessageRecord,
   ConnectionRecord,
@@ -17,11 +18,11 @@ import { Linking, View } from 'react-native'
 import { ChatEvent } from '../components/chat/ChatEvent'
 import { ExtendedChatMessage, CallbackType } from '../components/chat/ChatMessage'
 import { ThemedText } from '../components/texts/ThemedText'
-import { TOKENS, useContainer } from '../container-api'
+import { COMPONENT_TOKENS, TOKENS, useContainer } from '../container-api'
 import { useStore } from '../contexts/store'
 import { useTheme } from '../contexts/theme'
 import { useOptionalWorkflowRegistry } from '../modules/workflow'
-import { MessageContext } from '../modules/workflow/types'
+import { MessageContext } from '../modules/workflow'
 import { Role } from '../types/chat'
 import { RootStackParams, ContactStackParams, Screens, Stacks } from '../types/navigators'
 import {
@@ -36,11 +37,9 @@ import {
 import { useCredentialsByConnectionId } from './credentials'
 import { useProofsByConnectionId } from './proofs'
 import { useWorkflows } from './useWorkflows'
+import { useServices } from '../container-api'
 
-/**
- * Determines the callback type for a credential or proof record
- * @deprecated Use workflow handlers instead
- */
+
 const callbackTypeForMessage = (record: CredentialExchangeRecord | ProofExchangeRecord) => {
   if (
     record instanceof CredentialExchangeRecord &&
@@ -65,16 +64,6 @@ const callbackTypeForMessage = (record: CredentialExchangeRecord | ProofExchange
   }
 }
 
-/**
- * Custom hook for retrieving chat messages for a given connection.
- *
- * If a WorkflowRegistry is available (via WorkflowRegistryProvider), it will use
- * the registered handlers to transform records into messages. Otherwise, it falls
- * back to the legacy implementation.
- *
- * @param {ConnectionRecord} connection - The connection to retrieve chat messages for.
- * @returns {ExtendedChatMessage[]} The chat messages for the given connection.
- */
 export const useChatMessagesByConnection = (connection: ConnectionRecord): ExtendedChatMessage[] => {
   const [messages, setMessages] = useState<Array<ExtendedChatMessage>>([])
   const [store] = useStore()
@@ -86,23 +75,18 @@ export const useChatMessagesByConnection = (connection: ConnectionRecord): Exten
   const credentials = useCredentialsByConnectionId(connection?.id)
   const proofs = useProofsByConnectionId(connection?.id)
   const [theirLabel, setTheirLabel] = useState(getConnectionName(connection, store.preferences.alternateContactNames))
-
-  // Get DIDComm workflow instances for this connection
+  const [AboutInstitution] = useServices([COMPONENT_TOKENS.COMPONENT_ABOUT_INSTITUTION])
   const { instances: workflowInstances, isAvailable: workflowsAvailable } = useWorkflows(connection?.id)
 
-  // Get logger from container - useContainer returns undefined if not available
   const container = useContainer()
   const logger = container?.resolve(TOKENS.UTIL_LOGGER) ?? undefined
 
-  // Try to get the workflow registry if available
   const registry = useOptionalWorkflowRegistry()
 
-  // This useEffect is for properly rendering changes to the alt contact name
   useEffect(() => {
     setTheirLabel(getConnectionName(connection, store.preferences.alternateContactNames))
   }, [connection, store.preferences.alternateContactNames])
 
-  // Create message context for handlers
   const messageContext: MessageContext = useMemo(
     () => ({
       t,
@@ -119,18 +103,10 @@ export const useChatMessagesByConnection = (connection: ConnectionRecord): Exten
   useEffect(() => {
     let transformedMessages: Array<ExtendedChatMessage> = []
 
-    // If registry is available, use it
     if (registry) {
-      // Include DIDComm workflow instances if available
-      const allRecords = [
-        ...basicMessages,
-        ...credentials,
-        ...proofs,
-        ...(workflowsAvailable ? workflowInstances : []),
-      ]
+      const allRecords = [...basicMessages, ...credentials, ...proofs, ...(workflowsAvailable ? workflowInstances : [])]
       transformedMessages = registry.toMessages(allRecords, connection, messageContext)
     } else {
-      // Fallback to legacy implementation
       transformedMessages = transformMessagesLegacy(
         basicMessages,
         credentials,
@@ -143,14 +119,8 @@ export const useChatMessagesByConnection = (connection: ConnectionRecord): Exten
       )
     }
 
-    // Add connected message
     const connectedBubbleStyle = {
-      backgroundColor: ColorPalette.brand.secondaryBackground,
-      borderRadius: 12,
-      padding: 12,
-      borderWidth: 1,
-      borderColor: ColorPalette.brand.primary,
-      maxWidth: 280,
+      width: '100%' as const,
     }
 
     const connectedMessage = connection
@@ -159,31 +129,58 @@ export const useChatMessagesByConnection = (connection: ConnectionRecord): Exten
           text: `${t('Chat.YouConnected')} ${theirLabel}`,
           renderEvent: () => (
             <View style={connectedBubbleStyle}>
-              <ThemedText style={theme.rightText}>
+              <ThemedText style={theme.leftText}>
                 {t('Chat.YouConnected')}
-                <ThemedText style={[theme.rightText, theme.rightTextHighlighted]}> {theirLabel}</ThemedText>
+                <ThemedText style={[theme.leftText, theme.leftTextHighlighted]}> {theirLabel}</ThemedText>
               </ThemedText>
             </View>
           ),
           createdAt: connection.createdAt,
-          user: { _id: Role.me },
+          user: { _id: Role.them },
         }
       : undefined
+
+    const rootMenuMessage = basicMessages.find((msg) => {
+      try {
+        const content = JSON.parse(msg.content)
+        return content.workflowID === 'root-menu'
+      } catch {
+        return false
+      }
+    })
+
+    if (rootMenuMessage && !transformedMessages.some((msg) => msg._id === rootMenuMessage.id)) {
+      try {
+        const content = JSON.parse(rootMenuMessage.content)
+        const displayData = content.displayData || []
+        const titleItem = displayData.find((item: any) => item.type === 'title')
+        const textItem = displayData.find((item: any) => item.type === 'text')
+
+        if (titleItem && textItem) {
+          const aboutMessage = {
+            _id: rootMenuMessage.id,
+            text: titleItem.text,
+            renderEvent: () => <AboutInstitution title={titleItem.text} content={textItem.text} />,
+            createdAt: rootMenuMessage.createdAt,
+            user: { _id: Role.them },
+          }
+          transformedMessages.push(aboutMessage)
+        }
+      } catch (error) {
+        // console.log('Error parsing workflow message:', error)
+      }
+    }
 
     const finalMessages = connectedMessage
       ? [...transformedMessages.sort((a: any, b: any) => b.createdAt - a.createdAt), connectedMessage]
       : transformedMessages.sort((a: any, b: any) => b.createdAt - a.createdAt)
 
     setMessages(finalMessages)
-  }, [ColorPalette, basicMessages, theme, credentials, t, navigation, proofs, theirLabel, connection, registry, messageContext, workflowInstances, workflowsAvailable])
+  }, [ColorPalette, basicMessages, theme, credentials, t, navigation, proofs, theirLabel, connection, registry, messageContext, workflowInstances, workflowsAvailable, AboutInstitution])
 
   return messages
 }
 
-/**
- * Legacy message transformation (for backwards compatibility)
- * @deprecated Use workflow handlers instead
- */
 function transformMessagesLegacy(
   basicMessages: BasicMessageRecord[],
   credentials: CredentialExchangeRecord[],
@@ -196,7 +193,6 @@ function transformMessagesLegacy(
 ): ExtendedChatMessage[] {
   const transformedMessages: Array<ExtendedChatMessage> = []
 
-  // Transform basic messages
   transformedMessages.push(
     ...basicMessages.map((record: BasicMessageRecord) => {
       const role = getMessageEventRole(record)
@@ -243,7 +239,6 @@ function transformMessagesLegacy(
     })
   )
 
-  // Transform credential messages
   transformedMessages.push(
     ...credentials.map((record: CredentialExchangeRecord) => {
       const role = getCredentialEventRole(record)
@@ -289,7 +284,6 @@ function transformMessagesLegacy(
     })
   )
 
-  // Transform proof messages
   transformedMessages.push(
     ...proofs.map((record: ProofExchangeRecord) => {
       const role = getProofEventRole(record)

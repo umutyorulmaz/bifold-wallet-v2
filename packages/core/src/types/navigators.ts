@@ -16,6 +16,8 @@ export enum Screens {
   ChangePINSuccess = 'Change PIN Success',
   EnterPIN = 'Enter PIN',
   VerifyPIN = 'Verify PIN',
+  HomeNoChannels = 'Home No Channels',
+  HomeNoChannelModal = 'Home No Channel Modal',
   Home = 'Home',
   Scan = 'Scan',
   PasteUrl = 'Paste URL',
@@ -73,6 +75,7 @@ export enum Screens {
 }
 
 export enum Stacks {
+  HomeNoChannelStack = 'Home No Channel Stack',
   TabStack = 'Tab Stack',
   HomeStack = 'Home Stack',
   ConnectStack = 'Connect Stack',
@@ -94,6 +97,7 @@ export enum TabStacks {
 
 export type RootStackParams = {
   [Screens.Splash]: undefined
+  [Stacks.HomeNoChannelStack]: NavigatorScreenParams<HomeNoChannelParams>
   [Stacks.TabStack]: NavigatorScreenParams<TabStackParams>
   [Screens.Chat]: { connectionId: string }
   [Stacks.ConnectStack]: NavigatorScreenParams<ConnectStackParams>
@@ -132,11 +136,16 @@ export type OnboardingStackParams = {
   [Screens.Onboarding]: undefined
   [Screens.Terms]: undefined
   [Screens.AttemptLockout]: undefined
+  [Screens.Biometry]: undefined
+  [Screens.PushNotifications]: undefined
   [Screens.CreatePIN]: { setAuthenticated: (status: boolean) => void } | undefined
   [Screens.EnterPIN]: { setAuthenticated: (status: boolean) => void } | undefined
-  [Screens.Biometry]: undefined
   [Screens.NameWallet]: undefined
-  [Screens.PushNotifications]: undefined
+}
+
+export type HomeNoChannelParams = {
+  [Screens.HomeNoChannels]: undefined
+  [Screens.HomeNoChannelModal]: { content: string }
 }
 
 export type ContactStackParams = {

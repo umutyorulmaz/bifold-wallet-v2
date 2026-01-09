@@ -196,6 +196,7 @@ export interface IGrayscaleColors {
   lightGrey: string
   veryLightGrey: string
   white: string
+  digicredBackgroundModal: string
 }
 
 export interface IErrorColors {
@@ -242,6 +243,7 @@ const GrayscaleColors: IGrayscaleColors = {
   lightGrey: '#D3D3D3',
   veryLightGrey: '#F2F2F2',
   white: '#FFFFFF',
+  digicredBackgroundModal: '#25272A',
 }
 
 const InlineErrorMessageColors: IErrorColors = {
@@ -938,11 +940,13 @@ export function createChatTheme(theme: { ColorPalette: IColorPalette; TextTheme:
       color: theme.ColorPalette.grayscale.lightGrey,
       fontSize: 12,
       marginTop: 8,
+      marginBottom: 0,
     },
     timeStyleRight: {
       color: theme.ColorPalette.grayscale.lightGrey,
       fontSize: 12,
       marginTop: 8,
+      marginBottom: 0,
     },
     leftText: {
       color: theme.ColorPalette.brand.text,

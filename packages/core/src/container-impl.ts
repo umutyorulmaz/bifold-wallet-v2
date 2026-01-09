@@ -30,13 +30,13 @@ import HistoryManager from './modules/history/context/historyManager'
 import { RefreshOrchestrator } from './modules/openid/refresh/refreshOrchestrator'
 import { IRefreshOrchestrator } from './modules/openid/refresh/types'
 import {
-  WorkflowRegistry,
-  createCredentialHandler,
-  createProofHandler,
-  createBasicMessageHandler,
   createActionMenuHandler,
-  createDIDCommWorkflowHandler,
+  createBasicMessageHandler,
   createChatScreenConfig,
+  createCredentialHandler,
+  createDIDCommWorkflowHandler,
+  createProofHandler,
+  WorkflowRegistry,
 } from './modules/workflow'
 import { ThemeRegistry } from './modules/theme'
 import BellIcon from './assets/img/bell-icon.svg'
@@ -127,10 +127,10 @@ import { Config, HistoryEventsLoggerConfig } from './types/config'
 import { InlineErrorPosition } from './types/error'
 import {
   Migration as MigrationState,
+  Onboarding as StoreOnboardingState,
   PersistentState,
   Preferences as PreferencesState,
   State,
-  Onboarding as StoreOnboardingState,
   Tours as ToursState,
 } from './types/state'
 
@@ -145,7 +145,7 @@ export const defaultConfig: Config = {
   enableImplicitInvitations: true,
   enableReuseConnections: true,
   preventScreenCapture: false,
-  supportedLanguages: [Locales.en, Locales.fr, Locales.ptBr],
+  supportedLanguages: [Locales.en, Locales.fr, Locales.ptBr, Locales.sp],
   showPreface: false,
   disableOnboardingSkip: false,
   disableContactsInSettings: false,
@@ -288,7 +288,6 @@ export class MainContainer implements Container {
     this._container.registerInstance(TOKENS.STACK_PROOF_REQUEST, ProofRequestStack)
     this._container.registerInstance(TOKENS.STACK_NOTIFICATION, NotificationStack)
     this._container.registerInstance(TOKENS.STACK_HISTORY, HistoryStack)
-
     this._container.registerInstance(TOKENS.COMP_BUTTON, Button)
     this._container.registerInstance(TOKENS.GROUP_BY_REFERENT, false)
     this._container.registerInstance(TOKENS.HISTORY_ENABLED, false)
@@ -312,6 +311,8 @@ export class MainContainer implements Container {
     this._container.registerInstance(TOKENS.COMPONENT_CRED_LIST_HEADER_RIGHT, () => null)
     this._container.registerInstance(TOKENS.COMPONENT_CRED_LIST_OPTIONS, () => null)
     this._container.registerInstance(TOKENS.COMPONENT_CRED_LIST_FOOTER, () => null)
+    this._container.registerInstance(TOKENS.COMPONENT_ABOUT_INSTITUTION, () => null)
+    this._container.registerInstance(TOKENS.COMPONENT_GRADIENT_BACKGROUND, () => null)
     this._container.registerInstance(TOKENS.COMPONENT_HOME_HEADER, HomeHeaderView)
     this._container.registerInstance(TOKENS.COMPONENT_NOTIFICATION_BANNER, Banner)
     this._container.registerInstance(TOKENS.COMPONENT_HOME_NOTIFICATIONS_EMPTY_LIST, NoNewUpdates)

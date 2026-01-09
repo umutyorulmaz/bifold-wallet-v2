@@ -179,7 +179,7 @@ export const VDCard: React.FC<VDCardProps> = ({
   }
 
   // The aspect ratio of the original card
-  const aspectRatio = 280 / 175
+  const aspectRatio = 350.0 / 219.69
 
   // Apply a very conservative scale factor
   const baseScaleFactor = isTablet ? (isInChat ? 1.0 : 1.2) : 0.9
@@ -204,7 +204,7 @@ export const VDCard: React.FC<VDCardProps> = ({
 
   const photoScaleFactor = isInChat ? 0.8 : 1.0
 
-  const capePhotoHeight = (isTablet && !isInChat ? 280 : 150) * baseScaleFactor * photoScaleFactor
+  const capePhotoHeight = (isTablet && !isInChat ? 310 : 180) * baseScaleFactor * photoScaleFactor
   const capeFooterHeight = 35 * baseScaleFactor
   const capeNameFontSize = 16 * baseScaleFactor
   const capeDetailsFontSize = 12 * baseScaleFactor
@@ -249,15 +249,19 @@ export const VDCard: React.FC<VDCardProps> = ({
       style={[
         styles.card,
         cardContainerStyle,
-        isInChat
-          ? {
-              width: isTablet ? 320 : 280,
-              height: isTablet ? 215 : 175,
-            }
-          : {
-              width: '100%',
-              aspectRatio: aspectRatio,
-            },
+        {
+          width: '90%',
+          aspectRatio: aspectRatio,
+        },
+        // isInChat
+        //   ? {
+        //       width: isTablet ? 320 : 280,
+        //       height: isTablet ? 215 : 175,
+        //     }
+        //   : {
+        //       width: '100%',
+        //       aspectRatio: aspectRatio,
+        //     },
       ]}
     >
       {cardType === CardType.CAPE_FEAR ? (
@@ -266,10 +270,7 @@ export const VDCard: React.FC<VDCardProps> = ({
           {/* Cape Fear Header Logo */}
           <View style={styles.capeHeaderWrapper}>
             {!isInChat && isTablet ? (
-              <Image
-                source={require('../../../../assets/img/CapeFearNewLogo.png')}
-                style={{ marginTop: 5 }}
-              />
+              <Image source={require('../../../../assets/img/CapeFearNewLogo.png')} style={{ marginTop: 5 }} />
             ) : (
               <CapeFearLogo
                 width={capeHeaderWidth}
@@ -294,10 +295,7 @@ export const VDCard: React.FC<VDCardProps> = ({
             {/* Left column - Photo placeholder (40%) */}
             <View style={[styles.capePhotoContainer, { flex: 0.4, height: capePhotoHeight, overflow: 'hidden' }]}>
               {studentPhoto ? (
-                <Image
-                  source={{ uri: getImageUri(studentPhoto) }}
-                  style={styles.capeStudentPhoto}
-                />
+                <Image source={{ uri: getImageUri(studentPhoto) }} style={styles.capeStudentPhoto} />
               ) : (
                 <Image
                   source={require('../../../../assets/img/fallback-student-image.png')}
@@ -307,7 +305,15 @@ export const VDCard: React.FC<VDCardProps> = ({
             </View>
 
             {/* Right column - Building (60%) */}
-            <View style={{ flex: 0.6, height: capePhotoHeight, overflow: 'hidden', justifyContent: 'flex-start', alignItems: 'flex-start' }}>
+            <View
+              style={{
+                flex: 0.6,
+                height: capePhotoHeight,
+                overflow: 'hidden',
+                justifyContent: 'flex-start',
+                alignItems: 'flex-start',
+              }}
+            >
               <CfBuilding
                 width="100%"
                 height={capePhotoHeight * 1.2}
@@ -336,7 +342,9 @@ export const VDCard: React.FC<VDCardProps> = ({
               <ThemedText style={[styles.capeExpirationLabel, { fontSize: capeDetailsFontSize }]}>
                 {t('Transcript.exp. date' as any)}
               </ThemedText>
-              <ThemedText style={[styles.capeExpirationValue, { fontSize: capeDetailsFontSize }]}>{issueDate}</ThemedText>
+              <ThemedText style={[styles.capeExpirationValue, { fontSize: capeDetailsFontSize }]}>
+                {issueDate}
+              </ThemedText>
             </View>
           </View>
         </View>
@@ -354,21 +362,36 @@ export const VDCard: React.FC<VDCardProps> = ({
             )}
             {cardType === CardType.PENDER && (
               <View style={styles.penderHeader}>
-                <ThemedText style={[styles.penderTitle, { fontSize: nameFontSize * 0.9, marginLeft: isTablet && !isInChat ? 20 : 0 }]}>
+                <ThemedText
+                  style={[
+                    styles.penderTitle,
+                    { fontSize: nameFontSize * 0.9, marginLeft: isTablet && !isInChat ? 20 : 0 },
+                  ]}
+                >
                   {t('Transcript.DistrictName' as any)}: Pender County Schools
                 </ThemedText>
               </View>
             )}
             {cardType === CardType.NHCS && (
               <View style={styles.penderHeader}>
-                <ThemedText style={[styles.penderTitle, { fontSize: nameFontSize * 0.9, marginLeft: isTablet && !isInChat ? 20 : 0 }]}>
+                <ThemedText
+                  style={[
+                    styles.penderTitle,
+                    { fontSize: nameFontSize * 0.9, marginLeft: isTablet && !isInChat ? 20 : 0 },
+                  ]}
+                >
                   {t('Transcript.DistrictName' as any)}: New Hanover County Schools
                 </ThemedText>
               </View>
             )}
             {cardType === CardType.MIAMI && (
               <View style={styles.penderHeader}>
-                <ThemedText style={[styles.penderTitle, { fontSize: nameFontSize * 0.9, marginLeft: isTablet && !isInChat ? 20 : 0 }]}>
+                <ThemedText
+                  style={[
+                    styles.penderTitle,
+                    { fontSize: nameFontSize * 0.9, marginLeft: isTablet && !isInChat ? 20 : 0 },
+                  ]}
+                >
                   {t('Transcript.DistrictName' as any)}: Miami-Dade County Schools
                 </ThemedText>
               </View>
@@ -382,20 +405,51 @@ export const VDCard: React.FC<VDCardProps> = ({
                 </View>
               ) : (
                 <>
-                  <ThemedText style={[styles.name, { fontSize: nameFontSize, color: SettingsTheme.newSettingColors.headerTitle }]}>
-                    {(cardType === CardType.PENDER || cardType === CardType.NHCS || cardType === CardType.MIAMI) && fullName
+                  <ThemedText
+                    style={[styles.name, { fontSize: nameFontSize, color: SettingsTheme.newSettingColors.headerTitle }]}
+                  >
+                    {(cardType === CardType.PENDER || cardType === CardType.NHCS || cardType === CardType.MIAMI) &&
+                    fullName
                       ? fullName
                       : `${firstName} ${lastName}`}
                   </ThemedText>
-                  {(cardType === CardType.PENDER || cardType === CardType.NHCS || cardType === CardType.MIAMI) && school && (
-                    <ThemedText style={[styles.details, { fontSize: detailsFontSize, marginBottom: infoGap, color: SettingsTheme.newSettingColors.headerTitle }]}>
-                      {t('Chat.School' as any)}: {school}
-                    </ThemedText>
-                  )}
-                  <ThemedText style={[styles.details, { fontSize: detailsFontSize, marginBottom: infoGap, color: SettingsTheme.newSettingColors.headerTitle }]}>
+                  {(cardType === CardType.PENDER || cardType === CardType.NHCS || cardType === CardType.MIAMI) &&
+                    school && (
+                      <ThemedText
+                        style={[
+                          styles.details,
+                          {
+                            fontSize: detailsFontSize,
+                            marginBottom: infoGap,
+                            color: SettingsTheme.newSettingColors.headerTitle,
+                          },
+                        ]}
+                      >
+                        {t('Chat.School' as any)}: {school}
+                      </ThemedText>
+                    )}
+                  <ThemedText
+                    style={[
+                      styles.details,
+                      {
+                        fontSize: detailsFontSize,
+                        marginBottom: infoGap,
+                        color: SettingsTheme.newSettingColors.headerTitle,
+                      },
+                    ]}
+                  >
                     {t('Chat.StudentID' as any)}: {studentId}
                   </ThemedText>
-                  <ThemedText style={[styles.details, { fontSize: detailsFontSize, marginBottom: infoGap, color: SettingsTheme.newSettingColors.headerTitle }]}>
+                  <ThemedText
+                    style={[
+                      styles.details,
+                      {
+                        fontSize: detailsFontSize,
+                        marginBottom: infoGap,
+                        color: SettingsTheme.newSettingColors.headerTitle,
+                      },
+                    ]}
+                  >
                     {t('Chat.Expiration' as any)}: {issueDate}
                   </ThemedText>
                 </>
@@ -450,6 +504,7 @@ export const VDCard: React.FC<VDCardProps> = ({
 
 const styles = StyleSheet.create({
   card: {
+    marginTop: 28,
     borderRadius: 10,
     flexDirection: 'row',
     padding: 10,

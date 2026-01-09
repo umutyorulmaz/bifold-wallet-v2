@@ -7,6 +7,7 @@ export const renderInputToolbar = (props: any, theme: any) => (
   <InputToolbar
     {...props}
     containerStyle={{
+      display: 'none',
       ...theme.inputToolbar,
       justifyContent: 'center',
       paddingVertical: 8,

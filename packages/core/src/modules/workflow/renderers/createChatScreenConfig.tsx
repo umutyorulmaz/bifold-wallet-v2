@@ -132,6 +132,8 @@ export function createDCWalletChatConfig(options: {
   InfoIconComponent?: React.FC<SvgProps>
   /** Callback when credential card is pressed */
   onCredentialPress?: (credential: any, context: any) => void
+  onCredentialAccept?: (credential: any, context: any) => void
+  onCredentialDecline?: (credential: any, context: any) => void
   /** Callback when proof card is pressed */
   onProofPress?: (proof: any, context: any) => void
 }): IChatScreenConfig {
@@ -142,11 +144,13 @@ export function createDCWalletChatConfig(options: {
       InfoIconComponent: options.InfoIconComponent,
     },
     background: {
-      useGradient: true,
+      useGradient: false,
     },
     useVDCredentialRenderer: true,
     credential: {
       onPress: options.onCredentialPress,
+      onAccept: options.onCredentialAccept,
+      onDecline: options.onCredentialDecline,
     },
     proof: {
       onPress: options.onProofPress,

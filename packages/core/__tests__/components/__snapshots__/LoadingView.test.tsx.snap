@@ -29,40 +29,10 @@ exports[`LoadingView Component renders correctly 1`] = `
     }
     testID="com.ariesbifold:id/LoadingActivityIndicator"
   >
-    <Image
-      source={
-        Object {
-          "default": "",
-        }
-      }
-      style={
-        Object {
-          "height": 120,
-          "objectFit": "contain",
-          "width": 120,
-        }
-      }
-      testID="com.ariesbifold:id/LoadingActivityIndicatorImage"
+    <
+      height={230}
+      width={230}
     />
-    <View
-      collapsable={false}
-      style={
-        Object {
-          "position": "absolute",
-          "transform": Array [
-            Object {
-              "rotate": "0deg",
-            },
-          ],
-        }
-      }
-    >
-      <
-        fill="#FFFFFF"
-        height={200}
-        width={200}
-      />
-    </View>
   </View>
 </RNCSafeAreaView>
 `;

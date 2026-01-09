@@ -7,18 +7,18 @@ import {
   Modal,
   DeviceEventEmitter,
   Keyboard,
+  Dimensions,
 } from 'react-native'
 
-import {
-  useAuth,
-  useStore,
-  DispatchAction,
-  EventTypes,
-  testIdWithKey,
-} from '@bifold/core'
-
-import { GradientBackground, DigiCredButton, DigiCredLogo, CardModal, DigiCredInput } from '../components'
+import { useAuth, useStore, DispatchAction, testIdWithKey } from '@bifold/core'
+import { EventTypes } from '../../../../packages/core/src/constants'
+import { GradientBackground, DigiCredButton, CardModal, DigiCredInput } from '../components'
 import { DigiCredColors } from '../theme'
+import { isTablet } from '../utils/devices'
+import DigicredLogoWallet from '../assets/SplashLogo.svg'
+import LinearGradient from 'react-native-linear-gradient'
+
+const { width: SCREEN_WIDTH } = Dimensions.get('window')
 
 interface PINEnterProps {
   setAuthenticated: (status: boolean) => void
@@ -37,6 +37,11 @@ const PINEnter: React.FC<PINEnterProps> = ({ setAuthenticated }) => {
   const isSubmittingRef = useRef(false)
 
   const minPINLength = 6
+  const buttonWidth = isTablet() ? SCREEN_WIDTH * 0.6 : SCREEN_WIDTH * 0.8
+  const orTextWidth = 36
+  const totalGap = buttonWidth - orTextWidth
+  const leftLineWidth = totalGap / 2.3
+  const rightLineWidth = totalGap / 2.2
 
   useEffect(() => {
     const checkBiometrics = async () => {
@@ -74,59 +79,64 @@ const PINEnter: React.FC<PINEnterProps> = ({ setAuthenticated }) => {
     }
   }, [getWalletSecret, dispatch, setAuthenticated])
 
-  const unlockWithPIN = useCallback(async (pinValue?: string) => {
-    const pinToCheck = pinValue || PIN
+  const unlockWithPIN = useCallback(
+    async (pinValue?: string) => {
+      const pinToCheck = pinValue || PIN
 
-    if (isSubmittingRef.current || pinToCheck.length < minPINLength) {
-      return
-    }
-
-    isSubmittingRef.current = true
-    Keyboard.dismiss()
-    setError(null)
-
-    try {
-      setIsLoading(true)
-      const result = await checkWalletPIN(pinToCheck)
-
-      if (!result) {
-        const newAttempt = store.loginAttempt.loginAttempts + 1
-        dispatch({
-          type: DispatchAction.ATTEMPT_UPDATED,
-          payload: [{ loginAttempts: newAttempt }],
-        })
-        setError(t('PINEnter.IncorrectPIN'))
-        setPIN('')
-        setIsLoading(false)
-        isSubmittingRef.current = false
+      if (isSubmittingRef.current || pinToCheck.length < minPINLength) {
         return
       }
 
-      dispatch({
-        type: DispatchAction.ATTEMPT_UPDATED,
-        payload: [{ loginAttempts: 0 }],
-      })
-      dispatch({
-        type: DispatchAction.LOCKOUT_UPDATED,
-        payload: [{ displayNotification: false }],
-      })
-      setShowPINModal(false)
-      setAuthenticated(true)
-    } catch (err) {
-      setError(t('PINEnter.IncorrectPIN'))
-      isSubmittingRef.current = false
-    } finally {
-      setIsLoading(false)
-    }
-  }, [PIN, checkWalletPIN, dispatch, setAuthenticated, store.loginAttempt.loginAttempts, t])
+      isSubmittingRef.current = true
+      Keyboard.dismiss()
+      setError(null)
 
-  // Auto-submit when 6 digits entered
-  const handlePINChange = useCallback((value: string) => {
-    setPIN(value)
-    if (value.length === minPINLength) {
-      unlockWithPIN(value)
-    }
-  }, [unlockWithPIN])
+      try {
+        setIsLoading(true)
+        const result = await checkWalletPIN(pinToCheck)
+
+        if (!result) {
+          const newAttempt = store.loginAttempt.loginAttempts + 1
+          dispatch({
+            type: DispatchAction.ATTEMPT_UPDATED,
+            payload: [{ loginAttempts: newAttempt }],
+          })
+          setError(t('PINEnter.IncorrectPIN'))
+          setPIN('')
+          setIsLoading(false)
+          isSubmittingRef.current = false
+          return
+        }
+
+        dispatch({
+          type: DispatchAction.ATTEMPT_UPDATED,
+          payload: [{ loginAttempts: 0 }],
+        })
+        dispatch({
+          type: DispatchAction.LOCKOUT_UPDATED,
+          payload: [{ displayNotification: false }],
+        })
+        setShowPINModal(false)
+        setAuthenticated(true)
+      } catch (err) {
+        setError(t('PINEnter.IncorrectPIN'))
+        isSubmittingRef.current = false
+      } finally {
+        setIsLoading(false)
+      }
+    },
+    [PIN, checkWalletPIN, dispatch, setAuthenticated, store.loginAttempt.loginAttempts, t]
+  )
+
+  const handlePINChange = useCallback(
+    (value: string) => {
+      setPIN(value)
+      if (value.length === minPINLength) {
+        unlockWithPIN(value)
+      }
+    },
+    [unlockWithPIN]
+  )
 
   const handleOpenPINModal = () => {
     setPIN('')
@@ -137,52 +147,56 @@ const PINEnter: React.FC<PINEnterProps> = ({ setAuthenticated }) => {
   return (
     <GradientBackground>
       <View style={styles.container}>
-        {/* Logo Section */}
-        <View style={styles.logoContainer}>
-          <DigiCredLogo size="large" />
+        <View style={[styles.logoContainer, { marginTop: 150 }]}>
+          <DigicredLogoWallet width={'85%'} />
         </View>
 
-        {/* Buttons Section */}
         <View style={styles.buttonsContainer}>
           <DigiCredButton
             title={t('PINEnter.UnlockWithPIN') || 'UNLOCK WITH PIN'}
             onPress={handleOpenPINModal}
             variant="secondary"
-            fullWidth
+            customStyle={[styles.figmaButton, { width: buttonWidth, height: 55 }]}
+            customTextStyle={styles.figmaButtonText}
             testID={testIdWithKey('UnlockWithPIN')}
             accessibilityLabel={t('PINEnter.UnlockWithPIN')}
           />
 
-          {(store.preferences.useBiometry && biometricsAvailable) && (
+          {store.preferences.useBiometry && biometricsAvailable && (
             <>
-              <Text style={styles.orText}>{t('PINEnter.Or') || 'OR'}</Text>
-              <DigiCredButton
-                title={t('PINEnter.UnlockWithBiometrics') || 'UNLOCK WITH BIOMETRICS'}
-                onPress={unlockWithBiometrics}
-                variant="primary"
-                fullWidth
-                loading={isLoading && !showPINModal}
-                testID={testIdWithKey('UnlockWithBiometrics')}
-                accessibilityLabel={t('PINEnter.UnlockWithBiometrics')}
-              />
+              <View style={[styles.orContainer, { width: buttonWidth }]}>
+                <View style={[styles.orLine, { width: leftLineWidth }]} />
+                <Text style={styles.orText}>{t('PINEnter.Or') || 'OR'}</Text>
+                <View style={[styles.orLine, { width: rightLineWidth }]} />
+              </View>
+              <LinearGradient
+                colors={DigiCredColors.homeNoChannels.buttonGradient}
+                locations={DigiCredColors.homeNoChannels.buttonGradientLocations}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                style={[styles.figmaButton, { width: buttonWidth, height: 55 }]}
+              >
+                <DigiCredButton
+                  title={t('PINEnter.UnlockWithBiometrics') || 'UNLOCK WITH BIOMETRICS'}
+                  onPress={unlockWithBiometrics}
+                  variant="primary"
+                  customStyle={styles.figmaButtonTextWrapper}
+                  customTextStyle={styles.figmaButtonText}
+                  loading={isLoading && !showPINModal}
+                  testID={testIdWithKey('UnlockWithBiometrics')}
+                  accessibilityLabel={t('PINEnter.UnlockWithBiometrics')}
+                />
+              </LinearGradient>
             </>
           )}
         </View>
       </View>
 
-      {/* PIN Entry Modal */}
-      <Modal
-        visible={showPINModal}
-        animationType="slide"
-        transparent
-        onRequestClose={() => setShowPINModal(false)}
-      >
+      <Modal visible={showPINModal} animationType="slide" transparent onRequestClose={() => setShowPINModal(false)}>
         <GradientBackground>
           <View style={styles.modalContainer}>
             <CardModal centered>
-              <Text style={styles.modalTitle}>
-                {t('PINEnter.EnterPIN') || 'Enter Your PIN'}
-              </Text>
+              <Text style={styles.modalTitle}>{t('PINEnter.EnterPIN') || 'Enter Your PIN'}</Text>
               <Text style={styles.modalSubtitle}>
                 {t('PINEnter.EnterPINDescription') || 'Enter your 6 digit PIN to unlock your wallet'}
               </Text>
@@ -199,29 +213,46 @@ const PINEnter: React.FC<PINEnterProps> = ({ setAuthenticated }) => {
                 accessibilityLabel={t('PINEnter.EnterPIN')}
               />
 
-              {error && (
-                <Text style={styles.errorText}>{error}</Text>
-              )}
+              {error && <Text style={styles.errorText}>{error}</Text>}
 
               <View style={styles.modalButtons}>
                 <DigiCredButton
                   title={t('Global.Cancel') || 'CANCEL'}
                   onPress={() => setShowPINModal(false)}
                   variant="secondary"
-                  style={styles.cancelButton}
+                  customStyle={[styles.figmaButtonCancel, { height: 50 }]}
+                  customTextStyle={styles.figmaButtonText}
                 />
-                <DigiCredButton
-                  title={t('PINEnter.Unlock') || 'UNLOCK'}
-                  onPress={unlockWithPIN}
-                  disabled={PIN.length < minPINLength}
-                  loading={isLoading}
-                  style={styles.unlockButton}
-                />
+
+                <LinearGradient
+                  colors={DigiCredColors.homeNoChannels.buttonGradient}
+                  locations={DigiCredColors.homeNoChannels.buttonGradientLocations}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 1 }}
+                  style={[styles.figmaButton, { height: 50 }]}
+                >
+                  <DigiCredButton
+                    title={t('PINEnter.Unlock') || 'UNLOCK'}
+                    onPress={unlockWithPIN}
+                    disabled={PIN.length < minPINLength}
+                    loading={isLoading}
+                    variant="primary"
+                    customStyle={{
+                      backgroundColor: 'transparent',
+                      borderWidth: 0,
+                      height: '100%',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}
+                    customTextStyle={styles.figmaButtonText}
+                  />
+                </LinearGradient>
               </View>
             </CardModal>
           </View>
         </GradientBackground>
       </Modal>
+
     </GradientBackground>
   )
 }
@@ -229,23 +260,69 @@ const PINEnter: React.FC<PINEnterProps> = ({ setAuthenticated }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'space-between',
-    paddingVertical: 60,
+    justifyContent: 'flex-start',
+    paddingTop: 0,
+    paddingHorizontal: 24,
   },
   logoContainer: {
-    flex: 1,
+    alignItems: 'center',
+    width: '100%',
+  },
+  buttonsContainer: {
+    marginTop: 60,
+    alignItems: 'center',
+  },
+  figmaButtonCancel: {
+    borderRadius: 25,
+    borderWidth: 1.5,
+    borderColor: DigiCredColors.text.homePrimary,
+    paddingTop: 5,
+    paddingBottom: 5,
+    marginLeft: -5,
+    paddingHorizontal: 15,
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'stretch',
+    backgroundColor: 'transparent',
+  },
+  figmaButton: {
+    marginLeft: 10,
+    borderRadius: 25,
+    borderWidth: 1.5,
+    borderColor: DigiCredColors.toggle.thumb,
+    paddingTop: 5,
+    paddingBottom: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'stretch',
+    backgroundColor: 'transparent',
+  },
+  figmaButtonTextWrapper: {
+    backgroundColor: 'transparent',
+    height: '100%',
     justifyContent: 'center',
     alignItems: 'center',
   },
-  buttonsContainer: {
-    paddingHorizontal: 24,
-    paddingBottom: 40,
+  figmaButtonText: {
+    color: DigiCredColors.toggle.thumb,
+    fontSize: 16,
+    fontWeight: '600',
+    lineHeight: 20,
+  },
+  orContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 16,
+  },
+  orLine: {
+    height: 1,
+    backgroundColor: DigiCredColors.text.homePrimary,
   },
   orText: {
-    color: DigiCredColors.text.secondary,
+    marginHorizontal: 12,
+    color: DigiCredColors.text.homePrimary,
     fontSize: 14,
-    textAlign: 'center',
-    marginVertical: 16,
+    fontWeight: '600',
   },
   modalContainer: {
     flex: 1,
@@ -255,12 +332,12 @@ const styles = StyleSheet.create({
   modalTitle: {
     fontSize: 22,
     fontWeight: '600',
-    color: DigiCredColors.text.primary,
+    color: DigiCredColors.text.homePrimary,
     marginBottom: 12,
   },
   modalSubtitle: {
     fontSize: 14,
-    color: DigiCredColors.text.secondary,
+    color: DigiCredColors.homeNoChannels.itemDescription,
     lineHeight: 20,
     marginBottom: 24,
   },
@@ -274,14 +351,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: 8,
-  },
-  cancelButton: {
-    flex: 1,
-    marginRight: 8,
-  },
-  unlockButton: {
-    flex: 1,
-    marginLeft: 8,
   },
 })
 

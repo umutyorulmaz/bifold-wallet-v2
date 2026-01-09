@@ -418,11 +418,13 @@ export interface IChatTheme {
     color: string
     fontSize: number
     marginTop: number
+    marginBottom: number
   }
   timeStyleRight: TextStyle & {
     color: string
     fontSize: number
     marginTop: number
+    marginBottom: number
   }
   leftText: TextStyle & {
     color: string

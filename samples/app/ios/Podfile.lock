@@ -944,7 +944,7 @@ PODS:
     - React-Core
   - react-native-safe-area-context (4.8.2):
     - React-Core
-  - react-native-screenguard (1.1.0):
+  - react-native-screenguard (1.1.1):
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
@@ -1155,7 +1155,7 @@ PODS:
     - React-Core
   - RNLocalize (2.2.6):
     - React-Core
-  - RNPermissions (5.4.1):
+  - RNPermissions (5.4.4):
     - React-Core
   - RNScreens (4.4.0):
     - glog
@@ -1168,7 +1168,7 @@ PODS:
     - React-Core
   - RNSVG (15.15.1):
     - React-Core
-  - RNVectorIcons (10.0.3):
+  - RNVectorIcons (10.3.0):
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core

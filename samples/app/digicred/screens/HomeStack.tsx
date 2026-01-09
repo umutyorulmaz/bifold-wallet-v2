@@ -1,12 +1,8 @@
 import { createStackNavigator } from '@react-navigation/stack'
 import React from 'react'
 
-import {
-  TOKENS,
-  useServices,
-  HomeStackParams,
-  Screens,
-} from '@bifold/core'
+import { HomeStackParams, Screens } from '../../../../packages/core/src/types/navigators'
+import { TOKENS, useServices } from '../../../../packages/core/src/container-api'
 
 const Stack = createStackNavigator<HomeStackParams>()
 

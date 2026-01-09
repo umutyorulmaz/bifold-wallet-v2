@@ -1,26 +1,36 @@
 import React from 'react'
 import { StyleSheet, View, ViewStyle } from 'react-native'
-
 import { DigiCredColors } from '../theme'
 
 interface CardModalProps {
   children: React.ReactNode
   style?: ViewStyle
+  customStyle?: ViewStyle
   fullHeight?: boolean
   centered?: boolean
 }
 
-const CardModal: React.FC<CardModalProps> = ({ children, style, fullHeight = false, centered = false }) => {
-  return (
-    <View style={[styles.card, fullHeight && styles.fullHeight, centered && styles.centered, style]}>
-      {children}
-    </View>
-  )
+const CardModal: React.FC<CardModalProps> = ({
+  children,
+  style,
+  customStyle,
+  fullHeight = false,
+  centered = false,
+}) => {
+  const cardStyle = [
+    styles.card,
+    fullHeight && styles.fullHeight,
+    centered && styles.centered,
+    customStyle,
+    style,
+  ]
+
+  return <View style={cardStyle}>{children}</View>
 }
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: DigiCredColors.card.background,
+    backgroundColor:  DigiCredColors.homeNoChannels.itemBackground,
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
     paddingHorizontal: 24,

@@ -7,6 +7,8 @@ export {
   DigiCredBiometrics,
   DigiCredPushNotifications,
   DigiCredHome,
+  DigiCredHomeNoChannels,
+  DigiCredHomeNoChannelModal,
   DigiCredTabStack,
   DigiCredHomeStack,
   DigiCredCredentials,
@@ -16,6 +18,8 @@ export {
 // DigiCred Components
 export {
   GradientBackground,
+  AboutInstitution,
+  CredentialButtons,
   CardModal,
   DigiCredButton,
   DigiCredToggle,

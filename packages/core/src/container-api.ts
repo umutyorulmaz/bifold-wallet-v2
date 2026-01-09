@@ -77,6 +77,8 @@ export const SCREEN_TOKENS = {
   SCREEN_ATTEMPT_LOCKOUT: 'screen.attempt-lockout',
 
   // Main Screens
+  SCREEN_HOME_NO_CHANNELS: 'screen.home-no-channels',
+  SCREEN_HOME_NO_CHANNEL_MODAL: 'screen.home-no-channel-modal',
   SCREEN_HOME: 'screen.home',
   SCREEN_CHAT: 'screen.chat',
   SCREEN_CONNECTION: 'screen.connection',
@@ -155,6 +157,9 @@ export const COMPONENT_TOKENS = {
   COMPONENT_CONTACT_LIST_ITEM: 'component.contact-list-item',
   COMPONENT_CONTACT_DETAILS_CRED_LIST_ITEM: 'component.contact-details-cred-list-item',
   COMPONENT_CONNECTION_ALERT: 'component.connection-alert',
+  COMPONENT_GRADIENT_BACKGROUND: 'component.gradient-background',
+  COMPONENT_ABOUT_INSTITUTION: 'component.about-institution',
+  COMPONENT_CREDENTIAL_BUTTONS: 'component.credential-buttons',
 } as const
 
 export const NOTIFICATION_TOKENS = {
@@ -307,6 +312,17 @@ export type TokenMapping = {
   [TOKENS.COMPONENT_RECORD]: React.FC
   [TOKENS.COMPONENT_CONTACT_LIST_ITEM]: React.FC<ContactListItemProps>
   [TOKENS.COMPONENT_CONTACT_DETAILS_CRED_LIST_ITEM]: React.FC<ContactCredentialListItemProps>
+  [COMPONENT_TOKENS.COMPONENT_GRADIENT_BACKGROUND]: React.FC<{ children: React.ReactNode }>
+  [COMPONENT_TOKENS.COMPONENT_ABOUT_INSTITUTION]: React.FC<{
+    title: string
+    content: string
+  }>
+  [COMPONENT_TOKENS.COMPONENT_CREDENTIAL_BUTTONS]: React.FC<{
+    isProcessing: boolean
+    onAccept: () => void
+    onDecline: () => void
+  }>
+
   [TOKENS.INLINE_ERRORS]: InlineErrorConfig
   [TOKENS.CUSTOM_NAV_STACK_1]: React.FC
   [TOKENS.COMPONENT_CONNECTION_ALERT]: React.FC<{ connectionLabel?: string }>
@@ -322,6 +338,8 @@ export type TokenMapping = {
   [TOKENS.SCREEN_NAME_WALLET]: React.FC
   [TOKENS.SCREEN_PUSH_NOTIFICATIONS]: React.FC
   [TOKENS.SCREEN_ATTEMPT_LOCKOUT]: React.FC
+  [TOKENS.SCREEN_HOME_NO_CHANNELS]: React.FC
+  [TOKENS.SCREEN_HOME_NO_CHANNEL_MODAL]: React.FC
   [TOKENS.SCREEN_HOME]: React.FC
   [TOKENS.SCREEN_CHAT]: React.FC<any>
   [TOKENS.SCREEN_CONNECTION]: React.FC<any>

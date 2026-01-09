@@ -16,11 +16,7 @@ import { useCredentialByState } from '@credo-ts/react-hooks'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 import {
-  Screens,
-  Stacks,
   useStore,
-  TOKENS,
-  useServices,
   CredentialCard,
   useTour,
   DispatchAction,
@@ -31,6 +27,8 @@ import { GenericCredentialExchangeRecord, CredentialErrors } from '@bifold/core/
 import { OpenIDCredentialType } from '@bifold/core/src/modules/openid/types'
 import { BaseTourID } from '@bifold/core/src/types/tour'
 import { CredentialListFooterProps } from '@bifold/core/src/types/credential-list-footer'
+import { TOKENS, useServices } from '../../../../packages/core/src/container-api'
+import { Screens, Stacks } from '../../../../packages/core/src/types/navigators'
 
 import { GradientBackground } from '../components'
 import { DigiCredColors } from '../theme'

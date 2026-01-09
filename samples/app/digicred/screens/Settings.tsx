@@ -15,10 +15,9 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 import {
   useStore,
-  Screens,
-  Stacks,
   testIdWithKey,
 } from '@bifold/core'
+import { Screens, Stacks } from '../../../../packages/core/src/types/navigators'
 import { SettingStackParams } from '@bifold/core/src/types/navigators'
 import { DispatchAction } from '@bifold/core/src/contexts/reducers/store'
 import { getBuildNumber, getVersion } from 'react-native-device-info'

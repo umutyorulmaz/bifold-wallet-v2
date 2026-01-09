@@ -28,11 +28,11 @@ export const ActionMenuBubble: React.FC<ActionMenuBubbleProps> = ({ content, wor
   // Dynamic styles based on theme
   const themedStyles = StyleSheet.create({
     bubble: {
-      backgroundColor: ColorPalette.brand.secondaryBackground,
+      backgroundColor: ColorPalette.grayscale.digicredBackgroundModal,
       borderRadius: 12,
       padding: 16,
       borderWidth: 1,
-      borderColor: ColorPalette.brand.primary,
+      borderColor: ColorPalette.grayscale.digicredBackgroundModal,
       width: 320,
       maxWidth: '100%',
     },

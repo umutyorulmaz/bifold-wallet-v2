@@ -21,12 +21,13 @@ import { useTheme } from '../contexts/theme'
 import { useChatMessagesByConnection } from '../hooks/chat-messages'
 import { useConnectionCapabilities } from '../hooks/useConnectionCapabilities'
 import { useOptionalWorkflowRegistry } from '../modules/workflow'
-import { ActionContext, WorkflowAction } from '../modules/workflow/types'
+import { ActionContext, WorkflowAction } from '../modules/workflow'
 import { Role } from '../types/chat'
 import { BasicMessageMetadata, basicMessageCustomMetadata } from '../types/metadata'
 import { RootStackParams, ContactStackParams, Screens, Stacks } from '../types/navigators'
 import { getConnectionName } from '../utils/helpers'
 import { KeyboardAvoidingView, Platform } from 'react-native'
+import { createDCWalletChatConfig } from '../modules/workflow/renderers/createChatScreenConfig'
 
 type ChatProps = StackScreenProps<ContactStackParams, Screens.Chat> | StackScreenProps<RootStackParams, Screens.Chat>
 
@@ -50,6 +51,9 @@ const Chat: React.FC<ChatProps> = ({ route }) => {
   const [theirLabel, setTheirLabel] = useState(getConnectionName(connection, store.preferences.alternateContactNames))
   const headerHeight = useHeaderHeight()
 
+
+  // console.log('====BM====> ', JSON.stringify(basicMessages, null, 2))
+
   // Check if the connection supports WebRTC for video calls
   const { capabilities } = useConnectionCapabilities(connectionId)
 
@@ -57,9 +61,31 @@ const Chat: React.FC<ChatProps> = ({ route }) => {
   const registry = useOptionalWorkflowRegistry()
 
   // Get chat screen config from registry
+  // const chatScreenConfig = useMemo(() => {
+  //   return registry?.getChatScreenConfig()
+  // }, [registry])
+
   const chatScreenConfig = useMemo(() => {
-    return registry?.getChatScreenConfig()
-  }, [registry])
+    return createDCWalletChatConfig({
+      onCredentialAccept: async (credential, context) => {
+        try {
+          await context.agent.credentials.acceptOffer(credential.id)
+        } catch (err) {
+          // console.error('Accept failed:', err)
+        }
+      },
+      onCredentialDecline: async (credential, context) => {
+        try {
+          await context.agent.credentials.declineOffer(credential.id)
+        } catch (err) {
+          // console.error('Decline failed:', err)
+        }
+      },
+      onCredentialPress: (credential, context) => {
+        context.navigation.navigate('CredentialDetails', { credentialId: credential.id })
+      },
+    })
+  }, [])
 
   // This useEffect is for properly rendering changes to the alt contact name, useMemo did not pick them up
   useEffect(() => {
@@ -119,7 +145,9 @@ const Chat: React.FC<ChatProps> = ({ route }) => {
             {/* Only show video button if remote supports WebRTC */}
             {capabilities.supportsWebRTC && (
               <TouchableOpacity
-                onPress={() => navigation.navigate(Screens.VideoCall as any, { connectionId: connection?.id, video: true })}
+                onPress={() =>
+                  navigation.navigate(Screens.VideoCall as any, { connectionId: connection?.id, video: true })
+                }
                 accessibilityLabel={t('ContactDetails.StartVideoCall')}
                 accessibilityRole="button"
                 hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
@@ -133,7 +161,17 @@ const Chat: React.FC<ChatProps> = ({ route }) => {
       })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [navigation, theirLabel, connection, chatScreenConfig, onShowMenu, t, capabilities.supportsWebRTC, capabilities.isLoading, ColorPalette.brand.primary])
+  }, [
+    navigation,
+    theirLabel,
+    connection,
+    chatScreenConfig,
+    onShowMenu,
+    t,
+    capabilities.supportsWebRTC,
+    capabilities.isLoading,
+    ColorPalette.brand.primary,
+  ])
 
   // Render header inside content when headerInsideBackground is enabled
   const renderInlineHeader = useCallback(() => {
@@ -157,7 +195,15 @@ const Chat: React.FC<ChatProps> = ({ route }) => {
       isLoadingCapabilities: capabilities.isLoading,
       onMenuPress: onShowMenu,
     })
-  }, [chatScreenConfig, theirLabel, connection, navigation, onShowMenu, capabilities.supportsWebRTC, capabilities.isLoading])
+  }, [
+    chatScreenConfig,
+    theirLabel,
+    connection,
+    navigation,
+    onShowMenu,
+    capabilities.supportsWebRTC,
+    capabilities.isLoading,
+  ])
 
   // when chat is open, mark messages as seen
   useEffect(() => {
@@ -254,10 +300,10 @@ const Chat: React.FC<ChatProps> = ({ route }) => {
         }}
         renderActions={(props) => renderActions(props, theme, actions as any)}
         onPressActionButton={actions && actions.length > 0 ? () => setShowActionSlider(true) : undefined}
-        bottomOffset={Platform.OS === 'ios' ? 34 : 0}
-        minInputToolbarHeight={60}
+        // bottomOffset={Platform.OS === 'ios' ? 34 : 0}
+        //minInputToolbarHeight={60}
         messagesContainerStyle={{
-          paddingBottom: 80,
+          // paddingBottom: 80,
           paddingHorizontal: 12,
         }}
       />
