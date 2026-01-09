@@ -176,3 +176,12 @@ lib/
 **/.yarn/install-state.gz
 **/.xcode.env.local
 **/app/vendor/bundle/**
+
+# Ignore GoogleService-Info.plist for iOS
+/samples/app/ios/GoogleService-Info.plist
+# Ignore google-services.json for Android
+/samples/app/android/app/google-services.json
+# Ignore google-services.json for Android
+/samples/app/android/app/src/debug/google-services.json
+# Ignore release folder for Android
+/samples/app/android/app/release/

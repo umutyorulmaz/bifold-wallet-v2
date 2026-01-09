@@ -2454,7 +2454,9 @@ __metadata:
     "@hyperledger/indy-vdr-shared": "npm:0.2.2"
     "@react-native-async-storage/async-storage": "npm:~1.22.3"
     "@react-native-clipboard/clipboard": "npm:~1.16.3"
+    "@react-native-community/datetimepicker": "npm:^8.6.0"
     "@react-native-community/netinfo": "npm:~11.3.3"
+    "@react-native-community/slider": "npm:4.4.3"
     "@react-native/babel-preset": "npm:~0.73.21"
     "@react-native/eslint-config": "npm:~0.73.2"
     "@react-native/eslint-plugin": "npm:~0.73.1"
@@ -2486,6 +2488,7 @@ __metadata:
     eslint-plugin-prettier: "npm:~5.2.6"
     ethers: "npm:^6.16.0"
     expo: "npm:*"
+    expo-av: "npm:^16.0.8"
     expo-secure-store: "npm:*"
     i18next: "npm:~21.6.16"
     install-peerdeps: "npm:~3.0.7"
@@ -2501,6 +2504,7 @@ __metadata:
     react: "npm:*"
     react-i18next: "npm:~11.17.1"
     react-native: "npm:0.73.11"
+    react-native-add-calendar-event: "npm:^5.0.0"
     react-native-animated-pagination-dots: "npm:~0.1.73"
     react-native-argon2: "npm:~2.0.1"
     react-native-bouncy-checkbox: "npm:~3.0.7"
@@ -2518,6 +2522,7 @@ __metadata:
     react-native-keychain: "npm:~8.1.3"
     react-native-localize: "npm:~2.2.6"
     react-native-logs: "npm:~5.1.0"
+    react-native-maps: "npm:1.7.1"
     react-native-orientation-locker: "npm:~1.6.0"
     react-native-permissions: "npm:~5.4.1"
     react-native-qrcode-svg: "npm:~6.2.0"
@@ -2525,13 +2530,15 @@ __metadata:
     react-native-scalable-image: "npm:~1.1.0"
     react-native-screenguard: "npm:~1.1.0"
     react-native-screens: "npm:~4.4.0"
+    react-native-share: "npm:^12.2.2"
     react-native-splash-screen: "npm:~3.3.0"
-    react-native-svg: "npm:~15.0.0"
+    react-native-svg: "npm:^15.15.1"
     react-native-svg-transformer: "npm:~0.14.3"
     react-native-tcp-socket: "npm:~6.0.6"
     react-native-toast-message: "npm:~2.1.10"
     react-native-uuid: "npm:~2.0.3"
     react-native-vector-icons: "npm:~10.0.3"
+    react-native-view-shot: "npm:^4.0.3"
     react-native-vision-camera: "npm:~4.3.2"
     react-native-webrtc: "npm:^124.0.4"
     react-test-renderer: "npm:~18.2.0"
@@ -5549,6 +5556,25 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@react-native-community/datetimepicker@npm:^8.6.0":
+  version: 8.6.0
+  resolution: "@react-native-community/datetimepicker@npm:8.6.0"
+  dependencies:
+    invariant: "npm:^2.2.4"
+  peerDependencies:
+    expo: ">=52.0.0"
+    react: "*"
+    react-native: "*"
+    react-native-windows: "*"
+  peerDependenciesMeta:
+    expo:
+      optional: true
+    react-native-windows:
+      optional: true
+  checksum: 10c0/4f7e84480e3a324a1f4e235d13552468a758a0bf3d6de6a67ef39bfc56c18c41566c4411cc5fc075d000cc5f744a63ced77dd38c6bb13ae15cc980f9af891b56
+  languageName: node
+  linkType: hard
+
 "@react-native-community/geolocation@npm:^3.4.0":
   version: 3.4.0
   resolution: "@react-native-community/geolocation@npm:3.4.0"
@@ -5565,6 +5591,13 @@ __metadata:
   peerDependencies:
     react-native: ">=0.59"
   checksum: 10c0/286dbdf857946c4da5703fd73c76fa6c018fa895fbff83699386d8baebc359848401e2dff643198f7a37503c65a9d9a49b1c8e57b571afc8df8b0bb484a5461a
+  languageName: node
+  linkType: hard
+
+"@react-native-community/slider@npm:4.4.3":
+  version: 4.4.3
+  resolution: "@react-native-community/slider@npm:4.4.3"
+  checksum: 10c0/b65c45e8ffc49362cb2c87df35d07b5ca936f6d04c8b07ba139a34e9edd09dd73e25aa6639ff1962a3f25855252ab34ec0b559bb4e5709754fb8e7cd5e4fff36
   languageName: node
   linkType: hard
 
@@ -6945,6 +6978,13 @@ __metadata:
     "@types/qs": "npm:*"
     "@types/serve-static": "npm:*"
   checksum: 10c0/60490cd4f73085007247e7d4fafad0a7abdafa34fa3caba2757512564ca5e094ece7459f0f324030a63d513f967bb86579a8682af76ae2fd718e889b0a2a4fe8
+  languageName: node
+  linkType: hard
+
+"@types/geojson@npm:^7946.0.10":
+  version: 7946.0.16
+  resolution: "@types/geojson@npm:7946.0.16"
+  checksum: 10c0/1ff24a288bd5860b766b073ead337d31d73bdc715e5b50a2cee5cb0af57a1ed02cc04ef295f5fa68dc40fe3e4f104dd31282b2b818a5ba3231bc1001ba084e3c
   languageName: node
   linkType: hard
 
@@ -8701,6 +8741,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"base64-arraybuffer@npm:^1.0.2":
+  version: 1.0.2
+  resolution: "base64-arraybuffer@npm:1.0.2"
+  checksum: 10c0/3acac95c70f9406e87a41073558ba85b6be9dbffb013a3d2a710e3f2d534d506c911847d5d9be4de458af6362c676de0a5c4c2d7bdf4def502d00b313368e72f
+  languageName: node
+  linkType: hard
+
 "base64-js@npm:*, base64-js@npm:1.5.1, base64-js@npm:^1.2.3, base64-js@npm:^1.3.0, base64-js@npm:^1.3.1, base64-js@npm:^1.5.1":
   version: 1.5.1
   resolution: "base64-js@npm:1.5.1"
@@ -8794,8 +8841,10 @@ __metadata:
     "@hyperledger/indy-vdr-react-native": "npm:0.2.2"
     "@react-native-async-storage/async-storage": "npm:~1.22.3"
     "@react-native-clipboard/clipboard": "npm:~1.16.3"
+    "@react-native-community/datetimepicker": "npm:^8.6.0"
     "@react-native-community/geolocation": "npm:^3.4.0"
     "@react-native-community/netinfo": "npm:~11.3.3"
+    "@react-native-community/slider": "npm:4.4.3"
     "@react-native/babel-preset": "npm:~0.73.21"
     "@react-native/eslint-config": "npm:~0.73.2"
     "@react-native/metro-config": "npm:~0.73.5"
@@ -8817,6 +8866,7 @@ __metadata:
     eslint: "npm:~8.57.1"
     eslint-import-resolver-typescript: "npm:~3.6.3"
     expo: "npm:*"
+    expo-av: "npm:^16.0.8"
     expo-secure-store: "npm:*"
     fast-text-encoding: "npm:~1.0.6"
     i18next: "npm:~21.6.16"
@@ -8830,6 +8880,7 @@ __metadata:
     react: "npm:*"
     react-i18next: "npm:~11.17.1"
     react-native: "npm:*"
+    react-native-add-calendar-event: "npm:^5.0.0"
     react-native-animated-pagination-dots: "npm:~0.1.73"
     react-native-argon2: "npm:~2.0.1"
     react-native-bouncy-checkbox: "npm:~3.0.7"
@@ -8847,6 +8898,7 @@ __metadata:
     react-native-linear-gradient: "npm:~2.8.3"
     react-native-localize: "npm:~2.2.6"
     react-native-logs: "npm:~5.1.0"
+    react-native-maps: "npm:1.7.1"
     react-native-orientation-locker: "npm:~1.6.0"
     react-native-permissions: "npm:~5.4.1"
     react-native-qrcode-svg: "npm:~6.2.0"
@@ -8854,13 +8906,15 @@ __metadata:
     react-native-scalable-image: "npm:~1.1.0"
     react-native-screenguard: "npm:~1.1.0"
     react-native-screens: "npm:~4.4.0"
+    react-native-share: "npm:^12.2.2"
     react-native-splash-screen: "npm:~3.3.0"
-    react-native-svg: "npm:~15.0.0"
+    react-native-svg: "npm:^15.15.1"
     react-native-svg-transformer: "npm:~0.14.3"
     react-native-tcp-socket: "npm:~6.0.6"
     react-native-toast-message: "npm:~2.1.10"
     react-native-uuid: "npm:~2.0.3"
     react-native-vector-icons: "npm:~10.0.3"
+    react-native-view-shot: "npm:^4.0.3"
     react-native-vision-camera: "npm:~4.3.2"
     react-native-webrtc: "npm:^124.0.4"
     react-native-webview: "npm:~13.10.7"
@@ -10103,6 +10157,15 @@ __metadata:
   version: 2.0.0
   resolution: "crypto-random-string@npm:2.0.0"
   checksum: 10c0/288589b2484fe787f9e146f56c4be90b940018f17af1b152e4dde12309042ff5a2bf69e949aab8b8ac253948381529cc6f3e5a2427b73643a71ff177fa122b37
+  languageName: node
+  linkType: hard
+
+"css-line-break@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "css-line-break@npm:2.1.0"
+  dependencies:
+    utrie: "npm:^1.0.2"
+  checksum: 10c0/b2222d99d5daf7861ecddc050244fdce296fad74b000dcff6bdfb1eb16dc2ef0b9ffe2c1c965e3239bd05ebe9eadb6d5438a91592fa8648d27a338e827cf9048
   languageName: node
   linkType: hard
 
@@ -11823,6 +11886,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"expo-av@npm:^16.0.8":
+  version: 16.0.8
+  resolution: "expo-av@npm:16.0.8"
+  peerDependencies:
+    expo: "*"
+    react: "*"
+    react-native: "*"
+    react-native-web: "*"
+  peerDependenciesMeta:
+    react-native-web:
+      optional: true
+  checksum: 10c0/2f40b8fcc7824d4f3e0078e6dff25ccb5b12b21abfcf6de30f4ea831716c6be18f9b59ab085e7b88ece5b0d314f998798e864f4b4a3c0f493c66060f4fc94955
+  languageName: node
+  linkType: hard
+
 "expo-constants@npm:~15.4.0":
   version: 15.4.6
   resolution: "expo-constants@npm:15.4.6"
@@ -13132,6 +13210,16 @@ __metadata:
   dependencies:
     void-elements: "npm:3.1.0"
   checksum: 10c0/159292753d48b84d216d61121054ae5a33466b3db5b446e2ffc093ac077a411a99ce6cbe0d18e55b87cf25fa3c5a86c4d8b130b9719ec9b66623259000c72c15
+  languageName: node
+  linkType: hard
+
+"html2canvas@npm:^1.4.1":
+  version: 1.4.1
+  resolution: "html2canvas@npm:1.4.1"
+  dependencies:
+    css-line-break: "npm:^2.1.0"
+    text-segmentation: "npm:^1.0.3"
+  checksum: 10c0/6de86f75762b00948edf2ea559f16da0a1ec3facc4a8a7d3f35fcec59bb0c5970463478988ae3d9082152e0173690d46ebf4082e7ac803dd4817bae1d355c0db
   languageName: node
   linkType: hard
 
@@ -18035,6 +18123,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-native-add-calendar-event@npm:^5.0.0":
+  version: 5.0.0
+  resolution: "react-native-add-calendar-event@npm:5.0.0"
+  peerDependencies:
+    expo: ">=47.0.0"
+  peerDependenciesMeta:
+    expo:
+      optional: true
+  checksum: 10c0/9a05190c5a75c081c9a6a43e163c6e96e7a779cc5621ba2bb4e5c9c6011faedcae6c1c5ecb9d677536c0c67ee9e68564cdb29779809813bf100a9d07b342859a
+  languageName: node
+  linkType: hard
+
 "react-native-animated-pagination-dots@npm:~0.1.73":
   version: 0.1.73
   resolution: "react-native-animated-pagination-dots@npm:0.1.73"
@@ -18294,6 +18394,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-native-maps@npm:1.7.1":
+  version: 1.7.1
+  resolution: "react-native-maps@npm:1.7.1"
+  dependencies:
+    "@types/geojson": "npm:^7946.0.10"
+  peerDependencies:
+    react: ">= 17.0.1"
+    react-native: ">= 0.64.3"
+    react-native-web: ">= 0.11"
+  peerDependenciesMeta:
+    react-native-web:
+      optional: true
+  checksum: 10c0/479f528febbcfe64ec3c8ea1bd659f42831168848dbb30685e4987b09d7d280f51d6ef2819a8810ff7e7caa1cf17f6dda1fe18dd0a949aea435cab6fd7b57a56
+  languageName: node
+  linkType: hard
+
 "react-native-network-info@npm:^5.2.2":
   version: 5.2.2
   resolution: "react-native-network-info@npm:5.2.2"
@@ -18427,6 +18543,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-native-share@npm:^12.2.2":
+  version: 12.2.2
+  resolution: "react-native-share@npm:12.2.2"
+  checksum: 10c0/8d642cd0e98fa28cdba143d94d741efb0c8eec1450ba38737eae7b7f5c2356c059aa9b04fd382ecd219c41a7e2121647406ed59e525b5c26b59af757cb132681
+  languageName: node
+  linkType: hard
+
 "react-native-splash-screen@npm:~3.3.0":
   version: 3.3.0
   resolution: "react-native-splash-screen@npm:3.3.0"
@@ -18451,16 +18574,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-svg@npm:~15.0.0":
-  version: 15.0.0
-  resolution: "react-native-svg@npm:15.0.0"
+"react-native-svg@npm:^15.15.1":
+  version: 15.15.1
+  resolution: "react-native-svg@npm:15.15.1"
   dependencies:
     css-select: "npm:^5.1.0"
     css-tree: "npm:^1.1.3"
+    warn-once: "npm:0.1.1"
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: 10c0/65b76f25bd889186a5a05bb35923e23d335ff5af16d3f47ee449305dea129cccdf1123f42be4377cd06b01eb3ca85f1649a4eb3a36516306d1de177d88dab8c7
+  checksum: 10c0/9e047e8afdd5121296a3402c5c37363b9b37fbddc41f7b0b49b923ac4d2898954c8b57a6784a625321236987e494ee54f594e22f9de815f807e03a3433d7fefd
   languageName: node
   linkType: hard
 
@@ -18516,6 +18640,18 @@ __metadata:
     fa6-upgrade: bin/fa6-upgrade.sh
     generate-icon: bin/generate-icon.js
   checksum: 10c0/f7741e03cba701ac577779784db64ef581d5056a14698ac34de0bea731ff0d2bbe4b1c5ede441caa1b8748b18e57ee96b4d8dd75d53ef1b240995d1ffdc6419d
+  languageName: node
+  linkType: hard
+
+"react-native-view-shot@npm:^4.0.3":
+  version: 4.0.3
+  resolution: "react-native-view-shot@npm:4.0.3"
+  dependencies:
+    html2canvas: "npm:^1.4.1"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 10c0/e172507eb7de8760a8a557a5e8632bdc248b60b89770cc941690c8fe6c788d28be1efd8259236fbc768eba3b33aaec8b7a833476b566dfef5b754618060edbec
   languageName: node
   linkType: hard
 
@@ -20415,6 +20551,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"text-segmentation@npm:^1.0.3":
+  version: 1.0.3
+  resolution: "text-segmentation@npm:1.0.3"
+  dependencies:
+    utrie: "npm:^1.0.2"
+  checksum: 10c0/8b9ae8524e3a332371060d0ca62f10ad49a13e954719ea689a6c3a8b8c15c8a56365ede2bb91c322fb0d44b6533785f0da603e066b7554d052999967fb72d600
+  languageName: node
+  linkType: hard
+
 "text-table@npm:^0.2.0":
   version: 0.2.0
   resolution: "text-table@npm:0.2.0"
@@ -21324,6 +21469,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"utrie@npm:^1.0.2":
+  version: 1.0.2
+  resolution: "utrie@npm:1.0.2"
+  dependencies:
+    base64-arraybuffer: "npm:^1.0.2"
+  checksum: 10c0/eaffe645bd81a39e4bc3abb23df5895e9961dbdd49748ef3b173529e8b06ce9dd1163e9705d5309a1c61ee41ffcb825e2043bc0fd1659845ffbdf4b1515dfdb4
+  languageName: node
+  linkType: hard
+
 "uuid@npm:3.4.0":
   version: 3.4.0
   resolution: "uuid@npm:3.4.0"
@@ -21483,7 +21637,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"warn-once@npm:^0.1.0":
+"warn-once@npm:0.1.1, warn-once@npm:^0.1.0":
   version: 0.1.1
   resolution: "warn-once@npm:0.1.1"
   checksum: 10c0/f531e7b2382124f51e6d8f97b8c865246db8ab6ff4e53257a2d274e0f02b97d7201eb35db481843dc155815e154ad7afb53b01c4d4db15fb5aa073562496aff7

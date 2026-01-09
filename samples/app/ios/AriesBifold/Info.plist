@@ -37,14 +37,18 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSCalendarsUsageDescription</key>
+	<string>This app needs access to your calendar to add events.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Camera used for in-app QR Code scanning and video calls</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>Microphone used for video and audio calls</string>
 	<key>NSFaceIDUsageDescription</key>
 	<string>$(PRODUCT_NAME) Wants to use your FaceID/TouchID to Authenticate your Identity</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>We include this permission because a library our app uses references it, even though we don't use it directly.</string>
+	<string>This app needs your location to show you on the map.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Microphone used for video and audio calls</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>This app needs access to save shared content.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>MaterialIcons.ttf</string>
