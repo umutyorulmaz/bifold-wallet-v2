@@ -924,9 +924,9 @@ PODS:
     - React-debug
   - react-native-add-calendar-event (5.0.0):
     - React-Core
-  - react-native-config (1.5.5):
-    - react-native-config/App (= 1.5.5)
-  - react-native-config/App (1.5.5):
+  - react-native-config (1.5.10):
+    - react-native-config/App (= 1.5.10)
+  - react-native-config/App (1.5.10):
     - React-Core
   - react-native-encrypted-storage (4.0.3):
     - React-Core
@@ -1168,13 +1168,13 @@ PODS:
     - React-Core
   - RNSVG (15.15.1):
     - React-Core
-  - RNVectorIcons (10.3.0):
+  - RNVectorIcons (10.0.3):
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
-  - SDWebImage (5.21.1):
-    - SDWebImage/Core (= 5.21.1)
-  - SDWebImage/Core (5.21.1)
+  - SDWebImage (5.21.5):
+    - SDWebImage/Core (= 5.21.5)
+  - SDWebImage/Core (5.21.5)
   - SocketRocket (0.6.1)
   - VisionCamera (4.3.2):
     - VisionCamera/Core (= 4.3.2)
@@ -1517,7 +1517,7 @@ SPEC CHECKSUMS:
   React-logger: 6c1170f7bc315878ef4bd3b918e09130cf632798
   React-Mapbuffer: 41c166b84fc479afc78097cd51404109ec9edf68
   react-native-add-calendar-event: b9802a8be8ad4beb0dcb3efb28969c077558fb29
-  react-native-config: 3367df9c1f25bb96197007ec531c7087ed4554c3
+  react-native-config: a30e0b6c5185dad35bdf45011d34bae23c8ea46c
   react-native-encrypted-storage: db300a3f2f0aba1e818417c1c0a6be549038deb7
   react-native-geolocation: 167798574694849024cb093222bd158e84ac8d21
   react-native-get-random-values: a6ea6a8a65dc93e96e24a11105b1a9c8cfe1d72a
@@ -1525,7 +1525,7 @@ SPEC CHECKSUMS:
   react-native-netinfo: 9af975c142e5673d643093aa5afdfa26f46b71b4
   react-native-orientation-locker: 4409c5b12b65f942e75449872b4f078b6f27af81
   react-native-safe-area-context: 0ee144a6170530ccc37a0fd9388e28d06f516a89
-  react-native-screenguard: 8bb7af9ffbf418d3755c6040a71d4bf3a26c6cac
+  react-native-screenguard: 5505e6f525f2cc05b9840deb256defe099021648
   react-native-slider: 1cdd6ba29675df21f30544253bf7351d3c2d68c4
   react-native-splash-screen: 4312f786b13a81b5169ef346d76d33bc0c6dc457
   react-native-tcp-socket: e724380c910c2e704816ec817ed28f1342246ff7
@@ -1561,16 +1561,16 @@ SPEC CHECKSUMS:
   RNGestureHandler: 1155b1898ceddefeebf77792927360d44fe11e77
   RNKeychain: f1b48665a4646f61191eb048c4c05c58d9a7596f
   RNLocalize: d4b8af4e442d4bcca54e68fc687a2129b4d71a81
-  RNPermissions: b4bd354cc2cb368bd3dfda975ababee596e724bc
+  RNPermissions: 038dfe9c50930825ce949d06293bb694fd1c15f6
   RNScreens: dc2e2add1c0ae719fd469cf106a0aa16c02ec9b5
   RNShare: 4bf94507ca30b50785eb18a0389cd741f34590ff
   RNSVG: a6e1768679ba60ec255eeb74e33082ca2085fb02
   RNVectorIcons: 73ab573085f65a572d3b6233e68996d4707fd505
-  SDWebImage: f29024626962457f3470184232766516dee8dfea
+  SDWebImage: e9c98383c7572d713c1a0d7dd2783b10599b9838
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   VisionCamera: 2c4cb89c573c5d54d1191e433bd224998d3b14b7
-  Yoga: 1f93d5925ea12fb0880b21efe3566677337cf2ed
+  Yoga: a813a6d82538ccba91c54406404e3ed80b48a692
 
 PODFILE CHECKSUM: 6cb6ca190c8d9ed55197213f22de86938d3c7621
 
-COCOAPODS: 1.15.2
+COCOAPODS: 1.16.1
