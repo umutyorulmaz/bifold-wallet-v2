@@ -37,10 +37,12 @@ jobs:
           working-directory: ./samples/app
           ruby-version: '3.2'
 
-      - name: Update CocoaPods
+      - name: Update CocoaPods via Bundler
+        working-directory: ./samples/app
         run: |
-          gem install cocoapods -v 1.16.2
-          pod --version
+          gem install bundler
+          bundle update cocoapods
+          bundle exec pod --version
 
       - name: What XCode are we using?
         run: |
