@@ -1,5 +1,3 @@
-// packages/core/src/screens/Chat.tsx
-
 import { BasicMessageRepository, ConnectionRecord } from '@credo-ts/core'
 import { useAgent, useBasicMessagesByConnectionId, useConnectionById } from '@credo-ts/react-hooks'
 import { useIsFocused, useNavigation } from '@react-navigation/native'
