@@ -51,15 +51,30 @@ const ContactStack: React.FC = () => {
         name={Screens.ContactDetails}
         component={ContactDetails}
         options={{
-          title: t('Screens.ContactDetails'),
           ...ScreenOptionsDictionary[Screens.ContactDetails],
+
+          title: t('Screens.ContactDetails'),
+
+          headerTransparent: true,
+
+          headerStyle: {
+            backgroundColor: 'transparent',
+          },
+
+          headerTitleAlign: 'left',
+          headerTintColor: theme.ColorPalette.brand.headerText,
+          headerTitleStyle: theme.TextTheme.headerTitle,
+
+          cardStyle: {
+            backgroundColor: 'transparent',
+          },
         }}
       />
+
       <Stack.Screen
         name={Screens.RenameContact}
         component={RenameContact}
         options={{
-          title: t('Screens.RenameContact'),
           ...ScreenOptionsDictionary[Screens.RenameContact],
         }}
       />

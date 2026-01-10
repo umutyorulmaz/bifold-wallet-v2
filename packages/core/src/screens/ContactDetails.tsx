@@ -2,6 +2,7 @@ import { CredentialState } from '@credo-ts/core'
 import { useAgent, useConnectionById, useCredentialByState } from '@credo-ts/react-hooks'
 import { useNavigation } from '@react-navigation/native'
 import { StackNavigationProp, StackScreenProps } from '@react-navigation/stack'
+import { useHeaderHeight } from '@react-navigation/elements'
 import React, { useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
@@ -26,11 +27,11 @@ import { BifoldError } from '../types/error'
 import { ContactStackParams, RootStackParams, Screens, TabStacks } from '../types/navigators'
 import { ModalUsage } from '../types/remove'
 import { formatTime, getConnectionName, useConnectionImageUrl } from '../utils/helpers'
-import { testIdWithKey } from '../utils/testable'
 import { TOKENS, useServices } from '../container-api'
 import { toImageSource } from '../utils/credential'
-import { HistoryCardType, HistoryRecord } from '../modules/history/types'
+import { HistoryCardType } from '../modules/history/types'
 import { ThemedText } from '../components/texts/ThemedText'
+import { ThemedBackground } from '../modules/theme/components/ThemedBackground'
 
 type ContactDetailsProps = StackScreenProps<ContactStackParams, Screens.ContactDetails>
 
@@ -40,23 +41,28 @@ const ContactDetails: React.FC<ContactDetailsProps> = ({ route }) => {
   if (!route?.params) {
     throw new Error('ContactDetails route params were not set properly')
   }
+
   const { connectionId } = route.params
   const { agent } = useAgent()
   const { t } = useTranslation()
   const navigation = useNavigation<StackNavigationProp<ContactStackParams & RootStackParams>>()
-  const [isRemoveModalDisplayed, setIsRemoveModalDisplayed] = useState<boolean>(false)
-  const [isCredentialsRemoveModalDisplayed, setIsCredentialsRemoveModalDisplayed] = useState<boolean>(false)
+  const { ColorPalette, Assets, Spacing } = useTheme()
+  const headerHeight = useHeaderHeight()
+  const [store] = useStore()
+
+  const [isRemoveModalDisplayed, setIsRemoveModalDisplayed] = useState(false)
+  const [isCredentialsRemoveModalDisplayed, setIsCredentialsRemoveModalDisplayed] = useState(false)
+
   const connection = useConnectionById(connectionId)
   const contactImageUrl = useConnectionImageUrl(connectionId)
-  // FIXME: This should be exposed via a react hook that allows to filter credentials by connection id
+
   const connectionCredentials = [
     ...useCredentialByState(CredentialState.CredentialReceived),
     ...useCredentialByState(CredentialState.Done),
   ].filter((credential) => credential.connectionId === connection?.id)
-  const { ColorPalette, Assets } = useTheme()
-  const [store] = useStore()
+
   const { width } = useWindowDimensions()
-  const contactImageHeight = width * CONTACT_IMG_PERCENTAGE
+  const contactImageSize = width * CONTACT_IMG_PERCENTAGE
 
   const [
     { contactDetailsOptions },
@@ -75,291 +81,224 @@ const ContactDetails: React.FC<ContactDetailsProps> = ({ route }) => {
   ])
 
   const styles = StyleSheet.create({
-    contentContainer: {
-      padding: 20,
-      backgroundColor: ColorPalette.brand.secondaryBackground,
-    },
-    contactContainer: {
-      flexDirection: 'row',
-      alignSelf: 'flex-start',
-      gap: 8,
-    },
-    contactImgContainer: {
-      top: contactImageHeight * CONTACT_IMG_PERCENTAGE,
-      alignSelf: 'flex-start',
-      width: contactImageHeight,
-      height: contactImageHeight,
-      borderRadius: 8,
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    contactImg: {
-      borderRadius: 8,
-      width: contactImageHeight,
-      height: contactImageHeight,
-    },
-    contactFirstLetterContainer: {
+    screen: {
       flex: 1,
-      maxWidth: contactImageHeight,
+      backgroundColor: 'transparent',
+    },
+    section: {
+      padding: Spacing.md,
+      backgroundColor: 'transparent',
+    },
+    headerRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: Spacing.sm,
+    },
+    avatarImage: {
+      width: contactImageSize,
+      height: contactImageSize,
+      borderRadius: 8,
     },
     contactLabel: {
-      flex: 2,
       flexShrink: 1,
-      alignSelf: 'flex-start',
     },
-    actionContainer: {
+    divider: {
+      borderTopWidth: 1,
+      borderTopColor: ColorPalette.grayscale.lightGrey,
+      marginVertical: Spacing.md,
+    },
+    actionRow: {
       flexDirection: 'row',
       alignItems: 'center',
-      gap: 8,
+      gap: Spacing.sm,
+      marginTop: Spacing.sm,
     },
   })
-
-  const callOnRemove = useCallback(() => {
-    if (connectionCredentials?.length) {
-      setIsCredentialsRemoveModalDisplayed(true)
-    } else {
-      setIsRemoveModalDisplayed(true)
-    }
-  }, [connectionCredentials])
-
-  const logHistoryRecord = useCallback(() => {
-    try {
-      if (!(agent && historyEnabled)) {
-        logger.trace(
-          `[${ContactDetails.name}]:[logHistoryRecord] Skipping history log, either history function disabled or agent undefined!`
-        )
-        return
-      }
-      const historyManager = historyManagerCurried(agent)
-
-      if (!connection) {
-        logger.error(`[${ContactDetails.name}]:[logHistoryRecord] Cannot save history, credential undefined!`)
-        return
-      }
-
-      const type = HistoryCardType.ConnectionRemoved
-      /** Save history record for contact removed */
-      const recordData: HistoryRecord = {
-        type: type,
-        message: type,
-        createdAt: new Date(),
-        correspondenceId: connection.id,
-        correspondenceName: connection.theirLabel,
-      }
-      historyManager.saveHistory(recordData)
-    } catch (err: unknown) {
-      logger.error(`[${ContactDetails.name}]:[logHistoryRecord] Error saving history: ${err}`)
-    }
-  }, [agent, historyEnabled, logger, historyManagerCurried, connection])
-
-  const callSubmitRemove = useCallback(async () => {
-    try {
-      if (!(agent && connection)) {
-        return
-      }
-
-      if (historyEventsLogger.logConnectionRemoved) {
-        logHistoryRecord()
-      }
-
-      const basicMessages = await agent.basicMessages.findAllByQuery({ connectionId: connection.id })
-      const proofs = await agent.proofs.findAllByQuery({ connectionId: connection.id })
-      const offers = await agent.credentials.findAllByQuery({
-        connectionId: connection.id,
-        state: CredentialState.OfferReceived,
-      })
-
-      logger.info(
-        `Removing connection ${connection.id}, ${basicMessages.length} messages, ${proofs.length} proofs, and ${offers.length} offers`
-      )
-
-      const results = await Promise.allSettled([
-        ...proofs.map((proof) => agent.proofs.deleteById(proof.id)),
-        ...offers.map((offer) => agent.credentials.deleteById(offer.id)),
-        ...basicMessages.map((msg) => agent.basicMessages.deleteById(msg.id)),
-        agent.connections.deleteById(connection.id),
-      ])
-
-      const failed = results.filter((result) => result.status === 'rejected')
-      if (failed.length) {
-        logger.error(`Cleanup failed: ${failed.length} operation(s) were rejected.`)
-      }
-
-      navigation.popToTop()
-
-      // FIXME: This delay is a hack so that the toast doesn't
-      // appear until the modal is dismissed
-      await new Promise((resolve) => setTimeout(resolve, 1000))
-
-      Toast.show({
-        type: ToastType.Success,
-        text1: t('ContactDetails.ContactRemoved'),
-      })
-    } catch (err: unknown) {
-      const error = new BifoldError(t('Error.Title1037'), t('Error.Message1037'), (err as Error)?.message ?? err, 1037)
-      DeviceEventEmitter.emit(EventTypes.ERROR_ADDED, error)
-    }
-  }, [agent, connection, navigation, t, historyEventsLogger.logConnectionRemoved, logHistoryRecord, logger])
-
-  const callCancelRemove = useCallback(() => {
-    setIsRemoveModalDisplayed(false)
-  }, [])
-
-  const callGoToCredentials = useCallback(() => {
-    navigation.getParent()?.navigate(TabStacks.CredentialStack, { screen: Screens.Credentials })
-  }, [navigation])
-
-  const callCancelUnableToRemove = useCallback(() => {
-    setIsCredentialsRemoveModalDisplayed(false)
-  }, [])
-
-  const callGoToRename = useCallback(() => {
-    navigation.navigate(Screens.RenameContact, { connectionId })
-  }, [navigation, connectionId])
-
-  const callStartVideoCall = useCallback(() => {
-    navigation.navigate(Screens.VideoCall as any, { connectionId, video: true })
-  }, [navigation, connectionId])
-
-  const callViewJSONDetails = useCallback(() => {
-    navigation.navigate(Screens.JSONDetails, { jsonBlob: connection })
-  }, [navigation, connection])
 
   const contactLabel = useMemo(
     () => getConnectionName(connection, store.preferences.alternateContactNames),
     [connection, store.preferences.alternateContactNames]
   )
 
-  const contactImage = () => {
-    return (
-      <>
-        {contactImageUrl ? (
-          <View style={styles.contactImgContainer}>
-            <Image style={styles.contactImg} source={toImageSource(contactImageUrl)} />
-          </View>
-        ) : (
-          <View style={styles.contactFirstLetterContainer}>
-            <ThemedText
-              allowFontScaling={false}
-              variant="bold"
-              accessible={false}
-              style={{
-                fontSize: contactImageHeight,
-                lineHeight: contactImageHeight,
-                alignSelf: 'center',
-                color: ColorPalette.brand.primary,
-              }}
-            >
-              {contactLabel.charAt(0).toUpperCase()}
-            </ThemedText>
-          </View>
-        )}
-      </>
-    )
-  }
+  const callOnRemove = useCallback(() => {
+    connectionCredentials.length ? setIsCredentialsRemoveModalDisplayed(true) : setIsRemoveModalDisplayed(true)
+  }, [connectionCredentials])
+
+  const logHistoryRecord = useCallback(() => {
+    if (!(agent && historyEnabled && connection)) return
+
+    try {
+      historyManagerCurried(agent).saveHistory({
+        type: HistoryCardType.ConnectionRemoved,
+        message: HistoryCardType.ConnectionRemoved,
+        createdAt: new Date(),
+        correspondenceId: connection.id,
+        correspondenceName: connection.theirLabel,
+      })
+    } catch (err) {
+      logger.error(`[ContactDetails] Failed to save history: ${err}`)
+    }
+  }, [agent, historyEnabled, connection, historyManagerCurried, logger])
+
+  const callSubmitRemove = useCallback(async () => {
+    try {
+      if (!(agent && connection)) return
+
+      if (historyEventsLogger.logConnectionRemoved) {
+        logHistoryRecord()
+      }
+
+      const [messages, proofs, offers] = await Promise.all([
+        agent.basicMessages.findAllByQuery({ connectionId: connection.id }),
+        agent.proofs.findAllByQuery({ connectionId: connection.id }),
+        agent.credentials.findAllByQuery({
+          connectionId: connection.id,
+          state: CredentialState.OfferReceived,
+        }),
+      ])
+
+      await Promise.allSettled([
+        ...proofs.map((p) => agent.proofs.deleteById(p.id)),
+        ...offers.map((o) => agent.credentials.deleteById(o.id)),
+        ...messages.map((m) => agent.basicMessages.deleteById(m.id)),
+        agent.connections.deleteById(connection.id),
+      ])
+
+      navigation.popToTop()
+
+      await new Promise((r) => setTimeout(r, 1000))
+
+      Toast.show({
+        type: ToastType.Success,
+        text1: t('ContactDetails.ContactRemoved'),
+      })
+    } catch (err) {
+      DeviceEventEmitter.emit(
+        EventTypes.ERROR_ADDED,
+        new BifoldError(t('Error.Title1037'), t('Error.Message1037'), String(err), 1037)
+      )
+    }
+  }, [agent, connection, navigation, t, historyEventsLogger, logHistoryRecord])
 
   return (
-    <SafeAreaView style={{ flexGrow: 1 }} edges={['bottom', 'left', 'right']}>
-      <View style={[styles.contentContainer, contactDetailsOptions?.enableCredentialList && { flex: 2 }]}>
-        <View style={styles.contactContainer}>
-          {contactImage()}
-          <ThemedText variant="headingThree" style={styles.contactLabel}>
-            {contactLabel}
-          </ThemedText>
-        </View>
-        {contactDetailsOptions?.showConnectedTime && (
-          <ThemedText style={{ marginTop: 20 }}>
-            {t('ContactDetails.DateOfConnection', {
-              date: connection?.createdAt ? formatTime(connection.createdAt, { includeHour: true }) : '',
-            })}
-          </ThemedText>
-        )}
-        {contactDetailsOptions?.enableCredentialList && (
-          <>
-            <View style={{ borderTopColor: ColorPalette.grayscale.lightGrey, borderWidth: 1, marginTop: 20 }}></View>
-            <ThemedText variant="headingFour" style={{ marginVertical: 16 }}>
-              {t('ContactDetails.Credentials')}
+    <ThemedBackground screenId="home" style={{ flex: 1 }}>
+      <SafeAreaView edges={['bottom', 'left', 'right']} style={[styles.screen, { paddingTop: headerHeight }]}>
+        <View style={styles.section}>
+          <View style={styles.headerRow}>
+            {contactImageUrl ? (
+              <Image style={styles.avatarImage} source={toImageSource(contactImageUrl)} />
+            ) : (
+              <ThemedText
+                variant="bold"
+                style={{
+                  fontSize: contactImageSize,
+                  lineHeight: contactImageSize,
+                  color: ColorPalette.brand.primary,
+                }}
+              >
+                {contactLabel.charAt(0).toUpperCase()}
+              </ThemedText>
+            )}
+            <ThemedText variant="headingThree" style={styles.contactLabel}>
+              {contactLabel}
             </ThemedText>
-            <FlatList
-              ItemSeparatorComponent={() => <View style={{ height: 20 }}></View>}
-              ListEmptyComponent={() => (
-                <ThemedText style={{ color: ColorPalette.grayscale.lightGrey }}>
-                  {t('ContactDetails.NoCredentials')}
-                </ThemedText>
-              )}
-              data={connectionCredentials}
-              renderItem={({ item }) => (
-                <ContactCredentialListItem
-                  credential={item}
-                  onPress={() => navigation.navigate(Screens.CredentialDetails, { credentialId: item.id })}
-                />
-              )}
-              keyExtractor={(item) => item.id}
-            />
-          </>
-        )}
-      </View>
-      <View>
-        {/* Video Call Button */}
-        <TouchableOpacity
-          onPress={callStartVideoCall}
-          accessibilityLabel={t('ContactDetails.StartVideoCall')}
-          accessibilityRole={'button'}
-          testID={testIdWithKey('StartVideoCall')}
-          style={[styles.contentContainer, styles.actionContainer, { marginTop: 10 }]}
-        >
-          <Icon name="video" size={20} color={ColorPalette.brand.primary} />
-          <ThemedText style={{ color: ColorPalette.brand.primary }}>{t('ContactDetails.StartVideoCall')}</ThemedText>
-        </TouchableOpacity>
-        {contactDetailsOptions?.enableEditContactName && (
+          </View>
+
+          {contactDetailsOptions?.showConnectedTime && (
+            <ThemedText style={{ marginTop: Spacing.md }}>
+              {t('ContactDetails.DateOfConnection', {
+                date: connection?.createdAt ? formatTime(connection.createdAt, { includeHour: true }) : '',
+              })}
+            </ThemedText>
+          )}
+
+          {contactDetailsOptions?.enableCredentialList && (
+            <>
+              <View style={styles.divider} />
+              <ThemedText variant="headingFour">{t('ContactDetails.Credentials')}</ThemedText>
+              <FlatList
+                data={connectionCredentials}
+                keyExtractor={(item) => item.id}
+                ItemSeparatorComponent={() => <View style={{ height: Spacing.md }} />}
+                ListEmptyComponent={
+                  <ThemedText style={{ color: ColorPalette.grayscale.lightGrey }}>
+                    {t('ContactDetails.NoCredentials')}
+                  </ThemedText>
+                }
+                renderItem={({ item }) => (
+                  <ContactCredentialListItem
+                    credential={item}
+                    onPress={() =>
+                      navigation.navigate(Screens.CredentialDetails, {
+                        credentialId: item.id,
+                      })
+                    }
+                  />
+                )}
+              />
+            </>
+          )}
+        </View>
+
+        <View>
           <TouchableOpacity
-            onPress={callGoToRename}
-            accessibilityLabel={t('Screens.RenameContact')}
-            accessibilityRole={'button'}
-            testID={testIdWithKey('RenameContact')}
-            style={[styles.contentContainer, styles.actionContainer, { marginTop: 10 }]}
+            style={[styles.section, styles.actionRow]}
+            onPress={() =>
+              navigation.navigate(Screens.VideoCall as any, {
+                connectionId,
+                video: true,
+              })
+            }
           >
-            <Assets.svg.iconEdit width={20} height={20} color={ColorPalette.brand.text} />
-            <ThemedText>{t('Screens.RenameContact')}</ThemedText>
+            <Icon name="video" size={20} color={ColorPalette.brand.primary} />
+            <ThemedText style={{ color: ColorPalette.brand.primary }}>{t('ContactDetails.StartVideoCall')}</ThemedText>
           </TouchableOpacity>
-        )}
-        {/* JSON button on dev mode enabled */}
-        {store?.preferences.developerModeEnabled && (
-          <TouchableOpacity
-            onPress={callViewJSONDetails}
-            accessibilityLabel={t('Global.ViewJSON')}
-            accessibilityRole={'button'}
-            testID={testIdWithKey('JSONDetails')}
-            style={[styles.contentContainer, styles.actionContainer, { marginTop: 10 }]}
-          >
-            <Assets.svg.iconCode width={20} height={20} color={ColorPalette.brand.text} />
-            <ThemedText>{t('Global.ViewJSON')}</ThemedText>
+
+          {contactDetailsOptions?.enableEditContactName && (
+            <TouchableOpacity
+              style={[styles.section, styles.actionRow]}
+              onPress={() => navigation.navigate(Screens.RenameContact, { connectionId })}
+            >
+              <Assets.svg.iconEdit width={20} height={20} />
+              <ThemedText>{t('Screens.RenameContact')}</ThemedText>
+            </TouchableOpacity>
+          )}
+
+          {store.preferences.developerModeEnabled && (
+            <TouchableOpacity
+              style={[styles.section, styles.actionRow]}
+              onPress={() =>
+                navigation.navigate(Screens.JSONDetails, {
+                  jsonBlob: connection,
+                })
+              }
+            >
+              <Assets.svg.iconCode width={20} height={20} />
+              <ThemedText>{t('Global.ViewJSON')}</ThemedText>
+            </TouchableOpacity>
+          )}
+
+          <TouchableOpacity style={[styles.section, styles.actionRow]} onPress={callOnRemove}>
+            <Assets.svg.iconDelete width={20} height={20} color={ColorPalette.semantic.error} />
+            <ThemedText style={{ color: ColorPalette.semantic.error }}>{t('ContactDetails.RemoveContact')}</ThemedText>
           </TouchableOpacity>
-        )}
-        <TouchableOpacity
-          onPress={callOnRemove}
-          accessibilityLabel={t('ContactDetails.RemoveContact')}
-          accessibilityRole={'button'}
-          testID={testIdWithKey('RemoveFromWallet')}
-          style={[styles.contentContainer, styles.actionContainer, { marginTop: 10 }]}
-        >
-          <Assets.svg.iconDelete width={20} height={20} color={ColorPalette.semantic.error} />
-          <ThemedText style={{ color: ColorPalette.semantic.error }}>{t('ContactDetails.RemoveContact')}</ThemedText>
-        </TouchableOpacity>
-      </View>
-      <CommonRemoveModal
-        usage={ModalUsage.ContactRemove}
-        visible={isRemoveModalDisplayed}
-        onSubmit={callSubmitRemove}
-        onCancel={callCancelRemove}
-      />
-      <CommonRemoveModal
-        usage={ModalUsage.ContactRemoveWithCredentials}
-        visible={isCredentialsRemoveModalDisplayed}
-        onSubmit={callGoToCredentials}
-        onCancel={callCancelUnableToRemove}
-      />
-    </SafeAreaView>
+        </View>
+
+        <CommonRemoveModal
+          usage={ModalUsage.ContactRemove}
+          visible={isRemoveModalDisplayed}
+          onSubmit={callSubmitRemove}
+          onCancel={() => setIsRemoveModalDisplayed(false)}
+        />
+
+        <CommonRemoveModal
+          usage={ModalUsage.ContactRemoveWithCredentials}
+          visible={isCredentialsRemoveModalDisplayed}
+          onSubmit={() => navigation.getParent()?.navigate(TabStacks.CredentialStack, { screen: Screens.Credentials })}
+          onCancel={() => setIsCredentialsRemoveModalDisplayed(false)}
+        />
+      </SafeAreaView>
+    </ThemedBackground>
   )
 }
 
