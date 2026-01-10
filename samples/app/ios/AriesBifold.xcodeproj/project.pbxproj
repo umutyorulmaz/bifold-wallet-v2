@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 60;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -13,7 +13,6 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		378A49FBC05FC7C7821C2E44 /* libPods-AriesBifold-AriesBifoldTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C182F7FCDCEDF049132DF9EA /* libPods-AriesBifold-AriesBifoldTests.a */; };
-		43857C042720ABB4004F54E0 /* libswiftWebKit.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 43857C032720ABB4004F54E0 /* libswiftWebKit.tbd */; };
 		442476102D61583B00100568 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4424760F2D61583B00100568 /* AppDelegate.mm */; };
 		566FB1F2273B158E003E9BEE /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 566FB1F1273B158E003E9BEE /* Media.xcassets */; };
 		56D96E222D31B8C40029DA6A /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 56D96E212D31B8C40029DA6A /* PrivacyInfo.xcprivacy */; };
@@ -55,7 +54,6 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = AriesBifold/main.m; sourceTree = "<group>"; };
 		3B4B6273DD05D302E1118A48 /* Pods-AriesBifold-AriesBifoldTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AriesBifold-AriesBifoldTests.debug.xcconfig"; path = "Target Support Files/Pods-AriesBifold-AriesBifoldTests/Pods-AriesBifold-AriesBifoldTests.debug.xcconfig"; sourceTree = "<group>"; };
 		433E773D26557E1B00F569EE /* Indy.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Indy.framework; path = Pods/Frameworks/Indy.framework; sourceTree = "<group>"; };
-		43857C032720ABB4004F54E0 /* libswiftWebKit.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libswiftWebKit.tbd; path = usr/lib/swift/libswiftWebKit.tbd; sourceTree = SDKROOT; };
 		4424760F2D61583B00100568 /* AppDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = AriesBifold/AppDelegate.mm; sourceTree = "<group>"; };
 		542D8B8DE15D71AFA98AB9FD /* Pods-AriesBifold.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AriesBifold.release.xcconfig"; path = "Target Support Files/Pods-AriesBifold/Pods-AriesBifold.release.xcconfig"; sourceTree = "<group>"; };
 		566FB1F1273B158E003E9BEE /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
@@ -71,17 +69,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		888CC7E92F08D96400BFDCD6 /* assets */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-			);
-			explicitFileTypes = {
-			};
-			explicitFolders = (
-			);
-			path = assets;
-			sourceTree = "<group>";
-		};
+		888CC7E92F08D96400BFDCD6 /* assets */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = assets; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,7 +85,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				43857C042720ABB4004F54E0 /* libswiftWebKit.tbd in Frameworks */,
 				1217786930A980F800759B50 /* libPods-AriesBifold.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -139,7 +126,6 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				43857C032720ABB4004F54E0 /* libswiftWebKit.tbd */,
 				433E773D26557E1B00F569EE /* Indy.framework */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				D449A42D2788C5BC484BE259 /* libPods-AriesBifold.a */,
@@ -402,9 +388,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-AriesBifold/Pods-AriesBifold-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-AriesBifold/Pods-AriesBifold-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -419,9 +409,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-AriesBifold/Pods-AriesBifold-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-AriesBifold/Pods-AriesBifold-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -455,9 +449,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-AriesBifold-AriesBifoldTests/Pods-AriesBifold-AriesBifoldTests-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-AriesBifold-AriesBifoldTests/Pods-AriesBifold-AriesBifoldTests-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -491,9 +489,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-AriesBifold-AriesBifoldTests/Pods-AriesBifold-AriesBifoldTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-AriesBifold-AriesBifoldTests/Pods-AriesBifold-AriesBifoldTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -637,7 +639,7 @@
 					"-lc++",
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
-				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.AriesBifold;
+				PRODUCT_BUNDLE_IDENTIFIER = com.digicred.vcwalllet;
 				PRODUCT_NAME = AriesBifold;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -678,7 +680,7 @@
 					"-lc++",
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
-				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.AriesBifold;
+				PRODUCT_BUNDLE_IDENTIFIER = com.digicred.vcwalllet;
 				PRODUCT_NAME = AriesBifold;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -754,10 +756,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "$(inherited)";
 				OTHER_CPLUSPLUSFLAGS = "$(inherited)";
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 5.0;
@@ -824,10 +823,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_CFLAGS = "$(inherited)";
 				OTHER_CPLUSPLUSFLAGS = "$(inherited)";
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 5.0;
