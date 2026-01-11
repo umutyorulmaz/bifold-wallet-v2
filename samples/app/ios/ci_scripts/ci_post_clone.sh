@@ -17,6 +17,7 @@ echo "Node version: $(node -v)"
 
 # Enable Corepack for Yarn 4.x support
 echo "Enabling Corepack..."
+npm install -g corepack
 corepack enable
 corepack prepare yarn@4.9.2 --activate
 
