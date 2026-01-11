@@ -15,11 +15,10 @@ fi
 
 echo "Node version: $(node -v)"
 
-# Install yarn via npm
-if ! command -v yarn &> /dev/null; then
-    echo "Installing Yarn..."
-    npm install -g yarn
-fi
+# Enable Corepack for Yarn 4.x support
+echo "Enabling Corepack..."
+corepack enable
+corepack prepare yarn@4.9.2 --activate
 
 echo "Yarn version: $(yarn -v)"
 
