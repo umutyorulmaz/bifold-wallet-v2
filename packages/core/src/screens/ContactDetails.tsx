@@ -32,6 +32,7 @@ import { toImageSource } from '../utils/credential'
 import { HistoryCardType } from '../modules/history/types'
 import { ThemedText } from '../components/texts/ThemedText'
 import { ThemedBackground } from '../modules/theme/components/ThemedBackground'
+import { testIdWithKey } from '../utils/testable'
 
 type ContactDetailsProps = StackScreenProps<ContactStackParams, Screens.ContactDetails>
 
@@ -242,6 +243,7 @@ const ContactDetails: React.FC<ContactDetailsProps> = ({ route }) => {
 
         <View>
           <TouchableOpacity
+            testID={testIdWithKey('StartVideoCall')}
             style={[styles.section, styles.actionRow]}
             onPress={() =>
               navigation.navigate(Screens.VideoCall as any, {
@@ -256,6 +258,7 @@ const ContactDetails: React.FC<ContactDetailsProps> = ({ route }) => {
 
           {contactDetailsOptions?.enableEditContactName && (
             <TouchableOpacity
+              testID={testIdWithKey('RenameContact')}
               style={[styles.section, styles.actionRow]}
               onPress={() => navigation.navigate(Screens.RenameContact, { connectionId })}
             >
@@ -266,6 +269,7 @@ const ContactDetails: React.FC<ContactDetailsProps> = ({ route }) => {
 
           {store.preferences.developerModeEnabled && (
             <TouchableOpacity
+              testID={testIdWithKey('JSONDetails')}
               style={[styles.section, styles.actionRow]}
               onPress={() =>
                 navigation.navigate(Screens.JSONDetails, {
@@ -278,7 +282,11 @@ const ContactDetails: React.FC<ContactDetailsProps> = ({ route }) => {
             </TouchableOpacity>
           )}
 
-          <TouchableOpacity style={[styles.section, styles.actionRow]} onPress={callOnRemove}>
+          <TouchableOpacity
+            testID={testIdWithKey('RemoveFromWallet')}
+            style={[styles.section, styles.actionRow]}
+            onPress={callOnRemove}
+          >
             <Assets.svg.iconDelete width={20} height={20} color={ColorPalette.semantic.error} />
             <ThemedText style={{ color: ColorPalette.semantic.error }}>{t('ContactDetails.RemoveContact')}</ThemedText>
           </TouchableOpacity>
