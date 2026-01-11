@@ -96,7 +96,7 @@ const generateDigiCredOnboardingWorkflow = (
     // Name wallet
     { name: Screens.NameWallet, completed: didNameWallet || !enableWalletNaming },
     // Attempt lockout
-    { name: Screens.AttemptLockout, completed: servedPenalty },
+    { name: Screens.AttemptLockout, completed: servedPenalty !== false },
     // Authentication
     { name: Screens.EnterPIN, completed: didAuthenticate || !didCreatePIN },
     // Agent initialization
