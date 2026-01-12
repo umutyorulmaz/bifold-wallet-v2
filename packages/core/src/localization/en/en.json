@@ -539,7 +539,8 @@
     "CredentialName": "Credential name",
     "Credentials": "My credentials from this contact",
     "NoCredentials": "You don't have any credentials from this contact.",
-    "StartVideoCall": "Start Video Call"
+    "StartVideoCall": "Start Video Call",
+    "ListCredentials": "List Credentials"
   },
   "WhatAreContacts": {
     "Title": "What are Contacts?",
@@ -561,7 +562,8 @@
     "Accepted": "Accepted",
     "Declined": "Declined",
     "Done": "Done",
-    "AcceptedNote": "Credential added to your wallet"
+    "AcceptedNote": "Credential added to your wallet",
+    "UnknownCredential": "Unknown Credential"
   },
   "PushNotifications": {
     "EnableNotifications": "Enable Notifications to get instant alerts",
@@ -629,7 +631,8 @@
     "ViewMessage": "View message",
     "ScanOfferAddCard": "Scan an offer to add a card to your wallet",
     "Scan": "Scan QR Code",
-    "NotificationPreview": "You have received a notification..."
+    "NotificationPreview": "You have received a notification...",
+    "ListCredentials": "List Credentials"
   },
   "Scan": {
     "SuccessfullyAcceptedConnection": "Successfully Accepted Connection",
@@ -809,7 +812,8 @@
     "CredentialForProofIsRevoked": "revoked credential",
     "ProofRequestStateError": "The proof request received is in: {{state}}, decline this proof and try again.",
     "ProofRequestErrorMessage": "Something went wrong with the proof request.",
-    "PleaseAddress": " Please address them before continuing."
+    "PleaseAddress": " Please address them before continuing.",
+    "ListCredentials": "List Credentials"
   },
   "UnsatisfiedProofRequest": {
     "Title": "Information Request",
@@ -909,7 +913,8 @@
   "TabStack": {
     "Home": "Notifications",
     "Scan": "Scan",
-    "Credentials": "Credentials"
+    "Credentials": "Credentials",
+    "ListCredentials": "List Credentials"
   },
   "RootStack": {
     "Contacts": "Contacts",
@@ -990,7 +995,19 @@
     "HistoryDetails": "History Details",
     "UpdateAvailable": "Update Available",
     "JSONDetails": "JSON details",
-    "WorkflowDetails": "Workflow Details"
+    "WorkflowDetails": "Workflow Details",
+    "ListCredentials": "List Credentials"
+  },
+  "ListCredentials": {
+    "Declined": "Declined",
+    "AcceptedCred": "Credential added to your wallet",
+    "AcceptedTrans": "Transcript added to your wallet",
+    "Errors": "Error Message",
+    "IssuedOn": "Issued on",
+    "IssuedBy": "Issued By",
+    "Credential": "Credential",
+    "CredentialDetails": "Credential Details",
+    "EmptyList": "Empty List"
   },
   "Loading": {
     "TakingTooLong": "This is taking longer than usual. You can return to home or continue waiting.",
@@ -1079,7 +1096,27 @@
     "CompletedCredits": "Completed Credits",
     "The courses with *U are Universal Education Transfer Component courses": "The courses with *U are Universal Education Transfer Component courses",
     "The courses with *A are CAA courses": "The courses with *A are CAA courses",
-    "NoAcademicStanding": "No Academic Standing"
+    "NoAcademicStanding": "No Academic Standing",
+    "OpenPresentation": "Open presentation",
+    "ViewRequest": "View request",
+    "ViewOffer": "View offer",
+    "OpenItem": "Open",
+    "UserYou": "You",
+    "YouConnected": "You connected with",
+    "CredentialProposalSent": "sent a credential proposal",
+    "CredentialOfferReceived": "sent a credential offer",
+    "CredentialRequestSent": "sent a credential request",
+    "CredentialDeclined": "declined a credential offer",
+    "CredentialReceived": "received a credential",
+    "ProofRequestSent": "sent a proof request",
+    "ProofPresentationReceived": "has sent you information",
+    "ProofRequestReceived": "has sent you a proof request",
+    "ProofRequestRejected": "rejected a proof request",
+    "ProofRequestRejectReceived": "rejected a proof request",
+    "ProofRequestSatisfied": "shared information",
+    "ReceivedAt": "Received at ",
+    "AcceptedAt": "Accepted at ",
+    "DeclinedAt": "Declined at "
   },
   "Verifier": {
     "UseVerifierCapability": "Use Verifier capability?",

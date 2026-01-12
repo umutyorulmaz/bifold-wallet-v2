@@ -320,15 +320,15 @@ const TabStack: React.FC = () => {
                         fontWeight: focused ? TextTheme.bold.fontWeight : TextTheme.normal.fontWeight,
                       }}
                     >
-                      {t('TabStack.Credentials')}
+                      {t('TabStack.ListCredentials')}
                     </Text>
                   )}
                 </View>
               </AttachTourStep>
             ),
             tabBarShowLabel: false,
-            tabBarAccessibilityLabel: t('TabStack.Credentials'),
-            tabBarTestID: testIdWithKey(t('TabStack.Credentials')),
+            tabBarAccessibilityLabel: t('TabStack.ListCredentials'),
+            tabBarTestID: testIdWithKey(t('TabStack.ListCredentials')),
           }}
         />
       </Tab.Navigator>

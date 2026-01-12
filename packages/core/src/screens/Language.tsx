@@ -19,6 +19,7 @@ const Language = () => {
   const { t, i18n } = useTranslation()
   const { ColorPalette, SettingsTheme } = useTheme()
   const [{ supportedLanguages }] = useServices([TOKENS.CONFIG])
+  const [GradientBackground] = useServices([TOKENS.COMPONENT_GRADIENT_BACKGROUND])
 
   const languages: Language[] = supportedLanguages.map((lang) => ({
     id: lang,
@@ -27,8 +28,8 @@ const Language = () => {
 
   const styles = StyleSheet.create({
     container: {
-      backgroundColor: ColorPalette.brand.primaryBackground,
       width: '100%',
+      marginTop: 120
     },
     section: {
       backgroundColor: SettingsTheme.groupBackground,
@@ -59,38 +60,40 @@ const Language = () => {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
-      <FlatList
-        data={languages}
-        renderItem={({ item: language }) => {
-          const { id, value }: Language = language
-          return (
-            <View style={[styles.section, styles.sectionRow]}>
-              <ThemedText variant="title">{value}</ThemedText>
-              <BouncyCheckbox
-                accessibilityLabel={`${id === i18n.language ? t('Language.Checked') : t('Language.NotChecked')}`} // add on voice over the text checked / not checked after the text from value above
-                accessibilityRole="radio"
-                disableText
-                fillColor={ColorPalette.brand.secondaryBackground}
-                unfillColor={ColorPalette.brand.secondaryBackground}
-                size={36}
-                innerIconStyle={{ borderColor: ColorPalette.brand.primary, borderWidth: 2 }}
-                ImageComponent={() => <Icon name="circle" size={18} color={ColorPalette.brand.primary}></Icon>}
-                onPress={async () => await handleLanguageChange(language)}
-                isChecked={id === i18n.language}
-                disableBuiltInState
-                testID={testIdWithKey(id.toLocaleLowerCase())}
-              />
+    <GradientBackground>
+      <SafeAreaView style={styles.container}>
+        <FlatList
+          data={languages}
+          renderItem={({ item: language }) => {
+            const { id, value }: Language = language
+            return (
+              <View style={[styles.section, styles.sectionRow]}>
+                <ThemedText variant="title">{value}</ThemedText>
+                <BouncyCheckbox
+                  accessibilityLabel={`${id === i18n.language ? t('Language.Checked') : t('Language.NotChecked')}`} // add on voice over the text checked / not checked after the text from value above
+                  accessibilityRole="radio"
+                  disableText
+                  fillColor={ColorPalette.brand.secondaryBackground}
+                  unfillColor={ColorPalette.brand.secondaryBackground}
+                  size={36}
+                  innerIconStyle={{ borderColor: ColorPalette.brand.primary, borderWidth: 2 }}
+                  ImageComponent={() => <Icon name="circle" size={18} color={ColorPalette.brand.primary}></Icon>}
+                  onPress={async () => await handleLanguageChange(language)}
+                  isChecked={id === i18n.language}
+                  disableBuiltInState
+                  testID={testIdWithKey(id.toLocaleLowerCase())}
+                />
+              </View>
+            )
+          }}
+          ItemSeparatorComponent={() => (
+            <View style={{ backgroundColor: SettingsTheme.groupBackground }}>
+              <View style={styles.itemSeparator}></View>
             </View>
-          )
-        }}
-        ItemSeparatorComponent={() => (
-          <View style={{ backgroundColor: SettingsTheme.groupBackground }}>
-            <View style={styles.itemSeparator}></View>
-          </View>
-        )}
-      />
-    </SafeAreaView>
+          )}
+        />
+      </SafeAreaView>
+    </GradientBackground>
   )
 }
 

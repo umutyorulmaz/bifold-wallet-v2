@@ -535,7 +535,8 @@
     "CredentialName": "Nombre de la credencial",
     "Credentials": "Mis credenciales de este contacto",
     "NoCredentials": "No tienes ninguna credencial de este contacto.",
-    "StartVideoCall": "Iniciar videollamada"
+    "StartVideoCall": "Iniciar videollamada",
+    "ListCredentials": "Listar Credenciales"
   },
   "WhatAreContacts": {
     "Title": "¿Qué son los Contactos?",
@@ -556,7 +557,9 @@
     "Credential": "credencial",
     "Accepted": "Aceptado",
     "Declined": "Rechazado",
-    "Done": "Hecho"
+    "Done": "Hecho",
+    "AcceptedNote": "Credencial adicionada à sua carteira",
+    "UnknownCredential": "Credencial desconocida"
   },
   "PushNotifications": {
     "EnableNotifications": "Habilitar notificaciones para recibir alertas instantáneas",
@@ -985,7 +988,15 @@
     "HistoryDetails": "Detalles de historial",
     "UpdateAvailable": "Actualización disponible",
     "JSONDetails": "Detalles JSON",
-    "WorkflowDetails": "Detalles de flujo de trabajo"
+    "WorkflowDetails": "Detalles de flujo de trabajo",
+    "ListCredentials": "Listar Credenciales"
+  },
+  "ListCredentials": {
+    "Declined": "Rechazado",
+    "AcceptedCred": "Credencial añadida a su cartera",
+    "AcceptedTrans": "Expediente académico añadido a su cartera",
+    "Errors": "Mensaje de Error",
+    "IssuedOn": "Emitido el"
   },
   "Loading": {
     "TakingTooLong": "Esto está tomando más tiempo de lo usual. Puedes volver al inicio o continuar esperando.",
@@ -1164,7 +1175,27 @@
     "CompletedCredits": "Créditos completados",
     "The courses with *U are Universal Education Transfer Component courses": "Las asignaturas con *U son asignaturas del Componente de Transferencia de Educación Universal",
     "The courses with *A are CAA courses": "Las asignaturas con *A son asignaturas CAA",
-    "NoAcademicStanding": "Sin distinción académica"
+    "NoAcademicStanding": "Sin distinción académica",
+    "OpenPresentation": "Abrir presentación",
+    "ViewRequest": "Ver solicitud",
+    "ViewOffer": "Ver oferta",
+    "OpenItem": "Abrir",
+    "UserYou": "Usted",
+    "YouConnected": "Usted se conectó con",
+    "CredentialProposalSent": "envió una propuesta de credencial",
+    "CredentialOfferReceived": "envió una oferta de credencial",
+    "CredentialRequestSent": "envió una solicitud de credencial",
+    "CredentialDeclined": "rechazó una oferta de credencial",
+    "CredentialReceived": "recibió una credencial",
+    "ProofRequestSent": "envió una solicitud de prueba",
+    "ProofPresentationReceived": "le ha enviado información",
+    "ProofRequestReceived": "le ha enviado una solicitud de prueba",
+    "ProofRequestRejected": "rechazó una solicitud de prueba",
+    "ProofRequestRejectReceived": "rechazó una solicitud de prueba",
+    "ProofRequestSatisfied": "compartió información",
+    "ReceivedAt": "Recibido el ",
+    "AcceptedAt": "Aceptado el ",
+    "DeclinedAt": "Rechazado el "
   },
   "Transcript": {
     "Mark": "Calificación",

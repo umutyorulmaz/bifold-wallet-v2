@@ -109,9 +109,9 @@ const MainStack: React.FC = () => {
           name={Screens.CredentialDetails}
           component={CredentialDetails}
           options={{
+            ...ScreenOptionsDictionary[Screens.CredentialDetails],
             title: t('Screens.CredentialDetails'),
             headerShown: true,
-            ...ScreenOptionsDictionary[Screens.CredentialDetails],
           }}
         />
         <Stack.Screen
@@ -119,6 +119,7 @@ const MainStack: React.FC = () => {
           component={OpenIDCredentialDetails}
           options={{
             title: t('Screens.CredentialDetails'),
+            headerShown: false,
             ...ScreenOptionsDictionary[Screens.OpenIDCredentialDetails],
           }}
         />

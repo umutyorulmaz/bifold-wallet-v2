@@ -7,7 +7,7 @@
  */
 
 import React from 'react'
-import { View, StyleSheet, Image } from 'react-native'
+import { View, StyleSheet, Image, Dimensions } from 'react-native'
 import { SvgUri } from 'react-native-svg'
 import { useTranslation } from 'react-i18next'
 
@@ -32,19 +32,26 @@ export interface TranscriptCardProps {
 }
 
 export const TranscriptCard: React.FC<TranscriptCardProps> = ({
-  school,
-  yearStart,
-  yearEnd,
-  termGPA,
-  cumulativeGPA,
-  logoImage,
-  avatarImage,
-  isInChat = false,
-}) => {
+                                                                school,
+                                                                yearStart,
+                                                                yearEnd,
+                                                                termGPA,
+                                                                cumulativeGPA,
+                                                                logoImage,
+                                                                avatarImage,
+                                                                isInChat = false,
+                                                              }) => {
   const { t } = useTranslation()
   const { ChatTheme, ColorPalette } = useTheme()
   const isTabletDevice = isTablet()
-  const aspectRatio = 280 / 175
+
+  const { width: screenWidth } = Dimensions.get('window')
+  const CARD_WIDTH_RATIO = 350.0
+  const CARD_HEIGHT_RATIO = 219.69
+  const ASPECT_RATIO = CARD_WIDTH_RATIO / CARD_HEIGHT_RATIO
+
+  const cardWidth = screenWidth * 0.85
+  const cardHeight = cardWidth / ASPECT_RATIO
 
   // Get transcript card color from theme or use default
   const transcriptCardColor = (ChatTheme as any).newChatDesign?.transcriptCard || '#00477F'
@@ -56,13 +63,13 @@ export const TranscriptCard: React.FC<TranscriptCardProps> = ({
         { backgroundColor: transcriptCardColor },
         isInChat
           ? {
-              width: isTabletDevice ? 320 : 280,
-              height: isTabletDevice ? 215 : 175,
-            }
+            width: cardWidth,
+            height: cardHeight,
+          }
           : {
-              width: '100%',
-              aspectRatio: aspectRatio,
-            },
+            width: '100%',
+            aspectRatio: ASPECT_RATIO,
+          },
       ]}
     >
       <View style={styles.leftSection}>

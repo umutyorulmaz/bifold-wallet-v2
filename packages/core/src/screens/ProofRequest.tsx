@@ -300,7 +300,7 @@ const ProofRequest: React.FC<ProofRequestProps> = ({ navigation, proofId }) => {
       setLoading(false)
       setDescriptorMetadata(descriptorMetadata)
 
-      // Credentials that satisfy the proof request
+      // ListCredentials that satisfy the proof request
       let credList: string[] = []
       if (selectedCredentials.length > 0) {
         credList = selectedCredentials
@@ -692,7 +692,7 @@ const ProofRequest: React.FC<ProofRequestProps> = ({ navigation, proofId }) => {
                 <ThemedText>{t('ProofRequest.IsRequestingYouToShare')}</ThemedText>
                 <ThemedText variant="title">{` ${activeCreds?.length} `}</ThemedText>
                 <ThemedText>
-                  {activeCreds?.length > 1 ? t('ProofRequest.Credentials') : t('ProofRequest.Credential')}
+                  {activeCreds?.length > 1 ? t('ProofRequest.ListCredentials') : t('ProofRequest.Credential')}
                 </ThemedText>
               </ThemedText>
               {isShareDisabled && (
@@ -856,6 +856,7 @@ const ProofRequest: React.FC<ProofRequestProps> = ({ navigation, proofId }) => {
                     credential={item.credExchangeRecord}
                     credDefId={item.credDefId}
                     schemaId={item.schemaId}
+                    onPress={() => {}}
                     displayItems={[
                       ...(item.attributes ?? []),
                       ...evaluatePredicates(getCredentialsFields(), item.credId)(item),

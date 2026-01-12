@@ -7,6 +7,7 @@ declare module 'react-native-vector-icons/MaterialCommunityIcons' {
     size?: number
     color?: string
     style?: TextStyle | TextStyle[]
+    onPress?: void
   }
 
   export default class MaterialCommunityIcons extends Component<IconProps> {}

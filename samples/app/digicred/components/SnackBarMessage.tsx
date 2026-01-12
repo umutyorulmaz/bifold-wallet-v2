@@ -1,9 +1,9 @@
 import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
-import SuccessIcon from '../../assets/circle-check.svg'
-import ErrorIcon from '../../assets/report-problem.svg'
-import InfoIcon from '../../assets/info-icon.svg'
-import WarningIcon from '../../assets/bell-alert.svg'
+import SuccessIcon from '../assets/circle-check.svg'
+import ErrorIcon from '../assets/report-problem.svg'
+import InfoIcon from '../assets/info-icon.svg'
+import WarningIcon from '../assets/bell-alert.svg'
 
 interface SnackMessageProps {
   message: string

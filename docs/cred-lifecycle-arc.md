@@ -8,7 +8,7 @@ This diagram illustrates the wallet-side process for verifying the validity of a
 
 ## 🔄 SD-JWT Credential Status Flow – Wallet-Side
 
-This system supports **robust, standards-based credential lifecycle management** within a digital wallet environment. It ensures Verifiable Credentials (VCs) based on **SD-JWT** remain valid, trustworthy, and up-to-date, using automated background and user-driven processes. Key features include:
+This system supports **robust, standards-based credential lifecycle management** within a digital wallet environment. It ensures Verifiable ListCredentials (VCs) based on **SD-JWT** remain valid, trustworthy, and up-to-date, using automated background and user-driven processes. Key features include:
 
 - 🔐 **Stored Refresh Token Usage** – Enables silent access token renewal without re-authentication
 - 🔎 **Status List Verification** – Periodic or on-demand checks against SD-JWT status lists to detect revoked or expired credentials ([draft-ietf-oauth-status-list](https://datatracker.ietf.org/doc/draft-ietf-oauth-status-list/))
@@ -40,7 +40,7 @@ This design prioritizes **user transparency, reliability, and automation**, crea
 flowchart TD
 
   subgraph Core Framework
-    A1[Background Process] --> A3[Check Credentials]
+    A1[Background Process] --> A3[Check ListCredentials]
     A2[Event Based] --> A3
 
     A3 --> A4{Credential Invalid or New?}

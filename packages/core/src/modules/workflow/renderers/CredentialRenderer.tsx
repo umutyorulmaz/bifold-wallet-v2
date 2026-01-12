@@ -9,15 +9,8 @@
 import { CredentialExchangeRecord, CredentialPreviewAttribute, CredentialState } from '@credo-ts/core'
 import { useAgent } from '@credo-ts/react-hooks'
 import React, { useCallback, useEffect, useState } from 'react'
-import {
-  View,
-  StyleSheet,
-  TouchableOpacity,
-  ActivityIndicator,
-  DeviceEventEmitter,
-} from 'react-native'
+import { View, StyleSheet, TouchableOpacity, ActivityIndicator, DeviceEventEmitter, Text } from 'react-native'
 
-import { ThemedText } from '../../../components/texts/ThemedText'
 import { useTheme } from '../../../contexts/theme'
 import { ICredentialRenderer, RenderContext } from '../types'
 import { VDCard } from './components/VDCard'
@@ -27,7 +20,8 @@ import { BifoldError } from '../../../types/error'
 import { EventTypes } from '../../../constants'
 import { t } from 'i18next'
 import { Dimensions } from 'react-native'
-import { debug } from 'expo/build/devtools/logger'
+import { formatTime } from '../../../utils/helpers'
+import { ColorPalette } from '../../../theme'
 
 export enum CredentialDisplayType {
   STUDENT_ID = 'student_id',
@@ -35,7 +29,7 @@ export enum CredentialDisplayType {
   DEFAULT = 'default',
 }
 
-const { width} = Dimensions.get('window')
+const { width } = Dimensions.get('window')
 
 export function detectCredentialType(credential: CredentialExchangeRecord): CredentialDisplayType {
   const credDefId = (credential as any).metadata?.data?.['_anoncreds/credential']?.credentialDefinitionId || ''
@@ -114,7 +108,9 @@ function useCredentialAttributes(credential: CredentialExchangeRecord) {
         .getFormatData(credential.id)
         .then((formatData) => {
           const { offer, offerAttributes } = formatData
-          const offerData = (offer?.anoncreds ?? offer?.indy) as { cred_def_id?: string } | undefined
+          const anoncredsOffer = offer?.anoncreds as { cred_def_id?: string } | undefined
+          const indyOffer = offer?.indy as { cred_def_id?: string } | undefined
+          const offerData = anoncredsOffer || indyOffer
 
           if (offerData?.cred_def_id) {
             setCredDefId(offerData.cred_def_id)
@@ -133,111 +129,6 @@ function useCredentialAttributes(credential: CredentialExchangeRecord) {
 
   return { attributes, loading, credDefId }
 }
-
-// export const DefaultCredentialCard: React.FC<CredentialCardProps> = ({ credential, context, onPress }) => {
-//   const { SettingsTheme } = useTheme()
-//   const { attributes: credentialAttributes, loading } = useCredentialAttributes(credential)
-//   const fullName = credentialAttributes.find(
-//     (attr) => attr.name.toLowerCase() === 'fullname' || attr.name.toLowerCase() === 'studentfullname'
-//   )?.value
-//   const firstName = credentialAttributes.find((attr) => attr.name.toLowerCase() === 'first')?.value
-//   const lastName = credentialAttributes.find((attr) => attr.name.toLowerCase() === 'last')?.value
-//   const studentId = credentialAttributes.find(
-//     (attr) => attr.name.toLowerCase() === 'studentid' || attr.name.toLowerCase() === 'studentnumber'
-//   )?.value
-//   const school = credentialAttributes.find((attr) => attr.name.toLowerCase() === 'schoolname')?.value
-//
-//   const displayName = fullName || (firstName && lastName ? `${firstName} ${lastName}` : '')
-//
-//   const getStateLabel = () => {
-//     switch (credential.state) {
-//       case CredentialState.OfferReceived:
-//         return context.t('CredentialOffer.CredentialOffer')
-//       case CredentialState.Done:
-//         return context.t('Credentials.Credential')
-//       case CredentialState.Declined:
-//         return context.t('Credentials.Credential')
-//       default:
-//         return credential.state
-//     }
-//   }
-//
-//   // const getCredentialName = () => {
-//   //   if (!credDefId) return context.t('Credentials.Credential')
-//   //   const parts = credDefId.split(':')
-//   //   return parts[parts.length - 1] || context.t('Credentials.Credential')
-//   // }
-//
-//   const allAttributes = credentialAttributes.filter(
-//     (attr) => !['studentphoto', 'photo', 'student_photo'].includes(attr.name.toLowerCase())
-//   )
-//
-//   const content = (
-//     <View style={[styles.card, { backgroundColor: 'transparent'}]}>
-//       <View style={[styles.header, { backgroundColor: SettingsTheme.newSettingColors.buttonColor }]}>
-//         <ThemedText style={styles.headerText}>{getStateLabel()}</ThemedText>
-//       </View>
-//
-//       <View style={styles.body}>
-//         {loading ? (
-//           <View style={styles.loadingContainer}>
-//             <ActivityIndicator size="small" color={SettingsTheme.newSettingColors.buttonColor} />
-//             <ThemedText style={[styles.loadingText, { color: SettingsTheme.newSettingColors.textColor }]}>
-//               {context.t('Global.Loading' as any)}
-//             </ThemedText>
-//           </View>
-//         ) : (
-//           <>
-//             {school && (
-//               <ThemedText style={[styles.school, { color: SettingsTheme.newSettingColors.headerTitle }]}>
-//                 {school}
-//               </ThemedText>
-//             )}
-//
-//             {displayName && (
-//               <ThemedText style={[styles.name, { color: SettingsTheme.newSettingColors.textBody }]}>
-//                 {displayName}
-//               </ThemedText>
-//             )}
-//
-//             {studentId && (
-//               <ThemedText style={[styles.detail, { color: SettingsTheme.newSettingColors.textColor }]}>
-//                 {context.t('Chat.StudentID' as any) as string}: {studentId}
-//               </ThemedText>
-//             )}
-//
-//             {!school &&
-//               !studentId &&
-//               !displayName &&
-//               allAttributes.slice(0, 4).map((attr, index) => (
-//                 <ThemedText key={index} style={[styles.detail, { color: SettingsTheme.newSettingColors.textColor }]}>
-//                   {attr.name && attr.value ? `${attr.name}: ${attr.value}` : ''}
-//                 </ThemedText>
-//               ))}
-//
-//             {allAttributes.length > 0 && (
-//               <ThemedText style={[styles.tapToView, { color: SettingsTheme.newSettingColors.textColor }]}>
-//                 {context.t('Chat.TapToView' as any) || 'Tap to view details'}
-//               </ThemedText>
-//             )}
-//           </>
-//         )}
-//       </View>
-//
-//       <View style={[styles.bottomLine, { backgroundColor: SettingsTheme.newSettingColors.buttonColor }]} />
-//     </View>
-//   )
-//
-//   if (onPress) {
-//     return (
-//       <TouchableOpacity onPress={onPress} activeOpacity={0.8}>
-//         {content}
-//       </TouchableOpacity>
-//     )
-//   }
-//
-//   return content
-// }
 
 const styles = StyleSheet.create({
   card: {
@@ -322,6 +213,18 @@ const styles = StyleSheet.create({
     marginTop: 4,
     fontStyle: 'italic',
   },
+  messageTime: {
+    fontSize: 12,
+    marginTop: 8,
+    marginBottom: 8,
+    color: ColorPalette.grayscale.white,
+    fontFamily: 'Open Sans',
+    fontStyle: 'normal',
+    fontWeight: '700',
+    lineHeight: 18,
+    marginLeft: '-5%',
+    zIndex: 10,
+  },
 })
 
 export interface CredentialRendererOptions {
@@ -330,26 +233,46 @@ export interface CredentialRendererOptions {
   onPress?: (credential: CredentialExchangeRecord, context: RenderContext) => void
 }
 
-export class DefaultCredentialRenderer implements ICredentialRenderer {
-  private options: CredentialRendererOptions
+// export class DefaultCredentialRenderer implements ICredentialRenderer {
+//   private options: CredentialRendererOptions
+//
+//   constructor(options: CredentialRendererOptions = {}) {
+//     this.options = options
+//   }
+//
+//   render(credential: CredentialExchangeRecord, context: RenderContext): React.ReactElement {
+//     const handlePress = this.options.onPress ? () => this.options.onPress!(credential, context) : undefined
+//
+//     return (
+//       <View>
+//         <VDCredentialCard credential={credential} context={context} onPress={handlePress} />
+//       </View>
+//     )
+//   }
+// }
 
-  constructor(options: CredentialRendererOptions = {}) {
-    this.options = options
+// export function createDefaultCredentialRenderer(options: CredentialRendererOptions = {}): DefaultCredentialRenderer {
+//   return new DefaultCredentialRenderer(options)
+// }
+
+interface TranscriptData {
+  transcript?: {
+    gpa?: string
+    [key: string]: any
   }
-
-  render(credential: CredentialExchangeRecord, context: RenderContext): React.ReactElement {
-    const handlePress = this.options.onPress ? () => this.options.onPress!(credential, context) : undefined
-
-    return (
-      <View>
-        <VDCredentialCard credential={credential} context={context} onPress={handlePress} />
-      </View>
-    )
+  studentInfo?: {
+    studentFullName?: string
+    schoolName?: string
+    [key: string]: any
   }
-}
-
-export function createDefaultCredentialRenderer(options: CredentialRendererOptions = {}): DefaultCredentialRenderer {
-  return new DefaultCredentialRenderer(options)
+  terms?: Array<{
+    termYear?: string
+    termGpa?: string
+    [key: string]: any
+  }>
+  yearStart?: string
+  yearEnd?: string
+  termGPA?: string
 }
 
 export const VDCredentialCard: React.FC<CredentialCardProps> = ({ credential, context, onPress }) => {
@@ -392,13 +315,16 @@ export const VDCredentialCard: React.FC<CredentialCardProps> = ({ credential, co
           if (savedAttributes && Array.isArray(savedAttributes)) {
             setDeclinedData({
               attributes: savedAttributes,
-              credDefId: savedCredDefId || declinedCredential.metadata.data?._anoncreds?.credential?.credentialDefinitionId || credDefId,
-              schemaId: savedSchemaId || declinedCredential.metadata.data?._anoncreds?.credential?.schemaId || ""
+              credDefId:
+                savedCredDefId ||
+                declinedCredential.metadata.data?.['_anoncreds/credential']?.credentialDefinitionId ||
+                credDefId,
+              schemaId: savedSchemaId || declinedCredential.metadata.data?.['_anoncreds/credential']?.schemaId || '',
             })
           }
         }
       } catch (error) {
-        debug('Error checking credential status:', error)
+        // debug('Error checking credential status:', error)
       }
     }
 
@@ -422,34 +348,108 @@ export const VDCredentialCard: React.FC<CredentialCardProps> = ({ credential, co
     return undefined
   }
 
+  const parseTranscriptData = (): TranscriptData => {
+    const transcriptAttr = getAttrValue('transcript')
+    const studentInfoAttr = getAttrValue('studentinfo')
+    const termsAttr = getAttrValue('terms')
+
+    let transcriptData: TranscriptData['transcript'] = {}
+    let studentInfoData: TranscriptData['studentInfo'] = {}
+    let termsData: TranscriptData['terms'] = []
+
+    try {
+      if (transcriptAttr) transcriptData = JSON.parse(transcriptAttr) as TranscriptData['transcript']
+      if (studentInfoAttr) studentInfoData = JSON.parse(studentInfoAttr) as TranscriptData['studentInfo']
+      if (termsAttr) termsData = JSON.parse(termsAttr) as TranscriptData['terms']
+    } catch (e) {
+      // debug('Error parsing JSON:', e)
+    }
+
+    let yearStart = ''
+    let yearEnd = ''
+    let termGPA = ''
+
+    if (termsData && termsData.length > 0) {
+      const firstTerm = termsData[0]
+      const lastTerm = termsData[termsData.length - 1]
+
+      if (firstTerm?.termYear) {
+        const years = firstTerm.termYear.split('-')
+        if (years.length >= 2) {
+          yearStart = years[0]
+        }
+      }
+
+      if (lastTerm?.termYear) {
+        const years = lastTerm.termYear.split('-')
+        if (years.length >= 2) {
+          yearEnd = years[1]
+        }
+      }
+
+      if (termsData.length > 0) {
+        const latestTerm = termsData[termsData.length - 1]
+        termGPA = latestTerm?.termGpa || ''
+      }
+    }
+
+    return {
+      transcript: transcriptData,
+      studentInfo: studentInfoData,
+      terms: termsData,
+      yearStart,
+      yearEnd,
+      termGPA,
+    }
+  }
+
+  const transcriptData = parseTranscriptData()
   const firstName = getAttrValue('first', 'firstname', 'first_name') || ''
   const lastName = getAttrValue('last', 'lastname', 'last_name') || ''
   const fullName = getAttrValue('fullname', 'studentfullname', 'full_name')
   const studentId = getAttrValue('studentid', 'studentnumber', 'student_id') || ''
-  const school = getAttrValue('schoolname', 'school', 'institution')
-  const issueDate = getAttrValue('issuedate', 'issue_date', 'expirationdate', 'expiration_date') || ''
+  const school = getAttrValue('schoolname', 'school', 'institution') || transcriptData.studentInfo?.schoolName || ''
+  const rawIssueDate = getAttrValue('issuedate', 'issue_date', 'expirationdate', 'expiration_date', 'expiration')
   const studentPhoto = getAttrValue('studentphoto', 'photo', 'student_photo')
-  const yearStart = getAttrValue('yearstart', 'year_start')
-  const yearEnd = getAttrValue('yearend', 'year_end')
-  const termGPA = getAttrValue('termgpa', 'term_gpa')
+  const yearStart = getAttrValue('yearstart', 'year_start') || transcriptData.yearStart
+  const yearEnd = getAttrValue('yearend', 'year_end') || transcriptData.yearEnd
+  const termGPA = getAttrValue('termgpa', 'term_gpa') || transcriptData.termGPA
   const cumulativeGPA = getAttrValue('cumulativegpa', 'cumulative_gpa')
+  const gpa = getAttrValue('gpa') || transcriptData.transcript?.gpa
+
+  const formatExpirationDate = (dateStr: string | undefined): string => {
+    if (!dateStr) return ''
+
+    if (dateStr.length === 8 && /^\d{8}$/.test(dateStr)) {
+      const year = dateStr.substring(0, 4)
+      const month = dateStr.substring(4, 6)
+      const day = dateStr.substring(6, 8)
+      return `${year}/${month}/${day}`
+    }
+
+    return dateStr
+  }
+
+  const issueDate = formatExpirationDate(rawIssueDate)
 
   const getCredentialType = () => {
     let sourceAttributes = attributes
     let sourceCredDefId = credDefId
-    let sourceSchemaId = ""
+    let sourceSchemaId = ''
 
     if (isDeclined && declinedData) {
       sourceAttributes = declinedData.attributes || []
       sourceCredDefId = declinedData.credDefId || credDefId
-      sourceSchemaId = declinedData.schemaId || ""
+      sourceSchemaId = declinedData.schemaId || ''
     } else {
-      sourceSchemaId = (credential as any).metadata?.data?.['_anoncreds/credential']?.schemaId || ""
+      sourceSchemaId = (credential as any).metadata?.data?.['_anoncreds/credential']?.schemaId || ''
     }
 
-    const checkSchemaId = sourceSchemaId || (credential as any).metadata?.data?.['_anoncreds/credential']?.schemaId || ""
+    const checkSchemaId =
+      sourceSchemaId || (credential as any).metadata?.data?.['_anoncreds/credential']?.schemaId || ''
+    const checkCredDefId = sourceCredDefId || ''
 
-    if (checkSchemaId.toLowerCase().includes('transcript')) {
+    if (checkSchemaId.toLowerCase().includes('transcript') || checkCredDefId.toLowerCase().includes('transcript')) {
       return CredentialDisplayType.TRANSCRIPT
     }
 
@@ -483,22 +483,15 @@ export const VDCredentialCard: React.FC<CredentialCardProps> = ({ credential, co
       return CredentialDisplayType.STUDENT_ID
     }
 
-    return CredentialDisplayType.DEFAULT
+    return CredentialDisplayType.STUDENT_ID
   }
 
   const credentialType = getCredentialType()
-
-  const handlePress = () => {
-    if (onPress && !isDeclined) {
-      onPress()
-    }
-  }
 
   const handleAccept = useCallback(async () => {
     try {
       if (!agent || isProcessing || userAction) return
       setIsProcessing(true)
-
       await agent.credentials.acceptOffer({ credentialRecordId: credential.id })
       setUserAction('accepted')
       setIsAccepted(true)
@@ -516,17 +509,18 @@ export const VDCredentialCard: React.FC<CredentialCardProps> = ({ credential, co
       const formatData = await agent.credentials.getFormatData(credential.id)
       const offerAttributes = formatData.offerAttributes || []
 
+      const anoncredsOffer = formatData.offer?.anoncreds as { cred_def_id?: string; schema_id?: string } | undefined
+      const indyOffer = formatData.offer?.indy as { cred_def_id?: string; schema_id?: string } | undefined
 
       const credDefId: any =
-        formatData.offer?.anoncreds?.cred_def_id ||
-        (formatData.offer?.indy as { cred_def_id?: string })?.cred_def_id ||
+        anoncredsOffer?.cred_def_id ||
+        indyOffer?.cred_def_id ||
         credential.metadata.data?.['_anoncreds/credential']?.credentialDefinitionId ||
         ''
 
-
       const schemaId =
-        formatData.offer?.anoncreds?.schema_id ||
-        formatData.offer?.indy?.schema_id ||
+        anoncredsOffer?.schema_id ||
+        indyOffer?.schema_id ||
         credential.metadata.data?.['_anoncreds/credential']?.schemaId ||
         ''
 
@@ -558,13 +552,8 @@ export const VDCredentialCard: React.FC<CredentialCardProps> = ({ credential, co
 
   if (loading) {
     return (
-      <View style={[styles.card, { backgroundColor: SettingsTheme.newSettingColors.bgColorUp || '#1a2634' }]}>
-        <View style={[styles.header, { backgroundColor: SettingsTheme.newSettingColors.buttonColor }]}>
-          <ThemedText style={styles.headerText}>{context.t('CredentialOffer.CredentialOffer')}</ThemedText>
-        </View>
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size="small" color={SettingsTheme.newSettingColors.buttonColor} />
-        </View>
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="small" color={SettingsTheme.newSettingColors.buttonColor} />
       </View>
     )
   }
@@ -572,109 +561,59 @@ export const VDCredentialCard: React.FC<CredentialCardProps> = ({ credential, co
   const renderCard = () => {
     const currentCredDefId = isDeclined && declinedData ? declinedData.credDefId : credDefId
 
-    if (isDeclined) {
-      if (credentialType === CredentialDisplayType.TRANSCRIPT) {
-        return (
-          <TranscriptCard
-            school={school}
-            yearStart={yearStart}
-            yearEnd={yearEnd}
-            termGPA={termGPA}
-            cumulativeGPA={cumulativeGPA}
-            fullname={fullName || `${firstName} ${lastName}`}
-            isInChat={context.isInChat}
-          />
-        )
-      } else {
-        return (
-          <VDCard
-            firstName={firstName}
-            lastName={lastName}
-            fullName={fullName}
-            studentId={studentId}
-            school={school}
-            issueDate={issueDate}
-            credDefId={currentCredDefId}
-            issuerName={context.theirLabel}
-            isInChat={context.isInChat}
-            studentPhoto={studentPhoto}
-          />
-        )
-      }
-    }
+    if (credentialType === CredentialDisplayType.TRANSCRIPT) {
+      const displayFullName = fullName || transcriptData.studentInfo?.studentFullName || `${firstName} ${lastName}`
+      const displaySchool = school || transcriptData.studentInfo?.schoolName || ''
+      const displayGPA = cumulativeGPA || termGPA || gpa || ''
+      const displayYearStart = yearStart || transcriptData.yearStart || ''
+      const displayYearEnd = yearEnd || transcriptData.yearEnd || ''
+      const displayTermGPA = termGPA || transcriptData.termGPA || ''
 
-    if (studentId && (firstName || lastName || fullName)) {
       return (
-        <VDCard
-          firstName={firstName}
-          lastName={lastName}
-          fullName={fullName}
-          studentId={studentId}
-          school={school}
-          issueDate={issueDate}
-          credDefId={currentCredDefId}
-          issuerName={context.theirLabel}
+        <TranscriptCard
+          school={displaySchool}
+          yearStart={displayYearStart}
+          yearEnd={displayYearEnd}
+          termGPA={displayTermGPA}
+          cumulativeGPA={displayGPA}
+          fullname={displayFullName}
           isInChat={context.isInChat}
-          studentPhoto={studentPhoto}
         />
       )
     }
 
-    switch (credentialType) {
-      case CredentialDisplayType.STUDENT_ID:
-        return (
-          <VDCard
-            firstName={firstName}
-            lastName={lastName}
-            fullName={fullName}
-            studentId={studentId}
-            school={school}
-            issueDate={issueDate}
-            credDefId={currentCredDefId}
-            issuerName={context.theirLabel}
-            isInChat={context.isInChat}
-            studentPhoto={studentPhoto}
-          />
-        )
-
-      case CredentialDisplayType.TRANSCRIPT:
-        return (
-          <TranscriptCard
-            school={school}
-            yearStart={yearStart}
-            yearEnd={yearEnd}
-            termGPA={termGPA}
-            cumulativeGPA={cumulativeGPA}
-            fullname={fullName || `${firstName} ${lastName}`}
-            isInChat={context.isInChat}
-          />
-        )
-      default:
-        // return <DefaultCredentialCard credential={credential} context={context} onPress={onPress} />
-    }
+    return (
+      <VDCard
+        firstName={firstName}
+        lastName={lastName}
+        fullName={fullName}
+        studentId={studentId}
+        school={school}
+        issueDate={issueDate}
+        credDefId={currentCredDefId}
+        issuerName={context.theirLabel}
+        isInChat={context.isInChat}
+        studentPhoto={studentPhoto}
+      />
+    )
   }
 
   const cardContent = renderCard()
   const showButtons = credential.state === CredentialState.OfferReceived && !userAction && !isDeclined && !isAccepted
 
-  if (isDeclined) {
-    return (
-      <View>
-        <View style={{ opacity: 0.5 }}>
-          <View>{cardContent}</View>
-          <CredentialButtons isProcessing={false} onAccept={() => {}} onDecline={() => {}} isDisabled={true} />
-        </View>
-        <SnackBarMessage message={t('Credentials.Declined')} type={'warning'} />
-      </View>
-    )
-  }
-
   if (isAccepted) {
     return (
       <View>
-        <View style={{ opacity: 0.5, marginBottom: 10 }}>
-          <View>{cardContent}</View>
-        </View>
+        <>
+          <View style={{ opacity: 0.5 }}>{cardContent}</View>
+          <Text style={styles.messageTime}>
+            {`${t('Chat.ReceivedAt')} ${formatTime(new Date(credential.createdAt), {
+              includeHour: true,
+              chatFormat: true,
+              trim: true,
+            })}`}
+          </Text>
+        </>
 
         <View>
           {onPress ? (
@@ -685,8 +624,33 @@ export const VDCredentialCard: React.FC<CredentialCardProps> = ({ credential, co
             <View>{cardContent}</View>
           )}
         </View>
+        <SnackBarMessage
+          message={
+            credentialType === CredentialDisplayType.TRANSCRIPT
+              ? t('ListCredentials.AcceptedTrans')
+              : t('ListCredentials.AcceptedCred')
+          }
+          type={'success'}
+        />
+      </View>
+    )
+  }
 
-        <SnackBarMessage message={t('Credentials.AcceptedNote')} type={'success'} />
+  if (isDeclined) {
+    return (
+      <View>
+        <View style={{ opacity: 0.5 }}>{cardContent}</View>
+        <Text style={styles.messageTime}>
+          {`${t('Chat.ReceivedAt')} ${formatTime(new Date(credential.createdAt), {
+            includeHour: true,
+            chatFormat: true,
+            trim: true,
+          })}`}
+        </Text>
+        <View style={{ opacity: 0.5 }}>
+          <CredentialButtons isProcessing={false} onAccept={() => {}} onDecline={() => {}} isDisabled={true} />
+        </View>
+        <SnackBarMessage message={t('ListCredentials.Declined')} type={'warning'} />
       </View>
     )
   }
@@ -694,24 +658,27 @@ export const VDCredentialCard: React.FC<CredentialCardProps> = ({ credential, co
   return (
     <View>
       <View>
-        {onPress && userAction !== 'declined' ? (
-          <TouchableOpacity onPress={handlePress} activeOpacity={0.8}>
+        {onPress ? (
+          <TouchableOpacity onPress={onPress} activeOpacity={0.8}>
             {cardContent}
           </TouchableOpacity>
         ) : (
           <View>{cardContent}</View>
         )}
       </View>
-
       {showButtons && CredentialButtons && (
         <View style={{ marginTop: 10 }}>
-          <CredentialButtons isProcessing={isProcessing} onAccept={handleAccept} onDecline={handleDecline} isDisabled={false} />
+          <CredentialButtons
+            isProcessing={isProcessing}
+            onAccept={handleAccept}
+            onDecline={handleDecline}
+            isDisabled={false}
+          />
         </View>
       )}
     </View>
   )
 }
-
 
 export interface VDCredentialRendererOptions {
   onPress?: (credential: CredentialExchangeRecord, context: RenderContext) => void

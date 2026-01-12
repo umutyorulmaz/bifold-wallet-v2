@@ -120,7 +120,12 @@ const OpenIDProofCredentialSelect: React.FC<Props> = ({ route, navigation }: Pro
                   { marginBottom: 10 },
                 ]}
               >
-                <CredentialCard credential={item.credential}></CredentialCard>
+                <CredentialCard
+                  credential={item.credential}
+                  onPress={function (): void {
+                    throw new Error('Function not implemented.')
+                  }}
+                ></CredentialCard>
               </TouchableOpacity>
             </View>
           )

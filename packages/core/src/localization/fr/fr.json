@@ -520,7 +520,9 @@
     "GoToCredentialDetail": "Aller au détail de l'attestation",
     "CredentialName": "Nom du justificatif",
     "Credentials": "Mes justificatifs avec ce contact",
-    "NoCredentials": "Vous n'avez aucun justificatif de ce contact."
+    "NoCredentials": "Vous n'avez aucun justificatif de ce contact.",
+    "StartVideoCall": "Démarrer l'appel vidéo",
+    "ListCredentials": "Lister les justificatifs d'identité"
   },
   "WhatAreContacts": {
     "Title": "Que sont les Contacts?",
@@ -542,7 +544,8 @@
     "Accepted": "Accepté",
     "Declined": "Refusé",
     "Done": "Terminé",
-    "AcceptedNote": "Justificatif ajouté à votre portefeuille"
+    "AcceptedNote": "Justificatif ajouté à votre portefeuille",
+    "UnknownCredential": "Unknown Credential"
   },
   "PushNotifications": {
     "EnableNotifications": "Activer les Notifications pour recevoir des alertes instantanées",
@@ -892,7 +895,16 @@
     "History": "History (FR)",
     "HistoryDetails": "History Details (FR)",
     "UpdateAvailable": "Update Available (FR)",
-    "JSONDetails": "JSON details (FR)"
+    "JSONDetails": "JSON details (FR)",
+    "WorkflowDetails": "Détails du flux de travail",
+    "ListCredentials": "Lister les justificatifs d'identité"
+  },
+  "ListCredentials": {
+    "Declined": "Refusé",
+    "AcceptedCred": "Justificatif d'identité ajouté à votre portefeuille",
+    "AcceptedTrans": "Relevé de notes ajouté à votre portefeuille",
+    "Errors": "Message d'erreur",
+    "IssuedOn": "Émis le"
   },
   "Loading": {
     "TakingTooLong": "Cela prend plus de temps que d'habitude. Vous pouvez retourner à l'accueil ou continuer à attendre.",
@@ -973,7 +985,27 @@
     "CompletedCredits": "Crédits complétés",
     "The courses with *U are Universal Education Transfer Component courses": "Les cours avec *U sont des cours du Composant de transfert en éducation universelle",
     "The courses with *A are CAA courses": "Les cours avec *A sont des cours CAA",
-    "NoAcademicStanding": "Aucun statut académique"
+    "NoAcademicStanding": "Aucun statut académique",
+    "OpenPresentation": "Ouvrir la présentation",
+    "ViewRequest": "Voir la demande",
+    "ViewOffer": "Voir l'offre",
+    "OpenItem": "Ouvrir",
+    "UserYou": "Vous",
+    "YouConnected": "Vous vous êtes connecté avec",
+    "CredentialProposalSent": "a envoyé une proposition de justificatif d'identité",
+    "CredentialOfferReceived": "a envoyé une offre de justificatif d'identité",
+    "CredentialRequestSent": "a envoyé une demande de justificatif d'identité",
+    "CredentialDeclined": "a refusé une offre de justificatif d'identité",
+    "CredentialReceived": "a reçu un justificatif d'identité",
+    "ProofRequestSent": "a envoyé une demande de preuve",
+    "ProofPresentationReceived": "vous a envoyé des informations",
+    "ProofRequestReceived": "vous a envoyé une demande de preuve",
+    "ProofRequestRejected": "a rejeté une demande de preuve",
+    "ProofRequestRejectReceived": "a rejeté une demande de preuve",
+    "ProofRequestSatisfied": "a partagé des informations",
+    "ReceivedAt": "Reçu à ",
+    "AcceptedAt": "Accepté à ",
+    "DeclinedAt": "Refusé à "
   },
   "Verifier": {
     "UseVerifierCapability": "Utiliser la fonctionnalité Verifier?",

@@ -1,11 +1,21 @@
 import React, { useMemo } from 'react'
-import { View, StyleSheet } from 'react-native'
+import { View, StyleSheet, TouchableOpacity } from 'react-native'
 import { Bubble, IMessage, MessageProps } from 'react-native-gifted-chat'
 import { useTheme } from '../../contexts/theme'
 import { Role } from '../../types/chat'
 import { formatTime } from '../../utils/helpers'
 import { ThemedText } from '../texts/ThemedText'
 import { testIdWithKey } from '../../utils/testable'
+import { ColorPalette } from '../../theme'
+import { useTranslation } from 'react-i18next'
+import { t } from 'i18next'
+
+export interface ExtendedChatMessage extends IMessage {
+  renderEvent: () => JSX.Element
+  createdAt: Date
+  messageOpensCallbackType?: CallbackType
+  onDetails?: () => void
+}
 
 export enum CallbackType {
   CredentialOffer = 'CredentialOffer',
@@ -29,6 +39,7 @@ interface ChatMessageProps {
 interface MessageTimeProps {
   message: ExtendedMessage
   alignRight?: boolean
+  prefix?: string
 }
 
 const textForCallbackType = (callbackType: CallbackType): string => {
@@ -49,16 +60,38 @@ const textForCallbackType = (callbackType: CallbackType): string => {
 const testIdForCallbackType = (callbackType: CallbackType): string => {
   const text = textForCallbackType(callbackType)
   const textWithoutSpaces = text.replace(/\s+/g, '')
-  return testIdWithKey(textWithoutSpaces)
+  return testIdWithKey(`Chat.${textWithoutSpaces}`)
+
 }
 
-const MessageTime: React.FC<MessageTimeProps> = ({ message, alignRight = false }) => {
+export const MessageTime: React.FC<MessageTimeProps> = ({ message, alignRight = false, prefix }) => {
   const { ChatTheme: theme } = useTheme()
+  const { t } = useTranslation()
   const timeStyle = alignRight ? theme.timeStyleRight : theme.timeStyleLeft
+
+  let addText = ''
+  switch (message.text) {
+    case 'This is the title as you can see':
+      addText = t('Chat.ReceivedAt')
+      break
+    case 'You connected with':
+      addText = t('Chat.ReceivedAt')
+      break
+    case 'Action Menu':
+      addText = t('Chat.ReceivedAt')
+      break
+    case 'accepted':
+      addText = t('Chat.AcceptedAt')
+      break
+    case 'declined a credential offer':
+      addText = t('Chat.DeclinedAt')
+      break
+    default:
+  }
 
   return (
     <ThemedText style={[timeStyle, styles.timeText]}>
-      {formatTime(new Date(message.createdAt), { includeHour: true, chatFormat: true, trim: true })}
+      {prefix} {addText} {formatTime(new Date(message.createdAt), { includeHour: true, chatFormat: true, trim: true })}
     </ThemedText>
   )
 }
@@ -74,16 +107,30 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({ messageProps }) => {
   if (message.messageOpensCallbackType) {
     const isMe = message.user._id === Role.me
 
+    let addedText = ''
+    switch (message.text) {
+      case 'sent a credential offer':
+        addedText = t('Chat.ReceivedAt')
+        break
+      case 'received a credential':
+        addedText = t('Chat.AcceptedAt')
+        break
+      default:
+    }
     return (
-      <View testID={testIdForCallbackType(message.messageOpensCallbackType)} style={styles.messageContainer}>
-        <View style={[styles.callbackContainer, isMe ? styles.callbackRight : styles.callbackLeft]}>
+      <TouchableOpacity
+        testID={testIdForCallbackType(message.messageOpensCallbackType)}
+        style={styles.messageContainer}
+        onPress={message.onDetails}
+      >
+        <View style={[styles.callbackContainer, isMe ? styles.callbackLeft : styles.callbackLeft]}>
           {message.renderEvent?.() || null}
         </View>
 
-        <View style={[styles.timeContainer, isMe ? styles.timeRight : styles.timeLeft]}>
-          {/*<MessageTime message={message} alignRight={false} />*/}
+        <View style={[styles.timeContainer, isMe ? styles.timeLeft : styles.timeLeft]}>
+          <MessageTime message={message} alignRight={false} prefix={addedText} />
         </View>
-      </View>
+      </TouchableOpacity>
     )
   }
 
@@ -110,9 +157,12 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({ messageProps }) => {
             left: styles.leftText,
             right: styles.rightText,
           }}
-          renderTime={() => <MessageTime message={message} alignRight={false} />}
+          renderTime={() => null}
           renderCustomView={() => null}
         />
+      </View>
+      <View style={styles.timeBelowBubble}>
+        <MessageTime message={message} alignRight={false} />
       </View>
     </View>
   )
@@ -139,17 +189,21 @@ const styles = StyleSheet.create({
   // Time
   timeContainer: {
     width: '90%',
-    marginTop: 4,
+    marginLeft: '-6%',
   },
   timeLeft: {
     alignItems: 'flex-start',
   },
   timeRight: {
-    alignItems: 'flex-end',
+    alignItems: 'flex-start',
   },
   timeText: {
-    fontSize: 11,
-    opacity: 0.7,
+    fontSize: 12,
+    color: ColorPalette.grayscale.white,
+    fontFamily: 'Open Sans',
+    fontStyle: 'normal',
+    fontWeight: '700',
+    lineHeight: 18,
   },
 
   // Regular messages bubble
@@ -160,7 +214,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
   },
   bubbleRight: {
-    alignItems: 'flex-end',
+    alignItems: 'flex-start',
   },
 
   // Bubble styles
@@ -197,5 +251,8 @@ const styles = StyleSheet.create({
 
   messageTextContainer: {
     backgroundColor: 'transparent',
+  },
+  timeBelowBubble: {
+    alignSelf: 'flex-start',
   },
 })

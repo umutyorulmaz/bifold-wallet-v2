@@ -30,8 +30,8 @@ exports[`LoadingView Component renders correctly 1`] = `
     testID="com.ariesbifold:id/LoadingActivityIndicator"
   >
     <
-      height={230}
-      width={230}
+      height={600}
+      width={600}
     />
   </View>
 </RNCSafeAreaView>

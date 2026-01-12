@@ -31,8 +31,9 @@ const NotificationStack: React.FC = () => {
         name={Screens.CredentialDetails}
         component={CredentialDetails}
         options={{
-          title: t('Screens.CredentialDetails'),
           ...ScreenOptionsDictionary[Screens.CredentialDetails],
+          title: t('Screens.CredentialDetails'),
+          headerShown: false,
         }}
       />
       {customNotification && (

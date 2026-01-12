@@ -3,9 +3,7 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { View, StyleSheet, ScrollView, Text, StatusBar, TouchableOpacity } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
-
-import { Screens, testIdWithKey } from '@bifold/core'
-import type { SettingStackParams } from '@bifold/core'
+import { Screens, testIdWithKey, SettingStackParams } from '@bifold/core'
 
 import { GradientBackground } from '../components'
 

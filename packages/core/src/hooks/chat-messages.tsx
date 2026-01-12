@@ -16,7 +16,7 @@ import { useTranslation } from 'react-i18next'
 import { Linking, View } from 'react-native'
 
 import { ChatEvent } from '../components/chat/ChatEvent'
-import { ExtendedChatMessage, CallbackType } from '../components/chat/ChatMessage'
+import { CallbackType } from '../components/chat/ChatMessage'
 import { ThemedText } from '../components/texts/ThemedText'
 import { COMPONENT_TOKENS, TOKENS, useContainer } from '../container-api'
 import { useStore } from '../contexts/store'
@@ -38,7 +38,16 @@ import { useCredentialsByConnectionId } from './credentials'
 import { useProofsByConnectionId } from './proofs'
 import { useWorkflows } from './useWorkflows'
 import { useServices } from '../container-api'
+import { IMessage } from 'react-native-gifted-chat'
 
+
+export interface ExtendedChatMessage extends IMessage {
+  status?: string
+  renderEvent: () => JSX.Element
+  createdAt: Date
+  messageOpensCallbackType?: CallbackType
+  onDetails?: () => void
+}
 
 const callbackTypeForMessage = (record: CredentialExchangeRecord | ProofExchangeRecord) => {
   if (

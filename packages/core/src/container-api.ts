@@ -34,6 +34,7 @@ import { AgentBridge } from './services/AgentBridge'
 import { IRefreshOrchestrator } from './modules/openid/refresh/types'
 import { IWorkflowRegistry } from './modules/workflow/types'
 import { IThemeRegistry } from './modules/theme/registries/ThemeRegistry'
+import { ImageSourcePropType } from 'react-native'
 
 export type FN_ONBOARDING_DONE = (
   dispatch: React.Dispatch<ReducerAction<unknown>>,
@@ -171,6 +172,7 @@ export const COMPONENT_TOKENS = {
   COMPONENT_ABOUT_INSTITUTION: 'component.about-institution',
   COMPONENT_CREDENTIAL_BUTTONS: 'component.credential-buttons',
   COMPONENT_SNACK_BAR_MESSAGE: 'component.snackbar-message',
+  COMPONENT_CREDENTIAL_CARD : 'component.credential-card',
 } as const
 
 export const NOTIFICATION_TOKENS = {
@@ -334,13 +336,20 @@ export type TokenMapping = {
     onDecline: () => void
     isDisabled: boolean
   }>
-
   [COMPONENT_TOKENS.COMPONENT_SNACK_BAR_MESSAGE]: React.FC<{
     message: string
     type: any
     showIcon?: boolean
   }>
-
+  [COMPONENT_TOKENS.COMPONENT_CREDENTIAL_CARD]: React.FC<{
+    title: string
+    subtitle?: string
+    date?: string
+    notificationText?: string
+    logoSource?: ImageSourcePropType | string
+    onPress?: () => void
+    testID?: string
+  }>
   [TOKENS.INLINE_ERRORS]: InlineErrorConfig
   [TOKENS.CUSTOM_NAV_STACK_1]: React.FC
   [TOKENS.COMPONENT_CONNECTION_ALERT]: React.FC<{ connectionLabel?: string }>

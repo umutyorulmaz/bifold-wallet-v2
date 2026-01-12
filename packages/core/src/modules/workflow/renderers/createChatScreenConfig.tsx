@@ -98,6 +98,7 @@ export function createChatScreenConfig(options: ChatScreenConfigOptions = {}): I
 
   // Create background renderer if gradient enabled
   if (options.background?.useGradient) {
+    // config.backgroundRenderer = new GradientBackgroundRenderer()
     config.backgroundRenderer = new GradientBackgroundRenderer()
   }
 

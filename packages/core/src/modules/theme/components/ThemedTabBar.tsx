@@ -162,7 +162,7 @@ const TabItem: React.FC<{
  *   tabBar={(props) => <ThemedTabBar {...props} />}
  * >
  *   <Tab.Screen name="Home" component={HomeScreen} />
- *   <Tab.Screen name="Credentials" component={CredentialsScreen} />
+ *   <Tab.Screen name="ListCredentials" component={CredentialsScreen} />
  *   <Tab.Screen name="Settings" component={SettingsScreen} />
  * </Tab.Navigator>
  * ```

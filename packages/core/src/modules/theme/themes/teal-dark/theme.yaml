@@ -99,7 +99,7 @@ tabBar:
       label: Home
       showBadge: true
     - id: credentials
-      label: Credentials
+      label: ListCredentials
       showBadge: false
     - id: settings
       label: Settings

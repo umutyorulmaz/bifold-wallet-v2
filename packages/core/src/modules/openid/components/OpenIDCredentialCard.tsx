@@ -282,8 +282,8 @@ const OpenIDCredentialCard: React.FC<CredentialCardProps> = ({
     <View>
       <TouchableOpacity
         accessible={true}
-        accessibilityLabel={`${display?.issuer.name ? `${t('Credentials.IssuedBy')} ${display?.issuer.name}` : ''}, ${t(
-          'Credentials.Credential'
+        accessibilityLabel={`${display?.issuer.name ? `${t('ListCredentials.IssuedBy')} ${display?.issuer.name}` : ''}, ${t(
+          'ListCredentials.Credential'
         )}.`}
         accessibilityRole="button"
         disabled={typeof onPress === 'undefined' ? true : false}

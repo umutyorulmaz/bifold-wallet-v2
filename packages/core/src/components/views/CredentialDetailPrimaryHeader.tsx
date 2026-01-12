@@ -60,7 +60,7 @@ const CredentialDetailPrimaryHeader: React.FC<CredentialDetailPrimaryHeaderProps
         )}
         {brandingOverlayType === BrandingOverlayType.Branding10 && (
           <ThemedText
-            accessibilityLabel={`${t('Credentials.IssuedBy')} ${overlay.metaOverlay?.issuer}`}
+            accessibilityLabel={`${t('ListCredentials.IssuedBy')} ${overlay.metaOverlay?.issuer}`}
             testID={testIdWithKey('CredentialIssuer')}
             variant="label"
             style={[
@@ -78,7 +78,7 @@ const CredentialDetailPrimaryHeader: React.FC<CredentialDetailPrimaryHeaderProps
           </ThemedText>
         )}
         <ThemedText
-          accessibilityLabel={`${effectiveName} ${t('Credentials.Credential')}`}
+          accessibilityLabel={`${effectiveName} ${t('ListCredentials.Credential')}`}
           testID={testIdWithKey('CredentialName')}
           style={[
             styles.textContainer,

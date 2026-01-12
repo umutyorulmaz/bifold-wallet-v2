@@ -171,8 +171,11 @@ const PINEnter: React.FC<PINEnterProps> = ({ setAuthenticated }) => {
                 <Text style={styles.orText}>{t('PINEnter.Or') || 'OR'}</Text>
                 <View style={[styles.orLine, { width: rightLineWidth }]} />
               </View>
-              <GradientBackground
-                buttonPurple
+              <LinearGradient
+                colors={DigiCredColors.homeNoChannels.buttonGradient}
+                locations={DigiCredColors.homeNoChannels.buttonGradientLocations}
+                start={{ x: 0, y: 1 }}
+                end={{ x: 1, y: 0 }}
                 style={[styles.figmaButton, { width: buttonWidth, height: 55 }]}
               >
                 <DigiCredButton
@@ -185,7 +188,7 @@ const PINEnter: React.FC<PINEnterProps> = ({ setAuthenticated }) => {
                   testID={testIdWithKey('UnlockWithBiometrics')}
                   accessibilityLabel={t('PINEnter.UnlockWithBiometrics')}
                 />
-              </GradientBackground>
+              </LinearGradient>
             </>
           )}
         </View>

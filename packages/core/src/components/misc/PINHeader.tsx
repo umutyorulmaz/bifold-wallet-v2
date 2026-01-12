@@ -39,9 +39,11 @@ const PINHeader = ({ updatePin }: PINHeaderProps) => {
 const style = StyleSheet.create({
   infoBox: {
     marginBottom: 24,
+    marginTop: 120,
   },
   text: {
     marginBottom: 16,
+    marginTop: 120,
   },
 })
 

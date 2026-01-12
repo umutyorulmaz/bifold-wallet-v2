@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     width: '100%',
     alignItems: 'center',
-    marginVertical: 10,
+    // marginVertical: 10,
     alignSelf: 'center',
   },
   declineButton: {

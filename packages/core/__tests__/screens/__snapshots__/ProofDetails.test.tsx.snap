@@ -418,7 +418,7 @@ exports[`ProofDetails Screen with a verified proof record renders correctly when
                     testID="com.ariesbifold:id/CredentialCard"
                   >
                     <View
-                      accessibilityLabel="Credentials.IssuedBy Unknown Contact,  Latest Credentials.Credential. first_name, Aries, second_name, Bifold"
+                      accessibilityLabel="ListCredentials.IssuedBy Unknown Contact,  Latest ListCredentials.Credential. first_name, Aries, second_name, Bifold"
                       accessible={true}
                       style={
                         Object {
@@ -1037,7 +1037,7 @@ exports[`ProofDetails Screen with a verified proof record renders correctly when
                     testID="com.ariesbifold:id/CredentialCard"
                   >
                     <View
-                      accessibilityLabel="Credentials.IssuedBy Unknown Contact,  Latest Credentials.Credential. first_name, Aries, second_name, Bifold"
+                      accessibilityLabel="ListCredentials.IssuedBy Unknown Contact,  Latest ListCredentials.Credential. first_name, Aries, second_name, Bifold"
                       accessible={true}
                       style={
                         Object {

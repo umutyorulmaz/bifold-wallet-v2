@@ -290,8 +290,8 @@ const CredentialCard10: React.FC<CredentialCard10Props> = ({ credential, style =
     <TouchableOpacity
       accessible={true}
       accessibilityLabel={`${
-        overlay.metaOverlay?.issuer ? `${t('Credentials.IssuedBy')} ${overlay.metaOverlay?.issuer}` : ''
-      }, ${overlay.metaOverlay?.watermark ?? ''} ${overlay.metaOverlay?.name ?? ''} ${t('Credentials.Credential')}.`}
+        overlay.metaOverlay?.issuer ? `${t('ListCredentials.IssuedBy')} ${overlay.metaOverlay?.issuer}` : ''
+      }, ${overlay.metaOverlay?.watermark ?? ''} ${overlay.metaOverlay?.name ?? ''} ${t('ListCredentials.Credential')}.`}
       disabled={typeof onPress === 'undefined' ? true : false}
       onPress={onPress}
       style={[styles.container, style]}

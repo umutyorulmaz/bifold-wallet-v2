@@ -1,6 +1,6 @@
 import { AnonCredsCredentialMetadataKey } from '@credo-ts/anoncreds'
-import { CredentialExchangeRecord, CredentialState, SdJwtVcRecord, W3cCredentialRecord } from '@credo-ts/core'
-import { useCredentialByState } from '@credo-ts/react-hooks'
+import { ConnectionRecord, CredentialExchangeRecord, CredentialState, SdJwtVcRecord, W3cCredentialRecord } from '@credo-ts/core'
+import { useConnections, useCredentialByState } from '@credo-ts/react-hooks'
 import { useNavigation, useIsFocused } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useEffect } from 'react'
@@ -39,6 +39,12 @@ const ListCredentials: React.FC = () => {
   const { ColorPalette } = useTheme()
   const { start, stop } = useTour()
   const screenIsFocused = useIsFocused()
+  const { records: connections } = useConnections()
+  const connectionsMap: Record<string, ConnectionRecord> = {}
+  connections.forEach((conn) => {
+    if (conn.id) connectionsMap[conn.id] = conn
+  })
+
   const {
     openIdState: { w3cCredentialRecords, sdJwtVcRecords },
   } = useOpenIDCredentials()
@@ -79,12 +85,15 @@ const ListCredentials: React.FC = () => {
   }, [stop])
 
   const renderCardItem = (cred: GenericCredentialExchangeRecord) => {
+    const connectionId = 'connectionId' in cred ? cred.connectionId : undefined
+    const logoUrl = connectionId ? connectionsMap[connectionId]?.imageUrl?.trim() : undefined
     return (
       <CredentialCard
         credential={cred as CredentialExchangeRecord}
         credentialErrors={
           (cred as CredentialExchangeRecord).revocationNotification?.revocationDate && [CredentialErrors.Revoked]
         }
+        logoUrl={logoUrl}
         onPress={() => {
           if (cred instanceof W3cCredentialRecord) {
             navigation.navigate(Screens.OpenIDCredentialDetails, {
@@ -105,7 +114,7 @@ const ListCredentials: React.FC = () => {
   }
 
   return (
-    <View>
+    <View style={{ flex: 1}}>
       <FlatList
         style={{ backgroundColor: ColorPalette.brand.primaryBackground }}
         data={credentials.sort((a, b) => new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf())}
@@ -123,7 +132,7 @@ const ListCredentials: React.FC = () => {
             </View>
           )
         }}
-        ListEmptyComponent={() => <CredentialEmptyList message={t('Credentials.EmptyList')} />}
+        ListEmptyComponent={() => <CredentialEmptyList message={t('ListCredentials.EmptyList')} />}
         ListFooterComponent={() => <CredentialListFooter credentialsCount={credentials.length} />}
       />
       <CredentialListOptions />

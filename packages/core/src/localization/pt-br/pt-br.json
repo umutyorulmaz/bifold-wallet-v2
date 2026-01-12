@@ -490,7 +490,9 @@
     "GoToCredentialDetail": "Ir para os detalhes da credencial",
     "CredentialName": "Nome da credencial",
     "Credentials": "Minhas credenciais",
-    "NoCredentials": "Você não tem nenhuma credencial com esse Contato."
+    "NoCredentials": "Você não tem nenhuma credencial com esse Contato.",
+    "StartVideoCall": "Iniciar Videochamada",
+    "ListCredentials": "Listar Credenciais"
   },
   "WhatAreContacts": {
     "Title": "O que são Contatos?",
@@ -512,7 +514,8 @@
     "Accepted": "Aceito",
     "Declined": "Recusado",
     "Done": "Concluído",
-    "AcceptedNote": "Credencial adicionada à sua carteira"
+    "AcceptedNote": "Credencial adicionada à sua carteira",
+    "UnknownCredential": "Credencial desconhecida"
   },
   "PushNotifications": {
     "EnableNotifications": "Enable Notifications to get instant alerts (PT-BR)",
@@ -860,7 +863,16 @@
     "History": "History (PT-BR)",
     "HistoryDetails": "History Details (PT-BR)",
     "UpdateAvailable": "Update Available (PT-BR)",
-    "JSONDetails": "JSON details (PT-BR)"
+    "JSONDetails": "JSON details (PT-BR)",
+    "WorkflowDetails": "Detalhes do Fluxo de Trabalho",
+    "ListCredentials": "Listar Credenciais"
+  },
+  "ListCredentials": {
+    "Declined": "Recusado",
+    "AcceptedCred": "Credencial adicionada à sua carteira",
+    "AcceptedTrans": "Histórico escolar adicionado à sua carteira",
+    "Errors": "Mensagem de Erro",
+    "IssuedOn": "Emitido em"
   },
   "Loading": {
     "TakingTooLong": "Isso esta demorando mais que o normal. Você pode voltar para a home ou continuar esperando.",
@@ -941,7 +953,27 @@
     "CompletedCredits": "Créditos concluídos",
     "The courses with *U are Universal Education Transfer Component courses": "As disciplinas com *U são disciplinas do Componente de Transferência da Educação Universal",
     "The courses with *A are CAA courses": "As disciplinas com *A são disciplinas CAA",
-    "NoAcademicStanding": "Sem situação acadêmica"
+    "NoAcademicStanding": "Sem situação acadêmica",
+    "OpenPresentation": "Abrir apresentação",
+    "ViewRequest": "Ver solicitação",
+    "ViewOffer": "Ver oferta",
+    "OpenItem": "Abrir",
+    "UserYou": "Você",
+    "YouConnected": "Você conectou com",
+    "CredentialProposalSent": "enviou uma proposta de credencial",
+    "CredentialOfferReceived": "enviou uma oferta de credencial",
+    "CredentialRequestSent": "enviou uma solicitação de credencial",
+    "CredentialDeclined": "recusou uma oferta de credencial",
+    "CredentialReceived": "recebeu uma credencial",
+    "ProofRequestSent": "enviou uma solicitação de prova",
+    "ProofPresentationReceived": "enviou informações para você",
+    "ProofRequestReceived": "enviou uma solicitação de prova para você",
+    "ProofRequestRejected": "rejeitou uma solicitação de prova",
+    "ProofRequestRejectReceived": "rejeitou uma solicitação de prova",
+    "ProofRequestSatisfied": "compartilhou informações",
+    "ReceivedAt": "Recebido em ",
+    "AcceptedAt": "Aceito em ",
+    "DeclinedAt": "Recusado em "
   },
   "Verifier": {
     "UseVerifierCapability": "Usar o recurso Verificador?",

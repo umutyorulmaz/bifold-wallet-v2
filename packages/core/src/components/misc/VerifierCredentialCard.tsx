@@ -311,10 +311,10 @@ const VerifierCredentialCard: React.FC<VerifierCredentialCardProps> = ({
   const CredentialCard: React.FC = () => {
     const watermarkLabel = overlay.metaOverlay?.watermark ? overlay.metaOverlay?.watermark + ',' : ''
     const issuerAccessibilityLabel = overlay.metaOverlay?.issuer
-      ? `${t('Credentials.IssuedBy')} ${overlay.metaOverlay?.issuer}`
+      ? `${t('ListCredentials.IssuedBy')} ${overlay.metaOverlay?.issuer}`
       : ''
     const accessibilityLabel = isBranding11
-      ? `${watermarkLabel} ${overlay.metaOverlay?.name ?? ''} ${t('Credentials.Credential')}${
+      ? `${watermarkLabel} ${overlay.metaOverlay?.name ?? ''} ${t('ListCredentials.Credential')}${
           displayItems.length > 0 ? ',' : ''
         }` +
         displayItems.map((item) => {
@@ -325,7 +325,7 @@ const VerifierCredentialCard: React.FC<VerifierCredentialCardProps> = ({
         }) +
         `, ${issuerAccessibilityLabel}`
       : `${issuerAccessibilityLabel}, ${overlay.metaOverlay?.watermark ?? ''} ${overlay.metaOverlay?.name ?? ''} ${t(
-          'Credentials.Credential'
+          'ListCredentials.Credential'
         )}.` +
         displayItems.map((item) => {
           const { label, value } = parseAttribute(item as (Attribute & Predicate) | undefined)

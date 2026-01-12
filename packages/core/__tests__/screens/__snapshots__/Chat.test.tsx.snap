@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Chat Screen Renders correctly 1`] = `
+ exports[`Chat Screen Renders correctly 1`] = `
 <RNCSafeAreaView
   edges={
     Object {
@@ -36,3 +36,4 @@ exports[`Chat Screen Renders correctly 1`] = `
   </View>
 </RNCSafeAreaView>
 `;
+ exports[`Chat Screen Renders correctly 1`] = `null`;

@@ -25,6 +25,7 @@ import HomeNoChannelModal from '../components/HomeNoChannelModal'
 import { isSmallScreen, isTablet } from '../utils/devices'
 import { TOKENS, useServices } from '../../../../packages/core/src/container-api'
 import { Screens, Stacks } from '../../../../packages/core/src/types/navigators'
+import LinearGradient from 'react-native-linear-gradient'
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window')
 
@@ -94,7 +95,7 @@ const HomeNoChannels = () => {
 
   const contents = [
     {
-      title: 'Digital Credentials',
+      title: 'Digital ListCredentials',
       description:
         'Digital credentials are the electronic equivalent of physical credentials and documents such as identity cards, certificates, or transcripts offered by participating services.\n\nServices are simplified and expedited as organizations can confirm who you are and what you have accomplished with trusted information from the digital credentials.',
     },
@@ -168,8 +169,11 @@ const HomeNoChannels = () => {
             <Text style={[styles.description, isSmallScreen() ? { marginVertical: 20 } : {}]}>
               {t('homeNoChannels.description')}
             </Text>
-            <GradientBackground
-              buttonPurple
+            <LinearGradient
+              colors={DigiCredColors.homeNoChannels.buttonGradient}
+              locations={DigiCredColors.homeNoChannels.buttonGradientLocations}
+              start={{ x: 0, y: 1 }}
+              end={{ x: 1, y: 0 }}
               style={[styles.backgroundBtn, isTablet() ? { width: '60%', height: 60 } : { width: '75%' }]}
             >
               <DigiCredButton
@@ -182,7 +186,7 @@ const HomeNoChannels = () => {
                 iconSize={20}
                 iconColor={DigiCredColors.text.primary}
               />
-            </GradientBackground>
+            </LinearGradient>
             <Text
               style={[
                 styles.howItWorks,
