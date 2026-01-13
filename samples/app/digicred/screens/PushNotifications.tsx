@@ -16,7 +16,6 @@ import { DigiCredColors } from '../theme'
 const PushNotifications: React.FC = () => {
   const { t } = useTranslation()
   const [{ enablePushNotifications }] = useServices([TOKENS.CONFIG])
-  useNavigation<StackNavigationProp<Record<string, object | undefined>>>() // Navigation available if needed
   const [store, dispatch] = useStore()
 
   const [notificationsEnabled, setNotificationsEnabled] = useState(true)
