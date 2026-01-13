@@ -1318,6 +1318,8 @@ DEPENDENCIES:
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
   - FBReactNativeSpec (from `../node_modules/react-native/React/FBReactNativeSpec`)
   - Firebase
+  - Firebase/Core
+  - Firebase/Messaging
   - FirebaseCore
   - FirebaseMessaging
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
@@ -1703,6 +1705,6 @@ SPEC CHECKSUMS:
   VisionCamera: 6ad4b86176f6fea45e90e380d3d530bc5e1abff9
   Yoga: a813a6d82538ccba91c54406404e3ed80b48a692
 
-PODFILE CHECKSUM: 47e32b1f0d8fb3376f60da9d957d95d4ab740cd1
+PODFILE CHECKSUM: 20616d219d2e449b644516dfa7cc193decb8aa73
 
 COCOAPODS: 1.16.2
