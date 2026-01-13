@@ -20,6 +20,7 @@ import { BifoldError } from '../types/error'
 import { Screens, Stacks, TabStackParams, TabStacks } from '../types/navigators'
 import { connectFromScanOrDeepLink } from '../utils/helpers'
 import { testIdWithKey } from '../utils/testable'
+import { useIncomingCallHandler } from '../hooks/useIncomingCallHandler'
 
 import { BaseTourID } from '../types/tour'
 import { ThemedText } from '../components/texts/ThemedText'
@@ -28,6 +29,9 @@ import { useTabBarTheme } from '../modules/theme/hooks/useTabBarTheme'
 const TabStack: React.FC = () => {
   const { fontScale } = useWindowDimensions()
   const modularTabTheme = useTabBarTheme()
+
+  // Handle incoming WebRTC calls globally
+  useIncomingCallHandler({ enabled: true })
   const badgeFontSize = useMemo(() => {
     if (fontScale >= 1.2 && fontScale < 1.5) {
       return {

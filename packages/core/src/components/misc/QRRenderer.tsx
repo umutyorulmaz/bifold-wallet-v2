@@ -14,15 +14,16 @@ interface QRRendererProps {
   onError?: () => void
 }
 
-const QRRenderer: React.FC<QRRendererProps> = ({ value, onError, size }) => {
+const QRRenderer: React.FC<QRRendererProps> = ({ value, onError, size, style }) => {
   const { width } = useWindowDimensions()
   const { t } = useTranslation()
   const { ColorPalette } = useTheme()
 
   const styles = StyleSheet.create({
     container: {
-      flexGrow: 1,
-      marginVertical: 20,
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: 20,
       backgroundColor: 'white',
     },
     errorMessage: {
@@ -43,7 +44,7 @@ const QRRenderer: React.FC<QRRendererProps> = ({ value, onError, size }) => {
   const qrSize = size ?? width - 80
 
   return (
-    <View style={styles.container} testID={testIdWithKey('QRRenderer')}>
+    <View style={[styles.container, style]} testID={testIdWithKey('QRRenderer')}>
       {<QRCode ecl="L" value={value} size={qrSize} onError={handleQRCodeGenerationError} />}
       {isInvalidQR && <ThemedText style={styles.errorMessage}>{t('QRRender.GenerationError')}</ThemedText>}
     </View>

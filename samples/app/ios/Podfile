@@ -77,6 +77,12 @@ target 'AriesBifold' do
   #pod 'Permission-Notifications', :path => "#{permissions_path}/Notifications"
   # use reactNativePermissionsIOS.json for permissions instead!!!
 
+  # Firebase for push notifications
+  pod 'Firebase/Core', :modular_headers => true
+  pod 'Firebase/Messaging', :modular_headers => true
+  pod 'GoogleUtilities', :modular_headers => true
+  pod 'FirebaseCore', :modular_headers => true
+
 
   use_react_native!(
     :path => config[:reactNativePath],
@@ -108,6 +114,15 @@ target 'AriesBifold' do
         target.build_configurations.each do |config|
           config.build_settings['SWIFT_INCLUDE_PATHS'] = '$(inherited) "${PODS_ROOT}/CatCrypto/Sources/ModuleMaps/Argon2" "${PODS_ROOT}/CatCrypto/Sources/ModuleMaps/MD6" "${PODS_ROOT}/CatCrypto/Sources/ModuleMaps/SHA3"'
         end
+      end
+
+      # Fix swiftWebKit library not found error (Xcode 26+)
+      # In Xcode 26, Apple removed separate swiftXXX libraries - they're now part of the frameworks
+      target.build_configurations.each do |config|
+        config.build_settings['LIBRARY_SEARCH_PATHS'] ||= ['$(inherited)']
+        config.build_settings['LIBRARY_SEARCH_PATHS'] << '$(SDKROOT)/usr/lib/swift'
+        config.build_settings['LIBRARY_SEARCH_PATHS'] << '$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)'
+        config.build_settings['LIBRARY_SEARCH_PATHS'] << '$(TOOLCHAIN_DIR)/usr/lib/swift-5.0/$(PLATFORM_NAME)'
       end
     end
   end

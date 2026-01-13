@@ -19,6 +19,7 @@ import ErrorBoundaryWrapper from './components/misc/ErrorBoundary'
 import FauxHeader from './components/misc/FauxHeader'
 import InfoBox, { InfoBoxType } from './components/misc/InfoBox'
 import QRRenderer from './components/misc/QRRenderer'
+import LoadingIndicator from './components/animated/LoadingIndicator'
 import QRScannerTorch from './components/misc/QRScannerTorch'
 import ScanCamera from './components/misc/ScanCamera'
 import SVGOverlay, { MaskType } from './components/misc/SVGOverlay'
@@ -74,6 +75,8 @@ import { AbstractBifoldLogger } from './services/AbstractBifoldLogger'
 import { bifoldLoggerInstance } from './services/bifoldLogger'
 import { isBiometricsActive, loadLoginAttempt, loadWalletSalt, storeWalletSecret } from './services/keychain'
 import { hashPIN } from './utils/crypto'
+import { createConnectionInvitation } from './utils/helpers'
+import { useConnectionByOutOfBandId } from './hooks/connections'
 import { BifoldLogger } from './services/logger'
 import { MockLogger } from './testing/MockLogger'
 import { DeepPartial, ThemeBuilder } from './theme-builder'
@@ -93,6 +96,7 @@ import { useWorkflowInstance } from './hooks/useWorkflowInstance'
 import { useCallService } from './hooks/useCallService'
 import { useWebRTCEvents } from './hooks/useWebRTCEvents'
 import { useIncomingCallHandler } from './hooks/useIncomingCallHandler'
+import { useBackgroundCallDetection } from './hooks/useBackgroundCallDetection'
 import { useConnectionCapabilities, checkWebRTCSupport, clearCapabilityCache } from './hooks/useConnectionCapabilities'
 
 // Services
@@ -266,6 +270,9 @@ export {
   QrCodeScanError,
   QRRenderer,
   QRScannerTorch,
+  LoadingIndicator,
+  createConnectionInvitation,
+  useConnectionByOutOfBandId,
   Record,
   SafeAreaModal,
   Scan,
@@ -307,6 +314,7 @@ export {
   useCallService,
   useWebRTCEvents,
   useIncomingCallHandler,
+  useBackgroundCallDetection,
   useConnectionCapabilities,
   checkWebRTCSupport,
   clearCapabilityCache,

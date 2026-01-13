@@ -1,23 +1,29 @@
+import { DidExchangeState } from '@credo-ts/core'
 import { useAgent } from '@credo-ts/react-hooks'
 import { StackScreenProps } from '@react-navigation/stack'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Platform, View, StyleSheet, Text, StatusBar, TouchableOpacity } from 'react-native'
+import { Platform, View, StyleSheet, Text, StatusBar, TouchableOpacity, Share, useWindowDimensions } from 'react-native'
 import { PERMISSIONS, Permission, RESULTS, Rationale, check, request } from 'react-native-permissions'
 import Toast from 'react-native-toast-message'
 
 import {
   testIdWithKey,
-  TOKENS,
-  useServices,
   BifoldError,
-  QrCodeScanError,
-  ToastType,
   ScanCamera,
   SVGOverlay,
   MaskType,
   connectFromScanOrDeepLink,
+  QRRenderer,
 } from '@bifold/core'
+import { QrCodeScanError } from '@bifold/core/src/types/error'
+import { ToastType } from '@bifold/core/src/components/toast/BaseToast'
+import { TOKENS, useServices } from '@bifold/core/src/container-api'
+import { useStore } from '@bifold/core/src/contexts/store'
+import LoadingIndicator from '@bifold/core/src/components/animated/LoadingIndicator'
+import { createConnectionInvitation } from '@bifold/core/src/utils/helpers'
+import { useConnectionByOutOfBandId } from '@bifold/core/src/hooks/connections'
+import { Screens, Stacks } from '@bifold/core/src/types/navigators'
 import { ConnectStackParams } from '@bifold/core/src/types/navigators'
 import type { PermissionStatus } from 'react-native-permissions'
 
@@ -38,14 +44,22 @@ export type ScanProps = StackScreenProps<ConnectStackParams>
 const Scan: React.FC<ScanProps> = ({ navigation }) => {
   const { agent } = useAgent()
   const { t } = useTranslation()
+  const { width } = useWindowDimensions()
+  const [store] = useStore()
   const [loading, setLoading] = useState<boolean>(true)
   const [showDisclosureModal, setShowDisclosureModal] = useState<boolean>(true)
   const [qrCodeScanError, setQrCodeScanError] = useState<QrCodeScanError | null>(null)
   const [torchActive, setTorchActive] = useState(false)
+  const [activeTab, setActiveTab] = useState<'scan' | 'myqr'>('scan')
+  const [invitation, setInvitation] = useState<string | undefined>(undefined)
+  const [recordId, setRecordId] = useState<string | undefined>(undefined)
+  const record = useConnectionByOutOfBandId(recordId || '')
   const [{ enableImplicitInvitations, enableReuseConnections }, logger] = useServices([
     TOKENS.CONFIG,
     TOKENS.UTIL_LOGGER,
   ])
+
+  const qrSize = Math.min(width - 100, 250)
 
   // Note: defaultToConnect parameter available in route.params if needed
   // const defaultToConnect = route?.params?.['defaultToConnect'] ?? false
@@ -88,6 +102,38 @@ const Scan: React.FC<ScanProps> = ({ navigation }) => {
     },
     [handleInvitation, t]
   )
+
+  const createInvitation = useCallback(async () => {
+    setInvitation(undefined)
+    const result = await createConnectionInvitation(agent)
+    if (result) {
+      setRecordId(result.record.id)
+      setInvitation(result.invitationUrl)
+    }
+  }, [agent])
+
+  // Create invitation when switching to My QR tab
+  useEffect(() => {
+    if (activeTab === 'myqr') {
+      createInvitation()
+    }
+  }, [activeTab, createInvitation])
+
+  // Navigate to connection screen when connection is completed
+  useEffect(() => {
+    if (record?.state === DidExchangeState.Completed) {
+      navigation.getParent()?.navigate(Stacks.ConnectionStack, {
+        screen: Screens.Connection,
+        params: { oobRecordId: recordId },
+      })
+    }
+  }, [record, navigation, recordId])
+
+  const handleShare = useCallback(() => {
+    if (invitation) {
+      Share.share({ message: invitation })
+    }
+  }, [invitation])
 
   const permissionFlow = useCallback(
     async (method: PermissionContract, permission: Permission, rationale?: Rationale): Promise<boolean> => {
@@ -191,38 +237,130 @@ const Scan: React.FC<ScanProps> = ({ navigation }) => {
     )
   }
 
-  // Scanner view
+  // Scanner view with tabs
   return (
     <View style={styles.scanContainer}>
       <StatusBar barStyle="light-content" translucent backgroundColor="transparent" />
-      <View style={styles.cameraContainer}>
-        <ScanCamera
-          handleCodeScan={handleCodeScan}
-          error={qrCodeScanError}
-          enableCameraOnError={true}
-          torchActive={torchActive}
-        />
-        <SVGOverlay maskType={MaskType.QR_CODE} />
-        <View style={styles.overlay}>
-          {/* Header */}
-          <View style={styles.scanHeader}>
-            <TouchableOpacity
-              onPress={() => navigation.goBack()}
-              style={styles.backButton}
-              testID={testIdWithKey('Back')}
-            >
-              <Icon name="arrow-left" size={Platform.OS == 'ios' ? 24 : 40} color="#FFFFFF" />
-            </TouchableOpacity>
-            <Text style={styles.scanHeaderTitle}>Scan QR Code</Text>
-            <TouchableOpacity
-              onPress={() => setTorchActive(!torchActive)}
-              style={styles.torchButton}
-              testID={testIdWithKey('Torch')}
-            >
-              <Icon name={torchActive ? 'flashlight-on' : 'flashlight-off'} size={24} color="#FFFFFF" />
-            </TouchableOpacity>
+
+      {activeTab === 'scan' ? (
+        // Scan QR Code Tab
+        <View style={styles.cameraContainer}>
+          <ScanCamera
+            handleCodeScan={handleCodeScan}
+            error={qrCodeScanError}
+            enableCameraOnError={true}
+            torchActive={torchActive}
+          />
+          <SVGOverlay maskType={MaskType.QR_CODE} />
+          <View style={styles.overlay}>
+            {/* Header */}
+            <View style={styles.scanHeader}>
+              <TouchableOpacity
+                onPress={() => navigation.goBack()}
+                style={styles.backButton}
+                testID={testIdWithKey('Back')}
+              >
+                <Icon name="arrow-left" size={24} color="#FFFFFF" />
+              </TouchableOpacity>
+              <Text style={styles.scanHeaderTitle}>{t('Scan.ScanQRCode')}</Text>
+              <TouchableOpacity
+                onPress={() => setTorchActive(!torchActive)}
+                style={styles.torchButton}
+                testID={testIdWithKey('Torch')}
+              >
+                <Icon name={torchActive ? 'flashlight' : 'flashlight-off'} size={24} color="#FFFFFF" />
+              </TouchableOpacity>
+            </View>
+
+            {/* Status message */}
+            <View style={styles.statusContainer}>
+              {qrCodeScanError ? (
+                <View style={styles.errorBanner}>
+                  <Icon name="alert-circle" size={20} color="#F44336" />
+                  <Text style={styles.errorText}>{qrCodeScanError.message}</Text>
+                </View>
+              ) : (
+                <Text style={styles.statusText}>{t('Scan.WillScanAutomatically')}</Text>
+              )}
+            </View>
           </View>
         </View>
+      ) : (
+        // My QR Code Tab
+        <GradientBackground>
+          <View style={styles.myQrContainer}>
+            {/* Header */}
+            <View style={styles.myQrHeader}>
+              <TouchableOpacity
+                onPress={() => navigation.goBack()}
+                style={styles.backButton}
+                testID={testIdWithKey('Back')}
+              >
+                <Icon name="arrow-left" size={24} color="#FFFFFF" />
+              </TouchableOpacity>
+              <Text style={styles.scanHeaderTitle}>{t('Scan.MyQRCode')}</Text>
+              <TouchableOpacity
+                onPress={handleShare}
+                style={styles.torchButton}
+                testID={testIdWithKey('Share')}
+                disabled={!invitation}
+              >
+                <Icon name="share-variant" size={24} color={invitation ? '#FFFFFF' : '#666666'} />
+              </TouchableOpacity>
+            </View>
+
+            {/* QR Code Content */}
+            <View style={styles.myQrContent}>
+              <View style={styles.qrWrapper}>
+                {!invitation ? (
+                  <View style={styles.loadingContainer}>
+                    <LoadingIndicator />
+                  </View>
+                ) : (
+                  <View style={styles.qrCodeContainer}>
+                    <QRRenderer value={invitation} size={qrSize} />
+                  </View>
+                )}
+              </View>
+
+              <Text style={styles.walletName}>{store.preferences.walletName}</Text>
+              <Text style={styles.shareHint}>{t('Connection.ShareQR')}</Text>
+            </View>
+          </View>
+        </GradientBackground>
+      )}
+
+      {/* Tab Bar */}
+      <View style={styles.tabBar}>
+        <TouchableOpacity
+          style={[styles.tab, activeTab === 'scan' && styles.activeTab]}
+          onPress={() => setActiveTab('scan')}
+          testID={testIdWithKey('ScanTab')}
+        >
+          <Icon
+            name="qrcode-scan"
+            size={24}
+            color={activeTab === 'scan' ? Colors.button.primary : Colors.text.secondary}
+          />
+          <Text style={[styles.tabText, activeTab === 'scan' && styles.activeTabText]}>
+            {t('Scan.ScanQRCode')}
+          </Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={[styles.tab, activeTab === 'myqr' && styles.activeTab]}
+          onPress={() => setActiveTab('myqr')}
+          testID={testIdWithKey('MyQRTab')}
+        >
+          <Icon
+            name="qrcode"
+            size={24}
+            color={activeTab === 'myqr' ? Colors.button.primary : Colors.text.secondary}
+          />
+          <Text style={[styles.tabText, activeTab === 'myqr' && styles.activeTabText]}>
+            {t('Scan.MyQRCode')}
+          </Text>
+        </TouchableOpacity>
       </View>
     </View>
   )
@@ -349,6 +487,96 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: 14,
     marginLeft: 8,
+  },
+  scanButtonContainer: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    paddingHorizontal: 20,
+    paddingBottom: 40,
+  },
+  // Tab bar styles
+  tabBar: {
+    flexDirection: 'row',
+    backgroundColor: '#0A1A1A',
+    borderTopWidth: 1,
+    borderTopColor: 'rgba(255, 255, 255, 0.1)',
+    paddingBottom: 30,
+    paddingTop: 10,
+  },
+  tab: {
+    flex: 1,
+    alignItems: 'center',
+    paddingVertical: 8,
+  },
+  activeTab: {
+    borderTopWidth: 2,
+    borderTopColor: Colors.button.primary,
+    marginTop: -10,
+    paddingTop: 8,
+  },
+  tabText: {
+    color: Colors.text.secondary,
+    fontSize: 12,
+    marginTop: 4,
+  },
+  activeTabText: {
+    color: Colors.button.primary,
+  },
+  // My QR styles
+  myQrContainer: {
+    flex: 1,
+  },
+  myQrHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 16,
+    paddingTop: 50,
+    paddingBottom: 12,
+  },
+  myQrContent: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 20,
+  },
+  qrWrapper: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 24,
+    flexGrow: 0,
+    flexShrink: 0,
+  },
+  loadingContainer: {
+    width: 200,
+    height: 200,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#FFFFFF',
+    borderRadius: 16,
+  },
+  qrCodeContainer: {
+    padding: 16,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 16,
+    // Prevent stretching - only be as big as content
+    flexGrow: 0,
+    flexShrink: 0,
+  },
+  walletName: {
+    fontSize: 24,
+    fontWeight: '700',
+    color: Colors.text.primary,
+    textAlign: 'center',
+    marginBottom: 12,
+  },
+  shareHint: {
+    fontSize: 15,
+    color: Colors.text.secondary,
+    textAlign: 'center',
+    lineHeight: 22,
   },
 })
 

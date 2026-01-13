@@ -80,7 +80,7 @@ def jscFlavor = 'org.webkit:android-jsc:+'
 def nativeArchitectures = project.getProperties().get("reactNativeDebugArchitectures")
 
 android {
-    namespace "com.digicred"
+    namespace "com.digicred" 
     ndkVersion rootProject.ext.ndkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion

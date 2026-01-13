@@ -30,6 +30,12 @@ exports[`Settings Screen Renders correctly 1`] = `
               "title": "Screens.Contacts",
             },
             Object {
+              "accessibilityLabel": "Settings.ScanMyQR",
+              "onPress": [Function],
+              "testID": "com.ariesbifold:id/ScanMyQR",
+              "title": "Settings.ScanMyQR",
+            },
+            Object {
               "accessibilityLabel": "Settings.WhatAreContacts",
               "onPress": [Function],
               "testID": "com.ariesbifold:id/WhatAreContacts",
@@ -39,7 +45,7 @@ exports[`Settings Screen Renders correctly 1`] = `
           ],
           "header": Object {
             "icon": Object {
-              "name": "apartment",
+              "name": "person",
               "size": 30,
             },
             "iconRight": Object {
@@ -51,8 +57,8 @@ exports[`Settings Screen Renders correctly 1`] = `
               },
               "testID": "com.ariesbifold:id/EditWalletName",
             },
-            "title": "Screens.Contacts",
-            "titleTestID": undefined,
+            "title": "My Wallet",
+            "titleTestID": "com.ariesbifold:id/WalletName",
           },
         },
         Object {
@@ -170,53 +176,148 @@ exports[`Settings Screen Renders correctly 1`] = `
                 "paddingBottom": 0,
                 "paddingHorizontal": 25,
               },
+              Object {
+                "justifyContent": "space-between",
+              },
             ]
           }
         >
-          <Text
-            accessible={false}
-            allowFontScaling={false}
-            importantForAccessibility="no-hide-descendants"
-            selectable={false}
+          <View
             style={
-              Array [
-                Object {
-                  "color": undefined,
-                  "fontSize": 24,
-                },
-                Object {
-                  "color": "#FFFFFF",
-                  "marginRight": 10,
-                },
-                Object {
-                  "fontFamily": "Material Icons",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
-                },
-                Object {},
-              ]
+              Object {
+                "alignItems": "center",
+                "display": "flex",
+                "flexDirection": "row",
+              }
             }
           >
-            
-          </Text>
-          <Text
-            accessibilityRole="header"
-            maxFontSizeMultiplier={1.8}
-            style={
-              Array [
-                Object {
-                  "color": "#FFFFFF",
-                  "fontSize": 26,
-                  "fontWeight": "bold",
-                },
-                Object {
-                  "flexShrink": 1,
-                },
-              ]
+            <Text
+              accessible={false}
+              allowFontScaling={false}
+              importantForAccessibility="no-hide-descendants"
+              selectable={false}
+              style={
+                Array [
+                  Object {
+                    "color": undefined,
+                    "fontSize": 30,
+                  },
+                  Array [
+                    Object {
+                      "color": "#FFFFFF",
+                      "marginRight": 10,
+                    },
+                    undefined,
+                  ],
+                  Object {
+                    "fontFamily": "Material Icons",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  Object {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              accessibilityRole="header"
+              maxFontSizeMultiplier={2}
+              numberOfLines={1}
+              style={
+                Array [
+                  Object {
+                    "color": "#FFFFFF",
+                    "fontSize": 26,
+                    "fontWeight": "bold",
+                  },
+                  Object {
+                    "flexShrink": 1,
+                  },
+                ]
+              }
+              testID="com.ariesbifold:id/WalletName"
+            >
+              My Wallet
+            </Text>
+          </View>
+          <View
+            accessibilityLabel="NameWallet.EditWalletName"
+            accessibilityRole="button"
+            accessibilityState={
+              Object {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
             }
+            accessibilityValue={
+              Object {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            hitSlop={
+              Object {
+                "bottom": 44,
+                "left": 44,
+                "right": 44,
+                "top": 44,
+              }
+            }
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            testID="com.ariesbifold:id/EditWalletName"
           >
-            Screens.Contacts
-          </Text>
+            <View
+              style={
+                Object {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "marginLeft": 0,
+                  "marginRight": 15,
+                  "minHeight": 26,
+                  "minWidth": 26,
+                }
+              }
+            >
+              <Text
+                allowFontScaling={false}
+                selectable={false}
+                style={
+                  Array [
+                    Object {
+                      "color": "#FFFFFF",
+                      "fontSize": 26,
+                    },
+                    undefined,
+                    Object {
+                      "fontFamily": "Material Design Icons",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
+                    },
+                    Object {},
+                  ]
+                }
+              >
+                󰏫
+              </Text>
+            </View>
+          </View>
         </View>
       </View>
       <View
@@ -314,6 +415,139 @@ exports[`Settings Screen Renders correctly 1`] = `
                   }
                 >
                   Screens.Contacts
+                </Text>
+                <Text
+                  maxFontSizeMultiplier={2}
+                  style={
+                    Array [
+                      Object {
+                        "color": "#FFFFFF",
+                        "fontSize": 18,
+                        "fontWeight": "normal",
+                      },
+                      Array [
+                        Object {
+                          "color": "#FFFFFF",
+                          "fontSize": 21,
+                          "fontWeight": "normal",
+                        },
+                        Object {
+                          "color": "#42803E",
+                        },
+                      ],
+                    ]
+                  }
+                />
+              </View>
+            </View>
+          </RCTScrollView>
+          <View
+            style={
+              Object {
+                "backgroundColor": "#313132",
+              }
+            }
+          >
+            <View
+              style={
+                Object {
+                  "borderBottomColor": "#000000",
+                  "borderBottomWidth": 1,
+                  "marginHorizontal": 25,
+                }
+              }
+            />
+          </View>
+        </View>
+      </View>
+      <View
+        onFocusCapture={[Function]}
+        onLayout={[Function]}
+        style={null}
+      >
+        <View>
+          <RCTScrollView
+            contentContainerStyle={
+              Object {
+                "flexGrow": 1,
+              }
+            }
+            horizontal={true}
+            style={
+              Object {
+                "backgroundColor": "#313132",
+                "flexGrow": 1,
+                "paddingVertical": 24,
+              }
+            }
+          >
+            <View>
+              <View
+                accessibilityLabel="Settings.ScanMyQR"
+                accessibilityRole="button"
+                accessibilityState={
+                  Object {
+                    "busy": undefined,
+                    "checked": undefined,
+                    "disabled": undefined,
+                    "expanded": undefined,
+                    "selected": undefined,
+                  }
+                }
+                accessibilityValue={
+                  Object {
+                    "max": undefined,
+                    "min": undefined,
+                    "now": undefined,
+                    "text": undefined,
+                  }
+                }
+                accessible={true}
+                collapsable={false}
+                focusable={true}
+                onClick={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  Object {
+                    "alignItems": "flex-start",
+                    "flexDirection": "column",
+                    "flexGrow": 1,
+                    "justifyContent": "space-between",
+                    "opacity": 1,
+                    "paddingHorizontal": 25,
+                  }
+                }
+                testID="com.ariesbifold:id/ScanMyQR"
+              >
+                <Text
+                  maxFontSizeMultiplier={2}
+                  style={
+                    Array [
+                      Object {
+                        "color": "#FFFFFF",
+                        "fontSize": 18,
+                        "fontWeight": "normal",
+                      },
+                      Array [
+                        Object {
+                          "color": "#FFFFFF",
+                          "fontSize": 21,
+                          "fontWeight": "normal",
+                        },
+                        Object {
+                          "marginRight": 14,
+                          "maxWidth": "95%",
+                        },
+                      ],
+                    ]
+                  }
+                >
+                  Settings.ScanMyQR
                 </Text>
                 <Text
                   maxFontSizeMultiplier={2}
@@ -507,53 +741,70 @@ exports[`Settings Screen Renders correctly 1`] = `
                 "paddingBottom": 0,
                 "paddingHorizontal": 25,
               },
+              Object {
+                "justifyContent": undefined,
+              },
             ]
           }
         >
-          <Text
-            accessible={false}
-            allowFontScaling={false}
-            importantForAccessibility="no-hide-descendants"
-            selectable={false}
+          <View
             style={
-              Array [
-                Object {
-                  "color": undefined,
-                  "fontSize": 24,
-                },
-                Object {
-                  "color": "#FFFFFF",
-                  "marginRight": 10,
-                },
-                Object {
-                  "fontFamily": "Material Icons",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
-                },
-                Object {},
-              ]
+              Object {
+                "alignItems": "center",
+                "display": "flex",
+                "flexDirection": "row",
+              }
             }
           >
-            
-          </Text>
-          <Text
-            accessibilityRole="header"
-            maxFontSizeMultiplier={1.8}
-            style={
-              Array [
-                Object {
-                  "color": "#FFFFFF",
-                  "fontSize": 26,
-                  "fontWeight": "bold",
-                },
-                Object {
-                  "flexShrink": 1,
-                },
-              ]
-            }
-          >
-            Settings.AppSettings
-          </Text>
+            <Text
+              accessible={false}
+              allowFontScaling={false}
+              importantForAccessibility="no-hide-descendants"
+              selectable={false}
+              style={
+                Array [
+                  Object {
+                    "color": undefined,
+                    "fontSize": 24,
+                  },
+                  Array [
+                    Object {
+                      "color": "#FFFFFF",
+                      "marginRight": 10,
+                    },
+                    undefined,
+                  ],
+                  Object {
+                    "fontFamily": "Material Icons",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  Object {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              accessibilityRole="header"
+              maxFontSizeMultiplier={2}
+              numberOfLines={1}
+              style={
+                Array [
+                  Object {
+                    "color": "#FFFFFF",
+                    "fontSize": 26,
+                    "fontWeight": "bold",
+                  },
+                  Object {
+                    "flexShrink": 1,
+                  },
+                ]
+              }
+            >
+              Settings.AppSettings
+            </Text>
+          </View>
         </View>
       </View>
       <View
@@ -1079,139 +1330,6 @@ exports[`Settings Screen Renders correctly 1`] = `
                 >
                   5 min
                 </Text>
-              </View>
-            </View>
-          </RCTScrollView>
-          <View
-            style={
-              Object {
-                "backgroundColor": "#313132",
-              }
-            }
-          >
-            <View
-              style={
-                Object {
-                  "borderBottomColor": "#000000",
-                  "borderBottomWidth": 1,
-                  "marginHorizontal": 25,
-                }
-              }
-            />
-          </View>
-        </View>
-      </View>
-      <View
-        onFocusCapture={[Function]}
-        onLayout={[Function]}
-        style={null}
-      >
-        <View>
-          <RCTScrollView
-            contentContainerStyle={
-              Object {
-                "flexGrow": 1,
-              }
-            }
-            horizontal={true}
-            style={
-              Object {
-                "backgroundColor": "#313132",
-                "flexGrow": 1,
-                "paddingVertical": 24,
-              }
-            }
-          >
-            <View>
-              <View
-                accessibilityLabel="Settings.Developer"
-                accessibilityRole="button"
-                accessibilityState={
-                  Object {
-                    "busy": undefined,
-                    "checked": undefined,
-                    "disabled": undefined,
-                    "expanded": undefined,
-                    "selected": undefined,
-                  }
-                }
-                accessibilityValue={
-                  Object {
-                    "max": undefined,
-                    "min": undefined,
-                    "now": undefined,
-                    "text": undefined,
-                  }
-                }
-                accessible={true}
-                collapsable={false}
-                focusable={true}
-                onClick={[Function]}
-                onResponderGrant={[Function]}
-                onResponderMove={[Function]}
-                onResponderRelease={[Function]}
-                onResponderTerminate={[Function]}
-                onResponderTerminationRequest={[Function]}
-                onStartShouldSetResponder={[Function]}
-                style={
-                  Object {
-                    "alignItems": "flex-start",
-                    "flexDirection": "column",
-                    "flexGrow": 1,
-                    "justifyContent": "space-between",
-                    "opacity": 1,
-                    "paddingHorizontal": 25,
-                  }
-                }
-                testID="com.ariesbifold:id/DeveloperOptions"
-              >
-                <Text
-                  maxFontSizeMultiplier={2}
-                  style={
-                    Array [
-                      Object {
-                        "color": "#FFFFFF",
-                        "fontSize": 18,
-                        "fontWeight": "normal",
-                      },
-                      Array [
-                        Object {
-                          "color": "#FFFFFF",
-                          "fontSize": 21,
-                          "fontWeight": "normal",
-                        },
-                        Object {
-                          "marginRight": 14,
-                          "maxWidth": "95%",
-                        },
-                      ],
-                    ]
-                  }
-                >
-                  Settings.Developer
-                </Text>
-                <Text
-                  maxFontSizeMultiplier={2}
-                  style={
-                    Array [
-                      Object {
-                        "color": "#FFFFFF",
-                        "fontSize": 18,
-                        "fontWeight": "normal",
-                      },
-                      Array [
-                        Object {
-                          "color": "#FFFFFF",
-                          "fontSize": 21,
-                          "fontWeight": "normal",
-                        },
-                        Object {
-                          "color": "#42803E",
-                        },
-                      ],
-                    ]
-                  }
-                />
               </View>
             </View>
           </RCTScrollView>

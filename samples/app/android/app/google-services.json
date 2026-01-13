@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "120672639970",
+    "project_id": "digicred-wallet-1ba86",
+    "storage_bucket": "digicred-wallet-1ba86.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:120672639970:android:a5337a313c1e4451d777bb",
+        "android_client_info": {
+          "package_name": "com.digicred"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBKraMVg0jKfPcpvitDXX7CM4jOOToBTrI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

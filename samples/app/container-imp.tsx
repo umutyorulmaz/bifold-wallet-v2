@@ -53,6 +53,9 @@ import BellIcon from './digicred/assets/bell-icon.svg'
 import InfoIcon from './digicred/assets/info-icon.svg'
 import VideoIcon from './digicred/assets/video-icon.svg'
 
+// Push notification configuration
+import { pushNotificationConfig } from './digicred/utils/pushNotifications'
+
 // Custom onboarding workflow that skips the tutorial carousel
 import type { Agent } from '@credo-ts/core'
 import type { State, Config as BifoldConfig, OnboardingTask } from '@bifold/core'
@@ -125,6 +128,8 @@ export class AppContainer implements Container {
       ...defaultConfig,
       // Disable preface screen
       showPreface: false,
+      // Enable push notifications
+      enablePushNotifications: pushNotificationConfig,
     })
 
     // ==========================================
