@@ -80,7 +80,7 @@ def jscFlavor = 'org.webkit:android-jsc:+'
 def nativeArchitectures = project.getProperties().get("reactNativeDebugArchitectures")
 
 android {
-    namespace "com.ariesbifold" 
+    namespace "com.digicred"
     ndkVersion rootProject.ext.ndkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
@@ -95,7 +95,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.ariesbifold"
+        applicationId "com.digicred"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
@@ -135,10 +135,13 @@ dependencies {
     implementation("com.facebook.react:react-android")
 
     implementation 'net.java.dev.jna:jna:5.2.0'
-    
+
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
 
     implementation 'com.google.mlkit:barcode-scanning:17.2.0'
+
+    // Force Kotlin stdlib common to be resolved for dependency locking
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-common:$rootProject.ext.kotlinVersion"
 
     if (hermesEnabled.toBoolean()) {
         implementation("com.facebook.react:hermes-android")
@@ -149,3 +152,4 @@ dependencies {
 
 apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
+apply plugin: 'com.google.gms.google-services'

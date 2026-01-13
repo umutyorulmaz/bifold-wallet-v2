@@ -5,6 +5,16 @@
 
 set -e
 
+# Decode GoogleService-Info.plist from environment variable
+echo "🔥 Setting up Firebase configuration..."
+if [ -n "$GOOGLE_SERVICE_INFO_PLIST_BASE64" ]; then
+    echo "Decoding GoogleService-Info.plist from environment variable..."
+    echo "$GOOGLE_SERVICE_INFO_PLIST_BASE64" | base64 -d > "$CI_PRIMARY_REPOSITORY_PATH/samples/app/ios/GoogleService-Info.plist"
+    echo "GoogleService-Info.plist created successfully"
+else
+    echo "Warning: GOOGLE_SERVICE_INFO_PLIST_BASE64 not set. Firebase may not work correctly."
+fi
+
 echo "🔧 Installing Homebrew dependencies..."
 
 # Install Node.js via Homebrew

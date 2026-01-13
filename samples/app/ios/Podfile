@@ -11,7 +11,7 @@ end
 node_require('react-native/scripts/react_native_pods.rb')
 node_require('react-native-permissions/scripts/setup.rb')
 
-platform :ios, min_ios_version_supported
+platform :ios, '15.0'
 prepare_react_native_project!
 
 # uncomment wanted permissions (also from RNP docs linked above)
@@ -29,7 +29,7 @@ setup_permissions([
   # 'MediaLibrary',
   'Microphone',  # Required for WebRTC video calls
   # 'Motion',
-  # 'Notifications'
+  'Notifications',  # Required for push notifications
   # 'PhotoLibrary',
   # 'PhotoLibraryAddOnly',
   # 'Reminders',
@@ -65,6 +65,12 @@ target 'AriesBifold' do
     end
   end
   config = use_native_modules!
+
+  # Firebase for push notifications
+  pod 'Firebase', :modular_headers => true
+  pod 'FirebaseCore', :modular_headers => true
+  pod 'FirebaseMessaging', :modular_headers => true
+  pod 'GoogleUtilities', :modular_headers => true
 
   #permissions_path = '../node_modules/react-native-permissions/ios'
   #pod 'Permission-Camera', :path => "#{permissions_path}/Camera"

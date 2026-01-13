@@ -1,4 +1,4 @@
-package com.ariesbifold
+package com.digicred
 import expo.modules.ReactActivityDelegateWrapper
 
 import com.facebook.react.ReactActivity

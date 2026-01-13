@@ -199,6 +199,17 @@ jobs:
         run: |
           yarn build
 
+      - name: Setup Google Services
+        working-directory: ./samples/app/android/app
+        run: |
+          if [ -z "${{ secrets.GOOGLE_SERVICES_JSON_BASE64 }}" ]; then
+            echo "Error: GOOGLE_SERVICES_JSON_BASE64 secret is not set"
+            exit 1
+          fi
+          echo "${{ secrets.GOOGLE_SERVICES_JSON_BASE64 }}" | base64 -d > google-services.json
+          echo "google-services.json created, validating..."
+          python3 -c "import json; json.load(open('google-services.json'))" && echo "Valid JSON"
+
       - name: Android Release Build
         working-directory: ./samples/app/android
         run: |
