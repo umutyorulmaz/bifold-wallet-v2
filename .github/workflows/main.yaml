@@ -93,6 +93,17 @@ jobs:
           echo "export NODE_BINARY=$(which node)" > .xcode.env.local
           cat .xcode.env.local
 
+      - name: Setup Firebase Google Services
+        working-directory: ./samples/app/ios/AriesBifold
+        run: |
+          if [ -z "${{ secrets.GOOGLE_SERVICE_INFO_PLIST_BASE64 }}" ]; then
+            echo "Error: GOOGLE_SERVICE_INFO_PLIST_BASE64 secret is not set"
+            exit 1
+          fi
+          echo "${{ secrets.GOOGLE_SERVICE_INFO_PLIST_BASE64 }}" | base64 -d > GoogleService-Info.plist
+          echo "GoogleService-Info.plist created, validating..."
+          plutil -lint GoogleService-Info.plist && echo "Valid plist"
+
       - name: Install iOS dependencies
         # if: steps.pod-cache.outputs.cache-hit != 'true' || steps.npm-cache.outputs.cache-hit != 'true'
         working-directory: ./samples/app
