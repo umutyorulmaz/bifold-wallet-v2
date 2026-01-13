@@ -13,6 +13,14 @@ import { testIdWithKey } from '../../src/utils/testable'
 import { testDefaultState } from '../contexts/store'
 import { BasicAppContext } from '../helpers/app'
 
+jest.mock('@react-navigation/elements', () => {
+  const actual = jest.requireActual('@react-navigation/elements')
+  return {
+    ...actual,
+    useHeaderHeight: () => 0,
+  }
+})
+
 jest.mock('react-native-permissions', () => require('react-native-permissions/mock'))
 jest.mock('react-native-vision-camera', () => {
   return require('../../__mocks__/custom/react-native-camera')

@@ -51,7 +51,7 @@ export interface ThemedBackgroundProps {
   /** Additional container style */
   style?: ViewStyle
   /** Children */
-  children: React.ReactNode
+  children?: React.ReactNode
 }
 
 /**
@@ -62,9 +62,7 @@ const SolidBackground: React.FC<{
   style?: ViewStyle
   children: React.ReactNode
 }> = ({ color, style, children }) => (
-  <View style={[styles.container, { backgroundColor: color }, style]}>
-    {children}
-  </View>
+  <View style={[styles.container, { backgroundColor: color }, style]}>{children}</View>
 )
 
 /**
@@ -118,22 +116,12 @@ const ImageBackgroundComponent: React.FC<{
 
   // For local assets, you'd need to handle require() differently
   // This handles remote URLs
-  const source = config.source.startsWith('http')
-    ? { uri: config.source }
-    : { uri: config.source } // Local would need different handling
+  const source = config.source.startsWith('http') ? { uri: config.source } : { uri: config.source } // Local would need different handling
 
-  const imageStyle = [
-    styles.container,
-    style,
-    config.opacity !== undefined && { opacity: config.opacity },
-  ]
+  const imageStyle = [styles.container, style, config.opacity !== undefined && { opacity: config.opacity }]
 
   return (
-    <ImageBackground
-      source={source}
-      style={imageStyle as ViewStyle}
-      resizeMode={config.resizeMode || 'cover'}
-    >
+    <ImageBackground source={source} style={imageStyle as ViewStyle} resizeMode={config.resizeMode || 'cover'}>
       {config.overlay ? (
         <ThemedBackgroundFromConfig config={{ ...config.overlay, id: 'overlay' }}>
           {children}
@@ -197,11 +185,10 @@ const screenBackgrounds: Record<string, IBackgroundConfig> = {
     id: 'home',
     type: 'gradient',
     gradient: {
-      type: 'linear',
-      colors: ['#0D3D3D', '#0A2E2E', '#051616'],
-      start: { x: 0.5, y: 0 },
-      end: { x: 0.5, y: 1 },
+      colors: ['#004D4D', '#005F5F', '#1A0F3D'],
       locations: [0, 0.5, 1],
+      start: { x: -0.28, y: 0.3 },
+      end: { x: 1.28, y: 0.7 },
     },
   },
   onboarding: {

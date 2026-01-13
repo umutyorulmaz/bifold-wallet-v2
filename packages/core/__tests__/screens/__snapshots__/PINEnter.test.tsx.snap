@@ -1,14 +1,31 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`PINEnter Screen PIN Enter renders correctly 1`] = `
-<View
+<BVLinearGradient
+  colors={
+    Array [
+      4279917146,
+      4279057725,
+      4278857262,
+    ]
+  }
+  endPoint={
+    Object {
+      "x": 0.5,
+      "y": 1,
+    }
+  }
+  locations={null}
+  startPoint={
+    Object {
+      "x": 0.5,
+      "y": 0.3,
+    }
+  }
   style={
     Array [
       Object {
         "flex": 1,
-      },
-      Object {
-        "backgroundColor": "#1A5A5A",
       },
       Object {
         "flex": 1,
@@ -787,18 +804,35 @@ exports[`PINEnter Screen PIN Enter renders correctly 1`] = `
       </RCTScrollView>
     </View>
   </RNCSafeAreaView>
-</View>
+</BVLinearGradient>
 `;
 
 exports[`PINEnter Screen PIN Enter renders correctly when logged out message is present 1`] = `
-<View
+<BVLinearGradient
+  colors={
+    Array [
+      4279917146,
+      4279057725,
+      4278857262,
+    ]
+  }
+  endPoint={
+    Object {
+      "x": 0.5,
+      "y": 1,
+    }
+  }
+  locations={null}
+  startPoint={
+    Object {
+      "x": 0.5,
+      "y": 0.3,
+    }
+  }
   style={
     Array [
       Object {
         "flex": 1,
-      },
-      Object {
-        "backgroundColor": "#1A5A5A",
       },
       Object {
         "flex": 1,
@@ -1577,5 +1611,5 @@ exports[`PINEnter Screen PIN Enter renders correctly when logged out message is 
       </RCTScrollView>
     </View>
   </RNCSafeAreaView>
-</View>
+</BVLinearGradient>
 `;

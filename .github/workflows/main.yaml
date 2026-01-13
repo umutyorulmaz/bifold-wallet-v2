@@ -35,6 +35,18 @@ jobs:
         uses: ruby/setup-ruby@8aeb6ff8030dd539317f8e1769a044873b56ea71 # v1.268.0
         with:
           working-directory: ./samples/app
+          ruby-version: '3.2'
+
+      - name: Update CocoaPods
+        working-directory: ./samples/app
+        run: |
+          # Remove deployment mode lock and update CocoaPods
+          rm -f .bundle/config
+          bundle config set --local deployment false
+          bundle config set --local frozen false
+          gem install bundler
+          bundle update cocoapods
+          bundle exec pod --version
 
       - name: What XCode are we using?
         run: |

@@ -68,7 +68,7 @@ const PINEnter: React.FC<PINEnterProps> = ({ setAuthenticated }) => {
         })
         dispatch({
           type: DispatchAction.ATTEMPT_UPDATED,
-          payload: [{ loginAttempts: 0 }],
+          payload: [{ loginAttempts: 0, servedPenalty: undefined, lockoutDate: undefined }],
         })
         setAuthenticated(true)
       }
@@ -110,7 +110,7 @@ const PINEnter: React.FC<PINEnterProps> = ({ setAuthenticated }) => {
 
         dispatch({
           type: DispatchAction.ATTEMPT_UPDATED,
-          payload: [{ loginAttempts: 0 }],
+          payload: [{ loginAttempts: 0, servedPenalty: undefined, lockoutDate: undefined }],
         })
         dispatch({
           type: DispatchAction.LOCKOUT_UPDATED,
