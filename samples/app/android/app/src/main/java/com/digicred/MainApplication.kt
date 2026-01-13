@@ -1,4 +1,4 @@
-package com.ariesbifold
+package com.digicred
 import android.content.res.Configuration
 import expo.modules.ApplicationLifecycleDispatcher
 import expo.modules.ReactNativeHostWrapper

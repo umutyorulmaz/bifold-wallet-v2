@@ -74,7 +74,7 @@ jobs:
         uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:
           path: samples/app/ios/xbuild/Build
-          key: ${{ runner.os }}-dd-xcode-${{ env.cacheId }}-${{ hashFiles('**/dd-cache-key.txt') }}
+          key: ${{ runner.os }}-dd-xcode-${{ env.cacheId }}-${{ hashFiles('dd-cache-key.txt') }}
           restore-keys: |
             ${{ runner.os }}-dd-xcode-${{ env.cacheId }}-
 
@@ -198,6 +198,17 @@ jobs:
       - name: Build Workspace
         run: |
           yarn build
+
+      - name: Setup Google Services
+        working-directory: ./samples/app/android/app
+        run: |
+          if [ -z "${{ secrets.GOOGLE_SERVICES_JSON_BASE64 }}" ]; then
+            echo "Error: GOOGLE_SERVICES_JSON_BASE64 secret is not set"
+            exit 1
+          fi
+          echo "${{ secrets.GOOGLE_SERVICES_JSON_BASE64 }}" | base64 -d > google-services.json
+          echo "google-services.json created, validating..."
+          python3 -c "import json; json.load(open('google-services.json'))" && echo "Valid JSON"
 
       - name: Android Release Build
         working-directory: ./samples/app/android
