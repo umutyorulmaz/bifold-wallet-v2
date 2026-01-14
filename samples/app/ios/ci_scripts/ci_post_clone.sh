@@ -11,8 +11,12 @@ if [ -n "$GOOGLE_SERVICE_INFO_PLIST_BASE64" ]; then
     echo "Decoding GoogleService-Info.plist from environment variable..."
     echo "$GOOGLE_SERVICE_INFO_PLIST_BASE64" | base64 -d > "$CI_PRIMARY_REPOSITORY_PATH/samples/app/ios/AriesBifold/GoogleService-Info.plist"
     echo "GoogleService-Info.plist created successfully"
+    # Validate the plist
+    plutil -lint "$CI_PRIMARY_REPOSITORY_PATH/samples/app/ios/AriesBifold/GoogleService-Info.plist" && echo "Valid plist file"
 else
-    echo "Warning: GOOGLE_SERVICE_INFO_PLIST_BASE64 not set. Firebase may not work correctly."
+    echo "❌ Error: GOOGLE_SERVICE_INFO_PLIST_BASE64 environment variable is not set!"
+    echo "Please add this secret in Xcode Cloud: App Store Connect → Xcode Cloud → Manage Workflows → Environment Variables"
+    exit 1
 fi
 
 echo "🔧 Installing Homebrew dependencies..."
