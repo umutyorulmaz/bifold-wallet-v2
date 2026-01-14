@@ -22,8 +22,6 @@ const escapeHtml = (input: string) =>
 const ShareEntryContent: React.FC<ShareEntryContentProps> = ({ item, styles, colors, formData = {}, content = [] }) => {
   const handleShare = async () => {
     try {
-      console.log('📤 Share button pressed, formData:', formData)
-
       let reportText = 'DigiCred Wallet Report\n'
       reportText += '='.repeat(40) + '\n\n'
       reportText += new Date().toLocaleString() + '\n\n'

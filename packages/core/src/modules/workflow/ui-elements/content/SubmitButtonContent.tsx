@@ -8,11 +8,7 @@ interface SubmitButtonContentProps extends ContentProps {
 }
 
 const SubmitButtonContent: React.FC<SubmitButtonContentProps> = ({ item, styles, colors, onAction, formData = {} }) => {
-  console.log('🔘 SubmitButtonContent rendering:', item)
-
   const handlePress = () => {
-    console.log('🔘 Submit button pressed, form data:', formData)
-
     // Trigger the action with form data
     if (item.actionID) {
       onAction(item.actionID, formData)

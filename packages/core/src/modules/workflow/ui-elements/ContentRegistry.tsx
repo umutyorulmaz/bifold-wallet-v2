@@ -46,10 +46,8 @@ class ContentRegistryClass {
   render(type: string, props: ContentProps): React.ReactNode {
     const Renderer = this.renderers.get(type)
     if (!Renderer) {
-      console.warn(`Unknown content type: ${type}`)
       return null
     }
-    console.log('✅ Found renderer for type:', type)
 
     return <Renderer {...props} />
   }

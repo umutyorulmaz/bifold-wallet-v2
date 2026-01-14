@@ -18,13 +18,10 @@ const SliderContent: React.FC<SliderContentProps> = ({
   onFieldChange,
   FormFieldRegistry: FormFieldReg,
 }) => {
-  console.log(' SliderContent rendering:', item)
-
   const fieldName = item['form-id'] || 'slider'
   const currentValue = formData[fieldName] || item.value || '0'
 
   const handleChange = (value: any) => {
-    console.log(' Slider changed:', fieldName, value)
     if (onFieldChange) {
       onFieldChange(fieldName, value)
     }

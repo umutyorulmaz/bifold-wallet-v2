@@ -18,13 +18,10 @@ const MultipleChoiceContent: React.FC<MultipleChoiceContentProps> = ({
   onFieldChange,
   FormFieldRegistry: FormFieldReg,
 }) => {
-  console.log('❓ MultipleChoiceContent rendering:', item)
-
   const fieldName = item['form-id'] || 'mcq'
   const currentValue = formData[fieldName] || []
 
   const handleChange = (value: any) => {
-    console.log('❓ Multiple choice changed:', fieldName, value)
     if (onFieldChange) {
       onFieldChange(fieldName, value)
     }

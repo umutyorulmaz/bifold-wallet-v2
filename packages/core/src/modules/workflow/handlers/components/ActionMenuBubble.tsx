@@ -27,9 +27,6 @@ export const ActionMenuBubble: React.FC<ActionMenuBubbleProps> = ({ content, wor
   const { ColorPalette } = useTheme()
   const [formData, setFormData] = useState<FormData>({})
 
-  console.log('🎨 ActionMenuBubble rendering with', content.length, 'items')
-  console.log('📝 Current form data:', formData)
-
   const colors = {
     primary: ColorPalette.brand.primary,
     text: ColorPalette.brand.text,
@@ -194,13 +191,10 @@ export const ActionMenuBubble: React.FC<ActionMenuBubbleProps> = ({ content, wor
   })
 
   const handleFieldChange = (name: string, value: any) => {
-    console.log('📝 Field changed:', name, '=', value)
     setFormData((prev) => ({ ...prev, [name]: value }))
   }
 
   const handleAction = (actionId: string, data?: any) => {
-    console.log('🎯 Action triggered:', actionId, 'with data:', data)
-
     if (typeof data === 'string' && data.length > 0) {
       // It's an invitationLink - pass it
       onActionPress(actionId, workflowID, data)
@@ -213,8 +207,6 @@ export const ActionMenuBubble: React.FC<ActionMenuBubbleProps> = ({ content, wor
   return (
     <View style={styles.bubble}>
       {content.map((item, index) => {
-        console.log('🎨 Rendering item type:', item.type)
-
         return (
           <View key={index}>
             {ContentRegistry.render(item.type, {

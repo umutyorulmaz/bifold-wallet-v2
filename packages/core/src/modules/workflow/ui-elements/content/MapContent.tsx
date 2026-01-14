@@ -24,7 +24,7 @@ const MapContent: React.FC<ContentProps> = ({ item, styles, colors }) => {
     )
   }
 
-  // ✅ Android will crash without a real Google Maps API key in AndroidManifest.
+  // Android will crash without a real Google Maps API key in AndroidManifest.
   // So we *do not mount MapView* on Android until a key exists.
   if (Platform.OS === 'android') {
     return (
@@ -45,7 +45,7 @@ const MapContent: React.FC<ContentProps> = ({ item, styles, colors }) => {
     )
   }
 
-  // iOS embedded map (works with your current setup)
+  // iOS embedded map (works with the current setup)
   return (
     <View style={styles.fieldContainer}>
       {item.text && <Text style={[styles.label, { color: colors.text, marginBottom: 8 }]}>{item.text}</Text>}

@@ -51,7 +51,6 @@ class FormFieldRegistryClass {
       console.warn(`Unknown form field type: ${type}`)
       return null
     }
-    console.log('✅ Found field renderer for type:', type)
 
     return <Renderer {...props} />
   }
