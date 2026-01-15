@@ -10,18 +10,18 @@ import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 import { KeyboardAvoidingView, Modal, Platform, Pressable, Text, View, GestureResponderEvent } from 'react-native'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 
-import { renderComposer, renderInputToolbar, renderSend } from '../components/chat'
+import { renderComposer, renderSend } from '../components/chat'
 import ActionSlider from '../components/chat/ActionSlider'
 import { renderActions } from '../components/chat/ChatActions'
-import { ChatMessage} from '../components/chat/ChatMessage'
+import { ChatMessage } from '../components/chat/ChatMessage'
 import { useNetwork } from '../contexts/network'
 import { useStore } from '../contexts/store'
 import { useTheme } from '../contexts/theme'
 import { useChatMessagesByConnection } from '../hooks/chat-messages'
-import { useConnectionCapabilities } from '../hooks/useConnectionCapabilities'
 import { useOptionalWorkflowRegistry } from '../modules/workflow'
 import { ActionContext, WorkflowAction } from '../modules/workflow'
-import { createDCWalletChatConfig } from '../modules/workflow/renderers/createChatScreenConfig'
+// import { useConnectionCapabilities } from '../hooks/useConnectionCapabilities'
+// import { createDCWalletChatConfig } from '../modules/workflow/renderers/createChatScreenConfig'
 import { Role } from '../types/chat'
 import { BasicMessageMetadata, basicMessageCustomMetadata } from '../types/metadata'
 import { RootStackParams, ContactStackParams, Screens, Stacks } from '../types/navigators'
@@ -32,9 +32,7 @@ type ChatProps = StackScreenProps<ContactStackParams, Screens.Chat> | StackScree
 
 type AnchorRect = { x: number; y: number; w: number; h: number }
 
-// lint-safe swallow (and avoids unused var)
 const swallow = (..._args: unknown[]) => {
-  // intentionally swallowed
   void _args
 }
 
@@ -63,11 +61,9 @@ const Chat: React.FC<ChatProps> = ({ route }) => {
 
   const [GradientBackground] = useServices([TOKENS.COMPONENT_GRADIENT_BACKGROUND])
 
-  // Check if the connection supports WebRTC for video calls
-  const { capabilities } = useConnectionCapabilities(connectionId)
+  // const { capabilities } = useConnectionCapabilities(connectionId)
   const registry = useOptionalWorkflowRegistry()
 
-  // --- Overflow menu anchor state (measured from press coordinates) ---
   const [isOverflowOpen, setIsOverflowOpen] = useState(false)
   const [overflowAnchor, setOverflowAnchor] = useState<AnchorRect | null>(null)
 
@@ -75,7 +71,6 @@ const Chat: React.FC<ChatProps> = ({ route }) => {
     setIsOverflowOpen(false)
   }, [])
 
-  // anchor under the pressed 3-dots icon using absolute screen coords
   const openOverflowMenuAtEvent = useCallback(
     (e?: GestureResponderEvent) => {
       if (e?.nativeEvent) {
@@ -97,13 +92,13 @@ const Chat: React.FC<ChatProps> = ({ route }) => {
     setShowActionSlider(false)
   }, [])
 
-  const onShowMenu = useCallback(async () => {
-    try {
-      await agent?.basicMessages.sendMessage(connectionId, ':menu')
-    } catch (e) {
-      swallow(e)
-    }
-  }, [agent, connectionId])
+  // const onShowMenu = useCallback(async () => {
+  //   try {
+  //     await agent?.basicMessages.sendMessage(connectionId, ':menu')
+  //   } catch (e) {
+  //     swallow(e)
+  //   }
+  // }, [agent, connectionId])
 
   const onRestartSessionPress = useCallback(async () => {
     closeOverflowMenu()
@@ -117,44 +112,41 @@ const Chat: React.FC<ChatProps> = ({ route }) => {
 
   const onInformationPress = useCallback(() => {
     closeOverflowMenu()
-
     navigation.navigate(Stacks.ContactStack as any, {
       screen: Screens.ContactDetails,
       params: { connectionId },
     })
   }, [closeOverflowMenu, navigation, connectionId])
 
-  // Get chat screen config from registry
-  const chatScreenConfig = useMemo(() => {
-    return registry?.getChatScreenConfig()
-  }, [registry])
+  // const chatScreenConfig = useMemo(() => {
+  //   return registry?.getChatScreenConfig()
+  // }, [registry])
 
-  // Fallback chat screen config if registry doesn't provide one
-  const fallbackChatScreenConfig = useMemo(
-    () =>
-      createDCWalletChatConfig({
-        onCredentialAccept: async (credential, context) => {
-          try {
-            await context.agent.credentials.acceptOffer(credential.id)
-          } catch (e) {
-            swallow(e)
-          }
-        },
-        onCredentialDecline: async (credential, context) => {
-          try {
-            await context.agent.credentials.declineOffer(credential.id)
-          } catch (e) {
-            swallow(e)
-          }
-        },
-        onCredentialPress: (credential, context) => {
-          context.navigation.navigate('CredentialDetails', { credentialId: credential.id })
-        },
-      }),
-    []
-  )
+  // const fallbackChatScreenConfig = useMemo(
+  //   () =>
+  //     createDCWalletChatConfig({
+  //       onCredentialAccept: async (credential, context) => {
+  //         try {
+  //           await context.agent.credentials.acceptOffer(credential.id)
+  //         } catch (e) {
+  //           swallow(e)
+  //         }
+  //       },
+  //       onCredentialDecline: async (credential, context) => {
+  //         try {
+  //           await context.agent.credentials.declineOffer(credential.id)
+  //         } catch (e) {
+  //           swallow(e)
+  //         }
+  //       },
+  //       onCredentialPress: (credential, context) => {
+  //         context.navigation.navigate('CredentialDetails', { credentialId: credential.id })
+  //       },
+  //     }),
+  //   []
+  // )
 
-  const effectiveChatScreenConfig = chatScreenConfig || fallbackChatScreenConfig
+  // const effectiveChatScreenConfig = chatScreenConfig || fallbackChatScreenConfig
 
   useEffect(() => {
     setTheirLabel(getConnectionName(connection, store.preferences.alternateContactNames))
@@ -164,55 +156,24 @@ const Chat: React.FC<ChatProps> = ({ route }) => {
     assertNetworkConnected()
   }, [assertNetworkConnected])
 
-  const headerRightIcons = useMemo(() => {
-    return [
-      {
-        IconComponent: (props: any) => (
-          <MaterialCommunityIcon name="dots-horizontal-circle-outline" size={28} color={props.color ?? '#FFFFFF'} />
-        ),
-        onPress: (e?: any) => openOverflowMenuAtEvent(e),
-        accessibilityLabel: t('Global.MoreOptions') ?? 'More options',
-      },
-    ]
-  }, [openOverflowMenuAtEvent, t])
-
+  // ✅ ĐÃ SỬA: CHỈ GIỮ TITLE + 3 CHẤM, BACKGROUND #005F5F
   useEffect(() => {
-    if (effectiveChatScreenConfig?.headerInsideBackground && effectiveChatScreenConfig?.headerRenderer) {
-      navigation.setOptions({ headerShown: false })
-      return
-    }
+    navigation.setOptions({
+      headerStyle: { backgroundColor: '#005F5F' },
+      headerTintColor: '#FFFFFF',
+      headerTitle: theirLabel,
+      headerRight: () => (
+        <Pressable
+          onPress={(e) => openOverflowMenuAtEvent(e)}
+          accessibilityLabel={t('Global.MoreOptions') ?? 'More options'}
+          style={{ padding: 8 }}
+        >
+          <MaterialCommunityIcon name="dots-horizontal-circle-outline" size={28} color="#FFFFFF" />
+        </Pressable>
+      ),
+    })
+  }, [navigation, theirLabel, openOverflowMenuAtEvent, t])
 
-    if (effectiveChatScreenConfig?.headerRenderer) {
-      navigation.setOptions({
-        header: () =>
-          effectiveChatScreenConfig.headerRenderer!.render({
-            title: theirLabel,
-            connectionId: connection?.id,
-            onBack: () => navigation.goBack(),
-            onInfo: () => navigation.navigate(Screens.ContactDetails as any, { connectionId: connection?.id }),
-            onVideoCall: () =>
-              navigation.navigate(Screens.VideoCall as any, { connectionId: connection?.id, video: true }),
-            showMenuButton: effectiveChatScreenConfig.showMenuButton,
-            showInfoButton: effectiveChatScreenConfig.showInfoButton,
-            showVideoButton: effectiveChatScreenConfig.showVideoButton && capabilities.supportsWebRTC,
-            isLoadingCapabilities: capabilities.isLoading,
-            onMenuPress: onShowMenu,
-            rightIcons: headerRightIcons,
-          }),
-      })
-    }
-  }, [
-    navigation,
-    theirLabel,
-    connection?.id,
-    effectiveChatScreenConfig,
-    onShowMenu,
-    capabilities.supportsWebRTC,
-    capabilities.isLoading,
-    headerRightIcons,
-  ])
-
-  // mark messages as seen
   useEffect(() => {
     basicMessages.forEach((msg) => {
       const meta = msg.metadata.get(BasicMessageMetadata.customMetadata) as basicMessageCustomMetadata
@@ -340,47 +301,35 @@ const Chat: React.FC<ChatProps> = ({ route }) => {
     </Modal>
   )
 
-  const chatContent = (
-    <GradientBackground>
-      <KeyboardAvoidingView
-        style={{ flex: 1 }}
-        behavior={Platform.OS === 'ios' ? undefined : 'padding'}
-        keyboardVerticalOffset={headerHeight}
-      >
-        <GiftedChat
-          keyboardShouldPersistTaps={'handled'}
-          messages={chatMessages}
-          showAvatarForEveryMessage={true}
-          alignTop
-          renderAvatar={() => null}
-          messageIdGenerator={(msg) => msg?._id.toString() || '0'}
-          renderMessage={(props) => <ChatMessage messageProps={props} />}
-          renderInputToolbar={(props) => renderInputToolbar(props, theme)}
-          renderSend={(props) => renderSend(props, theme)}
-          renderComposer={(props) => renderComposer(props, theme, t('Contacts.TypeHere'))}
-          disableComposer={!silentAssertConnectedNetwork()}
-          onSend={onSend}
-          user={{
-            _id: Role.me,
-          }}
-          renderActions={(props) => renderActions(props, theme, actions as any)}
-          onPressActionButton={actions && actions.length > 0 ? () => setShowActionSlider(true) : undefined}
-          messagesContainerStyle={{
-            paddingHorizontal: 12,
-          }}
-        />
-        {showActionSlider && <ActionSlider onDismiss={onDismiss} actions={actions as any} />}
-      </KeyboardAvoidingView>
-    </GradientBackground>
-  )
-
   return (
-    <GradientBackground>
-      <SafeAreaView edges={['bottom', 'left', 'right']} style={{ flex: 1, paddingTop: 20 }}>
-        {overflowMenu}
-        {chatContent}
-      </SafeAreaView>
-    </GradientBackground>
+    <SafeAreaView edges={['left', 'right']} style={{ flex: 1, marginBottom: 10 }}>
+      {overflowMenu}
+      <GradientBackground>
+        <KeyboardAvoidingView
+          style={{ flex: 1 }}
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          keyboardVerticalOffset={headerHeight}
+        >
+          <GiftedChat
+            keyboardShouldPersistTaps="handled"
+            messages={chatMessages}
+            renderAvatar={() => null}
+            messageIdGenerator={(msg) => msg?._id.toString() || '0'}
+            renderMessage={(props) => <ChatMessage messageProps={props} />}
+            renderInputToolbar={() => null}
+            renderSend={(props) => renderSend(props, theme)}
+            renderComposer={(props) => renderComposer(props, theme, t('Contacts.TypeHere'))}
+            disableComposer={!silentAssertConnectedNetwork()}
+            onSend={onSend}
+            user={{ _id: Role.me }}
+            renderActions={(props) => renderActions(props, theme, actions as any)}
+            onPressActionButton={actions && actions.length > 0 ? () => setShowActionSlider(true) : undefined}
+            messagesContainerStyle={{ paddingHorizontal: 12 }}
+          />
+          {showActionSlider && <ActionSlider onDismiss={onDismiss} actions={actions as any} />}
+        </KeyboardAvoidingView>
+      </GradientBackground>
+    </SafeAreaView>
   )
 }
 

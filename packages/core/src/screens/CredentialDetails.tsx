@@ -174,11 +174,11 @@ const CredentialDetails: React.FC<CredentialDetailsProps> = ({ navigation, route
   const { credential, loading, attributes, credDefId } = useCredentialData(routeCredential, credentialId)
 
   useEffect(() => {
-    nav.setOptions({
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-expect-error
-      headerShown: false,
-    })
+    if (typeof nav.setOptions === 'function') {
+      nav.setOptions({
+        headerShown: false,
+      } as any)
+    }
   }, [nav])
 
   if (loading) {

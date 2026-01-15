@@ -1,10 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
- exports[`Chat Screen Renders correctly 1`] = `
+exports[`Chat Screen Renders correctly 1`] = `
 <RNCSafeAreaView
   edges={
     Object {
-      "bottom": "additive",
+      "bottom": "off",
       "left": "additive",
       "right": "additive",
       "top": "off",
@@ -13,27 +13,8 @@
   style={
     Object {
       "flex": 1,
+      "marginBottom": 10,
     }
   }
->
-  <View
-    onLayout={[Function]}
-    style={
-      Object {
-        "flex": 1,
-      }
-    }
-  >
-    <View
-      onLayout={[Function]}
-      style={
-        Object {
-          "flex": 1,
-        }
-      }
-      testID="GC_LOADING_CONTAINER"
-    />
-  </View>
-</RNCSafeAreaView>
+/>
 `;
- exports[`Chat Screen Renders correctly 1`] = `null`;

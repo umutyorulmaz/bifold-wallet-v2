@@ -11,7 +11,7 @@ import { IChatScreenConfig } from '../types'
 
 import { ChatHeaderRenderer } from './ChatHeaderRenderer'
 import {
-  createDefaultCredentialRenderer,
+  // createDefaultCredentialRenderer,
   createVDCredentialRenderer,
   CredentialRendererOptions,
   VDCredentialRendererOptions,
@@ -98,7 +98,6 @@ export function createChatScreenConfig(options: ChatScreenConfigOptions = {}): I
 
   // Create background renderer if gradient enabled
   if (options.background?.useGradient) {
-    // config.backgroundRenderer = new GradientBackgroundRenderer()
     config.backgroundRenderer = new GradientBackgroundRenderer()
   }
 
@@ -106,7 +105,7 @@ export function createChatScreenConfig(options: ChatScreenConfigOptions = {}): I
   if (options.useVDCredentialRenderer) {
     config.credentialRenderer = createVDCredentialRenderer(options.credential as VDCredentialRendererOptions)
   } else if (options.credential) {
-    config.credentialRenderer = createDefaultCredentialRenderer(options.credential as CredentialRendererOptions)
+    // config.credentialRenderer = createDefaultCredentialRenderer(options.credential as CredentialRendererOptions)
   }
 
   // Create proof renderer
@@ -150,6 +149,8 @@ export function createDCWalletChatConfig(options: {
     useVDCredentialRenderer: true,
     credential: {
       onPress: options.onCredentialPress,
+      // onAccept: options.onCredentialAccept,
+      // onDecline: options.onCredentialDecline,
     },
     proof: {
       onPress: options.onProofPress,

@@ -1114,9 +1114,9 @@
     "ProofRequestRejected": "rejected a proof request",
     "ProofRequestRejectReceived": "rejected a proof request",
     "ProofRequestSatisfied": "shared information",
-    "ReceivedAt": "Received at ",
-    "AcceptedAt": "Accepted at ",
-    "DeclinedAt": "Declined at "
+    "ReceivedAt": "Received at",
+    "AcceptedAt": "Accepted at",
+    "DeclinedAt": "Declined at"
   },
   "Verifier": {
     "UseVerifierCapability": "Use Verifier capability?",

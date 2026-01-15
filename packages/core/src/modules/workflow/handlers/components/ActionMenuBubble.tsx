@@ -1,18 +1,10 @@
 /* eslint-disable no-console */
-/**
- * ActionMenuBubble Component
- *
- * Renders action menu messages using ContentRegistry and FormFieldRegistry.
- * Enhanced with registry pattern for extensibility and ported from bifold-wallet-1 with enhanced styling for dark themes.
- */
-
 import React, { useState } from 'react'
-import { Dimensions, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
-
+import { Dimensions, StyleSheet, View } from 'react-native'
 import { useTheme } from '../../../../contexts/theme'
-import { ActionMenuContentItem, ActionMenuFormField } from '../../types'
+import { ActionMenuContentItem } from '../../types'
 import { ContentRegistry, FormFieldRegistry } from '../../ui-elements'
-import { TOKENS, useServices } from '../../../../container-api'
+// import { TOKENS, useServices } from '../../../../container-api'
 
 interface ActionMenuBubbleProps {
   content: ActionMenuContentItem[]
@@ -28,10 +20,9 @@ export const ActionMenuBubble: React.FC<ActionMenuBubbleProps> = ({ content, wor
   const { ColorPalette } = useTheme()
   const [formData, setFormData] = useState<FormData>({})
   const { width } = Dimensions.get('window')
-  const [GradientBackground] = useServices([TOKENS.COMPONENT_GRADIENT_BACKGROUND])
+  // const [GradientBackground] = useServices([TOKENS.COMPONENT_GRADIENT_BACKGROUND])
 
-  // Dynamic styles based on theme
-  const themedStyles = StyleSheet.create({
+  const styles = StyleSheet.create({
     bubble: {
       backgroundColor: ColorPalette.grayscale.digicredBackgroundModal,
       borderRadius: 16,
@@ -95,6 +86,38 @@ export const ActionMenuBubble: React.FC<ActionMenuBubbleProps> = ({ content, wor
       color: ColorPalette.brand.text,
       fontSize: 15,
     },
+    input: {
+      height: 48,
+      borderColor: ColorPalette.brand.primary,
+      borderWidth: 1.5,
+      marginBottom: 12,
+      paddingHorizontal: 16,
+      borderRadius: 12,
+      backgroundColor: ColorPalette.brand.tertiaryBackground,
+      color: ColorPalette.brand.text,
+      fontSize: 15,
+    },
+    fieldContainer: {
+      marginBottom: 12,
+    },
+    label: {
+      fontSize: 14,
+      fontWeight: '600',
+      color: ColorPalette.brand.text,
+      marginBottom: 8,
+    },
+    formLabel: {
+      fontSize: 14,
+      fontWeight: '600',
+      color: ColorPalette.brand.text,
+      marginBottom: 8,
+    },
+    radioRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: 12,
+      paddingVertical: 4,
+    },
     radioButton: {
       flexDirection: 'row',
       alignItems: 'center',
@@ -106,38 +129,13 @@ export const ActionMenuBubble: React.FC<ActionMenuBubbleProps> = ({ content, wor
       height: 22,
       borderRadius: 11,
       borderWidth: 2,
-      borderColor: ColorPalette.brand.primary,
       marginRight: 12,
       justifyContent: 'center',
       alignItems: 'center',
+      borderColor: ColorPalette.brand.primary,
     },
     radioButtonIconSelected: {
       backgroundColor: ColorPalette.brand.primary,
-    },
-    radioButtonText: {
-      fontSize: 15,
-      color: ColorPalette.brand.text,
-    },
-    formLabel: {
-      fontSize: 14,
-      fontWeight: '600',
-      color: ColorPalette.brand.text,
-      marginBottom: 8,
-    },
-    fieldContainer: {
-      marginBottom: 12,
-    },
-    label: {
-      fontSize: 14,
-      fontWeight: '600',
-      color: ColorPalette.brand.text,
-      marginBottom: 8,
-    },
-    radioRow: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      marginBottom: 12,
-      paddingVertical: 4,
     },
     radioOuter: {
       width: 22,
@@ -155,6 +153,10 @@ export const ActionMenuBubble: React.FC<ActionMenuBubbleProps> = ({ content, wor
     },
     radioLabel: {
       fontSize: 15,
+    },
+    radioButtonText: {
+      fontSize: 15,
+      color: ColorPalette.brand.text,
     },
     checkboxRow: {
       flexDirection: 'row',
@@ -221,138 +223,41 @@ export const ActionMenuBubble: React.FC<ActionMenuBubbleProps> = ({ content, wor
     },
   })
 
-  const colors = {
-    primary: ColorPalette.brand.primary,
-    text: ColorPalette.brand.text,
-    background: ColorPalette.brand.secondaryBackground,
-    border: ColorPalette.brand.primary,
-  }
-
   const handleFieldChange = (name: string, value: any) => {
     setFormData((prev) => ({ ...prev, [name]: value }))
   }
 
   const handleAction = (actionId: string, data?: any) => {
     if (typeof data === 'string' && data.length > 0) {
-      // It's an invitationLink - pass it
       onActionPress(actionId, workflowID, data)
     } else {
-      // No invitationLink - call with only 2 params
       onActionPress(actionId, workflowID)
     }
   }
 
-  // Legacy rendering for backward compatibility
-  const renderFormField = (field: ActionMenuFormField, index: number) => {
-    if (!field) {
-      return null
-    }
-
-    switch (field.type) {
-      case 'text': {
-        return (
-          <TextInput
-            key={index}
-            style={themedStyles.textInput}
-            placeholder={field.label}
-            placeholderTextColor={ColorPalette.grayscale.lightGrey}
-            value={formData[field.name] ? formData[field.name]?.toString() : ''}
-            onChangeText={(text) => setFormData({ ...formData, [field.name]: text })}
-          />
-        )
-      }
-      case 'radio': {
+  return (
+    <View style={styles.bubble}>
+      {content.map((item, index) => {
         return (
           <View key={index}>
-            <Text style={themedStyles.formLabel}>{field.label}</Text>
-            {field.options?.map((option: string, optionIndex: number) => (
-              <TouchableOpacity
-                key={optionIndex}
-                style={themedStyles.radioButton}
-                onPress={() => setFormData({ ...formData, [field.name]: option })}
-              >
-                <View
-                  style={[
-                    themedStyles.radioButtonIcon,
-                    formData[field.name] === option && themedStyles.radioButtonIconSelected,
-                  ]}
-                />
-                <Text style={themedStyles.radioButtonText}>{option}</Text>
-              </TouchableOpacity>
-            ))}
+            {ContentRegistry.render(item.type, {
+              item,
+              onAction: handleAction,
+              styles,
+              colors: {
+                primary: ColorPalette.brand.primary,
+                text: ColorPalette.brand.text,
+                background: ColorPalette.grayscale.digicredBackgroundModal,
+                border: ColorPalette.grayscale.digicredBorderAction,
+              },
+              formData,
+              onFieldChange: handleFieldChange,
+              FormFieldRegistry,
+              content,
+            })}
           </View>
         )
-      }
-      default:
-        return null
-    }
-  }
-
-  // Legacy content rendering for backward compatibility
-  const renderLegacyContent = (item: ActionMenuContentItem, index: number) => {
-    const key = `${item.type}_${index}${item.actionID ? `_${item.actionID}` : ''}${
-      item.text ? `_${item.text.substring(0, 10)}` : ''
-    }`
-    switch (item.type) {
-      case 'image':
-        return item.url ? (
-          <Image key={key} source={{ uri: item.url }} style={themedStyles.image} resizeMode="contain" />
-        ) : null
-      case 'title':
-        return (
-          <Text key={key} style={themedStyles.title}>
-            {item.text}
-          </Text>
-        )
-      case 'text':
-        return (
-          <Text key={key} style={themedStyles.description}>
-            {item.text}
-          </Text>
-        )
-      case 'button':
-        return (
-          <GradientBackground key={key} buttonPurple style={themedStyles.button}>
-            <TouchableOpacity
-              onPress={() => onActionPress(item.actionID ?? '', workflowID, item.invitationLink)}
-              activeOpacity={0.8}
-            >
-              <Text style={themedStyles.buttonText}>{item.label}</Text>
-            </TouchableOpacity>
-          </GradientBackground>
-        )
-      case 'form':
-        return (
-          <View key={key}>
-            {item.fields?.map((field: ActionMenuFormField, fieldIndex: number) => renderFormField(field, fieldIndex))}
-          </View>
-        )
-      default:
-        return null
-    }
-  }
-
-  // Check if we should use registry pattern or legacy rendering
-  const useRegistry = ContentRegistry && ContentRegistry.render
-
-  return (
-    <View style={themedStyles.bubble}>
-      {useRegistry
-        ? content.map((item, index) => (
-            <View key={index}>
-              {ContentRegistry.render(item.type, {
-                item,
-                onAction: handleAction,
-                styles: themedStyles,
-                colors,
-                formData,
-                onFieldChange: handleFieldChange,
-                FormFieldRegistry,
-                content,
-              })}
-            </View>
-          ))
-        : content.map((item, index) => renderLegacyContent(item, index))}
+      })}
     </View>
   )
 }

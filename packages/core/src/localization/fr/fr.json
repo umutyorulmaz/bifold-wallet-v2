@@ -1003,9 +1003,9 @@
     "ProofRequestRejected": "a rejeté une demande de preuve",
     "ProofRequestRejectReceived": "a rejeté une demande de preuve",
     "ProofRequestSatisfied": "a partagé des informations",
-    "ReceivedAt": "Reçu à ",
-    "AcceptedAt": "Accepté à ",
-    "DeclinedAt": "Refusé à "
+    "ReceivedAt": "Reçu à",
+    "AcceptedAt": "Accepté à",
+    "DeclinedAt": "Refusé à"
   },
   "Verifier": {
     "UseVerifierCapability": "Utiliser la fonctionnalité Verifier?",

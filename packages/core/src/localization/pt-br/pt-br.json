@@ -971,9 +971,9 @@
     "ProofRequestRejected": "rejeitou uma solicitação de prova",
     "ProofRequestRejectReceived": "rejeitou uma solicitação de prova",
     "ProofRequestSatisfied": "compartilhou informações",
-    "ReceivedAt": "Recebido em ",
-    "AcceptedAt": "Aceito em ",
-    "DeclinedAt": "Recusado em "
+    "ReceivedAt": "Recebido em",
+    "AcceptedAt": "Aceito em",
+    "DeclinedAt": "Recusado em"
   },
   "Verifier": {
     "UseVerifierCapability": "Usar o recurso Verificador?",

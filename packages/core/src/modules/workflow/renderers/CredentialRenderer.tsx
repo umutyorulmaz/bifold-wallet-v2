@@ -502,6 +502,7 @@ export const VDCredentialCard: React.FC<CredentialCardProps> = ({ credential, co
     }
   }, [agent, isProcessing, userAction, credential.id])
 
+
   const handleDecline = useCallback(async () => {
     if (!agent || !credential) return
 
@@ -512,7 +513,7 @@ export const VDCredentialCard: React.FC<CredentialCardProps> = ({ credential, co
       const anoncredsOffer = formatData.offer?.anoncreds as { cred_def_id?: string; schema_id?: string } | undefined
       const indyOffer = formatData.offer?.indy as { cred_def_id?: string; schema_id?: string } | undefined
 
-      const credDefId: any =
+      const credDefId =
         anoncredsOffer?.cred_def_id ||
         indyOffer?.cred_def_id ||
         credential.metadata.data?.['_anoncreds/credential']?.credentialDefinitionId ||
@@ -525,7 +526,9 @@ export const VDCredentialCard: React.FC<CredentialCardProps> = ({ credential, co
         ''
 
       await agent.credentials.declineOffer(credential.id)
-
+      if (credential.connectionId != null) {
+        await agent?.basicMessages.sendMessage(credential.connectionId, ':menu')
+      }
       const declinedCred = await agent.credentials.findById(credential.id)
       if (declinedCred && offerAttributes.length > 0) {
         await declinedCred.metadata.set('offerPreview', offerAttributes)
@@ -534,21 +537,23 @@ export const VDCredentialCard: React.FC<CredentialCardProps> = ({ credential, co
         await agent.credentials.update(declinedCred)
       }
 
-      const connection = credential.connectionId ? await agent.connections.findById(credential.connectionId) : null
-
-      if (connection) {
-        await agent.credentials.sendProblemReport({
-          credentialRecordId: credential.id,
-          description: t('CredentialOffer.Declined'),
-        })
+      if (credential.connectionId) {
+        const connection = await agent.connections.findById(credential.connectionId)
+        if (connection) {
+          await agent.credentials.sendProblemReport({
+            credentialRecordId: credential.id,
+            description: t('CredentialOffer.Declined'),
+          })
+        }
       }
 
       setUserAction('declined')
     } catch (err: unknown) {
-      const error = new BifoldError(t('Error.Title1025'), t('Error.Message1025'), (err as Error)?.message ?? err, 1025)
+      const errorMessage = err instanceof Error ? err.message : String(err)
+      const error = new BifoldError(t('Error.Title1025'), t('Error.Message1025'), errorMessage, 1025)
       DeviceEventEmitter.emit(EventTypes.ERROR_ADDED, error)
     }
-  }, [agent, credential])
+  }, [agent, credential, setUserAction])
 
   if (loading) {
     return (
