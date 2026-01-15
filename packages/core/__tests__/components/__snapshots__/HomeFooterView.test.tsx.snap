@@ -214,7 +214,7 @@ exports[`HomeFooterView Component Renders correctly with notifications 1`] = `
             2
           </Text>
            
-          Home.Credentials
+          Home.ListCredentials
            
           Home.InYourWallet
         </Text>

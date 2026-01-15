@@ -14,8 +14,8 @@ export { ChatHeaderRenderer, createChatHeaderRenderer } from './ChatHeaderRender
 
 // Credential renderers
 export {
-  DefaultCredentialRenderer,
-  createDefaultCredentialRenderer,
+  // DefaultCredentialRenderer,
+  // createDefaultCredentialRenderer,
   VDCredentialRenderer,
   createVDCredentialRenderer,
   detectCredentialType,

@@ -608,11 +608,11 @@ const CredentialCard11: React.FC<CredentialCard11Props> = ({
 
   const CredentialCard: React.FC<{ status?: 'error' | 'warning' }> = ({ status }) => {
     const issuerAccessibilityLabel = overlay.metaOverlay?.issuer
-      ? `${t('Credentials.IssuedBy')} ${overlay.metaOverlay?.issuer}`
+      ? `${t('ListCredentials.IssuedBy')} ${overlay.metaOverlay?.issuer}`
       : ''
     const watermarkLabel = overlay.metaOverlay?.watermark ? overlay.metaOverlay?.watermark + ',' : ''
     const accessibilityLabel = isBranding11
-      ? `${watermarkLabel} ${overlay.metaOverlay?.name ?? ''} ${t('Credentials.Credential')}${
+      ? `${watermarkLabel} ${overlay.metaOverlay?.name ?? ''} ${t('ListCredentials.Credential')}${
           cardData.length > 0 ? ',' : ''
         }` +
         cardData.map((item) => {
@@ -623,7 +623,7 @@ const CredentialCard11: React.FC<CredentialCard11Props> = ({
         }) +
         `, ${issuerAccessibilityLabel}`
       : `${issuerAccessibilityLabel}, ${watermarkLabel} ${overlay.metaOverlay?.name ?? ''} ${t(
-          'Credentials.Credential'
+          'ListCredentials.Credential'
         )}.` +
         cardData.map((item) => {
           const { label, value } = parseAttribute(item as Attribute & Predicate)
@@ -684,7 +684,7 @@ const CredentialCard11: React.FC<CredentialCard11Props> = ({
     >
       <TouchableOpacity
         accessible={false}
-        accessibilityLabel={typeof onPress === 'undefined' ? undefined : t('Credentials.CredentialDetails')}
+        accessibilityLabel={typeof onPress === 'undefined' ? undefined : t('ListCredentials.CredentialDetails')}
         disabled={typeof onPress === 'undefined' ? true : false}
         onPress={onPress}
         style={[styles.container, style]}

@@ -122,8 +122,8 @@ const DigiCredTabStack: React.FC = () => {
             component={CredentialStack}
             options={{
               headerShown: false,
-              tabBarAccessibilityLabel: t('TabStack.Credentials'),
-              tabBarTestID: testIdWithKey(t('TabStack.Credentials')),
+              tabBarAccessibilityLabel: t('TabStack.ListCredentials'),
+              tabBarTestID: testIdWithKey(t('TabStack.ListCredentials')),
             }}
           />
           <Tab.Screen

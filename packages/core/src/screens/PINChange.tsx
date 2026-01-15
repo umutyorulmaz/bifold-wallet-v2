@@ -11,7 +11,6 @@ import ScreenWrapper from '../components/views/ScreenWrapper'
 import { EventTypes, minPINLength } from '../constants'
 import { TOKENS, useServices } from '../container-api'
 import { useAnimatedComponents } from '../contexts/animated-components'
-import { useTheme } from '../contexts/theme'
 import usePreventScreenCapture from '../hooks/screen-capture'
 import { usePINValidation } from '../hooks/usePINValidation'
 import VerifyPINModal from '../components/modals/VerifyPINModal'
@@ -34,7 +33,6 @@ const PINChange: React.FC<StackScreenProps<SettingStackParams, Screens.ChangePIN
   const [store] = useStore()
   const [isLoading, setIsLoading] = useState(false)
   const { t } = useTranslation()
-  const { ColorPalette } = useTheme()
   const { ButtonLoading } = useAnimatedComponents()
   const createPINButtonRef = useRef<TouchableOpacity>(null)
 
@@ -60,7 +58,7 @@ const PINChange: React.FC<StackScreenProps<SettingStackParams, Screens.ChangePIN
 
   const [verifyPINModalVisible, setVerifyPINModalVisible] = useState(PINScreensConfig.useNewPINDesign)
   const [confirmPINModalVisible, setPINConfirmModalVisible] = useState(false)
-
+  // const [GradientBackground] = useServices([TOKENS.COMPONENT_GRADIENT_BACKGROUND])
   const {
     PINValidations,
     validatePINEntry,
@@ -79,13 +77,14 @@ const PINChange: React.FC<StackScreenProps<SettingStackParams, Screens.ChangePIN
   const style = StyleSheet.create({
     screenContainer: {
       height: '100%',
-      backgroundColor: ColorPalette.brand.primaryBackground,
       padding: 20,
       justifyContent: 'space-between',
+      backgroundColor: 'transparent',
     },
-    // below used as helpful labels for views, no properties needed atp
     contentContainer: {},
-    controlsContainer: {},
+    controlsContainer: {
+      marginBottom: 120,
+    },
     loadingContainer: {
       justifyContent: 'center',
       alignItems: 'center',
@@ -137,13 +136,11 @@ const PINChange: React.FC<StackScreenProps<SettingStackParams, Screens.ChangePIN
         return
       }
       const historyManager = historyManagerCurried(agent)
-      /** Save history record for pin edited */
       const recordData: HistoryRecord = {
         type: HistoryCardType.PinChanged,
         message: HistoryCardType.PinChanged,
         createdAt: new Date(),
       }
-
       historyManager.saveHistory(recordData)
     } catch (err: unknown) {
       logger.error(`[${PINChange.name}]:[logHistoryRecord] Error saving history: ${err}`)
@@ -154,9 +151,7 @@ const PINChange: React.FC<StackScreenProps<SettingStackParams, Screens.ChangePIN
     try {
       setIsLoading(true)
       const valid = validatePINEntry(userPinInput, userPinInput)
-      if (valid) {
-        setPINConfirmModalVisible(true)
-      }
+      if (valid) setPINConfirmModalVisible(true)
     } catch (err: unknown) {
       const error = new BifoldError(t('Error.Title1049'), t('Error.Message1049'), (err as Error)?.message ?? err, 1049)
       DeviceEventEmitter.emit(EventTypes.ERROR_ADDED, error)
@@ -174,9 +169,7 @@ const PINChange: React.FC<StackScreenProps<SettingStackParams, Screens.ChangePIN
         if (oldPinValid) {
           const success = await rekeyWallet(agent, PINOld, PIN, store.preferences.useBiometry)
           if (success) {
-            if (historyEventsLogger.logPinChanged) {
-              logHistoryRecord()
-            }
+            if (historyEventsLogger.logPinChanged) logHistoryRecord()
             setModalState({
               visible: true,
               title: t('PINChange.PinChangeSuccessTitle'),
@@ -204,9 +197,7 @@ const PINChange: React.FC<StackScreenProps<SettingStackParams, Screens.ChangePIN
       if (valid) {
         const success = await rekeyWallet(agent, PINOld, PIN, store.preferences.useBiometry)
         if (success) {
-          if (historyEventsLogger.logPinChanged) {
-            logHistoryRecord()
-          }
+          if (historyEventsLogger.logPinChanged) logHistoryRecord()
           if (PINScreensConfig.useNewPINDesign) {
             setPINConfirmModalVisible(false)
             navigation.navigate(Screens.ChangePINSuccess)
@@ -224,9 +215,7 @@ const PINChange: React.FC<StackScreenProps<SettingStackParams, Screens.ChangePIN
   }
 
   const isContinueDisabled = useMemo((): boolean => {
-    if (inlineMessages || isLoading) {
-      return false
-    }
+    if (inlineMessages || isLoading) return false
     return PIN === '' || PIN.length < minPINLength
   }, [inlineMessages, isLoading, PIN])
 
@@ -235,25 +224,22 @@ const PINChange: React.FC<StackScreenProps<SettingStackParams, Screens.ChangePIN
       <View style={style.screenContainer}>
         <View style={style.contentContainer}>
           <PINHeader updatePin />
-          {!PINScreensConfig.useNewPINDesign && (
-            <PINInput
-              label={t('PINChange.EnterOldPINTitle')}
-              testID={testIdWithKey('EnterOldPIN')}
-              accessibilityLabel={t('PINChange.EnterOldPIN')}
-              onPINChanged={(p: string) => {
-                setPINOld(p)
-              }}
-              onSubmitEditing={handleChangePinTap}
-            />
-          )}
+          <PINInput
+            label={t('PINChange.EnterOldPINTitle')}
+            testID={testIdWithKey('EnterOldPIN')}
+            accessibilityLabel={t('PINChange.EnterOldPIN')}
+            onPINChanged={(p: string) => setPINOld(p)}
+            onSubmitEditing={handleChangePinTap}
+            visible={!PINScreensConfig.useNewPINDesign}
+          />
+
           <PINInput
             label={t('PINChange.EnterPINTitle')}
             onPINChanged={async (userPinInput: string) => {
               setInlineMessageField1(undefined)
               setPIN(userPinInput)
-              if (userPinInput.length === minPINLength && PINScreensConfig.useNewPINDesign) {
+              if (userPinInput.length === minPINLength && PINScreensConfig.useNewPINDesign)
                 await handleConfirmPINModal(userPinInput)
-              }
             }}
             testID={testIdWithKey('EnterPIN')}
             accessibilityLabel={t('PINCreate.EnterPIN')}
@@ -261,41 +247,42 @@ const PINChange: React.FC<StackScreenProps<SettingStackParams, Screens.ChangePIN
             inlineMessage={inlineMessageField1}
             onSubmitEditing={handleChangePinTap}
           />
-          {!PINScreensConfig.useNewPINDesign && (
-            <PINInput
-              label={t('PINCreateConfirm.PINInputLabel')}
-              onPINChanged={async (userPinInput: string) => {
-                setInlineMessageField2(undefined)
-                setPINTwo(userPinInput)
-              }}
-              testID={testIdWithKey('ConfirmPIN')}
-              accessibilityLabel={t('PINCreateConfirm.PINInputLabel')}
-              autoFocus={false}
-              inlineMessage={inlineMessageField2}
-              onSubmitEditing={handleChangePinTap}
-            />
-          )}
+
+          <PINInput
+            label={t('PINCreateConfirm.PINInputLabel')}
+            onPINChanged={async (userPinInput: string) => {
+              setInlineMessageField2(undefined)
+              setPINTwo(userPinInput)
+            }}
+            testID={testIdWithKey('ConfirmPIN')}
+            accessibilityLabel={t('PINCreateConfirm.PINInputLabel')}
+            autoFocus={false}
+            inlineMessage={inlineMessageField2}
+            onSubmitEditing={handleChangePinTap}
+            visible={!PINScreensConfig.useNewPINDesign}
+          />
+
           {PINSecurity.displayHelper && <PINValidationHelper validations={PINValidations} />}
           {modalState.visible && (
             <AlertModal title={modalState.title} message={modalState.message} submit={modalState.onModalDismiss} />
           )}
         </View>
-        {!PINScreensConfig.useNewPINDesign && (
-          <View style={style.controlsContainer}>
-            <Button
-              title={t('PINChange.ChangePIN')}
-              testID={testIdWithKey('ChangePIN')}
-              accessibilityLabel={t('Global.Continue')}
-              buttonType={ButtonType.Primary}
-              disabled={isContinueDisabled}
-              onPress={handleChangePinTap}
-              ref={createPINButtonRef}
-            >
-              {isLoading ? <ButtonLoading /> : null}
-            </Button>
-          </View>
-        )}
+
+        <View style={style.controlsContainer}>
+          <Button
+            title={t('PINChange.ChangePIN')}
+            testID={testIdWithKey('ChangePIN')}
+            accessibilityLabel={t('Global.Continue')}
+            buttonType={ButtonType.Primary}
+            disabled={isContinueDisabled}
+            onPress={handleChangePinTap}
+            ref={createPINButtonRef}
+          >
+            {isLoading ? <ButtonLoading /> : null}
+          </Button>
+        </View>
       </View>
+
       <VerifyPINModal
         onAuthenticationComplete={onAuthenticationComplete}
         onBackPressed={onVerifyPINModalBackPressed}
@@ -304,6 +291,7 @@ const PINChange: React.FC<StackScreenProps<SettingStackParams, Screens.ChangePIN
         title={t('Screens.EnterPIN')}
         visible={verifyPINModalVisible}
       />
+
       <ConfirmPINModal
         errorModalState={modalState}
         isLoading={isLoading}

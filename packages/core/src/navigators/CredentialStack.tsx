@@ -34,7 +34,7 @@ const CredentialStack: React.FC = () => {
         name={Screens.Credentials}
         component={ListCredentials}
         options={() => ({
-          title: t('Screens.Credentials'),
+          title: t('Screens.ListCredentials'),
           headerRight: () => <CredentialListHeaderRight />,
           headerLeft: () => <SettingsMenu />,
           ...ScreenOptionsDictionary[Screens.Credentials],

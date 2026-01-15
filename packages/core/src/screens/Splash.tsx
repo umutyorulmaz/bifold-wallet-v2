@@ -14,13 +14,16 @@ import { useStore } from '../contexts/store'
 
 export type SplashProps = {
   initializeAgent: (walletSecret: WalletSecret) => Promise<void>
+  isOverlayMode?: boolean
 }
 
 /**
- * This Splash screen is shown in two scenarios: initial load of the app,
- * and during agent initialization after login
+ * This Splash screen is shown in two scenarios:
+ * 1. initial load of the app,
+ * 2. during agent initialization after login
+ * 3. when returning to app (overlay mode)
  */
-const Splash: React.FC<SplashProps> = ({ initializeAgent }) => {
+const Splash: React.FC<SplashProps> = ({ initializeAgent, isOverlayMode = false }) => {
   const { walletSecret } = useAuth()
   const { t } = useTranslation()
   const [store] = useStore()
@@ -37,10 +40,32 @@ const Splash: React.FC<SplashProps> = ({ initializeAgent }) => {
       flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
+      width: '100%',
+      height: '100%',
+    },
+    fullscreenOverlay: {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      zIndex: 999999,
+      elevation: 999999,
+      width: '100%',
+      height: '100%',
+    },
+    gradientBackground: {
+      flex: 1,
+      width: '100%',
+      height: '100%',
     },
   })
 
   useEffect(() => {
+    if (isOverlayMode) {
+      return
+    }
+
     if (initializing.current || !store.authentication.didAuthenticate) {
       return
     }
@@ -69,11 +94,13 @@ const Splash: React.FC<SplashProps> = ({ initializeAgent }) => {
     }
 
     initAgentAsyncEffect()
-  }, [initializeAgent, ocaBundleResolver, logger, walletSecret, t, store.authentication.didAuthenticate])
+  }, [initializeAgent, ocaBundleResolver, logger, walletSecret, t, store.authentication.didAuthenticate, isOverlayMode])
+
+  const containerStyle = isOverlayMode ? [styles.container, styles.fullscreenOverlay] : styles.container
 
   return (
-    <GradientBackground>
-      <SafeAreaView style={styles.container}>
+    <GradientBackground style={styles.gradientBackground}>
+      <SafeAreaView style={containerStyle}>
         <LoadingIndicator />
       </SafeAreaView>
     </GradientBackground>

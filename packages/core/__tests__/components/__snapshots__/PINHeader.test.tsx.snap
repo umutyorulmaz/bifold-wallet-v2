@@ -13,6 +13,7 @@ exports[`PINHeader Component Renders correctly 1`] = `
         },
         Object {
           "marginBottom": 16,
+          "marginTop": 120,
         },
       ]
     }
@@ -53,6 +54,7 @@ exports[`PINHeader Component Renders correctly for change pin 1`] = `
         },
         Object {
           "marginBottom": 16,
+          "marginTop": 120,
         },
       ]
     }

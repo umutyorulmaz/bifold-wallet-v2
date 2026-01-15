@@ -2,6 +2,7 @@ import React from 'react'
 import { View} from 'react-native'
 import DigiCredSplashLogo from '../../assets/img/SplashLogo.svg'
 import { testIdWithKey } from '../../utils/testable'
+import { Dimensions } from 'react-native'
 
 // const timing: Animated.TimingAnimationConfig = {
 //   toValue: 1,
@@ -10,6 +11,9 @@ import { testIdWithKey } from '../../utils/testable'
 // }
 
 const LoadingIndicator: React.FC = () => {
+  const { width } = Dimensions.get('window')
+
+
   // const { Assets } = useTheme()
   // const rotationAnim = useRef(new Animated.Value(0))
   // const rotation = rotationAnim.current.interpolate({
@@ -33,7 +37,7 @@ const LoadingIndicator: React.FC = () => {
 
   return (
     <View style={{ alignItems: 'center', justifyContent: 'center' }} testID={testIdWithKey('LoadingActivityIndicator')}>
-      <DigiCredSplashLogo width={230} height={230} />
+      <DigiCredSplashLogo width={width * 0.8} height={width * 0.8} />
       {/*<Animated.View style={[style.animation, { transform: [{ rotate: rotation }] }]}>*/}
       {/*  <Assets.svg.activityIndicator {...imageDisplayOptions} />*/}
       {/*</Animated.View>*/}

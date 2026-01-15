@@ -226,7 +226,7 @@ const styles = StyleSheet.create({
   },
   inputCustomStyle: {
     width: '93%',
-    height: 45,
+    height: 47,
     borderRadius: 25,
     borderWidth: 1.5,
     backgroundColor: 'transparent',

@@ -2,118 +2,66 @@
 
 exports[`ChatMessage Credential offer renders correctly 1`] = `
 <View
-  style={
+  accessibilityState={
     Object {
-      "marginBottom": 8,
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": undefined,
+      "expanded": undefined,
+      "selected": undefined,
     }
   }
+  accessibilityValue={
+    Object {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
+  accessible={true}
+  collapsable={false}
+  focusable={true}
+  onClick={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    Object {
+      "alignItems": "center",
+      "marginBottom": 8,
+      "opacity": 1,
+      "width": "100%",
+    }
+  }
+  testID="com.ariesbifold:id/Chat.ViewOffer"
 >
   <View
     style={
-      Object {
-        "flexDirection": "row",
-        "justifyContent": "flex-end",
-      }
-    }
-  >
-    <View
-      style={
+      Array [
         Object {
-          "backgroundColor": "#313132",
-          "borderColor": "#42803E",
-          "borderRadius": 12,
-          "borderWidth": 1,
-          "maxWidth": 320,
-          "overflow": "hidden",
-        }
-      }
-    >
-      <View
-        style={
-          Object {
-            "padding": 12,
-          }
-        }
-      />
-      <View
-        accessibilityLabel="Chat.ViewOffer"
-        accessibilityRole="button"
-        accessibilityState={
-          Object {
-            "busy": undefined,
-            "checked": undefined,
-            "disabled": undefined,
-            "expanded": undefined,
-            "selected": undefined,
-          }
-        }
-        accessibilityValue={
-          Object {
-            "max": undefined,
-            "min": undefined,
-            "now": undefined,
-            "text": undefined,
-          }
-        }
-        accessible={true}
-        collapsable={false}
-        focusable={true}
-        hitSlop={
-          Object {
-            "bottom": 44,
-            "left": 44,
-            "right": 44,
-            "top": 44,
-          }
-        }
-        onClick={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
-        style={
-          Object {
-            "alignItems": "center",
-            "backgroundColor": "#42803E",
-            "justifyContent": "center",
-            "opacity": 1,
-            "paddingHorizontal": 16,
-            "paddingVertical": 12,
-          }
-        }
-        testID="com.ariesbifold:id/Chat.ViewOffer"
-      >
-        <Text
-          maxFontSizeMultiplier={2}
-          style={
-            Array [
-              Object {
-                "color": "#FFFFFF",
-                "fontSize": 18,
-                "fontWeight": "normal",
-              },
-              Object {
-                "color": "#FFFFFF",
-                "fontSize": 16,
-                "fontWeight": "600",
-              },
-            ]
-          }
-        >
-          Chat.ViewOffer
-        </Text>
-      </View>
-    </View>
-  </View>
+          "width": "90%",
+        },
+        Object {
+          "alignItems": "flex-start",
+        },
+      ]
+    }
+  />
   <View
     style={
-      Object {
-        "flexDirection": "row",
-        "justifyContent": "flex-end",
-        "marginTop": 4,
-      }
+      Array [
+        Object {
+          "marginLeft": "-6%",
+          "width": "90%",
+        },
+        Object {
+          "alignItems": "flex-start",
+        },
+      ]
     }
   >
     <Text
@@ -125,133 +73,94 @@ exports[`ChatMessage Credential offer renders correctly 1`] = `
             "fontSize": 18,
             "fontWeight": "normal",
           },
-          Object {
-            "color": "#D3D3D3",
-            "fontSize": 12,
-            "marginBottom": 0,
-            "marginTop": 8,
-          },
+          Array [
+            Object {
+              "color": "#D3D3D3",
+              "fontSize": 12,
+              "marginBottom": 0,
+              "marginTop": 8,
+            },
+            Object {
+              "color": "#FFFFFF",
+              "fontFamily": "Open Sans",
+              "fontSize": 12,
+              "fontStyle": "normal",
+              "fontWeight": "700",
+              "lineHeight": 18,
+            },
+          ],
         ]
       }
-    />
+    >
+       
+       
+    </Text>
   </View>
 </View>
 `;
 
 exports[`ChatMessage Proof request renders correctly 1`] = `
 <View
-  style={
+  accessibilityState={
     Object {
-      "marginBottom": 8,
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": undefined,
+      "expanded": undefined,
+      "selected": undefined,
     }
   }
+  accessibilityValue={
+    Object {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
+  accessible={true}
+  collapsable={false}
+  focusable={true}
+  onClick={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    Object {
+      "alignItems": "center",
+      "marginBottom": 8,
+      "opacity": 1,
+      "width": "100%",
+    }
+  }
+  testID="com.ariesbifold:id/Chat.ViewRequest"
 >
   <View
     style={
-      Object {
-        "flexDirection": "row",
-        "justifyContent": "flex-end",
-      }
-    }
-  >
-    <View
-      style={
+      Array [
         Object {
-          "backgroundColor": "#313132",
-          "borderColor": "#42803E",
-          "borderRadius": 12,
-          "borderWidth": 1,
-          "maxWidth": 320,
-          "overflow": "hidden",
-        }
-      }
-    >
-      <View
-        style={
-          Object {
-            "padding": 12,
-          }
-        }
-      />
-      <View
-        accessibilityLabel="Chat.ViewRequest"
-        accessibilityRole="button"
-        accessibilityState={
-          Object {
-            "busy": undefined,
-            "checked": undefined,
-            "disabled": undefined,
-            "expanded": undefined,
-            "selected": undefined,
-          }
-        }
-        accessibilityValue={
-          Object {
-            "max": undefined,
-            "min": undefined,
-            "now": undefined,
-            "text": undefined,
-          }
-        }
-        accessible={true}
-        collapsable={false}
-        focusable={true}
-        hitSlop={
-          Object {
-            "bottom": 44,
-            "left": 44,
-            "right": 44,
-            "top": 44,
-          }
-        }
-        onClick={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
-        style={
-          Object {
-            "alignItems": "center",
-            "backgroundColor": "#42803E",
-            "justifyContent": "center",
-            "opacity": 1,
-            "paddingHorizontal": 16,
-            "paddingVertical": 12,
-          }
-        }
-        testID="com.ariesbifold:id/Chat.ViewRequest"
-      >
-        <Text
-          maxFontSizeMultiplier={2}
-          style={
-            Array [
-              Object {
-                "color": "#FFFFFF",
-                "fontSize": 18,
-                "fontWeight": "normal",
-              },
-              Object {
-                "color": "#FFFFFF",
-                "fontSize": 16,
-                "fontWeight": "600",
-              },
-            ]
-          }
-        >
-          Chat.ViewRequest
-        </Text>
-      </View>
-    </View>
-  </View>
+          "width": "90%",
+        },
+        Object {
+          "alignItems": "flex-start",
+        },
+      ]
+    }
+  />
   <View
     style={
-      Object {
-        "flexDirection": "row",
-        "justifyContent": "flex-end",
-        "marginTop": 4,
-      }
+      Array [
+        Object {
+          "marginLeft": "-6%",
+          "width": "90%",
+        },
+        Object {
+          "alignItems": "flex-start",
+        },
+      ]
     }
   >
     <Text
@@ -263,133 +172,94 @@ exports[`ChatMessage Proof request renders correctly 1`] = `
             "fontSize": 18,
             "fontWeight": "normal",
           },
-          Object {
-            "color": "#D3D3D3",
-            "fontSize": 12,
-            "marginBottom": 0,
-            "marginTop": 8,
-          },
+          Array [
+            Object {
+              "color": "#D3D3D3",
+              "fontSize": 12,
+              "marginBottom": 0,
+              "marginTop": 8,
+            },
+            Object {
+              "color": "#FFFFFF",
+              "fontFamily": "Open Sans",
+              "fontSize": 12,
+              "fontStyle": "normal",
+              "fontWeight": "700",
+              "lineHeight": 18,
+            },
+          ],
         ]
       }
-    />
+    >
+       
+       
+    </Text>
   </View>
 </View>
 `;
 
 exports[`ChatMessage Sent presentation renders correctly 1`] = `
 <View
-  style={
+  accessibilityState={
     Object {
-      "marginBottom": 8,
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": undefined,
+      "expanded": undefined,
+      "selected": undefined,
     }
   }
+  accessibilityValue={
+    Object {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
+  accessible={true}
+  collapsable={false}
+  focusable={true}
+  onClick={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    Object {
+      "alignItems": "center",
+      "marginBottom": 8,
+      "opacity": 1,
+      "width": "100%",
+    }
+  }
+  testID="com.ariesbifold:id/Chat.OpenPresentation"
 >
   <View
     style={
-      Object {
-        "flexDirection": "row",
-        "justifyContent": "flex-end",
-      }
-    }
-  >
-    <View
-      style={
+      Array [
         Object {
-          "backgroundColor": "#313132",
-          "borderColor": "#42803E",
-          "borderRadius": 12,
-          "borderWidth": 1,
-          "maxWidth": 320,
-          "overflow": "hidden",
-        }
-      }
-    >
-      <View
-        style={
-          Object {
-            "padding": 12,
-          }
-        }
-      />
-      <View
-        accessibilityLabel="Chat.OpenPresentation"
-        accessibilityRole="button"
-        accessibilityState={
-          Object {
-            "busy": undefined,
-            "checked": undefined,
-            "disabled": undefined,
-            "expanded": undefined,
-            "selected": undefined,
-          }
-        }
-        accessibilityValue={
-          Object {
-            "max": undefined,
-            "min": undefined,
-            "now": undefined,
-            "text": undefined,
-          }
-        }
-        accessible={true}
-        collapsable={false}
-        focusable={true}
-        hitSlop={
-          Object {
-            "bottom": 44,
-            "left": 44,
-            "right": 44,
-            "top": 44,
-          }
-        }
-        onClick={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
-        style={
-          Object {
-            "alignItems": "center",
-            "backgroundColor": "#42803E",
-            "justifyContent": "center",
-            "opacity": 1,
-            "paddingHorizontal": 16,
-            "paddingVertical": 12,
-          }
-        }
-        testID="com.ariesbifold:id/Chat.OpenPresentation"
-      >
-        <Text
-          maxFontSizeMultiplier={2}
-          style={
-            Array [
-              Object {
-                "color": "#FFFFFF",
-                "fontSize": 18,
-                "fontWeight": "normal",
-              },
-              Object {
-                "color": "#FFFFFF",
-                "fontSize": 16,
-                "fontWeight": "600",
-              },
-            ]
-          }
-        >
-          Chat.OpenPresentation
-        </Text>
-      </View>
-    </View>
-  </View>
+          "width": "90%",
+        },
+        Object {
+          "alignItems": "flex-start",
+        },
+      ]
+    }
+  />
   <View
     style={
-      Object {
-        "flexDirection": "row",
-        "justifyContent": "flex-end",
-        "marginTop": 4,
-      }
+      Array [
+        Object {
+          "marginLeft": "-6%",
+          "width": "90%",
+        },
+        Object {
+          "alignItems": "flex-start",
+        },
+      ]
     }
   >
     <Text
@@ -401,15 +271,28 @@ exports[`ChatMessage Sent presentation renders correctly 1`] = `
             "fontSize": 18,
             "fontWeight": "normal",
           },
-          Object {
-            "color": "#D3D3D3",
-            "fontSize": 12,
-            "marginBottom": 0,
-            "marginTop": 8,
-          },
+          Array [
+            Object {
+              "color": "#D3D3D3",
+              "fontSize": 12,
+              "marginBottom": 0,
+              "marginTop": 8,
+            },
+            Object {
+              "color": "#FFFFFF",
+              "fontFamily": "Open Sans",
+              "fontSize": 12,
+              "fontStyle": "normal",
+              "fontWeight": "700",
+              "lineHeight": 18,
+            },
+          ],
         ]
       }
-    />
+    >
+       
+       
+    </Text>
   </View>
 </View>
 `;

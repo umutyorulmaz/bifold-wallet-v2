@@ -147,7 +147,7 @@ function createDefaultConfig(): ITabBarConfig {
       {
         id: 'credentials',
         label: 'Credentials',
-        labelKey: 'TabStack.Credentials',
+        labelKey: 'TabStack.ListCredentials',
         icon: 'wallet',
       },
       {

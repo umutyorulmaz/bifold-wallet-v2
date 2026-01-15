@@ -104,7 +104,11 @@ const ContactStack: React.FC = () => {
       <Stack.Screen
         name={Screens.CredentialDetails}
         component={CredentialDetails}
-        options={{ title: t('Screens.CredentialDetails'), ...ScreenOptionsDictionary[Screens.CredentialDetails] }}
+        options={{
+          ...ScreenOptionsDictionary[Screens.CredentialDetails],
+          title: t('Screens.CredentialDetails'),
+          headerShown: false,
+        }}
       />
       <Stack.Screen
         name={Screens.ProofDetails}

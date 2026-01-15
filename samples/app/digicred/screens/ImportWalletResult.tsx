@@ -80,7 +80,7 @@ const ImportWalletResult: React.FC<ImportWalletResultProps> = ({ navigation, rou
             testID={testIdWithKey(isSuccess ? 'ViewCredentials' : 'TryAgain')}
           >
             <Text style={styles.primaryButtonText}>
-              {isSuccess ? 'View Credentials' : 'Try Again'}
+              {isSuccess ? 'View ListCredentials' : 'Try Again'}
             </Text>
           </TouchableOpacity>
 

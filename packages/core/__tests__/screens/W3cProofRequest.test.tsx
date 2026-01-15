@@ -107,7 +107,7 @@ describe('displays a proof request screen', () => {
     const attributeBase = {
       referent: '',
       schemaId: '',
-      credentialDefinitionId: 'did:indy:bcovrin:test:TfuPA6whW681GfU6fj1e3k/anoncreds/v0/CLAIM_DEF/462230/latest',
+      credentialDefinitionId: 'did:indy:bcovrin:test:test',
       toJSON: jest.fn(),
     }
 
@@ -165,24 +165,15 @@ describe('displays a proof request screen', () => {
       const contact = getByText('ContactDetails.AContact', { exact: false })
       const missingInfo = queryByText('ProofRequest.IsRequestingSomethingYouDontHaveAvailable', { exact: false })
       const missingClaim = queryByText('ProofRequest.NotAvailableInYourWallet', { exact: false })
-      const emailLabel = getByText(/Email/, { exact: false })
-      const emailValue = getByText(testEmail)
-      const timeLabel = getByText(/Time/, { exact: false })
-      const timeValue = getByText(testTime)
+      // New CredentialCard displays credential name (from credDefId tag) instead of individual attributes
+      const credentialCard = getByTestId('CredentialCard-test')
       const shareButton = getByTestId(testIdWithKey('Share'))
       const declineButton = getByTestId(testIdWithKey('Decline'))
 
       expect(contact).not.toBeNull()
       expect(contact).toBeTruthy()
       expect(missingInfo).toBeNull()
-      expect(emailLabel).not.toBeNull()
-      expect(emailLabel).toBeTruthy()
-      expect(emailValue).not.toBeNull()
-      expect(emailValue).toBeTruthy()
-      expect(timeLabel).not.toBeNull()
-      expect(timeLabel).toBeTruthy()
-      expect(timeValue).not.toBeNull()
-      expect(timeValue).toBeTruthy()
+      expect(credentialCard).not.toBeNull()
       expect(missingClaim).toBeNull()
       expect(shareButton).not.toBeNull()
       expect(shareButton).toBeEnabled()
@@ -316,38 +307,23 @@ describe('displays a proof request screen', () => {
       await waitFor(() => {
         Promise.resolve()
       })
-      const changeCred = getByText('ProofRequest.ChangeCredential', { exact: false })
-      const changeCredButton = getByTestId(testIdWithKey('ChangeCredential'))
       const contact = getByText('ContactDetails.AContact', { exact: false })
       const missingInfo = queryByText('ProofRequest.IsRequestingSomethingYouDontHaveAvailable', { exact: false })
       const missingClaim = queryByText('ProofRequest.NotAvailableInYourWallet', { exact: false })
-      const emailLabel = getByText(/Email/, { exact: false })
-      const emailValue = getByText(testEmail)
-      const timeLabel = getByText(/Time/, { exact: false })
-      const timeValue = getByText(testTime)
+      // New CredentialCard displays credential name (from credDefId tag) instead of individual attributes
+      // Note: ChangeCredential functionality is no longer displayed in the new CredentialCard UI
+      const credentialCard = getByTestId('CredentialCard-test')
       const shareButton = getByTestId(testIdWithKey('Share'))
       const declineButton = getByTestId(testIdWithKey('Decline'))
 
-      expect(changeCred).not.toBeNull()
-      expect(changeCredButton).not.toBeNull()
       expect(contact).not.toBeNull()
       expect(contact).toBeTruthy()
       expect(missingInfo).toBeNull()
-      expect(emailLabel).not.toBeNull()
-      expect(emailLabel).toBeTruthy()
-      expect(emailValue).not.toBeNull()
-      expect(emailValue).toBeTruthy()
-      expect(timeLabel).not.toBeNull()
-      expect(timeLabel).toBeTruthy()
-      expect(timeValue).not.toBeNull()
-      expect(timeValue).toBeTruthy()
+      expect(credentialCard).not.toBeNull()
       expect(missingClaim).toBeNull()
       expect(shareButton).not.toBeNull()
       expect(shareButton).toBeEnabled()
       expect(declineButton).not.toBeNull()
-
-      fireEvent(changeCredButton, 'press')
-      expect(navigation.navigate).toBeCalledTimes(1)
     })
 
     test('displays a proof request with one or more claims not available', async () => {

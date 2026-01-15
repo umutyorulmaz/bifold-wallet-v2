@@ -66,7 +66,7 @@ const InfoBox: React.FC<InfoBoxProps> = ({
   const [{ showDetailsInfo }] = useServices([TOKENS.CONFIG])
   const styles = StyleSheet.create({
     container: {
-      backgroundColor: ColorPalette.brand.modalPrimaryBackground,
+      backgroundColor: 'transparent',
       borderColor: ColorPalette.notification.infoBorder,
       borderRadius: 5,
       borderWidth: 1,

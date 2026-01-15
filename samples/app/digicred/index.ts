@@ -17,6 +17,7 @@ export {
 
 // DigiCred Components
 export {
+  SnackBarMessage,
   GradientBackground,
   AboutInstitution,
   CredentialButtons,

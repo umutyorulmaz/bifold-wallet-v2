@@ -11,7 +11,7 @@ import React from 'react'
 import { TFunction } from 'react-i18next'
 
 import { ChatEvent } from '../../../components/chat/ChatEvent'
-import { CallbackType, ExtendedChatMessage } from '../../../components/chat/ChatMessage'
+import { CallbackType } from '../../../components/chat/ChatMessage'
 import { SettingsTheme } from '../../../theme'
 import { Role } from '../../../types/chat'
 import { Screens, Stacks } from '../../../types/navigators'
@@ -19,6 +19,7 @@ import { getCredentialEventLabel, getCredentialEventRole } from '../../../utils/
 import { ICredentialRenderer, MessageContext, NavigationResult, RenderContext, WorkflowType } from '../types'
 
 import { BaseWorkflowHandler } from './BaseWorkflowHandler'
+import { ExtendedChatMessage } from '../../../hooks/chat-messages'
 
 export class CredentialWorkflowHandler extends BaseWorkflowHandler<CredentialExchangeRecord> {
   readonly type = WorkflowType.Credential

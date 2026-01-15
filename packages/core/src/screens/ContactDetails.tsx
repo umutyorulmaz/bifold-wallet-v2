@@ -86,9 +86,14 @@ const ContactDetails: React.FC<ContactDetailsProps> = ({ route }) => {
       flex: 1,
       backgroundColor: 'transparent',
     },
-    section: {
-      padding: Spacing.md,
-      backgroundColor: 'transparent',
+    contentContainer: {
+      flex: 1,
+    },
+    contactContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: Spacing.sm,
+      marginBottom: Spacing.md,
     },
     headerRow: {
       flexDirection: 'row',
@@ -102,6 +107,10 @@ const ContactDetails: React.FC<ContactDetailsProps> = ({ route }) => {
     },
     contactLabel: {
       flexShrink: 1,
+    },
+    section: {
+      padding: Spacing.md,
+      backgroundColor: 'transparent',
     },
     divider: {
       borderTopWidth: 1,
@@ -120,6 +129,25 @@ const ContactDetails: React.FC<ContactDetailsProps> = ({ route }) => {
     () => getConnectionName(connection, store.preferences.alternateContactNames),
     [connection, store.preferences.alternateContactNames]
   )
+
+  const contactImage = useMemo(() => {
+    if (contactImageUrl) {
+      return <Image style={styles.avatarImage} source={toImageSource(contactImageUrl)} />
+    } else {
+      return (
+        <ThemedText
+          variant="bold"
+          style={{
+            fontSize: contactImageSize,
+            lineHeight: contactImageSize,
+            color: ColorPalette.brand.primary,
+          }}
+        >
+          {contactLabel.charAt(0).toUpperCase()}
+        </ThemedText>
+      )
+    }
+  }, [contactImageUrl, contactImageSize, contactLabel, styles.avatarImage, ColorPalette.brand.primary])
 
   const callOnRemove = useCallback(() => {
     connectionCredentials.length ? setIsCredentialsRemoveModalDisplayed(true) : setIsRemoveModalDisplayed(true)
@@ -184,22 +212,9 @@ const ContactDetails: React.FC<ContactDetailsProps> = ({ route }) => {
   return (
     <ThemedBackground screenId="home" style={{ flex: 1 }}>
       <SafeAreaView edges={['bottom', 'left', 'right']} style={[styles.screen, { paddingTop: headerHeight }]}>
-        <View style={styles.section}>
-          <View style={styles.headerRow}>
-            {contactImageUrl ? (
-              <Image style={styles.avatarImage} source={toImageSource(contactImageUrl)} />
-            ) : (
-              <ThemedText
-                variant="bold"
-                style={{
-                  fontSize: contactImageSize,
-                  lineHeight: contactImageSize,
-                  color: ColorPalette.brand.primary,
-                }}
-              >
-                {contactLabel.charAt(0).toUpperCase()}
-              </ThemedText>
-            )}
+        <View style={[styles.contentContainer, { padding: Spacing.md }]}>
+          <View style={styles.contactContainer}>
+            {contactImage}
             <ThemedText variant="headingThree" style={styles.contactLabel}>
               {contactLabel}
             </ThemedText>
@@ -215,8 +230,17 @@ const ContactDetails: React.FC<ContactDetailsProps> = ({ route }) => {
 
           {contactDetailsOptions?.enableCredentialList && (
             <>
-              <View style={styles.divider} />
-              <ThemedText variant="headingFour">{t('ContactDetails.Credentials')}</ThemedText>
+              <View
+                style={{
+                  borderTopColor: ColorPalette.grayscale.lightGrey,
+                  borderTopWidth: 1,
+                  marginTop: Spacing.lg,
+                }}
+              />
+              <ThemedText variant="headingFour" style={{ marginVertical: Spacing.md }}>
+                {t('ContactDetails.ListCredentials')}
+              </ThemedText>
+
               <FlatList
                 data={connectionCredentials}
                 keyExtractor={(item) => item.id}
@@ -239,57 +263,61 @@ const ContactDetails: React.FC<ContactDetailsProps> = ({ route }) => {
               />
             </>
           )}
-        </View>
 
-        <View>
-          <TouchableOpacity
-            testID={testIdWithKey('StartVideoCall')}
-            style={[styles.section, styles.actionRow]}
-            onPress={() =>
-              navigation.navigate(Screens.VideoCall as any, {
-                connectionId,
-                video: true,
-              })
-            }
-          >
-            <Icon name="video" size={20} color={ColorPalette.brand.primary} />
-            <ThemedText style={{ color: ColorPalette.brand.primary }}>{t('ContactDetails.StartVideoCall')}</ThemedText>
-          </TouchableOpacity>
-
-          {contactDetailsOptions?.enableEditContactName && (
+          <View style={{ marginTop: Spacing.lg }}>
             <TouchableOpacity
-              testID={testIdWithKey('RenameContact')}
-              style={[styles.section, styles.actionRow]}
-              onPress={() => navigation.navigate(Screens.RenameContact, { connectionId })}
-            >
-              <Assets.svg.iconEdit width={20} height={20} />
-              <ThemedText>{t('Screens.RenameContact')}</ThemedText>
-            </TouchableOpacity>
-          )}
-
-          {store.preferences.developerModeEnabled && (
-            <TouchableOpacity
-              testID={testIdWithKey('JSONDetails')}
-              style={[styles.section, styles.actionRow]}
+              testID={testIdWithKey('StartVideoCall')}
+              style={[styles.actionRow]}
               onPress={() =>
-                navigation.navigate(Screens.JSONDetails, {
-                  jsonBlob: connection,
+                navigation.navigate(Screens.VideoCall as any, {
+                  connectionId,
+                  video: true,
                 })
               }
             >
-              <Assets.svg.iconCode width={20} height={20} />
-              <ThemedText>{t('Global.ViewJSON')}</ThemedText>
+              <Icon name="video" size={20} color={ColorPalette.brand.primary} />
+              <ThemedText style={{ color: ColorPalette.brand.primary }}>
+                {t('ContactDetails.StartVideoCall')}
+              </ThemedText>
             </TouchableOpacity>
-          )}
 
-          <TouchableOpacity
-            testID={testIdWithKey('RemoveFromWallet')}
-            style={[styles.section, styles.actionRow]}
-            onPress={callOnRemove}
-          >
-            <Assets.svg.iconDelete width={20} height={20} color={ColorPalette.semantic.error} />
-            <ThemedText style={{ color: ColorPalette.semantic.error }}>{t('ContactDetails.RemoveContact')}</ThemedText>
-          </TouchableOpacity>
+            {contactDetailsOptions?.enableEditContactName && (
+              <TouchableOpacity
+                testID={testIdWithKey('RenameContact')}
+                style={[styles.actionRow]}
+                onPress={() => navigation.navigate(Screens.RenameContact, { connectionId })}
+              >
+                <Assets.svg.iconEdit width={20} height={20} />
+                <ThemedText>{t('Screens.RenameContact')}</ThemedText>
+              </TouchableOpacity>
+            )}
+
+            {store.preferences.developerModeEnabled && (
+              <TouchableOpacity
+                testID={testIdWithKey('JSONDetails')}
+                style={[styles.actionRow]}
+                onPress={() =>
+                  navigation.navigate(Screens.JSONDetails, {
+                    jsonBlob: connection,
+                  })
+                }
+              >
+                <Assets.svg.iconCode width={20} height={20} />
+                <ThemedText>{t('Global.ViewJSON')}</ThemedText>
+              </TouchableOpacity>
+            )}
+
+            <TouchableOpacity
+              testID={testIdWithKey('RemoveFromWallet')}
+              style={[styles.actionRow]}
+              onPress={callOnRemove}
+            >
+              <Assets.svg.iconDelete width={20} height={20} color={ColorPalette.semantic.error} />
+              <ThemedText style={{ color: ColorPalette.semantic.error }}>
+                {t('ContactDetails.RemoveContact')}
+              </ThemedText>
+            </TouchableOpacity>
+          </View>
         </View>
 
         <CommonRemoveModal

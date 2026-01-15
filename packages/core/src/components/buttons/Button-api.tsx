@@ -1,4 +1,4 @@
-import { TouchableOpacity } from 'react-native'
+import { StyleProp, TouchableOpacity, ViewStyle } from 'react-native'
 
 export enum ButtonType {
   Critical,
@@ -20,6 +20,7 @@ export interface ButtonProps extends React.PropsWithChildren {
   testID?: string
   onPress?: (...args: any[]) => void
   disabled?: boolean
+  customStyle?: StyleProp<ViewStyle>
 }
 
 export enum ButtonState {

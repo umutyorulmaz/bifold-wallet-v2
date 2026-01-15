@@ -279,7 +279,7 @@ const CredentialOffer: React.FC<CredentialOfferProps> = ({ navigation, credentia
         </View>
         {!loading && credential && (
           <View style={{ marginHorizontal: 15, marginBottom: 16 }}>
-            <CredentialCard credential={credential} />
+            <CredentialCard credential={credential} onPress={()=> {}} />
           </View>
         )}
       </>

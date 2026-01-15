@@ -276,9 +276,10 @@ const OpenIDProofPresentation: React.FC<OpenIDProofPresentationProps> = ({
     const fields = buildFieldsFromW3cCredsCredential(credentialDisplay, requestedAttributes)
     return (
       <CredentialCard
-        credential={credential}
+        credential={credential as W3cCredentialRecord | SdJwtVcRecord | MdocRecord}
         displayItems={fields as Attribute[]}
         hasAltCredentials={hasMultipleCreds}
+        onPress={() => {}}
         handleAltCredChange={() => {
           handleAltCredChange(sub.inputDescriptorId, selectedCredential.id, sub.inputDescriptorId)
         }}

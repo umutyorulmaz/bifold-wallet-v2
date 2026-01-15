@@ -1,499 +1,542 @@
-import type { StackScreenProps } from '@react-navigation/stack'
 
-import { CredentialExchangeRecord } from '@credo-ts/core'
-import { useAgent } from '@credo-ts/react-hooks'
-import { BrandingOverlay } from '@bifold/oca'
-import { Attribute, BrandingOverlayType, CredentialOverlay } from '@bifold/oca/build/legacy'
-import React, { useCallback, useEffect, useState } from 'react'
-import { useTranslation } from 'react-i18next'
-import { DeviceEventEmitter, StyleSheet, TouchableOpacity, useWindowDimensions, View } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import Toast from 'react-native-toast-message'
-import { useStore } from '../contexts/store'
-
-import CredentialCard from '../components/misc/CredentialCard'
-import InfoBox, { InfoBoxType } from '../components/misc/InfoBox'
-import CommonRemoveModal from '../components/modals/CommonRemoveModal'
-import Record from '../components/record/Record'
-import RecordRemove from '../components/record/RecordRemove'
-import { ToastType } from '../components/toast/BaseToast'
-import { EventTypes } from '../constants'
-import { TOKENS, useServices } from '../container-api'
-import { useTheme } from '../contexts/theme'
-import { BifoldError } from '../types/error'
-import { CredentialMetadata, credentialCustomMetadata } from '../types/metadata'
-import { ContactStackParams, NotificationStackParams, RootStackParams, Screens, Stacks } from '../types/navigators'
-import { ModalUsage } from '../types/remove'
+import React, { useEffect, useState } from 'react'
 import {
-  credentialTextColor,
-  getCredentialIdentifiers,
-  isValidAnonCredsCredential,
-  getEffectiveCredentialName,
-  ensureCredentialMetadata,
-} from '../utils/credential'
-import { formatTime, useCredentialConnectionLabel } from '../utils/helpers'
-import { buildFieldsFromAnonCredsCredential } from '../utils/oca'
-import { testIdWithKey } from '../utils/testable'
-import { HistoryCardType, HistoryRecord } from '../modules/history/types'
-import CredentialCardLogo from '../components/views/CredentialCardLogo'
-import CredentialDetailPrimaryHeader from '../components/views/CredentialDetailPrimaryHeader'
-import CredentialDetailSecondaryHeader from '../components/views/CredentialDetailSecondaryHeader'
-import { ThemedText } from '../components/texts/ThemedText'
-import CardWatermark from '../components/misc/CardWatermark'
+  View,
+  Text,
+  StyleSheet,
+  SafeAreaView,
+  ScrollView,
+  StatusBar,
+  ActivityIndicator,
+  TouchableOpacity,
+} from 'react-native'
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native'
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+import { CredentialExchangeRecord, CredentialPreviewAttribute } from '@credo-ts/core'
+import { AnonCredsCredentialMetadataKey } from '@credo-ts/anoncreds'
+import { useAgent } from '@credo-ts/react-hooks'
+import { NativeStackNavigationProp } from 'react-native-screens/lib/typescript/native-stack'
+import { VDCard } from '../modules/workflow/renderers/components/VDCard'
+import { TranscriptCard } from '../modules/workflow/renderers/components/TranscriptCard'
+import { TOKENS, useServices } from '../container-api'
+import { ColorPalette } from '../theme'
 
-type CredentialDetailsProps = StackScreenProps<
-  RootStackParams & ContactStackParams & NotificationStackParams,
-  Screens.CredentialDetails
->
+type RootStackParamList = {
+  CredentialDetails: {
+    credential?: CredentialExchangeRecord
+    credentialId?: string
+    logoUrl?: string
+    cardColor: string
+    credentialType?: 'STUDENT_ID' | 'TRANSCRIPT' | 'DEFAULT'
+  }
+}
 
-const paddingHorizontal = 24
-const paddingVertical = 16
+type CredentialDetailsRouteProp = RouteProp<RootStackParamList, 'CredentialDetails'>
+type NavigationProp = NativeStackNavigationProp<RootStackParamList>
+
+type CredentialDetailsProps = {
+  navigation?: NavigationProp
+  route?: CredentialDetailsRouteProp
+}
+
+const useCredentialData = (routeCredential?: CredentialExchangeRecord, credentialId?: string) => {
+  const { agent } = useAgent()
+  const [credential, setCredential] = useState<CredentialExchangeRecord | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [attributes, setAttributes] = useState<CredentialPreviewAttribute[]>([])
+  const [credDefId, setCredDefId] = useState<string>('')
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!agent) {
+        setLoading(false)
+        return
+      }
+
+      try {
+        let credRecord = routeCredential
+
+        if (!credRecord && credentialId) {
+          const allCredentials = await agent.credentials.getAll()
+          credRecord = allCredentials.find((cred) => cred.id === credentialId)
+        }
+
+        if (!credRecord) {
+          setLoading(false)
+          return
+        }
+
+        setCredential(credRecord)
+
+        const metadata = credRecord.metadata.get(AnonCredsCredentialMetadataKey)
+        const defId = metadata?.credentialDefinitionId || ''
+        setCredDefId(defId)
+
+        if (credRecord.credentialAttributes && credRecord.credentialAttributes.length > 0) {
+          setAttributes(credRecord.credentialAttributes)
+        } else {
+          try {
+            const formatData = await agent.credentials.getFormatData(credRecord.id)
+            const { offerAttributes } = formatData
+            if (offerAttributes && offerAttributes.length > 0) {
+              const attrs = offerAttributes.map((item) => new CredentialPreviewAttribute(item))
+              setAttributes(attrs)
+            }
+          } catch (error) {
+            // debug('Error getting format data:', error)
+          }
+        }
+      } catch (error) {
+        // debug('Error fetching credential:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchData()
+  }, [agent, routeCredential, credentialId])
+
+  return { credential, loading, attributes, credDefId }
+}
+
+const parseTranscriptData = (attributes: CredentialPreviewAttribute[]) => {
+  const transcriptAttr = attributes.find((attr) => attr.name.toLowerCase() === 'transcript')
+  const studentInfoAttr = attributes.find((attr) => attr.name.toLowerCase() === 'studentinfo')
+  const termsAttr = attributes.find((attr) => attr.name.toLowerCase() === 'terms')
+
+  let transcriptData = {}
+  let studentInfoData = {}
+  let termsData = []
+
+  try {
+    if (transcriptAttr?.value) transcriptData = JSON.parse(transcriptAttr.value)
+    if (studentInfoAttr?.value) studentInfoData = JSON.parse(studentInfoAttr.value)
+    if (termsAttr?.value) termsData = JSON.parse(termsAttr.value)
+  } catch (e) {
+    // debug('Error parsing JSON:', e)
+  }
+
+  let yearStart = ''
+  let yearEnd = ''
+  let termGPA = ''
+
+  if (termsData.length > 0) {
+    const firstTerm = termsData[0]
+    const lastTerm = termsData[termsData.length - 1]
+
+    if (firstTerm.termYear) {
+      const years = firstTerm.termYear.split('-')
+      if (years.length >= 2) {
+        yearStart = years[0]
+      }
+    }
+
+    if (lastTerm.termYear) {
+      const years = lastTerm.termYear.split('-')
+      if (years.length >= 2) {
+        yearEnd = years[1]
+      }
+    }
+
+    if (termsData.length > 0) {
+      const latestTerm = termsData[termsData.length - 1]
+      termGPA = latestTerm.termGpa || ''
+    }
+  }
+
+  return {
+    transcript: transcriptData,
+    studentInfo: studentInfoData,
+    terms: termsData,
+    yearStart,
+    yearEnd,
+    termGPA,
+  }
+}
+
+const getAttrValue = (attributes: CredentialPreviewAttribute[], ...names: string[]): string | undefined => {
+  if (!attributes || attributes.length === 0) return undefined
+
+  for (const name of names) {
+    const attr = attributes.find((a) => a.name && a.name.toLowerCase() === name.toLowerCase())
+    if (attr?.value) return attr.value
+  }
+  return undefined
+}
 
 const CredentialDetails: React.FC<CredentialDetailsProps> = ({ navigation, route }) => {
-  if (!route?.params) {
-    throw new Error('CredentialDetails route params were not set properly')
-  }
-
-  const { credentialId } = route.params
-  const { width, height } = useWindowDimensions()
-  const [credential, setCredential] = useState<CredentialExchangeRecord | undefined>(undefined)
-  const { agent } = useAgent()
-  const { t, i18n } = useTranslation()
-  const { ColorPalette, Assets } = useTheme()
-  const [bundleResolver, logger, historyManagerCurried, historyEnabled, historyEventsLogger] = useServices([
-    TOKENS.UTIL_OCA_RESOLVER,
-    TOKENS.UTIL_LOGGER,
-    TOKENS.FN_LOAD_HISTORY,
-    TOKENS.HISTORY_ENABLED,
-    TOKENS.HISTORY_EVENTS_LOGGER,
-  ])
-  const [isRevoked, setIsRevoked] = useState<boolean>(false)
-  const [revocationDate, setRevocationDate] = useState<string>('')
-  const [preciseRevocationDate, setPreciseRevocationDate] = useState<string>('')
-  const [isRemoveModalDisplayed, setIsRemoveModalDisplayed] = useState<boolean>(false)
-  const [isRevokedMessageHidden, setIsRevokedMessageHidden] = useState<boolean>(
-    (credential?.metadata.get(CredentialMetadata.customMetadata) as credentialCustomMetadata)
-      ?.revoked_detail_dismissed ?? false
-  )
-  const [store] = useStore()
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const nav = navigation ?? useNavigation<NavigationProp>()
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const rt = route ?? useRoute<CredentialDetailsRouteProp>()
+  const { credential: routeCredential, credentialId, credentialType } = rt.params || {}
+  const [GradientBackground] = useServices([TOKENS.COMPONENT_GRADIENT_BACKGROUND])
+  const { credential, loading, attributes, credDefId } = useCredentialData(routeCredential, credentialId)
 
   useEffect(() => {
-    setIsRevokedMessageHidden(
-      (credential?.metadata.get(CredentialMetadata.customMetadata) as credentialCustomMetadata)
-        ?.revoked_detail_dismissed ?? false
-    )
-  }, [credential?.metadata])
-
-  useEffect(() => {
-    // fetch credential for ID
-    const fetchCredential = async () => {
-      try {
-        const credentialExchangeRecord = await agent?.credentials.getById(credentialId)
-        setCredential(credentialExchangeRecord)
-      } catch (error) {
-        // credential not found for id, display an error
-        DeviceEventEmitter.emit(
-          EventTypes.ERROR_ADDED,
-          new BifoldError(t('Error.Title1033'), t('Error.Message1033'), t('CredentialDetails.CredentialNotFound'), 1033)
-        )
-      }
+    if (typeof nav.setOptions === 'function') {
+      nav.setOptions({
+        headerShown: false,
+      } as any)
     }
-    fetchCredential()
-  }, [credentialId, agent, t])
+  }, [nav])
 
-  const [overlay, setOverlay] = useState<CredentialOverlay<BrandingOverlay>>({
-    bundle: undefined,
-    presentationFields: [],
-    metaOverlay: undefined,
-    brandingOverlay: undefined,
-  })
-  const credentialConnectionLabel = useCredentialConnectionLabel(credential)
-  const isBranding10 = bundleResolver.getBrandingOverlayType() === BrandingOverlayType.Branding10
-  const isBranding11 = bundleResolver.getBrandingOverlayType() === BrandingOverlayType.Branding11
-
-  const containerBackgroundColor =
-    overlay.brandingOverlay?.secondaryBackgroundColor && overlay.brandingOverlay.secondaryBackgroundColor !== ''
-      ? overlay.brandingOverlay.secondaryBackgroundColor
-      : overlay.brandingOverlay?.primaryBackgroundColor
-
-  const styles = StyleSheet.create({
-    container: {
-      backgroundColor: isBranding10 ? overlay.brandingOverlay?.primaryBackgroundColor : containerBackgroundColor,
-      display: 'flex',
-    },
-  })
-
-  const icon = {
-    color: credentialTextColor(ColorPalette, containerBackgroundColor),
-    width: 48,
-    height: 48,
-  }
-
-  const navigateToContactDetails = () => {
-    if (credential?.connectionId) {
-      navigation.navigate(Stacks.ContactStack, {
-        screen: Screens.ContactDetails,
-        params: { connectionId: credential.connectionId },
-      })
-    }
-  }
-
-  const callViewJSONDetails = useCallback(() => {
-    navigation.navigate(Stacks.ContactStack, {
-      screen: Screens.JSONDetails,
-      params: { jsonBlob: credential },
-    })
-  }, [navigation, credential])
-
-  useEffect(() => {
-    if (!agent) {
-      DeviceEventEmitter.emit(
-        EventTypes.ERROR_ADDED,
-        new BifoldError(t('Error.Title1033'), t('Error.Message1033'), t('CredentialDetails.CredentialNotFound'), 1033)
-      )
-    }
-  }, [agent, t])
-
-  useEffect(() => {
-    if (!(credential && isValidAnonCredsCredential(credential))) {
-      return
-    }
-
-    credential.revocationNotification == undefined ? setIsRevoked(false) : setIsRevoked(true)
-    if (credential?.revocationNotification?.revocationDate) {
-      const date = new Date(credential.revocationNotification.revocationDate)
-      setRevocationDate(formatTime(date, { shortMonth: true }))
-      setPreciseRevocationDate(formatTime(date, { includeHour: true }))
-    }
-
-    const params = {
-      identifiers: getCredentialIdentifiers(credential),
-      meta: {
-        alias: credentialConnectionLabel,
-        credConnectionId: credential.connectionId,
-      },
-      attributes: buildFieldsFromAnonCredsCredential(credential),
-      language: i18n.language,
-    }
-
-    bundleResolver.resolveAllBundles(params).then((bundle) => {
-      setOverlay((o) => ({
-        ...o,
-        ...(bundle as CredentialOverlay<BrandingOverlay>),
-        presentationFields: bundle.presentationFields?.filter((field) => (field as Attribute).value),
-        // Apply effective name
-        metaOverlay: {
-          ...bundle.metaOverlay,
-          name: getEffectiveCredentialName(credential, bundle.metaOverlay?.name),
-        } as any,
-      }))
-    })
-  }, [credential, credentialConnectionLabel, bundleResolver, i18n.language])
-
-  // Ensure credential has all required metadata
-  useEffect(() => {
-    if (!credential || !isValidAnonCredsCredential(credential) || !agent) {
-      return
-    }
-
-    const restoreMetadata = async () => {
-      try {
-        await ensureCredentialMetadata(credential, agent, undefined, logger)
-      } catch (error) {
-        // If metadata restoration fails, we'll fall back to default credential name
-        logger?.warn('Failed to restore credential metadata', { error: error as Error })
-      }
-    }
-    restoreMetadata()
-  }, [credential, agent, logger])
-
-  useEffect(() => {
-    if (credential?.revocationNotification) {
-      const meta = credential.metadata.get(CredentialMetadata.customMetadata)
-      credential.metadata.set(CredentialMetadata.customMetadata, { ...meta, revoked_seen: true })
-      agent?.credentials.update(credential)
-    }
-  }, [credential, agent])
-
-  const callOnRemove = useCallback(() => {
-    setIsRemoveModalDisplayed(true)
-  }, [])
-
-  const logHistoryRecord = useCallback(async () => {
-    try {
-      if (!(agent && historyEnabled)) {
-        logger.trace(
-          `[${CredentialDetails.name}]:[logHistoryRecord] Skipping history log, either history function disabled or agent undefined!`
-        )
-        return
-      }
-
-      if (!credential) {
-        logger.error(`[${CredentialDetails.name}]:[logHistoryRecord] Cannot save history, credential undefined!`)
-        return
-      }
-      const historyManager = historyManagerCurried(agent)
-
-      const name = getEffectiveCredentialName(credential, overlay.metaOverlay?.name)
-
-      /** Save history record for credential removed */
-      const recordData: HistoryRecord = {
-        type: HistoryCardType.CardRemoved,
-        message: name,
-        createdAt: new Date(),
-        correspondenceId: credentialId,
-        correspondenceName: credentialConnectionLabel,
-      }
-
-      await historyManager.saveHistory(recordData)
-    } catch (err: unknown) {
-      logger.error(`[${CredentialDetails.name}]:[logHistoryRecord] Error saving history: ${err}`)
-    }
-  }, [
-    agent,
-    historyEnabled,
-    logger,
-    historyManagerCurried,
-    credential,
-    credentialConnectionLabel,
-    credentialId,
-    overlay,
-  ])
-
-  const callSubmitRemove = useCallback(async () => {
-    try {
-      if (!(agent && credential)) {
-        return
-      }
-
-      if (historyEventsLogger.logAttestationRemoved) {
-        await logHistoryRecord()
-      }
-
-      await agent.credentials.deleteById(credential.id)
-
-      navigation.pop()
-
-      // FIXME: This delay is a hack so that the toast doesn't appear until the modal is dismissed
-      await new Promise((resolve) => setTimeout(resolve, 1000))
-
-      Toast.show({
-        type: ToastType.Success,
-        text1: t('CredentialDetails.CredentialRemoved'),
-      })
-    } catch (err: unknown) {
-      const error = new BifoldError(t('Error.Title1032'), t('Error.Message1032'), (err as Error)?.message ?? err, 1032)
-      DeviceEventEmitter.emit(EventTypes.ERROR_ADDED, error)
-    }
-  }, [agent, credential, navigation, t, historyEventsLogger.logAttestationRemoved, logHistoryRecord])
-
-  const callCancelRemove = useCallback(() => {
-    setIsRemoveModalDisplayed(false)
-  }, [])
-
-  const callDismissRevokedMessage = useCallback(() => {
-    setIsRevokedMessageHidden(true)
-    if (credential) {
-      const meta = credential.metadata.get(CredentialMetadata.customMetadata)
-      credential.metadata.set(CredentialMetadata.customMetadata, { ...meta, revoked_detail_dismissed: true })
-      agent?.credentials.update(credential)
-    }
-  }, [credential, agent])
-
-  const CredentialRevocationMessage: React.FC<{ credential: CredentialExchangeRecord }> = ({ credential }) => {
+  if (loading) {
     return (
-      <InfoBox
-        notificationType={InfoBoxType.Error}
-        title={t('CredentialDetails.CredentialRevokedMessageTitle') + ' ' + revocationDate}
-        description={
-          credential?.revocationNotification?.comment
-            ? credential.revocationNotification.comment
-            : t('CredentialDetails.CredentialRevokedMessageBody')
-        }
-        onCallToActionLabel={t('Global.Dismiss')}
-        onCallToActionPressed={callDismissRevokedMessage}
-      />
-    )
-  }
-
-  const getCredentialTop = () => {
-    if (isBranding10) {
-      return (
-        <>
-          <CredentialDetailSecondaryHeader overlay={overlay} />
-          <CredentialCardLogo overlay={overlay} />
-          <CredentialDetailPrimaryHeader overlay={overlay} credential={credential} />
-        </>
-      )
-    }
-    return (
-      <View>
-        <CredentialDetailSecondaryHeader
-          overlay={overlay}
-          brandingOverlayType={bundleResolver.getBrandingOverlayType()}
-        />
-        <TouchableOpacity
-          accessibilityLabel={`${overlay.metaOverlay?.watermark ? overlay.metaOverlay.watermark + '. ' : ''}${t(
-            'Credentials.IssuedBy'
-          )} ${overlay.metaOverlay?.issuer}`}
-          accessibilityRole="button"
-          accessibilityHint={t('CredentialDetails.NavigateToIssuerDetailsHint')}
-          onPress={navigateToContactDetails}
-          style={{ padding: 16, overflow: 'hidden' }}
-        >
-          {overlay.metaOverlay?.watermark && (
-            <CardWatermark width={width} height={height} watermark={overlay.metaOverlay?.watermark} />
-          )}
-          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
-            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8, flex: 2 }}>
-              <CredentialCardLogo overlay={overlay} brandingOverlayType={bundleResolver.getBrandingOverlayType()} />
-              <ThemedText
-                style={{
-                  color: credentialTextColor(ColorPalette, containerBackgroundColor),
-                  flexWrap: 'wrap',
-                  maxWidth: '90%',
-                }}
-              >
-                {overlay.metaOverlay?.issuer}
-              </ThemedText>
-            </View>
-            <Assets.svg.iconChevronRight {...icon} />
+      <GradientBackground>
+        <SafeAreaView style={styles.safeArea}>
+          <View style={styles.loadingContainer}>
+            <ActivityIndicator size="large" color="#016C72" />
           </View>
-        </TouchableOpacity>
-        <View style={{ backgroundColor: ColorPalette.brand.secondaryBackground }}>
-          <CredentialDetailPrimaryHeader
-            overlay={overlay}
-            brandingOverlayType={bundleResolver.getBrandingOverlayType()}
-            credential={credential}
+        </SafeAreaView>
+      </GradientBackground>
+    )
+  }
+
+  if (!credential) {
+    return (
+      <SafeAreaView style={styles.safeArea}>
+        <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
+        <View style={styles.errorContainer}>
+          <Icon name="alert-circle" size={64} color="#FF3B30" />
+          <Text style={styles.errorText}>Credential not found</Text>
+          <TouchableOpacity style={styles.backButton} onPress={() => nav.goBack()}>
+            <Icon name="arrow-left" size={24} color="#000" />
+          </TouchableOpacity>
+        </View>
+      </SafeAreaView>
+    )
+  }
+
+  const firstName = getAttrValue(attributes, 'first', 'firstname', 'first_name') || ''
+  const lastName = getAttrValue(attributes, 'last', 'lastname', 'last_name') || ''
+  const fullName =
+    getAttrValue(attributes, 'fullname', 'studentfullname', 'full_name') ||
+    `${firstName} ${lastName}`.trim() ||
+    'Jane Doe'
+  const studentId = getAttrValue(attributes, 'studentid', 'studentnumber', 'student_id') || ''
+  const school = getAttrValue(attributes, 'schoolname', 'school', 'institution') || ''
+  const rawIssueDate = getAttrValue(attributes, 'issuedate', 'issue_date')
+
+  const formatDate = (dateStr: string | undefined): string => {
+    if (!dateStr) {
+      const date = credential?.createdAt ? new Date(credential.createdAt) : new Date()
+      return date.toLocaleDateString('en-US', {
+        month: '2-digit',
+        day: '2-digit',
+        year: 'numeric',
+      })
+    }
+
+    if (dateStr.length === 8 && /^\d{8}$/.test(dateStr)) {
+      const year = dateStr.substring(0, 4)
+      const month = dateStr.substring(4, 6)
+      const day = dateStr.substring(6, 8)
+      return `${month}/${day}/${year}`
+    }
+
+    try {
+      const date = new Date(dateStr)
+      if (!isNaN(date.getTime())) {
+        return date.toLocaleDateString('en-US', {
+          month: '2-digit',
+          day: '2-digit',
+          year: 'numeric',
+        })
+      }
+    } catch (e) {
+      // debug('Error parsing date:', e)
+    }
+
+    return dateStr
+  }
+
+  const formatExpirationDate = (): string => {
+    const issuedDate = rawIssueDate ? new Date(formatDate(rawIssueDate)) : new Date(credential?.createdAt || Date.now())
+
+    const expirationAttr = getAttrValue(attributes, 'expirationdate', 'expiration_date', 'expiration')
+    if (expirationAttr) {
+      return formatDate(expirationAttr)
+    }
+
+    const expirationDate = new Date(issuedDate)
+    expirationDate.setFullYear(expirationDate.getFullYear() + 5)
+    return expirationDate.toLocaleDateString('en-US', {
+      month: '2-digit',
+      day: '2-digit',
+      year: 'numeric',
+    })
+  }
+
+  const issuedDate = formatDate(rawIssueDate)
+  const expirationDate = formatExpirationDate()
+
+  const isTranscript = credentialType === 'TRANSCRIPT' || (credDefId && credDefId.includes('Transcript'))
+  const displayName =
+    isTranscript && credDefId
+      ? credDefId.split(':').pop()?.replace(' Transcript', '') || school || 'Transcript'
+      : school || 'Student Card'
+
+  const transcriptData = parseTranscriptData(attributes)
+  const yearStart = getAttrValue(attributes, 'yearstart', 'year_start') || transcriptData.yearStart
+  const yearEnd = getAttrValue(attributes, 'yearend', 'year_end') || transcriptData.yearEnd
+  const termGPA = getAttrValue(attributes, 'termgpa', 'term_gpa') || transcriptData.termGPA
+  const cumulativeGPA = getAttrValue(attributes, 'cumulativegpa', 'cumulative_gpa')
+  const gpa = getAttrValue(attributes, 'gpa') || (transcriptData.transcript as any)?.gpa
+
+  const renderCredentialCard = () => {
+    const issuerName = credential.connectionId || 'Issuer'
+
+    if (isTranscript) {
+      const displayFullName =
+        fullName || (transcriptData.studentInfo as any)?.studentFullName || `${firstName} ${lastName}`
+      const displaySchool = school || (transcriptData.studentInfo as any)?.schoolName
+      const displayGPA = cumulativeGPA || termGPA || gpa
+      const displayYearStart = yearStart || transcriptData.yearStart
+      const displayYearEnd = yearEnd || transcriptData.yearEnd
+      const displayTermGPA = termGPA || transcriptData.termGPA
+
+      return (
+        <TranscriptCard
+          school={displaySchool}
+          yearStart={displayYearStart}
+          yearEnd={displayYearEnd}
+          termGPA={displayTermGPA}
+          cumulativeGPA={displayGPA}
+          fullname={displayFullName}
+          isInChat={false}
+        />
+      )
+    } else {
+      const studentPhoto = getAttrValue(attributes, 'studentphoto', 'photo', 'student_photo')
+
+      return (
+        <View style={{ width: '100%', height: '100%' }}>
+          <VDCard
+            firstName={firstName}
+            lastName={lastName}
+            fullName={fullName}
+            studentId={studentId}
+            school={school || displayName}
+            issueDate={issuedDate}
+            credDefId={credDefId}
+            issuerName={issuerName}
+            isInChat={false}
+            studentPhoto={studentPhoto}
           />
         </View>
-      </View>
-    )
-  }
-
-  const header = () => {
-    return bundleResolver.getBrandingOverlayType() === BrandingOverlayType.Branding01 ? (
-      <View>
-        {isRevoked && !isRevokedMessageHidden ? (
-          <View style={{ padding: paddingVertical, paddingBottom: 0 }}>
-            {credential && <CredentialRevocationMessage credential={credential} />}
-          </View>
-        ) : null}
-        {credential && <CredentialCard credential={credential} style={{ margin: 16 }} />}
-      </View>
-    ) : (
-      <View style={styles.container}>
-        {getCredentialTop()}
-        {isRevoked && !isRevokedMessageHidden ? (
-          <View
-            style={{
-              padding: paddingVertical,
-              backgroundColor: ColorPalette.brand.secondaryBackground,
-              ...(isBranding11 && { paddingTop: 0 }),
-            }}
-          >
-            {credential && <CredentialRevocationMessage credential={credential} />}
-          </View>
-        ) : null}
-      </View>
-    )
-  }
-
-  const footer = () => {
-    return (
-      <View style={{ marginBottom: 50 }}>
-        {credentialConnectionLabel && isBranding10 ? (
-          <View
-            style={{
-              backgroundColor: ColorPalette.brand.secondaryBackground,
-              marginTop: paddingVertical,
-              paddingHorizontal,
-              paddingVertical,
-            }}
-          >
-            <ThemedText testID={testIdWithKey('IssuerName')}>
-              <ThemedText variant="title" style={isRevoked && { color: ColorPalette.grayscale.mediumGrey }}>
-                {t('CredentialDetails.IssuedBy') + ' '}
-              </ThemedText>
-              <ThemedText style={isRevoked && { color: ColorPalette.grayscale.mediumGrey }}>
-                {credentialConnectionLabel}
-              </ThemedText>
-            </ThemedText>
-            {/* issued date if dev mode */}
-            {store?.preferences.developerModeEnabled && credential?.createdAt ? (
-              <ThemedText testID={testIdWithKey('IssuedDate')}>
-                <ThemedText variant="title" style={isRevoked && { color: ColorPalette.grayscale.mediumGrey }}>
-                  {t('CredentialDetails.Issued') + ': '}
-                </ThemedText>
-                <ThemedText style={isRevoked && { color: ColorPalette.grayscale.mediumGrey }}>
-                  {formatTime(credential.createdAt, { format: 'YYYY-MM-DD HH:mm:ss [UTC]' })}
-                </ThemedText>
-              </ThemedText>
-            ) : null}
-          </View>
-        ) : null}
-        {store?.preferences.developerModeEnabled && (
-          <View
-            style={{
-              backgroundColor: ColorPalette.brand.secondaryBackground,
-              marginTop: paddingVertical,
-              paddingHorizontal,
-              paddingVertical,
-            }}
-          >
-            <TouchableOpacity
-              onPress={callViewJSONDetails}
-              accessibilityLabel={t('Global.ViewJSON')}
-              accessibilityRole={'button'}
-              testID={testIdWithKey('JSONDetails')}
-              style={{ flexDirection: 'row', gap: 8 }}
-            >
-              <Assets.svg.iconCode width={20} height={20} color={ColorPalette.brand.secondary} />
-              <ThemedText>{t('Global.ViewJSON')}</ThemedText>
-            </TouchableOpacity>
-          </View>
-        )}
-        {isRevoked ? (
-          <View
-            style={{
-              backgroundColor: ColorPalette.notification.error,
-              marginTop: paddingVertical,
-              paddingHorizontal,
-              paddingVertical,
-            }}
-          >
-            <ThemedText testID={testIdWithKey('RevokedDate')}>
-              <ThemedText variant="title" style={{ color: ColorPalette.notification.errorText }}>
-                {t('CredentialDetails.Revoked') + ': '}
-              </ThemedText>
-              <ThemedText style={{ color: ColorPalette.notification.errorText }}>{preciseRevocationDate}</ThemedText>
-            </ThemedText>
-            <ThemedText
-              style={{ color: ColorPalette.notification.errorText, marginTop: paddingVertical }}
-              testID={testIdWithKey('RevocationMessage')}
-            >
-              {credential?.revocationNotification?.comment
-                ? credential.revocationNotification.comment
-                : t('CredentialDetails.CredentialRevokedMessageBody')}
-            </ThemedText>
-          </View>
-        ) : null}
-        <RecordRemove onRemove={callOnRemove} />
-      </View>
-    )
+      )
+    }
   }
 
   return (
-    <SafeAreaView style={{ flexGrow: 1 }} edges={['left', 'right']}>
-      <Record fields={overlay.presentationFields || []} hideFieldValues header={header} footer={footer} />
-      <CommonRemoveModal
-        usage={ModalUsage.CredentialRemove}
-        visible={isRemoveModalDisplayed}
-        onSubmit={callSubmitRemove}
-        onCancel={callCancelRemove}
-      />
-    </SafeAreaView>
+    <GradientBackground>
+      <SafeAreaView style={styles.safeArea}>
+        <View style={styles.headerContainer}>
+          <View style={styles.navBar}>
+            <TouchableOpacity style={styles.backButton} onPress={() => nav.goBack()}>
+              <Icon name="chevron-left" size={24} color="#FFFFFF" />
+            </TouchableOpacity>
+
+            <View style={styles.spacer} />
+
+            <TouchableOpacity style={styles.menuButton}>
+              <Icon name="dots-vertical" size={24} color="#FFFFFF" />
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        <ScrollView
+          style={styles.scrollView}
+          contentContainerStyle={styles.scrollContent}
+          showsVerticalScrollIndicator={false}
+        >
+          <View style={styles.cardSection}>
+            <View style={styles.cardContainer}>{renderCredentialCard()}</View>
+            <View style={styles.smallDivider} />
+          </View>
+
+          <View style={styles.detailsSection}>
+            <Text style={styles.schoolName}>{displayName}</Text>
+            <Text style={styles.studentCardLabel}>{isTranscript ? 'Transcript' : 'Student Card'}</Text>
+
+            <Text style={styles.studentName}>{fullName}</Text>
+
+            <View style={styles.dateContainer}>
+              <View style={styles.dateBox}>
+                <Text style={styles.dateLabel}>Issued On</Text>
+                <Text style={styles.dateValue}>{issuedDate}</Text>
+              </View>
+
+              <View style={styles.dividerLine} />
+
+              <View style={styles.dateBox}>
+                <Text style={styles.dateLabel}>Expiration Date</Text>
+                <Text style={styles.dateValue}>{expirationDate}</Text>
+              </View>
+            </View>
+
+            <View style={styles.metadataContainer}>
+              <Text style={styles.metadataTitle}>Metadata</Text>
+              <Text style={styles.metadataText}>
+
+              </Text>
+            </View>
+          </View>
+        </ScrollView>
+      </SafeAreaView>
+    </GradientBackground>
   )
 }
+
+const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+  },
+  headerContainer: {
+    paddingTop: 10,
+    paddingBottom: 5,
+  },
+  navBar: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    marginTop: 50,
+  },
+  backButton: {
+    width: 40,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  spacer: {
+    flex: 1,
+  },
+  menuButton: {
+    width: 40,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  scrollView: {
+    flex: 1,
+  },
+  scrollContent: {
+    flexGrow: 1,
+    paddingHorizontal: 20,
+    paddingTop: 10,
+    paddingBottom: 40,
+  },
+  cardSection: {
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  cardContainer: {
+    flex: 1,
+    width: '95%',
+    borderRadius: 16,
+    overflow: 'hidden',
+  },
+  smallDivider: {
+    width: 40,
+    height: 2,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 1,
+    marginTop: 15,
+    alignSelf: 'center',
+  },
+  detailsSection: {
+    marginBottom: 20,
+  },
+  schoolName: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#FFFFFF',
+    fontFamily: 'OpenSans-SemiBold',
+    textAlign: 'center',
+    marginBottom: 2,
+  },
+  studentCardLabel: {
+    fontSize: 16,
+    color: '#FFFFFF',
+    fontFamily: 'OpenSans-Regular',
+    textAlign: 'center',
+    marginBottom: 15,
+  },
+  studentName: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#FFFFFF',
+    fontFamily: 'OpenSans-Bold',
+    textAlign: 'center',
+    marginBottom: 20,
+  },
+  dateContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    backgroundColor: ColorPalette.grayscale.digicredBackgroundModal,
+    borderRadius: 12,
+    padding: 16,
+    marginBottom: 20,
+  },
+  dateBox: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  dateLabel: {
+    fontSize: 14,
+    color: '#FFFFFF',
+    fontFamily: 'OpenSans-Medium',
+    marginBottom: 4,
+  },
+  dateValue: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#FFFFFF',
+    fontFamily: 'OpenSans-SemiBold',
+  },
+  dividerLine: {
+    width: 1,
+    backgroundColor: '#FFFFFF',
+    marginHorizontal: 10,
+  },
+  metadataContainer: {
+    backgroundColor: ColorPalette.grayscale.digicredBackgroundModal,
+    borderRadius: 12,
+    padding: 16,
+  },
+  metadataTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#FFFFFF',
+    fontFamily: 'OpenSans-SemiBold',
+    marginBottom: 8,
+  },
+  metadataText: {
+    fontSize: 14,
+    color: '#FFFFFF',
+    fontFamily: 'OpenSans-Regular',
+    lineHeight: 20,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  errorContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#FFFFFF',
+  },
+  errorText: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#FF3B30',
+    marginTop: 16,
+    fontFamily: 'OpenSans-SemiBold',
+  },
+})
 
 export default CredentialDetails

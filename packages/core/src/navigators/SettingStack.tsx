@@ -9,6 +9,7 @@ import { testIdWithKey } from '../utils/testable'
 
 import { useDefaultStackOptions } from './defaultStackOptions'
 import { TOKENS, useServices } from '../container-api'
+import { View } from 'react-native'
 
 const SettingStack: React.FC = () => {
   const Stack = createStackNavigator<SettingStackParams>()
@@ -95,6 +96,8 @@ const SettingStack: React.FC = () => {
         options={{
           title: t('Screens.Language'),
           headerBackTestID: testIdWithKey('Back'),
+          headerTransparent: true,
+          headerBackground: () => <View style={{ flex: 1, backgroundColor: 'transparent'}} />,
           ...ScreenOptionsDictionary[Screens.Language],
         }}
       />
@@ -149,6 +152,8 @@ const SettingStack: React.FC = () => {
         options={{
           title: t('Screens.ChangePIN'),
           headerBackTestID: testIdWithKey('Back'),
+          headerTransparent: true,
+          headerBackground: () => <View style={{ flex: 1, backgroundColor: 'transparent',}} />,
           ...ScreenOptionsDictionary[Screens.ChangePIN],
         }}
       />
@@ -216,6 +221,7 @@ const SettingStack: React.FC = () => {
         options={{
           title: t('ExportWallet.TransferWallet'),
           headerBackTestID: testIdWithKey('Back'),
+          headerShown: false,
         }}
       />
       <Stack.Screen
@@ -232,6 +238,7 @@ const SettingStack: React.FC = () => {
         options={{
           title: t('ImportWallet.RestoreWallet'),
           headerBackTestID: testIdWithKey('Back'),
+          headerShown: false,
         }}
       />
       <Stack.Screen

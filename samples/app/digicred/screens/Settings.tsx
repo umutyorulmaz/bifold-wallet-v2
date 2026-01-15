@@ -1,23 +1,11 @@
 import { StackScreenProps } from '@react-navigation/stack'
 import React, { useState, useRef, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import {
-  ScrollView,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-  Text,
-  StatusBar,
-  Switch,
-  Animated,
-} from 'react-native'
+import { ScrollView, StyleSheet, TouchableOpacity, View, Text, StatusBar, Switch, Animated } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
-import {
-  useStore,
-  testIdWithKey,
-} from '@bifold/core'
-import { Screens, Stacks } from '../../../../packages/core/src/types/navigators'
+import { useStore, testIdWithKey } from '@bifold/core'
+import { Screens} from '../../../../packages/core/src/types/navigators'
 import { SettingStackParams } from '@bifold/core/src/types/navigators'
 import { DispatchAction } from '@bifold/core/src/contexts/reducers/store'
 import { getBuildNumber, getVersion } from 'react-native-device-info'
@@ -60,17 +48,13 @@ const ExpandableCard: React.FC<ExpandableCardProps> = ({
   })
 
   return (
-    <View style={styles.expandableCard}>
-      <TouchableOpacity
-        style={styles.expandableHeader}
-        onPress={onPress}
-        activeOpacity={0.7}
-      >
+    <TouchableOpacity style={styles.expandableCard} onPress={onPress} activeOpacity={0.7}>
+      <View style={styles.expandableHeader}>
         <Text style={styles.cardTitle}>{title}</Text>
         <Animated.View style={{ transform: [{ rotate: rotateInterpolate }] }}>
-          <Icon name="chevron-down" size={24} color={DigiCredColors.text.secondary} />
+          <Icon name="chevron-down" size={24} color="#FFF" />
         </Animated.View>
-      </TouchableOpacity>
+      </View>
 
       {expanded && (
         <View style={styles.expandableContent}>
@@ -87,7 +71,7 @@ const ExpandableCard: React.FC<ExpandableCardProps> = ({
           </View>
         </View>
       )}
-    </View>
+    </TouchableOpacity>
   )
 }
 
@@ -98,20 +82,15 @@ interface MenuCardProps {
 }
 
 const MenuCard: React.FC<MenuCardProps> = ({ title, onPress, testID }) => (
-  <TouchableOpacity
-    style={styles.menuCard}
-    onPress={onPress}
-    activeOpacity={0.7}
-    testID={testID}
-  >
+  <TouchableOpacity style={styles.menuCard} onPress={onPress} activeOpacity={0.7} testID={testID}>
     <Text style={styles.menuCardTitle}>{title}</Text>
   </TouchableOpacity>
 )
 
 const Settings: React.FC<SettingsProps> = ({ navigation }) => {
-  useTranslation() // Hook available for future i18n
+  useTranslation()
   const [store, dispatch] = useStore()
-  const [biometricsExpanded, setBiometricsExpanded] = useState(true)
+  const [biometricsExpanded, setBiometricsExpanded] = useState(false)
 
   const handleBiometryToggle = async (value: boolean) => {
     dispatch({
@@ -124,27 +103,17 @@ const Settings: React.FC<SettingsProps> = ({ navigation }) => {
     <GradientBackground>
       <StatusBar barStyle="light-content" translucent backgroundColor="transparent" />
       <View style={styles.container}>
-        {/* Header */}
         <View style={styles.header}>
           <Text style={styles.headerTitle}>Settings</Text>
         </View>
 
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={styles.scrollContent}
-        >
-          {/* Section: Contacts */}
-          <Text style={styles.sectionTitle}>Contacts</Text>
-          <MenuCard
-            title="Contacts"
-            onPress={() => navigation.getParent()?.navigate(Stacks.ContactStack, { screen: Screens.Contacts })}
-            testID={testIdWithKey('Contacts')}
-          />
+        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
+          {/*<MenuCard*/}
+          {/*  title="Contacts"*/}
+          {/*  onPress={() => navigation.getParent()?.navigate(Stacks.ContactStack, { screen: Screens.Contacts })}*/}
+          {/*  testID={testIdWithKey('Contacts')}*/}
+          {/*/>*/}
 
-          {/* Section: App Settings */}
-          <Text style={styles.sectionTitle}>App Settings</Text>
-
-          {/* Biometrics Expandable Card */}
           <ExpandableCard
             title="Biometrics"
             description="The DigiCred wallet defaults to using your biometrics (face recognition or fingerprint) to unlock the application. We use a PIN as a backup if your biometrics are not working. You can use this control to turn off the biometric unlock."
@@ -154,11 +123,15 @@ const Settings: React.FC<SettingsProps> = ({ navigation }) => {
             onPress={() => setBiometricsExpanded(!biometricsExpanded)}
           />
 
+          {/*<MenuCard title="Backup Restore" onPress={() => {}} testID={testIdWithKey('BackupRestore')} />*/}
+
           <MenuCard
             title="Change PIN"
             onPress={() => navigation.navigate(Screens.ChangePIN)}
             testID={testIdWithKey('ChangePIN')}
           />
+
+          {/*<MenuCard title="Demographics" onPress={() => {}} testID={testIdWithKey('Demographics')} />*/}
 
           <MenuCard
             title="Language"
@@ -166,36 +139,25 @@ const Settings: React.FC<SettingsProps> = ({ navigation }) => {
             testID={testIdWithKey('Language')}
           />
 
-          {/* Section: Wallet Management */}
-          <Text style={styles.sectionTitle}>Wallet Management</Text>
+          {/*<MenuCard title="Network" onPress={() => {}} testID={testIdWithKey('Network')} />*/}
 
-          <MenuCard
-            title="Transfer Wallet"
-            onPress={() => navigation.navigate(Screens.ExportWalletIntro)}
-            testID={testIdWithKey('TransferWallet')}
-          />
+          {/*<MenuCard title="Guides / Help" onPress={() => {}} testID={testIdWithKey('GuidesHelp')} />*/}
 
-          <MenuCard
-            title="Restore Wallet"
-            onPress={() => navigation.navigate(Screens.ImportWallet)}
-            testID={testIdWithKey('RestoreWallet')}
-          />
+          {/*<MenuCard*/}
+          {/*  title="Transfer Wallet"*/}
+          {/*  onPress={() => navigation.navigate(Screens.ExportWalletIntro)}*/}
+          {/*  testID={testIdWithKey('TransferWallet')}*/}
+          {/*/>*/}
 
-          {/* Section: About */}
-          <Text style={styles.sectionTitle}>About</Text>
+          {/*<MenuCard*/}
+          {/*  title="Restore Wallet"*/}
+          {/*  onPress={() => navigation.navigate(Screens.ImportWallet)}*/}
+          {/*  testID={testIdWithKey('RestoreWallet')}*/}
+          {/*/>*/}
 
-          <MenuCard
-            title="Demographics"
-            onPress={() => {
-              // TODO: Navigate to demographics screen
-            }}
-            testID={testIdWithKey('Demographics')}
-          />
-
-          {/* Version Info */}
           <View style={styles.versionContainer}>
             <Text style={styles.versionText}>
-              Version {getVersion()} Build ({getBuildNumber()})
+              Version {getVersion()} - Build {getBuildNumber()}
             </Text>
           </View>
         </ScrollView>
@@ -216,38 +178,41 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 32,
     fontWeight: '700',
-    color: DigiCredColors.text.primary,
+    color: '#FFF',
   },
   scrollContent: {
     paddingHorizontal: 16,
     paddingBottom: 120,
   },
   expandableCard: {
-    backgroundColor: 'rgba(30, 50, 50, 0.6)',
-    borderRadius: 12,
+    padding: 24,
     marginBottom: 12,
-    overflow: 'hidden',
+    backgroundColor: '#25272A',
+    borderColor: '#2F2F2F',
+    borderWidth: 1,
+    borderRadius: 16,
   },
   expandableHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 16,
   },
   expandableContent: {
-    paddingHorizontal: 16,
-    paddingBottom: 16,
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    gap: 24,
+    marginTop: 16,
   },
   cardTitle: {
     fontSize: 16,
     fontWeight: '500',
-    color: DigiCredColors.text.primary,
+    color: '#FFF',
   },
   cardDescription: {
     fontSize: 14,
     lineHeight: 22,
-    color: DigiCredColors.text.secondary,
     marginBottom: 16,
+    color: '#FFF',
   },
   toggleRow: {
     flexDirection: 'row',
@@ -255,29 +220,21 @@ const styles = StyleSheet.create({
   },
   toggleLabel: {
     fontSize: 14,
-    color: DigiCredColors.text.primary,
     marginLeft: 12,
+    color: '#FFF',
   },
   menuCard: {
-    backgroundColor: 'rgba(30, 50, 50, 0.6)',
-    borderRadius: 12,
-    padding: 16,
+    padding: 24,
     marginBottom: 12,
+    backgroundColor: '#25272A',
+    borderColor: '#2F2F2F',
+    borderWidth: 1,
+    borderRadius: 16,
   },
   menuCardTitle: {
     fontSize: 16,
     fontWeight: '500',
-    color: DigiCredColors.text.primary,
-  },
-  sectionTitle: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: DigiCredColors.text.secondary,
-    marginTop: 16,
-    marginBottom: 8,
-    marginLeft: 4,
-    textTransform: 'uppercase',
-    letterSpacing: 0.5,
+    color: '#FFF',
   },
   versionContainer: {
     alignItems: 'center',
@@ -286,7 +243,7 @@ const styles = StyleSheet.create({
   },
   versionText: {
     fontSize: 13,
-    color: DigiCredColors.text.secondary,
+    color: '#FFF',
   },
 })
 

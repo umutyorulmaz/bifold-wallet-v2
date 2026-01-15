@@ -64,7 +64,7 @@ const HomeFooterView: React.FC<HomeFooterViewProps> = ({ children }) => {
         <ThemedText>
           {t('Home.YouHave')}{' '}
           <ThemedText style={{ fontWeight: TextTheme.bold.fontWeight }}>{credentialCount}</ThemedText>{' '}
-          {t('Home.Credentials')} {t('Home.InYourWallet')}
+          {t('Home.ListCredentials')} {t('Home.InYourWallet')}
         </ThemedText>
       )
     } else {

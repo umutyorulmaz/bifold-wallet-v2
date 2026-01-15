@@ -381,7 +381,7 @@ export class MainContainer implements Container {
 
     this._container.registerInstance(TOKENS.UTIL_AGENT_BRIDGE, new AgentBridge())
 
-    // Register OpenID Credentials Refresh Orchestrator
+    // Register OpenID ListCredentials Refresh Orchestrator
     const orchestrator: IRefreshOrchestrator = new RefreshOrchestrator(
       this._container.resolve(TOKENS.UTIL_LOGGER),
       this._container.resolve(TOKENS.UTIL_AGENT_BRIDGE) as AgentBridge,

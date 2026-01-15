@@ -1,5 +1,6 @@
+
 import React, { forwardRef, useState } from 'react'
-import { TouchableOpacity, View } from 'react-native'
+import { TouchableOpacity, View, StyleProp, ViewStyle } from 'react-native'
 
 import { useTheme } from '../../contexts/theme'
 
@@ -17,7 +18,8 @@ const ButtonImplComponent = (
     disabled = false,
     maxfontSizeMultiplier,
     children,
-  }: ButtonProps,
+    customStyle,
+  }: ButtonProps & { customStyle?: StyleProp<ViewStyle> },
   ref: React.LegacyRef<TouchableOpacity>
 ) => {
   const { Buttons, heavyOpacity } = useTheme()
@@ -90,6 +92,7 @@ const ButtonImplComponent = (
           (buttonType === ButtonType.Secondary || buttonType === ButtonType.Tertiary) && {
             backgroundColor: Buttons.primary.backgroundColor,
           },
+        customStyle,
       ]}
       disabled={disabled}
       activeOpacity={heavyOpacity}
@@ -119,7 +122,9 @@ const ButtonImplComponent = (
   )
 }
 
-const ButtonImpl = forwardRef<TouchableOpacity, ButtonProps>(ButtonImplComponent)
+const ButtonImpl = forwardRef<TouchableOpacity, ButtonProps & { customStyle?: StyleProp<ViewStyle> }>(
+  ButtonImplComponent
+)
 export default ButtonImpl
 export { ButtonType, ButtonImpl }
 export type { Button, ButtonProps }

@@ -11,7 +11,6 @@ import {
 } from 'react-native'
 import { GradientBackground, DigiCredButton } from '../components'
 import { useTranslation } from 'react-i18next'
-import LinearGradient from 'react-native-linear-gradient'
 import FactCheck from '../assets/FactCheck.svg'
 import LockPurple from '../assets/LockPurple.svg'
 import DigiCredPurple from '../assets/DigiCredPurple.svg'
@@ -26,6 +25,7 @@ import HomeNoChannelModal from '../components/HomeNoChannelModal'
 import { isSmallScreen, isTablet } from '../utils/devices'
 import { TOKENS, useServices } from '../../../../packages/core/src/container-api'
 import { Screens, Stacks } from '../../../../packages/core/src/types/navigators'
+import LinearGradient from 'react-native-linear-gradient'
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window')
 
@@ -95,7 +95,7 @@ const HomeNoChannels = () => {
 
   const contents = [
     {
-      title: 'Digital Credentials',
+      title: 'Digital ListCredentials',
       description:
         'Digital credentials are the electronic equivalent of physical credentials and documents such as identity cards, certificates, or transcripts offered by participating services.\n\nServices are simplified and expedited as organizations can confirm who you are and what you have accomplished with trusted information from the digital credentials.',
     },
@@ -172,8 +172,8 @@ const HomeNoChannels = () => {
             <LinearGradient
               colors={DigiCredColors.homeNoChannels.buttonGradient}
               locations={DigiCredColors.homeNoChannels.buttonGradientLocations}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}
+              start={{ x: 0, y: 1 }}
+              end={{ x: 1, y: 0 }}
               style={[styles.backgroundBtn, isTablet() ? { width: '60%', height: 60 } : { width: '75%' }]}
             >
               <DigiCredButton
@@ -327,10 +327,10 @@ const styles = StyleSheet.create({
     borderRadius: 25,
   },
   backgroundBtn: {
+    height: 55,
     borderRadius: 25,
     justifyContent: 'center',
     marginBottom: 50,
-    height: 45,
     alignSelf: 'center',
   },
   buttonText: {

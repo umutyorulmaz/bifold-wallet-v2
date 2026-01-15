@@ -60,7 +60,7 @@ const TabItem: React.FC<TabItemProps> = ({
 
 const tabConfig = [
   { key: 'Tab Home Stack', label: 'Home', icon: 'home', iconOutline: 'home-outline' },
-  { key: 'Tab Credential Stack', label: 'Credentials', icon: 'text-box-multiple', iconOutline: 'text-box-multiple-outline' },
+  { key: 'Tab Credential Stack', label: 'ListCredentials', icon: 'text-box-multiple', iconOutline: 'text-box-multiple-outline' },
   { key: 'Tab Connect Stack', label: 'Settings', icon: 'cog', iconOutline: 'cog-outline' },
 ]
 

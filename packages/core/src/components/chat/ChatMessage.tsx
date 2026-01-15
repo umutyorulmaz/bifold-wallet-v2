@@ -1,250 +1,14 @@
-// import React, { useMemo } from 'react'
-// import { useTranslation } from 'react-i18next'
-// import { TouchableOpacity, View } from 'react-native'
-// import { Bubble, IMessage, Message } from 'react-native-gifted-chat'
-//
-// import { useTheme } from '../../contexts/theme'
-// import { Role } from '../../types/chat'
-// import { formatTime } from '../../utils/helpers'
-// import { ThemedText } from '../texts/ThemedText'
-// import { ColorPalette } from '../../theme'
-// import { hitSlop } from '../../constants'
-//
-// export enum CallbackType {
-//   CredentialOffer = 'CredentialOffer',
-//   ProofRequest = 'ProofRequest',
-//   PresentationSent = 'PresentationSent',
-//   Workflow = 'Workflow',
-// }
-//
-// export interface ChatMessageProps {
-//   messageProps: React.ComponentProps<typeof Message>
-// }
-//
-// export interface ExtendedChatMessage extends IMessage {
-//   renderEvent: () => JSX.Element
-//   createdAt: Date
-//   messageOpensCallbackType?: CallbackType
-//   onDetails?: () => void
-// }
-//
-// const MessageTime: React.FC<{ message: ExtendedChatMessage }> = ({ message }) => {
-//   const { ChatTheme: theme } = useTheme()
-//   return (
-//     <ThemedText style={message.user._id === Role.me ? theme.timeStyleRight : theme.timeStyleLeft}>
-//       {formatTime(message.createdAt, { includeHour: true, chatFormat: true, trim: true })}
-//     </ThemedText>
-//   )
-// }
-//
-// // MessageIcon component - intentionally unused for now, kept for future use
-// // const MessageIcon: React.FC<{ type: CallbackType }> = ({ type }) => {
-// //   const { ChatTheme: theme, Assets } = useTheme()
-// //   if (type === CallbackType.PresentationSent) return null
-// //   return (
-// //     <View style={type !== CallbackType.CredentialOffer ? theme.documentIconContainer : {}}>
-// //       {type === CallbackType.ProofRequest && <Assets.svg.iconProofRequestLight width={40} height={40} />}
-// //     </View>
-// //   )
-// // }
-//
-// export const ChatMessage: React.FC<ChatMessageProps> = ({ messageProps }) => {
-//   const { t } = useTranslation()
-//   const { ChatTheme: theme } = useTheme()
-//   const message = useMemo(() => messageProps.currentMessage as ExtendedChatMessage, [messageProps])
-//
-//   const textForCallbackType = (callbackType: CallbackType) => {
-//     // Receiving a credential offer
-//     if (callbackType === CallbackType.CredentialOffer) {
-//       return t('Chat.ViewOffer')
-//     }
-//
-//     // Receiving a proof request
-//     if (callbackType === CallbackType.ProofRequest) {
-//       return t('Chat.ViewRequest')
-//     }
-//
-//     // After a presentation of a proof
-//     if (callbackType === CallbackType.PresentationSent) {
-//       return t('Chat.OpenPresentation')
-//     }
-//
-//     // Workflow actions
-//     if (callbackType === CallbackType.Workflow) {
-//       return t('Chat.ViewWorkflow')
-//     }
-//
-//     return t('Chat.OpenItem')
-//   }
-//
-//   // For messages with callback types (proof request, credential offer), render in a combined card
-//   if (message.messageOpensCallbackType) {
-//     const cardStyle = {
-//       backgroundColor: ColorPalette.brand.secondaryBackground,
-//       borderRadius: 12,
-//       borderWidth: 1,
-//       borderColor: ColorPalette.brand.primary,
-//       maxWidth: 320,
-//       overflow: 'hidden' as const,
-//     }
-//
-//     const buttonStyle = {
-//       backgroundColor: ColorPalette.brand.primary,
-//       paddingVertical: 12,
-//       paddingHorizontal: 16,
-//       alignItems: 'center' as const,
-//       justifyContent: 'center' as const,
-//     }
-//
-//     return (
-//       <View style={{ marginBottom: 8 }}>
-//         <View
-//           style={{
-//             flexDirection: 'row',
-//             justifyContent: message.user._id === Role.me ? 'flex-end' : 'flex-start',
-//           }}
-//         >
-//           <View style={cardStyle}>
-//             {/* Message content */}
-//             <View style={{ padding: 12 }}>
-//               {message.renderEvent?.() || null}
-//             </View>
-//             {/* Action button */}
-//             <TouchableOpacity
-//               accessibilityLabel={textForCallbackType(message.messageOpensCallbackType)}
-//               accessibilityRole="button"
-//               onPress={() => {
-//                 if (message.onDetails) message.onDetails()
-//               }}
-//               style={buttonStyle}
-//               hitSlop={hitSlop}
-//             >
-//               <ThemedText style={{ color: ColorPalette.grayscale.white, fontWeight: '600', fontSize: 16 }}>
-//                 {textForCallbackType(message.messageOpensCallbackType)}
-//               </ThemedText>
-//             </TouchableOpacity>
-//           </View>
-//         </View>
-//         {/* Timestamp */}
-//         <View
-//           style={{
-//             flexDirection: 'row',
-//             justifyContent: message.user._id === Role.me ? 'flex-end' : 'flex-start',
-//             marginTop: 4,
-//             marginBottom: 20,
-//           }}
-//         >
-//           <MessageTime message={message} />
-//         </View>
-//       </View>
-//     )
-//   }
-//
-//   if (message.messageOpensCallbackType) {
-//     return (
-//       <View style={{ marginBottom: 8 }}>
-//         <View
-//           style={{
-//             flexDirection: 'row',
-//             justifyContent: message.user._id === Role.me ? 'flex-end' : 'flex-start',
-//           }}
-//         >
-//           {message.renderEvent?.() || null}
-//         </View>
-//         {/* Timestamp */}
-//         <View
-//           style={{
-//             flexDirection: 'row',
-//             justifyContent: message.user._id === Role.me ? 'flex-end' : 'flex-start',
-//             marginTop: 10,
-//             marginBottom: 10,
-//           }}
-//         >
-//           <MessageTime message={message} />
-//         </View>
-//       </View>
-//     )
-//   }
-//
-//   // Regular messages without callback types
-//   return (
-//     <View
-//       style={{
-//         flexDirection: 'row',
-//         justifyContent: message.user._id === Role.me ? 'flex-end' : 'flex-start',
-//       }}
-//     >
-//       <View
-//         style={{
-//           backgroundColor: 'transparent',
-//         }}
-//       >
-//         <Bubble
-//           {...messageProps}
-//           key={messageProps.key}
-//           renderUsernameOnMessage={false}
-//           renderMessageText={() => (
-//             <View style={{ backgroundColor: 'transparent' }}>
-//               {message.renderEvent?.() || null}
-//             </View>
-//           )}
-//           containerStyle={{
-//             left: {
-//               margin: 0,
-//             },
-//             right: {
-//               margin: 0,
-//             },
-//           }}
-//           wrapperStyle={{
-//             left: {
-//               backgroundColor: 'transparent',
-//               marginRight: 0,
-//               padding: 0,
-//               marginLeft: '5%',
-//             },
-//             right: {
-//               backgroundColor: 'transparent',
-//               marginLeft: 0,
-//               marginRight: '5%',
-//               padding: 0,
-//             },
-//           }}
-//           textStyle={{
-//             left: { ...theme.leftText },
-//             right: { ...theme.rightText },
-//           }}
-//           renderTime={() => <MessageTime message={message} />}
-//           renderCustomView={() => null}
-//         />
-//       </View>
-//     </View>
-//   )
-// }
-
-
 import React, { useMemo } from 'react'
-import { useTranslation } from 'react-i18next'
-import { TouchableOpacity, View } from 'react-native'
-import { Bubble, IMessage, Message } from 'react-native-gifted-chat'
-
-import { hitSlop } from '../../constants'
+import { View, StyleSheet, TouchableOpacity } from 'react-native'
+import { Bubble, IMessage, MessageProps } from 'react-native-gifted-chat'
 import { useTheme } from '../../contexts/theme'
 import { Role } from '../../types/chat'
 import { formatTime } from '../../utils/helpers'
-import { testIdWithKey } from '../../utils/testable'
 import { ThemedText } from '../texts/ThemedText'
-
-export enum CallbackType {
-  CredentialOffer = 'CredentialOffer',
-  ProofRequest = 'ProofRequest',
-  PresentationSent = 'PresentationSent',
-  Workflow = 'Workflow',
-}
-
-export interface ChatMessageProps {
-  messageProps: React.ComponentProps<typeof Message>
-}
+import { testIdWithKey } from '../../utils/testable'
+import { ColorPalette } from '../../theme'
+import { useTranslation } from 'react-i18next'
+import { t } from 'i18next'
 
 export interface ExtendedChatMessage extends IMessage {
   renderEvent: () => JSX.Element
@@ -253,176 +17,243 @@ export interface ExtendedChatMessage extends IMessage {
   onDetails?: () => void
 }
 
-const MessageTime: React.FC<{ message: ExtendedChatMessage }> = ({ message }) => {
+export enum CallbackType {
+  CredentialOffer = 'CredentialOffer',
+  ProofRequest = 'ProofRequest',
+  PresentationSent = 'PresentationSent',
+  Workflow = 'Workflow',
+}
+
+interface ExtendedMessage extends IMessage {
+  messageOpensCallbackType?: CallbackType
+  renderEvent?: () => JSX.Element
+  createdAt: Date | number
+  user: { _id: string | number }
+  onDetails?: () => void
+}
+
+interface ChatMessageProps {
+  messageProps: MessageProps<ExtendedMessage>
+}
+
+interface MessageTimeProps {
+  message: ExtendedMessage
+  alignRight?: boolean
+  prefix?: string
+}
+
+const textForCallbackType = (callbackType: CallbackType): string => {
+  switch (callbackType) {
+    case CallbackType.CredentialOffer:
+      return 'ViewOffer'
+    case CallbackType.ProofRequest:
+      return 'ViewRequest'
+    case CallbackType.PresentationSent:
+      return 'OpenPresentation'
+    case CallbackType.Workflow:
+      return 'ViewWorkflow'
+    default:
+      return 'OpenItem'
+  }
+}
+
+const testIdForCallbackType = (callbackType: CallbackType): string => {
+  const text = textForCallbackType(callbackType)
+  const textWithoutSpaces = text.replace(/\s+/g, '')
+  return testIdWithKey(`Chat.${textWithoutSpaces}`)
+
+}
+
+export const MessageTime: React.FC<MessageTimeProps> = ({ message, alignRight = false, prefix }) => {
   const { ChatTheme: theme } = useTheme()
+  const { t } = useTranslation()
+  const timeStyle = alignRight ? theme.timeStyleRight : theme.timeStyleLeft
+
+  let addText = ''
+  switch (message.text) {
+    case 'This is the title as you can see':
+      addText = t('Chat.ReceivedAt')
+      break
+    case 'You connected with':
+      addText = t('Chat.ReceivedAt')
+      break
+    case 'Action Menu':
+      addText = t('Chat.ReceivedAt')
+      break
+    case 'accepted':
+      addText = t('Chat.AcceptedAt')
+      break
+    case 'declined a credential offer':
+      addText = t('Chat.DeclinedAt')
+      break
+    default:
+  }
 
   return (
-    <ThemedText style={message.user._id === Role.me ? theme.timeStyleRight : theme.timeStyleLeft}>
-      {formatTime(message.createdAt, { includeHour: true, chatFormat: true, trim: true })}
+    <ThemedText style={[timeStyle, styles.timeText]}>
+      {prefix} {addText} {formatTime(new Date(message.createdAt), { includeHour: true, chatFormat: true, trim: true })}
     </ThemedText>
   )
 }
 
-// MessageIcon component - intentionally unused for now, kept for future use
-// const MessageIcon: React.FC<{ type: CallbackType }> = ({ type }) => {
-//   const { ChatTheme: theme, Assets } = useTheme()
-//   if (type === CallbackType.PresentationSent) return null
-//   return (
-//     <View style={type !== CallbackType.CredentialOffer ? theme.documentIconContainer : {}}>
-//       {type === CallbackType.ProofRequest && <Assets.svg.iconProofRequestLight width={40} height={40} />}
-//     </View>
-//   )
-// }
-
 export const ChatMessage: React.FC<ChatMessageProps> = ({ messageProps }) => {
-  const { t } = useTranslation()
-  const { ChatTheme: theme } = useTheme()
-  const message = useMemo(() => messageProps.currentMessage as ExtendedChatMessage, [messageProps])
 
-  const textForCallbackType = (callbackType: CallbackType) => {
-    // Receiving a credential offer
-    if (callbackType === CallbackType.CredentialOffer) {
-      return t('Chat.ViewOffer')
-    }
-
-    // Receiving a proof request
-    if (callbackType === CallbackType.ProofRequest) {
-      return t('Chat.ViewRequest')
-    }
-
-    // After a presentation of a proof
-    if (callbackType === CallbackType.PresentationSent) {
-      return t('Chat.OpenPresentation')
-    }
-
-    // Workflow actions
-    if (callbackType === CallbackType.Workflow) {
-      return t('Chat.ViewWorkflow')
-    }
-
-    return t('Chat.OpenItem')
+  if (!messageProps.currentMessage) {
+    return null
   }
 
-  const testIdForCallbackType = (callbackType: CallbackType) => {
-    const text = textForCallbackType(callbackType)
-    const textWithoutSpaces = text.replace(/\s+/g, '')
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const message = useMemo(() => messageProps.currentMessage as ExtendedMessage, [messageProps.currentMessage])
 
-    return testIdWithKey(textWithoutSpaces)
-  }
-
-  const { ColorPalette } = useTheme()
-
-  // For messages with callback types (proof request, credential offer), render in a combined card
   if (message.messageOpensCallbackType) {
-    const cardStyle = {
-      backgroundColor: ColorPalette.brand.secondaryBackground,
-      borderRadius: 12,
-      borderWidth: 1,
-      borderColor: ColorPalette.brand.primary,
-      maxWidth: 320,
-      overflow: 'hidden' as const,
-    }
+    const isMe = message.user._id === Role.me
 
-    const buttonStyle = {
-      backgroundColor: ColorPalette.brand.primary,
-      paddingVertical: 12,
-      paddingHorizontal: 16,
-      alignItems: 'center' as const,
-      justifyContent: 'center' as const,
+    let addedText = ''
+    switch (message.text) {
+      case 'sent a credential offer':
+        addedText = t('Chat.ReceivedAt')
+        break
+      case 'received a credential':
+        addedText = t('Chat.AcceptedAt')
+        break
+      default:
     }
-
     return (
-      <View style={{ marginBottom: 8 }}>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: message.user._id === Role.me ? 'flex-end' : 'flex-start',
-          }}
-        >
-          <View style={cardStyle}>
-            {/* Message content */}
-            <View style={{ padding: 12 }}>{message.renderEvent?.() || null}</View>
-            {/* Action button */}
-            <TouchableOpacity
-              accessibilityLabel={textForCallbackType(message.messageOpensCallbackType)}
-              accessibilityRole="button"
-              testID={testIdForCallbackType(message.messageOpensCallbackType)}
-              onPress={() => {
-                if (message.onDetails) message.onDetails()
-              }}
-              style={buttonStyle}
-              hitSlop={hitSlop}
-            >
-              <ThemedText style={{ color: ColorPalette.grayscale.white, fontWeight: '600', fontSize: 16 }}>
-                {textForCallbackType(message.messageOpensCallbackType)}
-              </ThemedText>
-            </TouchableOpacity>
-          </View>
+      <TouchableOpacity
+        testID={testIdForCallbackType(message.messageOpensCallbackType)}
+        style={styles.messageContainer}
+        onPress={message.onDetails}
+      >
+        <View style={[styles.callbackContainer, isMe ? styles.callbackLeft : styles.callbackLeft]}>
+          {message.renderEvent?.() || null}
         </View>
-        {/* Timestamp */}
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: message.user._id === Role.me ? 'flex-end' : 'flex-start',
-            marginTop: 4,
-          }}
-        >
-          <MessageTime message={message} />
+
+        <View style={[styles.timeContainer, isMe ? styles.timeLeft : styles.timeLeft]}>
+          <MessageTime message={message} alignRight={false} prefix={addedText} />
         </View>
-      </View>
+      </TouchableOpacity>
     )
   }
 
-  // Regular messages without callback types
+  // Regular messages
+  const isMe = message.user._id === Role.me
+
   return (
-    <View
-      style={{
-        flexDirection: 'row',
-        justifyContent: message.user._id === Role.me ? 'flex-end' : 'flex-start',
-      }}
-    >
-      <View
-        style={{
-          backgroundColor: 'transparent',
-        }}
-      >
+    <View style={styles.messageContainer}>
+      <View style={[styles.bubbleContainer, isMe ? styles.bubbleRight : styles.bubbleLeft]}>
         <Bubble
-          {...messageProps}
+          {...(messageProps as any)}
           key={messageProps.key}
           renderUsernameOnMessage={false}
-          renderMessageText={() => (
-            <View style={{ backgroundColor: 'transparent' }}>{message.renderEvent?.() || null}</View>
-          )}
+          renderMessageText={() => <View style={styles.messageTextContainer}>{message.renderEvent?.() || null}</View>}
           containerStyle={{
-            left: {
-              margin: 0,
-            },
-            right: {
-              margin: 0,
-            },
+            left: styles.containerLeft,
+            right: styles.containerRight,
           }}
           wrapperStyle={{
-            left: {
-              backgroundColor: 'transparent',
-              marginRight: 0,
-              marginLeft: 0,
-              padding: 0,
-            },
-            right: {
-              backgroundColor: 'transparent',
-              marginLeft: 0,
-              marginRight: 0,
-              padding: 0,
-            },
+            left: styles.wrapperLeft,
+            right: styles.wrapperRight,
           }}
           textStyle={{
-            left: { ...theme.leftText },
-            right: { ...theme.rightText },
+            left: styles.leftText,
+            right: styles.rightText,
           }}
-          renderTime={() => <MessageTime message={message} />}
+          renderTime={() => null}
           renderCustomView={() => null}
         />
+      </View>
+      <View style={styles.timeBelowBubble}>
+        <MessageTime message={message} alignRight={false} />
       </View>
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  messageContainer: {
+    width: '100%',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+
+  // Callback type messages (credential offers, proof requests)
+  callbackContainer: {
+    width: '90%',
+  },
+  callbackLeft: {
+    alignItems: 'flex-start',
+  },
+  callbackRight: {
+    alignItems: 'flex-end',
+  },
+
+  // Time
+  timeContainer: {
+    width: '90%',
+    marginLeft: '-6%',
+  },
+  timeLeft: {
+    alignItems: 'flex-start',
+  },
+  timeRight: {
+    alignItems: 'flex-start',
+  },
+  timeText: {
+    fontSize: 12,
+    color: ColorPalette.grayscale.white,
+    fontFamily: 'Open Sans',
+    fontStyle: 'normal',
+    fontWeight: '700',
+    lineHeight: 18,
+  },
+
+  // Regular messages bubble
+  bubbleContainer: {
+    width: '90%',
+  },
+  bubbleLeft: {
+    alignItems: 'flex-start',
+  },
+  bubbleRight: {
+    alignItems: 'flex-start',
+  },
+
+  // Bubble styles
+  containerLeft: {
+    margin: 0,
+    maxWidth: '100%',
+  },
+  containerRight: {
+    margin: 0,
+    maxWidth: '100%',
+  },
+  wrapperLeft: {
+    backgroundColor: 'transparent',
+    marginRight: 0,
+    padding: 0,
+    maxWidth: '100%',
+  },
+  wrapperRight: {
+    backgroundColor: 'transparent',
+    marginLeft: 0,
+    marginRight: 0,
+    padding: 0,
+    maxWidth: '100%',
+  },
+  leftText: {
+    color: '#000000',
+    fontSize: 14,
+    textAlign: 'left',
+  },
+  rightText: {
+    color: '#000000',
+    fontSize: 14,
+  },
+
+  messageTextContainer: {
+    backgroundColor: 'transparent',
+  },
+  timeBelowBubble: {
+    alignSelf: 'flex-start',
+  },
+})

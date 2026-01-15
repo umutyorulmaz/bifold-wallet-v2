@@ -76,23 +76,41 @@ describe('CredentialList Screen', () => {
      * When the holder taps on a credential
      * Then the holder is taken to the credential detail screen of that credential
      */
+    // test('pressing on a credential in the list takes the holder to a credential detail screen', async () => {
+    //   const navigation = useNavigation()
+    //   const { findAllByText } = render(
+    //     <BasicAppContext>
+    //       <ListCredentials />
+    //     </BasicAppContext>
+    //   )
+    //
+    //   await act(async () => {
+    //     const credentialItemInstances = await findAllByText('Person', { exact: false })
+    //
+    //     expect(credentialItemInstances).toHaveLength(1)
+    //
+    //     const credentialItemInstance = credentialItemInstances[0]
+    //
+    //     fireEvent(credentialItemInstance, 'press')
+    //
+    //     expect(navigation.navigate).toBeCalledWith('Credential Details', {
+    //       credentialId: testOpenVPCredentialRecord.id,
+    //     })
+    //   })
+    // })
+
+
     test('pressing on a credential in the list takes the holder to a credential detail screen', async () => {
       const navigation = useNavigation()
-      const { findAllByText } = render(
+      const { findByTestId } = render(
         <BasicAppContext>
           <ListCredentials />
         </BasicAppContext>
       )
 
       await act(async () => {
-        const credentialItemInstances = await findAllByText('Person', { exact: false })
-
-        expect(credentialItemInstances).toHaveLength(1)
-
-        const credentialItemInstance = credentialItemInstances[0]
-
-        fireEvent(credentialItemInstance, 'press')
-
+        const credentialItem = await findByTestId('CredentialCard-default')
+        fireEvent.press(credentialItem)
         expect(navigation.navigate).toBeCalledWith('Credential Details', {
           credentialId: testOpenVPCredentialRecord.id,
         })

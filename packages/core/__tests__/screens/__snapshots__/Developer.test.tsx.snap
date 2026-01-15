@@ -907,7 +907,7 @@ exports[`Developer Screen acceptDevCredentials can be toggled 1`] = `
                 "padding": 16,
               }
             }
-            testID="com.ariesbifold:id/Refresh Credentials"
+            testID="com.ariesbifold:id/Refresh ListCredentials"
           >
             <View
               style={
@@ -1859,7 +1859,7 @@ exports[`Developer Screen enableWalletNaming can be toggled 1`] = `
                 "padding": 16,
               }
             }
-            testID="com.ariesbifold:id/Refresh Credentials"
+            testID="com.ariesbifold:id/Refresh ListCredentials"
           >
             <View
               style={
@@ -2811,7 +2811,7 @@ exports[`Developer Screen preventAutoLock can be toggled 1`] = `
                 "padding": 16,
               }
             }
-            testID="com.ariesbifold:id/Refresh Credentials"
+            testID="com.ariesbifold:id/Refresh ListCredentials"
           >
             <View
               style={
@@ -3763,7 +3763,7 @@ exports[`Developer Screen screen renders correctly 1`] = `
                 "padding": 16,
               }
             }
-            testID="com.ariesbifold:id/Refresh Credentials"
+            testID="com.ariesbifold:id/Refresh ListCredentials"
           >
             <View
               style={
@@ -4715,7 +4715,7 @@ exports[`Developer Screen useConnectionInviterCapability can be toggled 1`] = `
                 "padding": 16,
               }
             }
-            testID="com.ariesbifold:id/Refresh Credentials"
+            testID="com.ariesbifold:id/Refresh ListCredentials"
           >
             <View
               style={
@@ -5667,7 +5667,7 @@ exports[`Developer Screen useDevVerifierTemplates can be toggled 1`] = `
                 "padding": 16,
               }
             }
-            testID="com.ariesbifold:id/Refresh Credentials"
+            testID="com.ariesbifold:id/Refresh ListCredentials"
           >
             <View
               style={
@@ -6619,7 +6619,7 @@ exports[`Developer Screen useVerifierCapability can be toggled 1`] = `
                 "padding": 16,
               }
             }
-            testID="com.ariesbifold:id/Refresh Credentials"
+            testID="com.ariesbifold:id/Refresh ListCredentials"
           >
             <View
               style={
