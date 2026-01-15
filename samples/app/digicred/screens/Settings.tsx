@@ -141,7 +141,7 @@ const Settings: React.FC<SettingsProps> = ({ navigation }) => {
 
           {/*<MenuCard title="Network" onPress={() => {}} testID={testIdWithKey('Network')} />*/}
 
-          <MenuCard title="Guides / Help" onPress={() => {}} testID={testIdWithKey('GuidesHelp')} />
+          {/*<MenuCard title="Guides / Help" onPress={() => {}} testID={testIdWithKey('GuidesHelp')} />*/}
 
           {/*<MenuCard*/}
           {/*  title="Transfer Wallet"*/}

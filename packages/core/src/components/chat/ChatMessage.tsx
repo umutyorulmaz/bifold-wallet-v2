@@ -102,6 +102,7 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({ messageProps }) => {
     return null
   }
 
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const message = useMemo(() => messageProps.currentMessage as ExtendedMessage, [messageProps.currentMessage])
 
   if (message.messageOpensCallbackType) {

@@ -379,10 +379,7 @@ const CredentialDetails: React.FC<CredentialDetailsProps> = ({ navigation, route
             <View style={styles.metadataContainer}>
               <Text style={styles.metadataTitle}>Metadata</Text>
               <Text style={styles.metadataText}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi vehicula velit et diam rutrum imperdiet.
-                Nunc mattis blandit diam vel vulputate. Sed quis auctor libero. Lorem ipsum dolor sit amet, consectetur
-                adipiscing elit. Curabitur leo magna, tristique eu elementum eget, ullamcorper vel justo. Vivamus leo
-                tellus, consequat id ullamcorper vitae, maximus ut ipsum.
+
               </Text>
             </View>
           </View>

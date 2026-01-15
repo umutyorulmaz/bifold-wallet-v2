@@ -244,7 +244,7 @@ const Chat: React.FC<ChatProps> = ({ route }) => {
       }
     }
 
-    const top = overflowAnchor.y + overflowAnchor.h + 8
+    const top = overflowAnchor.y + overflowAnchor.h
     const right = 8
 
     return {
