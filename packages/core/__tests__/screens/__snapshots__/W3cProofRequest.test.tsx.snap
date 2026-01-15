@@ -615,7 +615,7 @@ exports[`displays a proof request screen ProofRequest Screen, W3C displays a pro
                     "nonRevoked": undefined,
                     "restrictions": Array [
                       Object {
-                        "cred_def_id": "did:indy:bcovrin:test:TfuPA6whW681GfU6fj1e3k/anoncreds/v0/CLAIM_DEF/462230/latest",
+                        "cred_def_id": "did:indy:bcovrin:test:test",
                         "schema_id": "did:indy:bcovrin:test:TfuPA6whW681GfU6fj1e3k/anoncreds/v0/SCHEMA/Identity Schemaaf92af92-524d-41b6-bee8-00fb45e8eb6c/1.0.0",
                       },
                     ],
@@ -635,7 +635,7 @@ exports[`displays a proof request screen ProofRequest Screen, W3C displays a pro
                     "nonRevoked": undefined,
                     "restrictions": Array [
                       Object {
-                        "cred_def_id": "did:indy:bcovrin:test:TfuPA6whW681GfU6fj1e3k/anoncreds/v0/CLAIM_DEF/462230/latest",
+                        "cred_def_id": "did:indy:bcovrin:test:test",
                         "schema_id": "did:indy:bcovrin:test:TfuPA6whW681GfU6fj1e3k/anoncreds/v0/SCHEMA/Identity Schemaaf92af92-524d-41b6-bee8-00fb45e8eb6c/1.0.0",
                       },
                     ],
@@ -645,7 +645,7 @@ exports[`displays a proof request screen ProofRequest Screen, W3C displays a pro
                     "value": "2022-02-11 20:00:18.180718",
                   },
                 ],
-                "credDefId": "did:indy:bcovrin:test:TfuPA6whW681GfU6fj1e3k/anoncreds/v0/CLAIM_DEF/462230/latest",
+                "credDefId": "did:indy:bcovrin:test:test",
                 "credExchangeRecord": Object {
                   "_tags": Object {},
                   "autoAcceptCredential": undefined,
@@ -772,7 +772,7 @@ exports[`displays a proof request screen ProofRequest Screen, W3C displays a pro
                         "width": 675,
                       }
                     }
-                    testID="CredentialCard-Unknown Credential"
+                    testID="CredentialCard-test"
                   >
                     <View
                       style={
@@ -856,7 +856,7 @@ exports[`displays a proof request screen ProofRequest Screen, W3C displays a pro
                                 ]
                               }
                             >
-                              U
+                              T
                             </Text>
                           </View>
                         </View>
@@ -883,7 +883,7 @@ exports[`displays a proof request screen ProofRequest Screen, W3C displays a pro
                               ]
                             }
                           >
-                            Unknown Credential
+                            test
                           </Text>
                           <Text
                             style={

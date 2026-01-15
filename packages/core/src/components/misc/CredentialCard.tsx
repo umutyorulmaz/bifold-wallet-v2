@@ -49,10 +49,10 @@ const formatDate = (date: Date): string => {
   })
 }
 
-const CredentialCard: React.FC<CredentialCardCustomProps> = ({ credential, logoUrl, onPress, credentialErrors }) => {
+const CredentialCard: React.FC<CredentialCardCustomProps> = ({ credential, logoUrl, onPress, credentialErrors, credDefId: propCredDefId }) => {
   const isRevoked = credentialErrors?.includes(CredentialErrors.Revoked)
   const metadata = credential ? credential.metadata.get(AnonCredsCredentialMetadataKey) : null
-  const credDefId = metadata?.credentialDefinitionId || ''
+  const credDefId = propCredDefId || metadata?.credentialDefinitionId || ''
   const credDefTag = credDefId.split(':').pop() || 'Unknown Credential'
   const issuedDate = credential ? formatDate(new Date(credential.updatedAt || Date.now())) : ''
   const schoolId = credential instanceof CredentialExchangeRecord ? getSchoolIdentifier(credential) : ''
