@@ -76,11 +76,11 @@ const styles = StyleSheet.create({
     borderRadius: 28,
     marginBottom: 16,
     borderWidth: 1,
-    borderColor: DigiCredColors.card.border,
+    borderColor: 'white',
   },
   input: {
     flex: 1,
-    height: 56,
+    height: 50,
     paddingHorizontal: 20,
     fontSize: 16,
     color: DigiCredColors.text.primary,

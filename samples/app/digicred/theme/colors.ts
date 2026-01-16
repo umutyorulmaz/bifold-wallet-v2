@@ -79,8 +79,8 @@ export const DigiCredColors = {
   // HomeNoChannels
   homeNoChannels: {
     darkCircle: '#25272A',
-    buttonGradient: ['#6666CC', '#8484DC', '#6666CC'],
-    buttonGradientLocations: [0, 0.5, 1],
+    buttonGradient: ['#6666CC', '#8484DC',  '#6666CC'],
+    buttonGradientLocations: [0, 0.5,1],
     itemBorder: '#2F2F2F',
     itemBackground: '#25272A',
     itemIconBackground: 'transparent',
@@ -92,7 +92,6 @@ export const DigiCredColors = {
     accept: '#6666CC',
     decline: '#FF9533',
     error: '#FF4445',
-
   },
 }
 

@@ -2,7 +2,7 @@ import React from 'react'
 import { StyleSheet, Text, View, TouchableOpacity, Image, ImageSourcePropType } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
-import { DigiCredColors } from '../theme'
+import { DigiCredColors } from '../../theme'
 
 export interface CredentialCardProps {
   title: string

@@ -56,12 +56,12 @@ const ScreenWrapper: React.FC<ScreenWrapperProps> = ({
   controlsContainerStyle,
   padded = true,
 }) => {
-  const { Spacing, ColorPalette } = useTheme()
+  const { Spacing } = useTheme()
 
   const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: ColorPalette.brand.primaryBackground,
+      // backgroundColor: ColorPalette.brand.primaryBackground,
     },
   })
 

@@ -1,17 +1,10 @@
 /* eslint-disable no-console */
-/**
- * ActionMenuBubble Component
- *
- * Renders action menu messages using ContentRegistry and FormFieldRegistry.
- * Enhanced with registry pattern for extensibility.
- */
-
 import React, { useState } from 'react'
-import { StyleSheet, View } from 'react-native'
-
+import { Dimensions, StyleSheet, View } from 'react-native'
 import { useTheme } from '../../../../contexts/theme'
 import { ActionMenuContentItem } from '../../types'
 import { ContentRegistry, FormFieldRegistry } from '../../ui-elements'
+// import { TOKENS, useServices } from '../../../../container-api'
 
 interface ActionMenuBubbleProps {
   content: ActionMenuContentItem[]
@@ -164,18 +157,13 @@ export const ActionMenuBubble: React.FC<ActionMenuBubbleProps> = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [workflowID]) // Only depend on workflowID
-
-  const colors = {
-    primary: ColorPalette.brand.primary,
-    text: ColorPalette.brand.text,
-    background: ColorPalette.brand.secondaryBackground,
-    border: ColorPalette.brand.primary,
-  }
+  const { width } = Dimensions.get('window')
+  // const [GradientBackground] = useServices([TOKENS.COMPONENT_GRADIENT_BACKGROUND])
 
   const styles = StyleSheet.create({
     bubble: {
-      backgroundColor: ColorPalette.brand.secondaryBackground,
-      borderRadius: 12,
+      backgroundColor: ColorPalette.grayscale.digicredBackgroundModal,
+      borderRadius: 16,
       padding: 16,
       borderWidth: 1,
       borderColor: ColorPalette.brand.primary,
@@ -199,19 +187,40 @@ export const ActionMenuBubble: React.FC<ActionMenuBubbleProps> = ({
       color: ColorPalette.brand.text,
       lineHeight: 22,
     },
+    buttonContainer: {
+      flexDirection: 'column',
+      alignItems: 'center',
+    },
     button: {
-      paddingVertical: 14,
-      paddingHorizontal: 20,
-      borderRadius: 12,
-      marginVertical: 6,
-      width: '100%',
-      backgroundColor: ColorPalette.brand.primary,
+      flexDirection: 'row',
+      paddingTop: 12,
+      paddingRight: 27,
+      paddingBottom: 12,
+      paddingLeft: 32,
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderRadius: 16,
+      borderWidth: 1,
+      height: 50,
     },
     buttonText: {
-      fontSize: 15,
-      fontWeight: '600',
+      fontSize: 16,
+      fontWeight: '700',
+      lineHeight: 24,
       textAlign: 'center',
       color: ColorPalette.grayscale.white,
+      textTransform: 'uppercase',
+    },
+    textInput: {
+      height: 48,
+      borderColor: ColorPalette.brand.primary,
+      borderWidth: 1.5,
+      marginBottom: 12,
+      paddingHorizontal: 16,
+      borderRadius: 12,
+      backgroundColor: ColorPalette.brand.tertiaryBackground,
+      color: ColorPalette.brand.text,
+      fontSize: 15,
     },
     input: {
       height: 48,
@@ -245,6 +254,25 @@ export const ActionMenuBubble: React.FC<ActionMenuBubbleProps> = ({
       marginBottom: 12,
       paddingVertical: 4,
     },
+    radioButton: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: 12,
+      paddingVertical: 4,
+    },
+    radioButtonIcon: {
+      width: 22,
+      height: 22,
+      borderRadius: 11,
+      borderWidth: 2,
+      marginRight: 12,
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderColor: ColorPalette.brand.primary,
+    },
+    radioButtonIconSelected: {
+      backgroundColor: ColorPalette.brand.primary,
+    },
     radioOuter: {
       width: 22,
       height: 22,
@@ -261,6 +289,10 @@ export const ActionMenuBubble: React.FC<ActionMenuBubbleProps> = ({
     },
     radioLabel: {
       fontSize: 15,
+    },
+    radioButtonText: {
+      fontSize: 15,
+      color: ColorPalette.brand.text,
     },
     checkboxRow: {
       flexDirection: 'row',

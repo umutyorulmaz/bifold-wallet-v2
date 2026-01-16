@@ -109,7 +109,7 @@ exports[`ProofRequestDetails Screen Renders correctly 1`] = `
             testID="com.ariesbifold:id/CredentialCard"
           >
             <View
-              accessibilityLabel=",  Student Credentials.Credential. First Name, undefined null, Last Name, undefined null"
+              accessibilityLabel=",  Student ListCredentials.Credential. First Name, undefined null, Last Name, undefined null"
               accessible={true}
               style={
                 Object {

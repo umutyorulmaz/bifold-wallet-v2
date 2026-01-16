@@ -1,27 +1,19 @@
 import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import {
-  View,
-  Text,
-  StyleSheet,
-  FlatList,
-  StatusBar,
-  TouchableOpacity,
-} from 'react-native'
+import { View, Text, StyleSheet, FlatList, StatusBar, TouchableOpacity } from 'react-native'
 import { useNavigation, useIsFocused } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import { AnonCredsCredentialMetadataKey } from '@credo-ts/anoncreds'
-import { CredentialExchangeRecord, CredentialState, SdJwtVcRecord, W3cCredentialRecord } from '@credo-ts/core'
-import { useCredentialByState } from '@credo-ts/react-hooks'
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
-
 import {
-  useStore,
-  CredentialCard,
-  useTour,
-  DispatchAction,
-  testIdWithKey,
-} from '@bifold/core'
+  ConnectionRecord,
+  CredentialExchangeRecord,
+  CredentialState,
+  SdJwtVcRecord,
+  W3cCredentialRecord,
+} from '@credo-ts/core'
+import { useConnections, useCredentialByState } from '@credo-ts/react-hooks'
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+import { useStore, useTour, DispatchAction, testIdWithKey, CredentialCard } from '@bifold/core'
 import { useOpenIDCredentials } from '@bifold/core/src/modules/openid/context/OpenIDCredentialRecordProvider'
 import { GenericCredentialExchangeRecord, CredentialErrors } from '@bifold/core/src/types/credentials'
 import { OpenIDCredentialType } from '@bifold/core/src/modules/openid/types'
@@ -33,25 +25,25 @@ import { Screens, Stacks } from '../../../../packages/core/src/types/navigators'
 import { GradientBackground } from '../components'
 import { DigiCredColors } from '../theme'
 
-const Credentials: React.FC = () => {
+const ListCredentials: React.FC = () => {
   const { t } = useTranslation()
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const navigation = useNavigation<StackNavigationProp<Record<string, object | undefined>>>()
   const [store, dispatch] = useStore()
   const { start, stop } = useTour()
   const screenIsFocused = useIsFocused()
+  const { records: connections } = useConnections()
+  const connectionsMap: Record<string, ConnectionRecord> = {}
+  connections.forEach((conn) => {
+    if (conn.id) connectionsMap[conn.id] = conn
+  })
 
-  const [
-    CredentialListOptions,
-    ,
-    credentialListFooter,
-    { enableTours: enableToursConfig, credentialHideList },
-  ] = useServices([
-    TOKENS.COMPONENT_CRED_LIST_OPTIONS,
-    TOKENS.COMPONENT_CRED_EMPTY_LIST,
-    TOKENS.COMPONENT_CRED_LIST_FOOTER,
-    TOKENS.CONFIG,
-  ])
+  const [CredentialListOptions, , credentialListFooter, { enableTours: enableToursConfig, credentialHideList }] =
+    useServices([
+      TOKENS.COMPONENT_CRED_LIST_OPTIONS,
+      TOKENS.COMPONENT_CRED_EMPTY_LIST,
+      TOKENS.COMPONENT_CRED_LIST_FOOTER,
+      TOKENS.CONFIG,
+    ])
 
   const {
     openIdState: { w3cCredentialRecords, sdJwtVcRecords },
@@ -65,9 +57,7 @@ const Credentials: React.FC = () => {
   ]
 
   const CredentialListFooter = credentialListFooter as React.FC<CredentialListFooterProps>
-  // CredentialEmptyList available via: credentialEmptyList as React.FC<EmptyListProps>
 
-  // Filter out hidden credentials when not in dev mode
   if (!store.preferences.developerModeEnabled) {
     credentials = credentials.filter((r) => {
       const credDefId = r.metadata.get(AnonCredsCredentialMetadataKey)?.credentialDefinitionId
@@ -87,20 +77,23 @@ const Credentials: React.FC = () => {
     }
   }, [enableToursConfig, store.tours.enableTours, store.tours.seenCredentialsTour, screenIsFocused, start, dispatch])
 
-  // stop the tour when the screen unmounts
   useEffect(() => {
     return stop
   }, [stop])
 
   const handleScanPress = () => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     navigation.navigate(Stacks.ConnectStack as string, { screen: Screens.Scan } as Record<string, unknown>)
   }
 
   const renderCardItem = (cred: GenericCredentialExchangeRecord) => {
+    const connectionId = (cred as CredentialExchangeRecord).connectionId
+    const connection = connectionId ? connectionsMap[connectionId] : undefined
+    const logoUrl = connection?.imageUrl
+
     return (
       <CredentialCard
         credential={cred as CredentialExchangeRecord}
+        logoUrl={logoUrl}
         credentialErrors={
           (cred as CredentialExchangeRecord).revocationNotification?.revocationDate && [CredentialErrors.Revoked]
         }
@@ -129,9 +122,7 @@ const Credentials: React.FC = () => {
         <Icon name="card-multiple-outline" size={48} color={DigiCredColors.button.primary} />
       </View>
       <Text style={styles.emptyTitle}>No Credentials Yet</Text>
-      <Text style={styles.emptySubtitle}>
-        Connect with an organization to receive your first credential.
-      </Text>
+      <Text style={styles.emptySubtitle}>Connect with an organization to receive your first credential.</Text>
       <TouchableOpacity
         style={styles.scanActionButton}
         onPress={handleScanPress}
@@ -147,12 +138,10 @@ const Credentials: React.FC = () => {
     <GradientBackground>
       <StatusBar barStyle="light-content" translucent backgroundColor="transparent" />
       <View style={styles.container}>
-        {/* Header */}
         <View style={styles.header}>
-          <Text style={styles.headerTitle}>{t('Screens.Credentials') || 'Credentials'}</Text>
+          <Text style={styles.headerTitle}>{t('Screens.ListCredentials') || 'ListCredentials'}</Text>
         </View>
 
-        {/* Credentials List */}
         <FlatList
           data={credentials.sort((a, b) => new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf())}
           keyExtractor={(credential) => credential.id}
@@ -175,7 +164,7 @@ const Credentials: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 50, // Account for status bar
+    paddingTop: 50,
   },
   header: {
     flexDirection: 'row',
@@ -245,4 +234,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default Credentials
+export default ListCredentials

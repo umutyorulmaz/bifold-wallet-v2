@@ -34,6 +34,7 @@ import { AgentBridge } from './services/AgentBridge'
 import { IRefreshOrchestrator } from './modules/openid/refresh/types'
 import { IWorkflowRegistry } from './modules/workflow/types'
 import { IThemeRegistry } from './modules/theme/registries/ThemeRegistry'
+import { ImageSourcePropType } from 'react-native'
 
 export type FN_ONBOARDING_DONE = (
   dispatch: React.Dispatch<ReducerAction<unknown>>,
@@ -48,6 +49,16 @@ type GenerateOnboardingWorkflowStepsFn = (
   termsVersion: number,
   agent: Agent | null
 ) => Array<OnboardingTask>
+
+interface GradientBackgroundProps {
+  children: React.ReactNode
+  style?: import('react-native').StyleProp<import('react-native').ViewStyle>
+  colors?: string[]
+  locations?: number[]
+  start?: { x: number; y: number }
+  end?: { x: number; y: number }
+  buttonPurple?: boolean
+}
 
 type ProofRequestTemplateFn = (useDevTemplates: boolean) => Array<ProofRequestTemplate>
 
@@ -160,6 +171,8 @@ export const COMPONENT_TOKENS = {
   COMPONENT_GRADIENT_BACKGROUND: 'component.gradient-background',
   COMPONENT_ABOUT_INSTITUTION: 'component.about-institution',
   COMPONENT_CREDENTIAL_BUTTONS: 'component.credential-buttons',
+  COMPONENT_SNACK_BAR_MESSAGE: 'component.snackbar-message',
+  COMPONENT_CREDENTIAL_CARD : 'component.credential-card',
 } as const
 
 export const NOTIFICATION_TOKENS = {
@@ -312,7 +325,7 @@ export type TokenMapping = {
   [TOKENS.COMPONENT_RECORD]: React.FC
   [TOKENS.COMPONENT_CONTACT_LIST_ITEM]: React.FC<ContactListItemProps>
   [TOKENS.COMPONENT_CONTACT_DETAILS_CRED_LIST_ITEM]: React.FC<ContactCredentialListItemProps>
-  [COMPONENT_TOKENS.COMPONENT_GRADIENT_BACKGROUND]: React.FC<{ children: React.ReactNode }>
+  [COMPONENT_TOKENS.COMPONENT_GRADIENT_BACKGROUND]: React.FC<GradientBackgroundProps>
   [COMPONENT_TOKENS.COMPONENT_ABOUT_INSTITUTION]: React.FC<{
     title: string
     content: string
@@ -321,8 +334,22 @@ export type TokenMapping = {
     isProcessing: boolean
     onAccept: () => void
     onDecline: () => void
+    isDisabled: boolean
   }>
-
+  [COMPONENT_TOKENS.COMPONENT_SNACK_BAR_MESSAGE]: React.FC<{
+    message: string
+    type: any
+    showIcon?: boolean
+  }>
+  [COMPONENT_TOKENS.COMPONENT_CREDENTIAL_CARD]: React.FC<{
+    title: string
+    subtitle?: string
+    date?: string
+    notificationText?: string
+    logoSource?: ImageSourcePropType | string
+    onPress?: () => void
+    testID?: string
+  }>
   [TOKENS.INLINE_ERRORS]: InlineErrorConfig
   [TOKENS.CUSTOM_NAV_STACK_1]: React.FC
   [TOKENS.COMPONENT_CONNECTION_ALERT]: React.FC<{ connectionLabel?: string }>

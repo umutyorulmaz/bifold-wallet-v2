@@ -15,7 +15,6 @@ export const renderActions = (
         width: 40,
         height: 40,
         marginBottom: 6,
-        marginLeft: 20,
       }}
       icon={() => (
         <Icon

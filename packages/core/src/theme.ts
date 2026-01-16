@@ -197,6 +197,7 @@ export interface IGrayscaleColors {
   veryLightGrey: string
   white: string
   digicredBackgroundModal: string
+  digicredBorderAction: string
 }
 
 export interface IErrorColors {
@@ -244,6 +245,7 @@ const GrayscaleColors: IGrayscaleColors = {
   veryLightGrey: '#F2F2F2',
   white: '#FFFFFF',
   digicredBackgroundModal: '#25272A',
+  digicredBorderAction: '#004D4D',
 }
 
 const InlineErrorMessageColors: IErrorColors = {

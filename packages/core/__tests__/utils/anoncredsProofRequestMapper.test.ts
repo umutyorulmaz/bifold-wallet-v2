@@ -94,7 +94,7 @@ describe('getDescriptorMetadata', () => {
             {
               schema_id:
                 'did:indy:bcovrin:test:TfuPA6whW681GfU6fj1e3k/anoncreds/v0/SCHEMA/Identity Schemaaf92af92-524d-41b6-bee8-00fb45e8eb6c/1.0.0',
-              cred_def_id: 'did:indy:bcovrin:test:TfuPA6whW681GfU6fj1e3k/anoncreds/v0/CLAIM_DEF/462230/latest',
+              cred_def_id: 'did:indy:bcovrin:test:test',
             },
           ],
           non_revoked: undefined,
@@ -106,7 +106,7 @@ describe('getDescriptorMetadata', () => {
             {
               schema_id:
                 'did:indy:bcovrin:test:TfuPA6whW681GfU6fj1e3k/anoncreds/v0/SCHEMA/Identity Schemaaf92af92-524d-41b6-bee8-00fb45e8eb6c/1.0.0',
-              cred_def_id: 'did:indy:bcovrin:test:TfuPA6whW681GfU6fj1e3k/anoncreds/v0/CLAIM_DEF/462230/latest',
+              cred_def_id: 'did:indy:bcovrin:test:test',
             },
           ],
           non_revoked: undefined,
@@ -122,7 +122,7 @@ describe('getDescriptorMetadata', () => {
             {
               schema_id:
                 'did:indy:bcovrin:test:TfuPA6whW681GfU6fj1e3k/anoncreds/v0/SCHEMA/Identity Schemaaf92af92-524d-41b6-bee8-00fb45e8eb6c/1.0.0',
-              cred_def_id: 'did:indy:bcovrin:test:TfuPA6whW681GfU6fj1e3k/anoncreds/v0/CLAIM_DEF/462230/latest',
+              cred_def_id: 'did:indy:bcovrin:test:test',
             },
           ],
           non_revoked: undefined,

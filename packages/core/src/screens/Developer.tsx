@@ -217,7 +217,7 @@ const Developer: React.FC = () => {
             <Button
               title={t('Global.RefreshCredentials')}
               accessibilityLabel={t('Global.RefreshCredentials')}
-              testID={testIdWithKey('Refresh Credentials')}
+              testID={testIdWithKey('Refresh ListCredentials')}
               onPress={onRunRefreshCycleTouched}
               buttonType={ButtonType.ModalPrimary}
             />

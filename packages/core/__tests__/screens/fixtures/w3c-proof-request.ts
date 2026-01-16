@@ -10,8 +10,7 @@ export const testW3cCredentialRecord = JsonTransformer.fromJSON(
       'anonCredsAttr::age::value': '16',
       'anonCredsAttr::email::value': 'test@email.com',
       'anonCredsAttr::time::value': '2022-02-11 20:00:18.180718',
-      anonCredsCredentialDefinitionId:
-        'did:indy:bcovrin:test:TfuPA6whW681GfU6fj1e3k/anoncreds/v0/CLAIM_DEF/462230/latest',
+      anonCredsCredentialDefinitionId: 'did:indy:bcovrin:test:test',
       anonCredsLinkSecretId: '278e4591-71cf-4158-9ea0-7aba860cf8c5',
       anonCredsMethodName: 'indy',
       anonCredsSchemaId:
@@ -55,7 +54,7 @@ export const testW3cCredentialRecord = JsonTransformer.fromJSON(
           cryptosuite: 'anoncreds-2023',
           type: 'DataIntegrityProof',
           proofPurpose: 'assertionMethod',
-          verificationMethod: 'did:indy:bcovrin:test:TfuPA6whW681GfU6fj1e3k/anoncreds/v0/CLAIM_DEF/462230/latest',
+          verificationMethod: 'did:indy:bcovrin:test:test',
           proofValue:
             'ukgGEqXNjaGVtYV9pZNl6ZGlkOmluZHk6YmNvdnJpbjp0ZXN0OlRmdVBBNndoVzY4MUdmVTZmajFlM2svYW5vbmNyZWRzL3YwL1NDSEVNQS9JZGVudGl0eSBTY2hlbWFhZjkyYWY5Mi01MjRkLTQxYjYtYmVlOC0wMGZiNDVlOGViNmMvMS4wLjCrY3JlZF9kZWZfaWTZUWRpZDppbmR5OmJjb3ZyaW46dGVzdDpUZnVQQTZ3aFc2ODFHZlU2ZmoxZTNrL2Fub25jcmVkcy92MC9DTEFJTV9ERUYvNDYyMjMwL2xhdGVzdKlzaWduYXR1cmWCrHBfY3JlZGVudGlhbISjbV8y3AAgzPJOcMylzNpDRl_MsgQyzOEZJMyyV8y6FEvM63AUBV1uzPIhTAXMv8z6N6Fh3AEAcXnMnDjMmMzZSxt-UMyMSsy6NGAZzILMrmclzM47zI7M6DnM4czHcRcVLADMwczsShUXZWPMow_MhMzCPszEbMzoazxSXwU7HjxVzIzMk8yrzPULTEHM88yYJiBTzK0ozPs6V1padMzWVszWzJ7MysylNG3MxHJtemXM-lBgzIXM-gfMyEozzIA0PDLMoMyizL7MvcybzM0ZzKx6zL_Mu8zVLMylzLUaLyUrecyDZczjzMnM3h3M68zBdMzyzOQuAsySzJgMzIciF0hNLMy3D8zmF8z_NszLCT3MrWrMsMyhD8yhzL3M63ZAb8yYC8ybzMvMw3MszLXMvsyabjQvzPVEDW3M2CoRzOPMqXoMIMy7zJ0gAMyizKR2zITMqDLM78ybzNElzJTMv8zozNBwzKDMiTbM-BdqzO7Mn8ywzLNGzKHMzcyTP1TMm8zAOjksfsz1zO90zJZTzPfM2szLzNzMz8ylPF7MtU82zInMzhQhzKB_WkHMswShZdwASxAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGoGzM4GP8zAzOHM7Mzqfgw3zIfM6ymhdtwBVQjMiMziM8ytzLzMi8zbWcywzOfM1syizPpYLMzbfFDMr8zbG8ygaR1eVMzHalvMt0YjzLVbTU0fETXM7MzYQ8zezIDM0cyUzNlxzIdrzOzMisyQzMDMiXN_NszAzMFBNQbMsiwJFcz7fRY2cBzMssywzMfM2MzrDn0tzIRwzODMqAXMr0VvXMzLK8yrby0XzJx8zOnMwcypZ8y1zIvM0MyNzNdcQsyqzNBGzKHM0GDMgcz7NEIzMDoazKPMzcyizKDM88zOzIPMvczwzJAISDl_XsyEzP3Mm3bM0nZGQ8yTzLhAJAfMqcyBH0gfzPdtRcz4PMyjzN92Y8y7C3zM0czEzP0IzNJ_zMMWzOFAzOLMgcyAQysEeszdacysfAp0zOMHzMNOzLLM4kc3OcyqzLTMoczWzJTMxl8pMn3MwE1bzI3M8syLzNPM3My3zK_MsGU1zO5TLczaOcy9zM3Mk8y7zMsTbsyKT8zyzMcWeSbM0iwuzITMz8zTBMyFTszEK8zOHwBgSlhnL8zVzLDMuXhNBCzM_8z6zJV2zLnMqCMlzP8gLMzCzMcGQnzMjsz3zOzM_8yCSUcJzIvMxSROzKPM13guCcz3Q1HM48ztNWDM5szGzJHMqinMvczpzMzMm8yUzK_MmVXM38ztV2zM1cz4KF7M7xjMrszQzMMhzI4vzOXMksyurHJfY3JlZGVudGlhbMC7c2lnbmF0dXJlX2NvcnJlY3RuZXNzX3Byb29mgqJzZdwBAMzCfsydAwBHFMz4PczVzJZoGMyQbhHMy3tIzK_M7mjMvjLM78zTGszOzMvM9szcEk5NWMyHKsz0aUHMgcycYczozLhYzKtUMDUCzIlKFcyhzK3M-8yMzPwLzOLM9czlQDQOzIDM_hNEzMbMy8zqzOPMiszJzPLMhHJizOxOzJQdzLw-zJh4zKzMwMyQzL7MqljMmMzAzNIkCMyuzKBlzIvMxHxNzPYvzN3MscyhzMFXzNTMiMzwzLNHJczBIA87F8y1zIzMtsyXzLcWzNh8zPN1zNPMjczbzNQkW8yQH2TM5lgHzL44zNrMxybMuMyBzOoMZi3M517M0DzMyMyBYEjMz8z6G3_MsMy9zJ3M18yscjfMmMzhYkDMzXnM08yrzL7Mvcz2WHkBzOljKQvMgMz5zO88VhXM-1UyA2bMh8zZN39OJcykzI0IBcyQzJDMvTLM8hMQzLzMucyLR8yVCG8JzLcpzM45zPVozOVCCMzRzNTMq2JKHszxEMygZlXMylrM8xoIzP2hY9wAIMz_zJNKzNbMksznzM3MyXM0zNzMlWbM9z7MjSkKYszvzKBnzMTM3MydzLrM-cyFzMQcYczG',
         },
@@ -74,8 +73,7 @@ export const testW3cCredentialRecord2 = JsonTransformer.fromJSON(
       'anonCredsAttr::age::value': '17',
       'anonCredsAttr::email::value': 'test2@email.com',
       'anonCredsAttr::time::value': '2023-02-11 20:00:18.180718',
-      anonCredsCredentialDefinitionId:
-        'did:indy:bcovrin:test:TfuPA6whW681GfU6fj1e3k/anoncreds/v0/CLAIM_DEF/462230/latest',
+      anonCredsCredentialDefinitionId: 'did:indy:bcovrin:test:test',
       anonCredsLinkSecretId: '278e4591-71cf-4158-9ea0-7aba860cf8c5',
       anonCredsMethodName: 'indy',
       anonCredsSchemaId:
@@ -119,7 +117,7 @@ export const testW3cCredentialRecord2 = JsonTransformer.fromJSON(
           cryptosuite: 'anoncreds-2023',
           type: 'DataIntegrityProof',
           proofPurpose: 'assertionMethod',
-          verificationMethod: 'did:indy:bcovrin:test:TfuPA6whW681GfU6fj1e3k/anoncreds/v0/CLAIM_DEF/462230/latest',
+          verificationMethod: 'did:indy:bcovrin:test:test',
           proofValue:
             'ukgGEqXNjaGVtYV9pZNl6ZGlkOmluZHk6YmNvdnJpbjp0ZXN0OlRmdVBBNndoVzY4MUdmVTZmajFlM2svYW5vbmNyZWRzL3YwL1NDSEVNQS9JZGVudGl0eSBTY2hlbWFhZjkyYWY5Mi01MjRkLTQxYjYtYmVlOC0wMGZiNDVlOGViNmMvMS4wLjCrY3JlZF9kZWZfaWTZUWRpZDppbmR5OmJjb3ZyaW46dGVzdDpUZnVQQTZ3aFc2ODFHZlU2ZmoxZTNrL2Fub25jcmVkcy92MC9DTEFJTV9ERUYvNDYyMjMwL2xhdGVzdKlzaWduYXR1cmWCrHBfY3JlZGVudGlhbISjbV8y3AAgzPJOcMylzNpDRl_MsgQyzOEZJMyyV8y6FEvM63AUBV1uzPIhTAXMv8z6N6Fh3AEAcXnMnDjMmMzZSxt-UMyMSsy6NGAZzILMrmclzM47zI7M6DnM4czHcRcVLADMwczsShUXZWPMow_MhMzCPszEbMzoazxSXwU7HjxVzIzMk8yrzPULTEHM88yYJiBTzK0ozPs6V1padMzWVszWzJ7MysylNG3MxHJtemXM-lBgzIXM-gfMyEozzIA0PDLMoMyizL7MvcybzM0ZzKx6zL_Mu8zVLMylzLUaLyUrecyDZczjzMnM3h3M68zBdMzyzOQuAsySzJgMzIciF0hNLMy3D8zmF8z_NszLCT3MrWrMsMyhD8yhzL3M63ZAb8yYC8ybzMvMw3MszLXMvsyabjQvzPVEDW3M2CoRzOPMqXoMIMy7zJ0gAMyizKR2zITMqDLM78ybzNElzJTMv8zozNBwzKDMiTbM-BdqzO7Mn8ywzLNGzKHMzcyTP1TMm8zAOjksfsz1zO90zJZTzPfM2szLzNzMz8ylPF7MtU82zInMzhQhzKB_WkHMswShZdwASxAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGoGzM4GP8zAzOHM7Mzqfgw3zIfM6ymhdtwBVQjMiMziM8ytzLzMi8zbWcywzOfM1syizPpYLMzbfFDMr8zbG8ygaR1eVMzHalvMt0YjzLVbTU0fETXM7MzYQ8zezIDM0cyUzNlxzIdrzOzMisyQzMDMiXN_NszAzMFBNQbMsiwJFcz7fRY2cBzMssywzMfM2MzrDn0tzIRwzODMqAXMr0VvXMzLK8yrby0XzJx8zOnMwcypZ8y1zIvM0MyNzNdcQsyqzNBGzKHM0GDMgcz7NEIzMDoazKPMzcyizKDM88zOzIPMvczwzJAISDl_XsyEzP3Mm3bM0nZGQ8yTzLhAJAfMqcyBH0gfzPdtRcz4PMyjzN92Y8y7C3zM0czEzP0IzNJ_zMMWzOFAzOLMgcyAQysEeszdacysfAp0zOMHzMNOzLLM4kc3OcyqzLTMoczWzJTMxl8pMn3MwE1bzI3M8syLzNPM3My3zK_MsGU1zO5TLczaOcy9zM3Mk8y7zMsTbsyKT8zyzMcWeSbM0iwuzITMz8zTBMyFTszEK8zOHwBgSlhnL8zVzLDMuXhNBCzM_8z6zJV2zLnMqCMlzP8gLMzCzMcGQnzMjsz3zOzM_8yCSUcJzIvMxSROzKPM13guCcz3Q1HM48ztNWDM5szGzJHMqinMvczpzMzMm8yUzK_MmVXM38ztV2zM1cz4KF7M7xjMrszQzMMhzI4vzOXMksyurHJfY3JlZGVudGlhbMC7c2lnbmF0dXJlX2NvcnJlY3RuZXNzX3Byb29mgqJzZdwBAMzCfsydAwBHFMz4PczVzJZoGMyQbhHMy3tIzK_M7mjMvjLM78zTGszOzMvM9szcEk5NWMyHKsz0aUHMgcycYczozLhYzKtUMDUCzIlKFcyhzK3M-8yMzPwLzOLM9czlQDQOzIDM_hNEzMbMy8zqzOPMiszJzPLMhHJizOxOzJQdzLw-zJh4zKzMwMyQzL7MqljMmMzAzNIkCMyuzKBlzIvMxHxNzPYvzN3MscyhzMFXzNTMiMzwzLNHJczBIA87F8y1zIzMtsyXzLcWzNh8zPN1zNPMjczbzNQkW8yQH2TM5lgHzL44zNrMxybMuMyBzOoMZi3M517M0DzMyMyBYEjMz8z6G3_MsMy9zJ3M18yscjfMmMzhYkDMzXnM08yrzL7Mvcz2WHkBzOljKQvMgMz5zO88VhXM-1UyA2bMh8zZN39OJcykzI0IBcyQzJDMvTLM8hMQzLzMucyLR8yVCG8JzLcpzM45zPVozOVCCMzRzNTMq2JKHszxEMygZlXMylrM8xoIzP2hY9wAIMz_zJNKzNbMksznzM3MyXM0zNzMlWbM9z7MjSkKYszvzKBnzMTM3MydzLrM-cyFzMQcYczG',
         },
@@ -140,7 +138,7 @@ export const anonCredsPresentationRequest: DifPexAnonCredsProofRequest = {
       names: ['email'],
       restrictions: [
         {
-          cred_def_id: 'did:indy:bcovrin:test:TfuPA6whW681GfU6fj1e3k/anoncreds/v0/CLAIM_DEF/462230/latest',
+          cred_def_id: 'did:indy:bcovrin:test:test',
           schema_id:
             'did:indy:bcovrin:test:TfuPA6whW681GfU6fj1e3k/anoncreds/v0/SCHEMA/Identity Schemaaf92af92-524d-41b6-bee8-00fb45e8eb6c/1.0.0',
         },
@@ -152,7 +150,7 @@ export const anonCredsPresentationRequest: DifPexAnonCredsProofRequest = {
       names: ['time'],
       restrictions: [
         {
-          cred_def_id: 'did:indy:bcovrin:test:TfuPA6whW681GfU6fj1e3k/anoncreds/v0/CLAIM_DEF/462230/latest',
+          cred_def_id: 'did:indy:bcovrin:test:test',
           schema_id:
             'did:indy:bcovrin:test:TfuPA6whW681GfU6fj1e3k/anoncreds/v0/SCHEMA/Identity Schemaaf92af92-524d-41b6-bee8-00fb45e8eb6c/1.0.0',
         },
@@ -168,7 +166,7 @@ export const anonCredsPresentationRequest: DifPexAnonCredsProofRequest = {
       p_value: 18,
       restrictions: [
         {
-          cred_def_id: 'did:indy:bcovrin:test:TfuPA6whW681GfU6fj1e3k/anoncreds/v0/CLAIM_DEF/462230/latest',
+          cred_def_id: 'did:indy:bcovrin:test:test',
           schema_id:
             'did:indy:bcovrin:test:TfuPA6whW681GfU6fj1e3k/anoncreds/v0/SCHEMA/Identity Schemaaf92af92-524d-41b6-bee8-00fb45e8eb6c/1.0.0',
         },
@@ -188,7 +186,7 @@ export const anonCredsCredentialsForProofRequest: AnonCredsCredentialsForProofRe
         credentialInfo: {
           attributes: { age: 16, time: '2022-02-11 20:00:18.180718', email: 'test@email.com' },
           credentialId: '8eba4449-8a85-4954-b11c-e0590f39cbdb',
-          credentialDefinitionId: 'did:indy:bcovrin:test:TfuPA6whW681GfU6fj1e3k/anoncreds/v0/CLAIM_DEF/462230/latest',
+          credentialDefinitionId: 'did:indy:bcovrin:test:test',
           schemaId:
             'did:indy:bcovrin:test:TfuPA6whW681GfU6fj1e3k/anoncreds/v0/SCHEMA/Identity Schemaaf92af92-524d-41b6-bee8-00fb45e8eb6c/1.0.0',
           credentialRevocationId: null,
@@ -209,7 +207,7 @@ export const anonCredsCredentialsForProofRequest: AnonCredsCredentialsForProofRe
         credentialInfo: {
           attributes: { age: 16, time: '2022-02-11 20:00:18.180718', email: 'test@email.com' },
           credentialId: '8eba4449-8a85-4954-b11c-e0590f39cbdb',
-          credentialDefinitionId: 'did:indy:bcovrin:test:TfuPA6whW681GfU6fj1e3k/anoncreds/v0/CLAIM_DEF/462230/latest',
+          credentialDefinitionId: 'did:indy:bcovrin:test:test',
           schemaId:
             'did:indy:bcovrin:test:TfuPA6whW681GfU6fj1e3k/anoncreds/v0/SCHEMA/Identity Schemaaf92af92-524d-41b6-bee8-00fb45e8eb6c/1.0.0',
           credentialRevocationId: null,
@@ -231,7 +229,7 @@ export const anonCredsCredentialsForProofRequest: AnonCredsCredentialsForProofRe
         credentialInfo: {
           attributes: { age: 16, time: '2022-02-11 20:00:18.180718', email: 'test@email.com' },
           credentialId: '8eba4449-8a85-4954-b11c-e0590f39cbdb',
-          credentialDefinitionId: 'did:indy:bcovrin:test:TfuPA6whW681GfU6fj1e3k/anoncreds/v0/CLAIM_DEF/462230/latest',
+          credentialDefinitionId: 'did:indy:bcovrin:test:test',
           schemaId:
             'did:indy:bcovrin:test:TfuPA6whW681GfU6fj1e3k/anoncreds/v0/SCHEMA/Identity Schemaaf92af92-524d-41b6-bee8-00fb45e8eb6c/1.0.0',
           credentialRevocationId: null,
@@ -369,7 +367,7 @@ export const testPresentationDefinition1 = {
           },
           {
             path: ['$.proof[0].verificationMethod'],
-            const: 'did:indy:bcovrin:test:TfuPA6whW681GfU6fj1e3k/anoncreds/v0/CLAIM_DEF/462230/latest',
+            const: 'did:indy:bcovrin:test:test',
           },
         ],
       },
@@ -383,7 +381,7 @@ export const testPresentationDefinition1 = {
           { path: ['$.credentialSubject.email'] },
           {
             path: ['$.proof[0].verificationMethod'],
-            const: 'did:indy:bcovrin:test:TfuPA6whW681GfU6fj1e3k/anoncreds/v0/CLAIM_DEF/462230/latest',
+            const: 'did:indy:bcovrin:test:test',
           },
         ],
       },
@@ -399,7 +397,7 @@ export const testPresentationDefinition1 = {
             path: ['$.proof[0].verificationMethod'],
             filter: {
               type: 'string',
-              const: 'did:indy:bcovrin:test:TfuPA6whW681GfU6fj1e3k/anoncreds/v0/CLAIM_DEF/462230/latest',
+              const: 'did:indy:bcovrin:test:test',
             },
           },
         ],

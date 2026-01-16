@@ -6021,7 +6021,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native-community/datetimepicker@npm:^8.6.0":
+"@react-native-community/datetimepicker@npm:8.6.0, @react-native-community/datetimepicker@npm:^8.6.0":
   version: 8.6.0
   resolution: "@react-native-community/datetimepicker@npm:8.6.0"
   dependencies:
@@ -9334,7 +9334,7 @@ __metadata:
     "@hyperledger/indy-vdr-react-native": "npm:0.2.2"
     "@react-native-async-storage/async-storage": "npm:~1.22.3"
     "@react-native-clipboard/clipboard": "npm:~1.16.3"
-    "@react-native-community/datetimepicker": "npm:^8.6.0"
+    "@react-native-community/datetimepicker": "npm:8.6.0"
     "@react-native-community/geolocation": "npm:^3.4.0"
     "@react-native-community/netinfo": "npm:~11.3.3"
     "@react-native-community/slider": "npm:4.4.3"
@@ -9402,7 +9402,7 @@ __metadata:
     react-native-scalable-image: "npm:~1.1.0"
     react-native-screenguard: "npm:~1.1.0"
     react-native-screens: "npm:~4.4.0"
-    react-native-share: "npm:^12.2.2"
+    react-native-share: "npm:12.2.2"
     react-native-splash-screen: "npm:~3.3.0"
     react-native-svg: "npm:15.0.0"
     react-native-svg-transformer: "npm:~0.14.3"
@@ -12337,7 +12337,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"expo-av@npm:13.10.6, expo-av@npm:~13.10.6":
+"expo-av@npm:13.10.6":
   version: 13.10.6
   resolution: "expo-av@npm:13.10.6"
   peerDependencies:
@@ -19080,7 +19080,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-share@npm:^12.2.2":
+"react-native-share@npm:12.2.2, react-native-share@npm:^12.2.2":
   version: 12.2.2
   resolution: "react-native-share@npm:12.2.2"
   checksum: 10c0/8d642cd0e98fa28cdba143d94d741efb0c8eec1450ba38737eae7b7f5c2356c059aa9b04fd382ecd219c41a7e2121647406ed59e525b5c26b59af757cb132681

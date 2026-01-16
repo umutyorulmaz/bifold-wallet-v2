@@ -198,7 +198,7 @@ Aries Bifold Scanner updated to handle raw json messages -> pass them to Credo m
 - The existing application has a `Contact Chat` screen showdown only `basic` messages sent between parties.
 - We want to evaluate this screen to include records about received credentials, shared/received proofs, and pending events also.
   - How to do:
-    - Mobile: Call Credo methods to get Credentials/Proofs by a connection ID.
+    - Mobile: Call Credo methods to get ListCredentials/Proofs by a connection ID.
     - Join records into a single list by adding `type`, `role`, `text` fields depending on the record type and status (sent message, received message, received credential, received proof, etc.).
       ```
       {
