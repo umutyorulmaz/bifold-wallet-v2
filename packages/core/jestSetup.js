@@ -11,6 +11,15 @@ import path from 'path'
 mockRNDeviceInfo.getVersion = jest.fn(() => '1')
 mockRNDeviceInfo.getBuildNumber = jest.fn(() => '1')
 
+jest.mock('expo-calendar', () => ({
+  __esModule: true,
+  requestCalendarPermissionsAsync: jest.fn(async () => ({ status: 'granted' })),
+  getCalendarsAsync: jest.fn(async () => []),
+  createEventAsync: jest.fn(async () => 'mock-event-id'),
+  updateEventAsync: jest.fn(async () => 'mock-event-id'),
+  deleteEventAsync: jest.fn(async () => true),
+}))
+
 jest.mock('react-native-share', () => ({
   open: jest.fn(() => Promise.resolve()),
   shareSingle: jest.fn(() => Promise.resolve()),

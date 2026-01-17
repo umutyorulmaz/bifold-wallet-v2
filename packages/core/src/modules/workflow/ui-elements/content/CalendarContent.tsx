@@ -1,46 +1,88 @@
 /* eslint-disable no-console */
 import React from 'react'
-import { View, Text, TouchableOpacity, Alert } from 'react-native'
+import { View, Text, TouchableOpacity, Alert, Platform } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import { ContentProps, ContentRegistry } from '../ContentRegistry'
-import * as AddCalendarEvent from 'react-native-add-calendar-event'
+import * as Calendar from 'expo-calendar'
+
+const parseDate = (dateStr: string): Date | null => {
+  if (!dateStr || dateStr.length < 12) return null
+
+  const year = Number(dateStr.slice(0, 4))
+  const month = Number(dateStr.slice(4, 6)) - 1
+  const day = Number(dateStr.slice(6, 8))
+  const hour = Number(dateStr.slice(8, 10))
+  const minute = Number(dateStr.slice(10, 12))
+
+  if ([year, month, day, hour, minute].some(Number.isNaN)) return null
+  return new Date(year, month, day, hour, minute)
+}
 
 const CalendarContent: React.FC<ContentProps> = ({ item, styles, colors }) => {
   const handleAddToCalendar = async () => {
     try {
-      // Parse date string (format: YYYYMMDDHHMM)
-      const parseDate = (dateStr: string): Date => {
-        const year = parseInt(dateStr.substring(0, 4))
-        const month = parseInt(dateStr.substring(4, 6)) - 1 // Month is 0-indexed
-        const day = parseInt(dateStr.substring(6, 8))
-        const hour = parseInt(dateStr.substring(8, 10))
-        const minute = parseInt(dateStr.substring(10, 12))
-        return new Date(year, month, day, hour, minute)
+      const start = parseDate(item.start || '')
+      const end = parseDate(item.end || '')
+
+      if (!start || !end) {
+        Alert.alert('Invalid date', 'This event is missing a valid start or end time.')
+        return
       }
 
-      const startDate = parseDate(item.start || '')
-      const endDate = parseDate(item.end || '')
+      const { status } = await Calendar.requestCalendarPermissionsAsync()
+      if (status !== 'granted') {
+        Alert.alert('Permission required', 'Calendar access is needed to add this event.')
+        return
+      }
 
-      const eventConfig = {
+      //  Get the appropriate calendar ID for v12 API
+      let calendarId: string
+
+      if (Platform.OS === 'ios') {
+        const defaultCalendar = await Calendar.getDefaultCalendarAsync()
+        calendarId = defaultCalendar.id
+      } else {
+        // Android: Find the primary calendar or create one
+        const calendars = await Calendar.getCalendarsAsync(Calendar.EntityTypes.EVENT)
+        const primaryCalendar = calendars.find((cal) => cal.isPrimary) || calendars[0]
+
+        if (!primaryCalendar) {
+          // Create a calendar if none exists
+          calendarId = await Calendar.createCalendarAsync({
+            title: 'My Calendar',
+            color: colors.primary,
+            entityType: Calendar.EntityTypes.EVENT,
+            sourceId: undefined,
+            source: {
+              name: 'My Calendar',
+              type: Calendar.SourceType.LOCAL,
+              isLocalAccount: true,
+            },
+            name: 'myCalendar',
+            ownerAccount: 'personal',
+            accessLevel: Calendar.CalendarAccessLevel.OWNER,
+          })
+        } else {
+          calendarId = primaryCalendar.id
+        }
+      }
+
+      //  Create event using v12 API
+      const eventId = await Calendar.createEventAsync(calendarId, {
         title: item.title || 'Event',
-        startDate: startDate.toISOString(),
-        endDate: endDate.toISOString(),
+        startDate: start,
+        endDate: end,
         location: item.location || '',
         notes: item.notes || '',
-        url: item.url || '',
-      }
+        timeZone: 'GMT',
+        ...(Platform.OS === 'ios' && item.url ? { url: item.url } : {}),
+      })
 
-      AddCalendarEvent.presentEventCreatingDialog(eventConfig)
-        .then((eventInfo: AddCalendarEvent.EventInfo) => {
-          console.log('✅ Event added:', eventInfo)
-        })
-        .catch((error: Error) => {
-          console.error('❌ Error adding event:', error)
-          Alert.alert('Error', 'Failed to add event to calendar')
-        })
+      console.log('✅ Calendar event created:', eventId)
+      Alert.alert('Success', 'Event added to your calendar!')
     } catch (error) {
-      console.error('❌ Error adding to calendar:', error)
-      Alert.alert('Error', 'Failed to add event to calendar')
+      console.error('❌ Error creating calendar event:', error)
+      Alert.alert('Error', 'Failed to add event to calendar.')
     }
   }
 
@@ -71,5 +113,4 @@ const CalendarContent: React.FC<ContentProps> = ({ item, styles, colors }) => {
 }
 
 ContentRegistry.register('calendar', CalendarContent)
-
 export default CalendarContent

@@ -19,5 +19,6 @@ const TextField: React.FC<FormFieldProps> = ({ field, value, onChange, styles, c
 
 // Register the component
 FormFieldRegistry.register('text', TextField)
+FormFieldRegistry.register('text-field', TextField)
 
 export default TextField

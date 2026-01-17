@@ -1,3 +1,5 @@
+// packages/core/src/modules/workflow/ui-elements/content/BarChartContent.tsx
+
 import React from 'react'
 import { View, Text } from 'react-native'
 import { ContentProps, ContentRegistry } from '../ContentRegistry'
@@ -17,12 +19,16 @@ const BarChartContent: React.FC<ContentProps> = ({ item, styles, colors }) => {
   // Find max count for scaling
   const maxCount = Math.max(...bars.map((b) => b.count), 1)
 
+  // Use the same colors as PieChart for consistency
+  const barColors = ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40']
+
   return (
     <View style={styles.fieldContainer}>
       {item.title && <Text style={[styles.formLabel, { color: colors.text, marginBottom: 12 }]}>{item.title}</Text>}
 
       {bars.map((bar, index) => {
         const percentage = (bar.count / maxCount) * 100
+        const barColor = barColors[index % barColors.length]
 
         return (
           <View key={index} style={{ marginBottom: 12 }}>
@@ -36,7 +42,7 @@ const BarChartContent: React.FC<ContentProps> = ({ item, styles, colors }) => {
             <View
               style={{
                 height: 24,
-                backgroundColor: `${colors.primary}20`,
+                backgroundColor: `${barColor}20`, // Light background with 20% opacity
                 borderRadius: 4,
                 overflow: 'hidden',
               }}
@@ -45,7 +51,7 @@ const BarChartContent: React.FC<ContentProps> = ({ item, styles, colors }) => {
                 style={{
                   height: '100%',
                   width: `${percentage}%`,
-                  backgroundColor: colors.primary,
+                  backgroundColor: barColor, // Solid color for the bar
                 }}
               />
             </View>

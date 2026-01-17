@@ -2,6 +2,18 @@ apply plugin: "com.android.application"
 apply plugin: "org.jetbrains.kotlin.android"
 apply plugin: "com.facebook.react"
 
+project.ext.envConfigFiles = [
+  debug: "../.env",
+  release: "../.env"
+]
+
+apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
+
+// println("ENV FILE debug = " + project.ext.envConfigFiles.debug)
+// println("GOOGLE_MAPS_API_KEY = " + (project.ext.env.get("GOOGLE_MAPS_API_KEY") ?: "NULL"))
+
+
+
 
 /**
  * This is the configuration block to customize your React Native Android app.
@@ -102,6 +114,9 @@ android {
         versionName "1.0"
 
         missingDimensionStrategy 'react-native-camera', 'general'
+        manifestPlaceholders = [
+  GOOGLE_MAPS_API_KEY: (project.ext.env.get("GOOGLE_MAPS_API_KEY") ?: "")
+    ]
     }
     signingConfigs {
         debug {
@@ -150,6 +165,5 @@ dependencies {
     }
 }
 
-apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
 apply plugin: 'com.google.gms.google-services'

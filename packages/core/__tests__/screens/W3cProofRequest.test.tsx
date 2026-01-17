@@ -12,7 +12,7 @@ import { useAgent, useProofById } from '@credo-ts/react-hooks'
 import mockRNCNetInfo from '@react-native-community/netinfo/jest/netinfo-mock'
 import { useNavigation } from '@react-navigation/native'
 import '@testing-library/jest-native'
-import { cleanup, fireEvent, render, waitFor } from '@testing-library/react-native'
+import { cleanup, render, waitFor } from '@testing-library/react-native'
 import React from 'react'
 
 import ProofRequest from '../../src/screens/ProofRequest'

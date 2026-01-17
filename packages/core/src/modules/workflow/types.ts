@@ -104,7 +104,30 @@ export interface NavigationResult {
 /**
  * Action menu content item types (from bifold-wallet-1)
  */
-export type ActionMenuContentType = 'image' | 'title' | 'text' | 'button' | 'form'
+export type ActionMenuContentType = // Content types
+
+    | 'image'
+    | 'title'
+    | 'text'
+    | 'button'
+    | 'form'
+    | 'video'
+    | 'warning'
+    | 'information'
+    | 'quote'
+    | 'HR'
+    | 'SPACE'
+    | 'dial'
+    // Form field types
+    | 'text-field'
+    | 'text-area'
+    | 'check-box'
+    | 'radio-button'
+    | 'drop-down'
+    | 'submit-button'
+    | 'date-field'
+    | 'slider-field'
+    | 'mcq'
 
 export interface ActionMenuContentItem {
   type: ActionMenuContentType
@@ -113,16 +136,61 @@ export interface ActionMenuContentItem {
   label?: string
   actionID?: string
   invitationLink?: string
+  // Form-specific properties
+  'form-id'?: string // Form field identifier
+  form?: string // Form name/group
+  value?: string | boolean // Field value
+  values?: string[] // Options for dropdowns
+  options?: string[] // Alternative naming for options
+  placeholder?: string
+  required?: boolean
+  default?: boolean // For radio buttons
+  lines?: number // For text-area
+  min?: string | number
+  max?: string | number
+
+  // Video properties
+  'video-url'?: string
+  'auto-play'?: boolean
+  orientation?: 'landscape' | 'portrait'
+
+  // Dial/phone properties
+  number?: string
   fields?: ActionMenuFormField[]
+
+  // Multiple-choice specific properties
+  question?: string
+  answers?: Array<{
+    value: string
+    option: string
+  }>
+
+  // Calendar properties
+  start?: string
+  end?: string
+  location?: string
+  notes?: string
+  title?: string
 }
 
+/**
+ * Form field definition for structured forms
+ */
 export interface ActionMenuFormField {
-  type: 'text' | 'radio' | 'date' | 'dropdown'
+  type: 'text' | 'radio' | 'date' | 'dropdown' | 'checkbox' | 'mcq' | 'slider' | 'textarea'
   name: string
   label: string
   options?: string[]
+  placeholder?: string
+  required?: boolean
+  min?: number
+  max?: number
+  value?: any
 }
 
+/**
+ * Action menu message structure
+ */
 export interface ActionMenuMessage {
   displayData: ActionMenuContentItem[]
   workflowID: string

@@ -9,11 +9,12 @@ const MCQField: React.FC<FormFieldProps> = ({ field, value, onChange, styles, co
     const newSelected = selected.includes(option) ? selected.filter((o) => o !== option) : [...selected, option]
     onChange(newSelected)
   }
+  const options = field.options || []
 
   return (
     <View style={styles.fieldContainer}>
-      <Text style={[styles.label, { color: colors.text }]}>{field.label}</Text>
-      {field.options?.map((option, index) => {
+      {field.label && <Text style={[styles.label, { color: colors.text, marginBottom: 8 }]}>{field.label}</Text>}
+      {options.map((option: string, index: number) => {
         const isSelected = selected.includes(option)
         return (
           <TouchableOpacity key={index} style={styles.mcqRow} onPress={() => toggleOption(option)}>
@@ -23,7 +24,9 @@ const MCQField: React.FC<FormFieldProps> = ({ field, value, onChange, styles, co
                 { borderColor: colors.primary },
                 isSelected && { backgroundColor: colors.primary },
               ]}
-            />
+            >
+              {isSelected && <Text style={{ color: '#fff', fontSize: 12, textAlign: 'center' }}>✓</Text>}
+            </View>
             <Text style={[styles.mcqLabel, { color: colors.text }]}>{option}</Text>
           </TouchableOpacity>
         )
@@ -33,5 +36,6 @@ const MCQField: React.FC<FormFieldProps> = ({ field, value, onChange, styles, co
 }
 
 FormFieldRegistry.register('mcq', MCQField)
+FormFieldRegistry.register('multiple-choice', MCQField)
 
 export default MCQField

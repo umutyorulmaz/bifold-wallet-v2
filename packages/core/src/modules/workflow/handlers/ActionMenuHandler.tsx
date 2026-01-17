@@ -17,13 +17,7 @@ import { Role } from '../../../types/chat'
 import { Screens, RootStackParams, ContactStackParams } from '../../../types/navigators'
 import { connectFromScanOrDeepLink } from '../../../utils/helpers'
 import { BifoldLogger } from '../../../services/logger'
-import {
-  ActionMenuContentItem,
-  ActionMenuMessage,
-  MessageContext,
-  NavigationResult,
-  WorkflowType,
-} from '../types'
+import { ActionMenuContentItem, ActionMenuMessage, MessageContext, NavigationResult, WorkflowType } from '../types'
 
 import { ActionMenuBubble } from './components/ActionMenuBubble'
 import { BaseWorkflowHandler } from './BaseWorkflowHandler'
@@ -106,7 +100,8 @@ export class ActionMenuWorkflowHandler extends BaseWorkflowHandler<ActionMenuRec
     const parsed = this.parseActionMenu(record)
     if (parsed) {
       // Attach parsed data to record for later use
-      (record as ActionMenuRecord)._parsedActionMenu = parsed
+      // eslint-disable-next-line no-extra-semi
+      ;(record as ActionMenuRecord)._parsedActionMenu = parsed
       return true
     }
 
@@ -139,7 +134,8 @@ export class ActionMenuWorkflowHandler extends BaseWorkflowHandler<ActionMenuRec
     // These are captured fresh each time to ensure correct connection is used
     const currentAgent = context.agent ?? this.agent
     const currentConnectionId = connection?.id ?? this.connectionId
-    const currentNavigation = (context.navigation as StackNavigationProp<RootStackParams | ContactStackParams>) ?? this.navigation
+    const currentNavigation =
+      (context.navigation as StackNavigationProp<RootStackParams | ContactStackParams>) ?? this.navigation
     const currentLogger = context.logger ?? this.logger
     const currentT = context.t ?? this.t
 
@@ -157,35 +153,33 @@ export class ActionMenuWorkflowHandler extends BaseWorkflowHandler<ActionMenuRec
     }
 
     // Create handler bound with current context values
-    const handlePress = async (actionId: string, workflowID: string, invitationLink?: string) => {
+    const handlePress = async (actionId: string, workflowID: string, dataOrLink?: string | any) => {
       if (!currentAgent || !currentConnectionId) {
         return
       }
 
-      if (invitationLink) {
+      // Check if it's an invitation link (string starting with http)
+      if (typeof dataOrLink === 'string' && (dataOrLink.startsWith('http://') || dataOrLink.startsWith('https://'))) {
         await this.handleConnectToInvitationWithContext(
-          invitationLink,
+          dataOrLink,
           currentAgent,
           currentNavigation,
           currentLogger,
           currentT
         )
       } else {
+        // It's form data or no data
         const actionJSON = {
           workflowID,
           actionID: actionId,
-          data: {},
+          data: dataOrLink || {},
         }
         await currentAgent.basicMessages.sendMessage(currentConnectionId, JSON.stringify(actionJSON))
       }
     }
 
     const renderEvent = () => (
-      <ActionMenuBubble
-        content={parsed.displayData}
-        workflowID={parsed.workflowID}
-        onActionPress={handlePress}
-      />
+      <ActionMenuBubble content={parsed.displayData} workflowID={parsed.workflowID} onActionPress={handlePress} />
     )
 
     return {
@@ -252,7 +246,6 @@ export class ActionMenuWorkflowHandler extends BaseWorkflowHandler<ActionMenuRec
       return
     }
 
-
     try {
       // Parse the invitation first
       const parsedInvitation = await agent.oob.parseInvitation(invitationLink)
@@ -314,13 +307,7 @@ export class ActionMenuWorkflowHandler extends BaseWorkflowHandler<ActionMenuRec
    * @deprecated Use handleConnectToInvitationWithContext instead
    */
   private async handleConnectToInvitation(invitationLink: string): Promise<void> {
-    return this.handleConnectToInvitationWithContext(
-      invitationLink,
-      this.agent!,
-      this.navigation,
-      this.logger,
-      this.t
-    )
+    return this.handleConnectToInvitationWithContext(invitationLink, this.agent!, this.navigation, this.logger, this.t)
   }
 
   /**

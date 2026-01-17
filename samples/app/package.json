@@ -18,6 +18,13 @@
     "setup": "yarn android:setup && yarn ios:setup",
     "start": "react-native start --reset-cache"
   },
+  "expo": {
+    "autolinking": {
+      "searchPaths": [
+        "./node_modules"
+      ]
+    }
+  },
   "dependencies": {
     "@bifold/core": "2.11.8",
     "@bifold/oca": "2.11.8",
@@ -61,7 +68,8 @@
     "base-64": "~1.0.0",
     "buffer": "^6.0.3",
     "expo": "*",
-    "expo-av": "13.10.6",
+    "expo-av": "~13.10.6",
+    "expo-calendar": "12.2.1",
     "expo-secure-store": "*",
     "fast-text-encoding": "~1.0.6",
     "i18next": "~21.6.16",
@@ -72,7 +80,6 @@
     "react": "*",
     "react-i18next": "~11.17.1",
     "react-native": "*",
-    "react-native-add-calendar-event": "^5.0.0",
     "react-native-animated-pagination-dots": "~0.1.73",
     "react-native-argon2": "~2.0.1",
     "react-native-bouncy-checkbox": "~3.0.7",

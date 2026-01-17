@@ -61,7 +61,6 @@ const testIdForCallbackType = (callbackType: CallbackType): string => {
   const text = textForCallbackType(callbackType)
   const textWithoutSpaces = text.replace(/\s+/g, '')
   return testIdWithKey(`Chat.${textWithoutSpaces}`)
-
 }
 
 export const MessageTime: React.FC<MessageTimeProps> = ({ message, alignRight = false, prefix }) => {
@@ -97,7 +96,6 @@ export const MessageTime: React.FC<MessageTimeProps> = ({ message, alignRight = 
 }
 
 export const ChatMessage: React.FC<ChatMessageProps> = ({ messageProps }) => {
-
   if (!messageProps.currentMessage) {
     return null
   }
@@ -136,23 +134,48 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({ messageProps }) => {
   }
 
   // Regular messages
-  const isMe = message.user._id === Role.me
+  //const isMe = message.user._id === Role.me
 
   return (
-    <View style={styles.messageContainer}>
-      <View style={[styles.bubbleContainer, isMe ? styles.bubbleRight : styles.bubbleLeft]}>
+    <View
+      style={{
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: message.user._id === Role.me ? 'flex-end' : 'flex-start',
+      }}
+    >
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: 'transparent',
+        }}
+      >
         <Bubble
           {...(messageProps as any)}
           key={messageProps.key}
           renderUsernameOnMessage={false}
           renderMessageText={() => <View style={styles.messageTextContainer}>{message.renderEvent?.() || null}</View>}
           containerStyle={{
-            left: styles.containerLeft,
-            right: styles.containerRight,
+            left: { flex: 1, margin: 0 },
+            right: { flex: 1, margin: 0 },
           }}
           wrapperStyle={{
-            left: styles.wrapperLeft,
-            right: styles.wrapperRight,
+            left: {
+              flex: 1,
+              alignSelf: 'stretch',
+              backgroundColor: 'transparent',
+              marginRight: 0,
+              marginLeft: 0,
+              padding: 0,
+            },
+            right: {
+              flex: 1,
+              alignSelf: 'stretch',
+              backgroundColor: 'transparent',
+              marginLeft: 0,
+              marginRight: 0,
+              padding: 0,
+            },
           }}
           textStyle={{
             left: styles.leftText,

@@ -1,6 +1,5 @@
 /* eslint-disable no-console */
 import React from 'react'
-import { ViewStyle } from 'react-native'
 
 // Base props all form fields receive
 export interface FormFieldProps {
@@ -17,7 +16,7 @@ export interface FormFieldProps {
   }
   value: any
   onChange: (value: any) => void
-  styles: Record<string, ViewStyle>
+  styles: Record<string, any>
   colors: {
     primary: string
     text: string

@@ -21,5 +21,6 @@ const CheckboxField: React.FC<FormFieldProps> = ({ field, value, onChange, style
 }
 
 FormFieldRegistry.register('checkbox', CheckboxField)
+FormFieldRegistry.register('check-box', CheckboxField)
 
 export default CheckboxField

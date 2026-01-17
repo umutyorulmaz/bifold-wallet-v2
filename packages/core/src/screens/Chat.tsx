@@ -26,6 +26,7 @@ import { Role } from '../types/chat'
 import { BasicMessageMetadata, basicMessageCustomMetadata } from '../types/metadata'
 import { RootStackParams, ContactStackParams, Screens, Stacks } from '../types/navigators'
 import { getConnectionName } from '../utils/helpers'
+import { useWindowDimensions } from 'react-native'
 import { TOKENS, useServices } from '../container-api'
 
 type ChatProps = StackScreenProps<ContactStackParams, Screens.Chat> | StackScreenProps<RootStackParams, Screens.Chat>
@@ -66,6 +67,8 @@ const Chat: React.FC<ChatProps> = ({ route }) => {
 
   const [isOverflowOpen, setIsOverflowOpen] = useState(false)
   const [overflowAnchor, setOverflowAnchor] = useState<AnchorRect | null>(null)
+
+  const { width: screenW } = useWindowDimensions()
 
   const closeOverflowMenu = useCallback(() => {
     setIsOverflowOpen(false)
@@ -232,27 +235,36 @@ const Chat: React.FC<ChatProps> = ({ route }) => {
     return defaultActions.length ? defaultActions : undefined
   }, [store.preferences.useVerifierCapability, t, onSendRequest, Assets, registry, actionContext])
 
+  const MENU_WIDTH = 200
+  const GAP = 8
+
   const menuStyle = useMemo(() => {
-    const fallbackTop = insets.top + headerHeight + 8
-    const fallbackRight = 8
+    const fallbackTop = insets.top + headerHeight + GAP
 
     if (!overflowAnchor) {
       return {
         position: 'absolute' as const,
         top: fallbackTop,
-        right: fallbackRight,
+        right: GAP,
       }
     }
 
-    const top = overflowAnchor.y + overflowAnchor.h
-    const right = 8
+    const top = overflowAnchor.y + overflowAnchor.h + GAP
+
+    // compute right based on where the icon was pressed
+    const rawRight = screenW - (overflowAnchor.x + overflowAnchor.w)
+
+    // keep menu within the screen bounds
+    const minRight = GAP
+    const maxRight = Math.max(GAP, screenW - MENU_WIDTH - GAP)
+    const right = Math.min(Math.max(rawRight, minRight), maxRight)
 
     return {
       position: 'absolute' as const,
       top,
       right,
     }
-  }, [overflowAnchor, headerHeight, insets.top])
+  }, [overflowAnchor, headerHeight, insets.top, screenW])
 
   const overflowMenu = (
     <Modal visible={isOverflowOpen} transparent animationType="fade" onRequestClose={closeOverflowMenu}>
