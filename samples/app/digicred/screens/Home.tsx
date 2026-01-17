@@ -289,6 +289,7 @@ const styles = StyleSheet.create({
   textContainer: {
     flex: 1,
     justifyContent: 'center',
+    gap: 8
   },
   contactName: {
     fontSize: 16,

@@ -646,7 +646,8 @@
     "ScanOfferAddCard": "Scan an offer to add a card to your wallet",
     "Scan": "Scan QR Code",
     "NotificationPreview": "You have received a notification...",
-    "ListCredentials": "List Credentials"
+    "ListCredentials": "List Credentials",
+    "UnknownContact":"Unknown Contact"
   },
   "Scan": {
     "SuccessfullyAcceptedConnection": "Successfully Accepted Connection",
