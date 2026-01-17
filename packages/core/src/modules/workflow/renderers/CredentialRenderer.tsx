@@ -222,7 +222,6 @@ const styles = StyleSheet.create({
     fontStyle: 'normal',
     fontWeight: '700',
     lineHeight: 18,
-    marginLeft: '-5%',
     zIndex: 10,
   },
 })

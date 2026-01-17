@@ -7,7 +7,16 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { GiftedChat, IMessage } from 'react-native-gifted-chat'
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
-import { KeyboardAvoidingView, Modal, Platform, Pressable, Text, View, GestureResponderEvent } from 'react-native'
+import {
+  KeyboardAvoidingView,
+  Modal,
+  Platform,
+  Pressable,
+  Text,
+  View,
+  GestureResponderEvent,
+  Dimensions,
+} from 'react-native'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 import { renderComposer, renderSend } from '../components/chat'
@@ -26,7 +35,7 @@ import { Role } from '../types/chat'
 import { BasicMessageMetadata, basicMessageCustomMetadata } from '../types/metadata'
 import { RootStackParams, ContactStackParams, Screens, Stacks } from '../types/navigators'
 import { getConnectionName } from '../utils/helpers'
-import { useWindowDimensions } from 'react-native'
+// import { useWindowDimensions } from 'react-native'
 import { TOKENS, useServices } from '../container-api'
 
 type ChatProps = StackScreenProps<ContactStackParams, Screens.Chat> | StackScreenProps<RootStackParams, Screens.Chat>
@@ -59,6 +68,7 @@ const Chat: React.FC<ChatProps> = ({ route }) => {
 
   const headerHeight = useHeaderHeight()
   const insets = useSafeAreaInsets()
+  const windowWidth = Dimensions.get('window').width
 
   const [GradientBackground] = useServices([TOKENS.COMPONENT_GRADIENT_BACKGROUND])
 
@@ -68,7 +78,7 @@ const Chat: React.FC<ChatProps> = ({ route }) => {
   const [isOverflowOpen, setIsOverflowOpen] = useState(false)
   const [overflowAnchor, setOverflowAnchor] = useState<AnchorRect | null>(null)
 
-  const { width: screenW } = useWindowDimensions()
+  // const { width: screenW } = useWindowDimensions()
 
   const closeOverflowMenu = useCallback(() => {
     setIsOverflowOpen(false)
@@ -77,18 +87,27 @@ const Chat: React.FC<ChatProps> = ({ route }) => {
   const openOverflowMenuAtEvent = useCallback(
     (e?: GestureResponderEvent) => {
       if (e?.nativeEvent) {
-        const { pageX, pageY, locationX, locationY } = e.nativeEvent
-        const w = 36
-        const h = 36
-        const x = pageX - locationX
-        const y = pageY - locationY
-        setOverflowAnchor({ x, y, w, h })
+        const { pageX, pageY } = e.nativeEvent
+        const w = 40
+        const h = 40
+
+        setOverflowAnchor({
+          x: pageX - 20,
+          y: pageY - 20,
+          w,
+          h,
+        })
       } else {
-        setOverflowAnchor({ x: 0, y: insets.top, w: 0, h: 0 })
+        setOverflowAnchor({
+          x: windowWidth - 48,
+          y: insets.top + headerHeight - 20,
+          w: 40,
+          h: 40,
+        })
       }
       setIsOverflowOpen(true)
     },
-    [insets.top]
+    [insets.top, headerHeight, windowWidth]
   )
 
   const onDismiss = useCallback(() => {
@@ -159,19 +178,37 @@ const Chat: React.FC<ChatProps> = ({ route }) => {
     assertNetworkConnected()
   }, [assertNetworkConnected])
 
-  // ✅ ĐÃ SỬA: CHỈ GIỮ TITLE + 3 CHẤM, BACKGROUND #005F5F
   useEffect(() => {
     navigation.setOptions({
       headerStyle: { backgroundColor: '#005F5F' },
       headerTintColor: '#FFFFFF',
       headerTitle: theirLabel,
+      headerTitleStyle: {
+        textAlign: 'center',
+        width: '100%',
+      },
+      headerTitleContainerStyle: {
+        alignSelf: 'center',
+        left: 15,
+        right: 0,
+        position: 'absolute',
+      },
+      headerLeft: () => (
+        <Pressable
+          onPress={() => navigation.goBack()}
+          accessibilityLabel={t('Global.Back') ?? 'Back'}
+          style={{ padding: 8, marginLeft: 8, zIndex: 1 }}
+        >
+          <MaterialCommunityIcon name="chevron-left" size={40} color="#FFFFFF" />
+        </Pressable>
+      ),
       headerRight: () => (
         <Pressable
           onPress={(e) => openOverflowMenuAtEvent(e)}
           accessibilityLabel={t('Global.MoreOptions') ?? 'More options'}
-          style={{ padding: 8 }}
+          style={{ padding: 8, marginRight: 8, zIndex: 1 }}
         >
-          <MaterialCommunityIcon name="dots-horizontal-circle-outline" size={28} color="#FFFFFF" />
+          <MaterialCommunityIcon name="dots-horizontal-circle-outline" size={40} color="#FFFFFF" />
         </Pressable>
       ),
     })
@@ -235,7 +272,7 @@ const Chat: React.FC<ChatProps> = ({ route }) => {
     return defaultActions.length ? defaultActions : undefined
   }, [store.preferences.useVerifierCapability, t, onSendRequest, Assets, registry, actionContext])
 
-  const MENU_WIDTH = 200
+  // const MENU_WIDTH = 200
   const GAP = 8
 
   const menuStyle = useMemo(() => {
@@ -249,22 +286,32 @@ const Chat: React.FC<ChatProps> = ({ route }) => {
       }
     }
 
-    const top = overflowAnchor.y + overflowAnchor.h + GAP
+    // const top = overflowAnchor.y + overflowAnchor.h + GAP
 
     // compute right based on where the icon was pressed
-    const rawRight = screenW - (overflowAnchor.x + overflowAnchor.w)
+    // const rawRight = screenW - (overflowAnchor.x + overflowAnchor.w)
 
     // keep menu within the screen bounds
-    const minRight = GAP
-    const maxRight = Math.max(GAP, screenW - MENU_WIDTH - GAP)
-    const right = Math.min(Math.max(rawRight, minRight), maxRight)
+    // const minRight = GAP
+    // const maxRight = Math.max(GAP, screenW - MENU_WIDTH - GAP)
+    // const right = Math.min(Math.max(rawRight, minRight), maxRight)
+    if (!overflowAnchor) {
+      return {
+        position: 'absolute' as const,
+        top: insets.top + headerHeight || 64,
+        right: 8,
+      }
+    }
+
+    const menuTop = overflowAnchor.y
+    const menuRight = windowWidth - overflowAnchor.x - 40
 
     return {
       position: 'absolute' as const,
-      top,
-      right,
+      top: menuTop,
+      right: menuRight,
     }
-  }, [overflowAnchor, headerHeight, insets.top, screenW])
+  }, [insets.top, headerHeight, overflowAnchor, windowWidth])
 
   const overflowMenu = (
     <Modal visible={isOverflowOpen} transparent animationType="fade" onRequestClose={closeOverflowMenu}>
@@ -314,7 +361,7 @@ const Chat: React.FC<ChatProps> = ({ route }) => {
   )
 
   return (
-    <SafeAreaView edges={['left', 'right']} style={{ flex: 1, marginBottom: 10 }}>
+    <SafeAreaView edges={['left', 'right']} style={{ flex: 1, marginBottom: 0 }}>
       {overflowMenu}
       <GradientBackground>
         <KeyboardAvoidingView
@@ -336,7 +383,14 @@ const Chat: React.FC<ChatProps> = ({ route }) => {
             user={{ _id: Role.me }}
             renderActions={(props) => renderActions(props, theme, actions as any)}
             onPressActionButton={actions && actions.length > 0 ? () => setShowActionSlider(true) : undefined}
-            messagesContainerStyle={{ paddingHorizontal: 12 }}
+            messagesContainerStyle={{
+              paddingHorizontal: 12,
+              paddingBottom: 0,
+              marginBottom: 0,
+            }}
+            bottomOffset={0}
+            minInputToolbarHeight={0}
+            renderChatFooter={() => <View style={{ height: 0 }} />}
           />
           {showActionSlider && <ActionSlider onDismiss={onDismiss} actions={actions as any} />}
         </KeyboardAvoidingView>

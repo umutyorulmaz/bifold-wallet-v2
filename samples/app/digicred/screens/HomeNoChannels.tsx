@@ -95,7 +95,7 @@ const HomeNoChannels = () => {
 
   const contents = [
     {
-      title: 'Digital ListCredentials',
+      title: 'Digital Credentials',
       description:
         'Digital credentials are the electronic equivalent of physical credentials and documents such as identity cards, certificates, or transcripts offered by participating services.\n\nServices are simplified and expedited as organizations can confirm who you are and what you have accomplished with trusted information from the digital credentials.',
     },

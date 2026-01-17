@@ -127,10 +127,11 @@ const styles = StyleSheet.create({
   buttonText: {
     color: DigiCredColors.toggle.thumb,
     fontSize: 16,
+    lineHeight: 16,
     fontWeight: '600',
     letterSpacing: 1,
     textTransform: 'uppercase',
-    flexWrap: 'nowrap'
+    flexWrap: 'nowrap',
   },
   secondaryButtonText: {
     color: DigiCredColors.text.primary,

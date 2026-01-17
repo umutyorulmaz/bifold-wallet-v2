@@ -213,7 +213,7 @@ const styles = StyleSheet.create({
   // Time
   timeContainer: {
     width: '90%',
-    marginLeft: '-6%',
+    marginLeft: '5%',
   },
   timeLeft: {
     alignItems: 'flex-start',
@@ -228,6 +228,7 @@ const styles = StyleSheet.create({
     fontStyle: 'normal',
     fontWeight: '700',
     lineHeight: 18,
+    marginLeft: '5%'
   },
 
   // Regular messages bubble
