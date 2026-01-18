@@ -1,0 +1,6 @@
+export { SVGText, type SVGTextProps } from './SVGText'
+export { SVGHeader, type SVGHeaderProps } from './SVGHeader'
+export { SVGPhoto, type SVGPhotoProps } from './SVGPhoto'
+export { SVGTable, type SVGTableProps, type TableColumn } from './SVGTable'
+export { SVGGradeRow, type SVGGradeRowProps } from './SVGGradeRow'
+export { SVGBarcode, type SVGBarcodeProps } from './SVGBarcode'

@@ -382,11 +382,11 @@ export const ActionMenuBubble: React.FC<ActionMenuBubbleProps> = ({
     <View style={styles.bubble}>
       {/* Group radio buttons before rendering */}
       {groupRadioButtons(content).map((item, index) => {
-        console.log('🎨 Rendering item type:', item.type)
+        // console.log('🎨 Rendering item type:', item.type)
 
         // Check if this is a grouped radio button set
         if (item.isRadioGroup) {
-          console.log(`✅ Rendering radio button group: ${item.formId}`)
+          // console.log(`✅ Rendering radio button group: ${item.formId}`)
 
           const field = {
             name: item.formId,

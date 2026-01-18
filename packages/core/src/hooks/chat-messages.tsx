@@ -11,7 +11,7 @@ import { useAgent, useBasicMessagesByConnectionId } from '@credo-ts/react-hooks'
 import { isPresentationReceived } from '@bifold/verifier'
 import { useNavigation } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { Fragment, useEffect, useMemo, useState } from 'react'
+import React, { Fragment, useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Linking, View } from 'react-native'
 
@@ -73,7 +73,14 @@ const callbackTypeForMessage = (record: CredentialExchangeRecord | ProofExchange
   }
 }
 
-export const useChatMessagesByConnection = (connection: ConnectionRecord): ExtendedChatMessage[] => {
+export interface UseChatMessagesResult {
+  messages: ExtendedChatMessage[]
+  canLoadEarlier: boolean
+  isLoadingEarlier: boolean
+  loadEarlier: () => void
+}
+
+export const useChatMessagesByConnection = (connection: ConnectionRecord): UseChatMessagesResult => {
   const [messages, setMessages] = useState<Array<ExtendedChatMessage>>([])
   const [store] = useStore()
   const { t } = useTranslation()
@@ -91,6 +98,39 @@ export const useChatMessagesByConnection = (connection: ConnectionRecord): Exten
   const logger = container?.resolve(TOKENS.UTIL_LOGGER) ?? undefined
 
   const registry = useOptionalWorkflowRegistry()
+
+  // Pagination state
+  const [workflowLimit, setWorkflowLimit] = useState(3)   // Initially show 3 workflows
+  const [messageLimit, setMessageLimit] = useState(20)    // Initially show 20 messages
+  const [isLoadingEarlier, setIsLoadingEarlier] = useState(false)
+
+  // Calculate if there are more items to load
+  const hasMoreWorkflows = useMemo(() => {
+    const totalWorkflows = credentials.length + proofs.length
+    return totalWorkflows > workflowLimit
+  }, [credentials.length, proofs.length, workflowLimit])
+
+  const hasMoreMessages = useMemo(() => {
+    return basicMessages.length > messageLimit
+  }, [basicMessages.length, messageLimit])
+
+  const canLoadEarlier = hasMoreWorkflows || hasMoreMessages
+
+  // Load earlier function
+  const loadEarlier = useCallback(() => {
+    setIsLoadingEarlier(true)
+
+    // Increase limits
+    if (hasMoreWorkflows) {
+      setWorkflowLimit(prev => prev + 3)
+    }
+    if (hasMoreMessages) {
+      setMessageLimit(prev => prev + 20)
+    }
+
+    // Small delay for UX
+    setTimeout(() => setIsLoadingEarlier(false), 300)
+  }, [hasMoreWorkflows, hasMoreMessages])
 
   useEffect(() => {
     setTheirLabel(getConnectionName(connection, store.preferences.alternateContactNames))
@@ -112,14 +152,24 @@ export const useChatMessagesByConnection = (connection: ConnectionRecord): Exten
   useEffect(() => {
     let transformedMessages: Array<ExtendedChatMessage> = []
 
+    // Sort and limit workflows (credentials + proofs)
+    const allWorkflows = [...credentials, ...proofs]
+      .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
+    const limitedWorkflows = allWorkflows.slice(0, workflowLimit)
+
+    // Sort and limit basic messages
+    const sortedBasicMessages = [...basicMessages]
+      .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
+    const limitedBasicMessages = sortedBasicMessages.slice(0, messageLimit)
+
     if (registry) {
-      const allRecords = [...basicMessages, ...credentials, ...proofs, ...(workflowsAvailable ? workflowInstances : [])]
+      const allRecords = [...limitedBasicMessages, ...limitedWorkflows, ...(workflowsAvailable ? workflowInstances : [])]
       transformedMessages = registry.toMessages(allRecords, connection, messageContext)
     } else {
       transformedMessages = transformMessagesLegacy(
-        basicMessages,
-        credentials,
-        proofs,
+        limitedBasicMessages,
+        limitedWorkflows.filter((r): r is CredentialExchangeRecord => r instanceof CredentialExchangeRecord),
+        limitedWorkflows.filter((r): r is ProofExchangeRecord => r instanceof ProofExchangeRecord),
         theirLabel,
         t,
         theme,
@@ -185,9 +235,14 @@ export const useChatMessagesByConnection = (connection: ConnectionRecord): Exten
       : transformedMessages.sort((a: any, b: any) => b.createdAt - a.createdAt)
 
     setMessages(finalMessages)
-  }, [ColorPalette, basicMessages, theme, credentials, t, navigation, proofs, theirLabel, connection, registry, messageContext, workflowInstances, workflowsAvailable, AboutInstitution])
+  }, [ColorPalette, basicMessages, theme, credentials, t, navigation, proofs, theirLabel, connection, registry, messageContext, workflowInstances, workflowsAvailable, AboutInstitution, workflowLimit, messageLimit])
 
-  return messages
+  return {
+    messages,
+    canLoadEarlier,
+    isLoadingEarlier,
+    loadEarlier,
+  }
 }
 
 function transformMessagesLegacy(

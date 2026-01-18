@@ -33,6 +33,10 @@ import {
 } from './modules/theme/themes/teal-dark'
 
 import { COMPONENT_TOKENS } from './container-api'
+import { registerSampleTemplates } from './modules/credential-svg'
+
+// Register SVG templates for credential rendering at startup
+registerSampleTemplates()
 
 const createApp = (container: Container): React.FC => {
   const AppComponent: React.FC = () => {

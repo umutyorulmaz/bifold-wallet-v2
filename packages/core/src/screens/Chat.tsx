@@ -19,9 +19,8 @@ import {
 } from 'react-native'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 
-import { renderComposer, renderSend } from '../components/chat'
+import { renderComposer, renderInputToolbar, renderSend } from '../components/chat'
 import ActionSlider from '../components/chat/ActionSlider'
-import { renderActions } from '../components/chat/ChatActions'
 import { ChatMessage } from '../components/chat/ChatMessage'
 import { useNetwork } from '../contexts/network'
 import { useStore } from '../contexts/store'
@@ -57,7 +56,12 @@ const Chat: React.FC<ChatProps> = ({ route }) => {
 
   const connection = useConnectionById(connectionId) as ConnectionRecord
   const basicMessages = useBasicMessagesByConnectionId(connectionId)
-  const chatMessages = useChatMessagesByConnection(connection)
+  const {
+    messages: chatMessages,
+    canLoadEarlier,
+    isLoadingEarlier,
+    loadEarlier,
+  } = useChatMessagesByConnection(connection)
   const isFocused = useIsFocused()
 
   const { assertNetworkConnected, silentAssertConnectedNetwork } = useNetwork()
@@ -375,22 +379,17 @@ const Chat: React.FC<ChatProps> = ({ route }) => {
             renderAvatar={() => null}
             messageIdGenerator={(msg) => msg?._id.toString() || '0'}
             renderMessage={(props) => <ChatMessage messageProps={props} />}
-            renderInputToolbar={() => null}
+            renderInputToolbar={(props) => renderInputToolbar(props, theme)}
             renderSend={(props) => renderSend(props, theme)}
             renderComposer={(props) => renderComposer(props, theme, t('Contacts.TypeHere'))}
             disableComposer={!silentAssertConnectedNetwork()}
             onSend={onSend}
             user={{ _id: Role.me }}
-            renderActions={(props) => renderActions(props, theme, actions as any)}
-            onPressActionButton={actions && actions.length > 0 ? () => setShowActionSlider(true) : undefined}
-            messagesContainerStyle={{
-              paddingHorizontal: 12,
-              paddingBottom: 0,
-              marginBottom: 0,
-            }}
-            bottomOffset={0}
-            minInputToolbarHeight={0}
-            renderChatFooter={() => <View style={{ height: 0 }} />}
+            renderActions={() => null}
+            messagesContainerStyle={{ paddingHorizontal: 12, paddingBottom: 80 }}
+            loadEarlier={canLoadEarlier}
+            isLoadingEarlier={isLoadingEarlier}
+            onLoadEarlier={loadEarlier}
           />
           {showActionSlider && <ActionSlider onDismiss={onDismiss} actions={actions as any} />}
         </KeyboardAvoidingView>
