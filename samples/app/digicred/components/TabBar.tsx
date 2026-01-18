@@ -1,5 +1,5 @@
 
-import React, { useEffect, useRef } from 'react'
+import React, { useCallback, useEffect, useRef } from 'react'
 import {
   StyleSheet,
   Text,
@@ -95,9 +95,9 @@ const DigiCredTabBar: React.FC<DigiCredTabBarProps> = ({ state, navigation, badg
   const currentIndex = state?.index || 0
 
   // Calculate pill position to center it on the tab
-  const calculatePillPosition = (tabX: number, tabWidth: number) => {
+  const calculatePillPosition = useCallback((tabX: number, tabWidth: number) => {
     // Center the pill on the tab: tab's x + offset to center pill within tab
-    // check which tab is selected 
+    // check which tab is selected
     const selectedTab = tabPositions[currentIndex]
     if (!selectedTab) {
       return tabX + (tabWidth - PILL_WIDTH) / 2
@@ -106,8 +106,7 @@ const DigiCredTabBar: React.FC<DigiCredTabBarProps> = ({ state, navigation, badg
       return selectedTab.x - 14
     }
     return selectedTab.x + (selectedTab.width - PILL_WIDTH) / 2
-    
-  }
+  }, [currentIndex, tabPositions])
 
   useEffect(() => {
     if (tabPositions.length > currentIndex && tabPositions[currentIndex]) {
@@ -129,7 +128,7 @@ const DigiCredTabBar: React.FC<DigiCredTabBarProps> = ({ state, navigation, badg
         ),
       ]).start()
     }
-  }, [currentIndex, pillPosition, tabPositions, tabScales])
+  }, [currentIndex, pillPosition, tabPositions, tabScales, calculatePillPosition])
 
   const handleTabLayout = (index: number) => (event: LayoutChangeEvent) => {
     const { x, width } = event.nativeEvent.layout
