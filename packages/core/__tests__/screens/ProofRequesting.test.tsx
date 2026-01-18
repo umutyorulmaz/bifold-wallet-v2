@@ -22,6 +22,26 @@ import * as proofRequestTemplatesHooks from '../../src/hooks/proof-request-templ
 import ProofRequesting from '../../src/screens/ProofRequesting'
 import { BasicAppContext } from '../helpers/app'
 
+jest.mock('react-native/Libraries/Animated/NativeAnimatedHelper')
+
+jest.mock('react-native', () => {
+  const RN = jest.requireActual('react-native')
+
+  RN.Animated.loop = jest.fn(() => ({
+    start: jest.fn(),
+  }))
+
+  RN.Animated.sequence = jest.fn(() => ({
+    start: jest.fn(),
+  }))
+
+  RN.Animated.timing = jest.fn(() => ({
+    start: jest.fn(),
+  }))
+
+  return RN
+})
+
 jest.mock('@react-native-community/netinfo', () => mockRNCNetInfo)
 jest.mock('@bifold/verifier', () => {
   const original = jest.requireActual('@bifold/verifier')

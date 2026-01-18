@@ -22,7 +22,7 @@ const Biometrics: React.FC = () => {
   const [, dispatch] = useStore()
   const { commitWalletToKeychain, isBiometricsActive } = useAuth()
 
-  const [biometricsEnabled, setBiometricsEnabled] = useState(false) // Disabled by default
+  const [biometricsEnabled, setBiometricsEnabled] = useState(true) // Disabled by default
   const [isLoading, setIsLoading] = useState(false)
 
   const handleToggle = useCallback(async (value: boolean) => {

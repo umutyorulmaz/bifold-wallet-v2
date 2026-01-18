@@ -563,7 +563,9 @@
     "Declined": "Declined",
     "Done": "Done",
     "AcceptedNote": "Credential added to your wallet",
-    "UnknownCredential": "Unknown Credential"
+    "UnknownCredential": "Unknown Credential",
+    "RemoveCredential": "Remove Credential",
+    "RemoveCredentialMessage": "Are you sure you wish to remove this credential? This action cannot be undone."
   },
   "PushNotifications": {
     "EnableNotifications": "Enable Notifications to get instant alerts",
@@ -612,7 +614,19 @@
     "CredentialRemoved": "Credential removed",
     "IssuedBy": "Issued by:",
     "RemoveCredential": "Remove Credential",
-    "NavigateToIssuerDetailsHint": "Tap to navigate to issuer details"
+    "NavigateToIssuerDetailsHint": "Tap to navigate to issuer details",
+    "DefaultName": "Jane Doe",
+    "Transcript": "Transcript",
+    "StudentCard": "Student Card",
+    "Issuer": "Issuer",
+    "GoToChannel": "Go to channel",
+    "PresentQRCode": "Present QR code",
+    "NFCTap": "NFC Tap",
+    "ShareCredential": "Share credential",
+    "RemoveCredentialConfirm": "Are you sure you wish to remove this credential? This action cannot be undone.",
+    "Back": "BACK",
+    "RemoveCredentialAction": "REMOVE CREDENTIAL",
+    "ExpirationDate": "Expiration Date"
   },
   "Home": {
     "Notification": "Notification",
@@ -632,7 +646,8 @@
     "ScanOfferAddCard": "Scan an offer to add a card to your wallet",
     "Scan": "Scan QR Code",
     "NotificationPreview": "You have received a notification...",
-    "ListCredentials": "List Credentials"
+    "ListCredentials": "List Credentials",
+    "UnknownContact":"Unknown Contact"
   },
   "Scan": {
     "SuccessfullyAcceptedConnection": "Successfully Accepted Connection",
@@ -951,7 +966,7 @@
     "CreatePIN": "Create a PIN",
     "ConfirmPIN": "Confirm PIN",
     "EnterPIN": "Enter PIN",
-    "Home": "Notifications",
+    "Home": "Home",
     "Scan": "Scan",
     "ScanHelp": "Scan Help",
     "Credentials": "Credentials",

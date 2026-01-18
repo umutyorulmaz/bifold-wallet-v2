@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import React, { useState } from 'react'
-import { StyleSheet, View } from 'react-native'
+import { Dimensions, StyleSheet, View } from 'react-native'
 import { useTheme } from '../../../../contexts/theme'
 import { ActionMenuContentItem } from '../../types'
 import { ContentRegistry, FormFieldRegistry } from '../../ui-elements'
@@ -157,7 +157,7 @@ export const ActionMenuBubble: React.FC<ActionMenuBubbleProps> = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [workflowID]) // Only depend on workflowID
-  // const { width } = Dimensions.get('window')
+  const { width } = Dimensions.get('window')
   // const [GradientBackground] = useServices([TOKENS.COMPONENT_GRADIENT_BACKGROUND])
 
   const colors = {
@@ -173,8 +173,10 @@ export const ActionMenuBubble: React.FC<ActionMenuBubbleProps> = ({
       borderRadius: 16,
       padding: 16,
       borderWidth: 1,
-      borderColor: ColorPalette.brand.primary,
-      alignSelf: 'stretch',
+      borderColor: ColorPalette.grayscale.digicredBorderAction,
+      width: width * 0.85,
+      gap: 10,
+      alignSelf: 'center',
     },
     title: {
       fontSize: 18,
@@ -216,7 +218,6 @@ export const ActionMenuBubble: React.FC<ActionMenuBubbleProps> = ({
       lineHeight: 24,
       textAlign: 'center',
       color: ColorPalette.grayscale.white,
-      textTransform: 'uppercase',
     },
     textInput: {
       height: 48,

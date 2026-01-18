@@ -559,7 +559,10 @@
     "Declined": "Rechazado",
     "Done": "Hecho",
     "AcceptedNote": "Credencial adicionada à sua carteira",
-    "UnknownCredential": "Credencial desconocida"
+    "UnknownCredential": "Credencial desconocida",
+    "UnknownCredential": "Credencial desconocida",
+    "RemoveCredential": "Eliminar credencial",
+    "RemoveCredentialMessage": "¿Está seguro de que desea eliminar esta credencial? Esta acción no se puede deshacer."
   },
   "PushNotifications": {
     "EnableNotifications": "Habilitar notificaciones para recibir alertas instantáneas",
@@ -608,7 +611,20 @@
     "CredentialRemoved": "Credencial eliminada",
     "IssuedBy": "Emitido por:",
     "RemoveCredential": "Eliminar credencial",
-    "NavigateToIssuerDetailsHint": "Toca para ir a detalles del emisor"
+    "NavigateToIssuerDetailsHint": "Toca para ir a detalles del emisor",
+    "NavigateToIssuerDetailsHint": "Toque para navegar a los detalles del emisor",
+    "DefaultName": "Jane Doe",
+    "Transcript": "Expediente académico",
+    "StudentCard": "Tarjeta de estudiante",
+    "Issuer": "Emisor",
+    "GoToChannel": "Ir al canal",
+    "PresentQRCode": "Presentar código QR",
+    "NFCTap": "Toque NFC",
+    "ShareCredential": "Compartir credencial",
+    "RemoveCredentialConfirm": "¿Está seguro de que desea eliminar esta credencial? Esta acción no se puede deshacer.",
+    "Back": "ATRÁS",
+    "RemoveCredentialAction": "ELIMINAR CREDENCIAL",
+    "ExpirationDate": "Fecha de vencimiento"
   },
   "Home": {
     "Notification": "Notificación",
@@ -944,7 +960,7 @@
     "CreatePIN": "Crear un PIN",
     "ConfirmPIN": "Confirmar PIN",
     "EnterPIN": "Ingresar PIN",
-    "Home": "Notificaciones",
+    "Home": "Inicio",
     "Scan": "Escanear",
     "ScanHelp": "Ayuda de escaneo",
     "Credentials": "Credenciales",

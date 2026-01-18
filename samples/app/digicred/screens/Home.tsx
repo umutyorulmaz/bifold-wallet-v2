@@ -1,13 +1,23 @@
 import React, { useCallback, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, StatusBar, Image } from 'react-native'
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  TouchableOpacity,
+  StatusBar,
+  Image,
+  Dimensions,
+  Platform,
+} from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
-import { useConnections } from '@credo-ts/react-hooks'
-import { ConnectionType, DidExchangeState } from '@credo-ts/core'
+import { useConnections, useCredentials } from '@credo-ts/react-hooks'
+import { ConnectionType, CredentialState, DidExchangeState } from '@credo-ts/core'
 
-import { testIdWithKey, useStore, getConnectionName } from '@bifold/core'
+import { testIdWithKey, useStore, getConnectionName, ColorPalette } from '@bifold/core'
 
 import { GradientBackground } from '../components'
 import { DigiCredColors } from '../theme'
@@ -16,35 +26,47 @@ import { Screens, Stacks } from '../../../../packages/core/src/types/navigators'
 
 interface ContactCardProps {
   name: string
-  date: string
+  time: string
+  hasNotification?: boolean
   imageUrl?: string
-  hasUnread?: boolean
   onPress: () => void
 }
 
-const ContactCard: React.FC<ContactCardProps> = ({ name, date, imageUrl, hasUnread, onPress }) => {
+const ContactCard: React.FC<ContactCardProps> = ({ name, time, hasNotification, imageUrl, onPress }) => {
+  const { t } = useTranslation()
+  const screenWidth = Dimensions.get('window').width
+
   return (
-    <TouchableOpacity style={styles.contactCard} onPress={onPress} activeOpacity={0.7}>
-      <View style={styles.contactAvatar}>
-        {imageUrl ? (
-          <Image source={{ uri: imageUrl }} style={styles.avatarImage} />
-        ) : (
-          <View style={styles.avatarPlaceholder}>
-            <Text style={styles.avatarText}>{name.charAt(0).toUpperCase()}</Text>
+    <View style={[styles.contactCardContainer, { width: screenWidth * 0.9 }]}>
+      <TouchableOpacity style={styles.contactCard} onPress={onPress} activeOpacity={0.7}>
+        <View style={styles.contactAvatar}>
+          <View style={styles.avatarBackground}>
+            {imageUrl ? (
+              <Image source={{ uri: imageUrl }} style={styles.avatarImage} />
+            ) : (
+              <View style={styles.avatarPlaceholder}>
+                <Text style={styles.avatarText}>{name.charAt(0).toUpperCase()}</Text>
+              </View>
+            )}
           </View>
-        )}
-      </View>
-      <View style={styles.contactContent}>
-        <Text style={styles.contactName} numberOfLines={2}>
-          {name}
-        </Text>
-        <Text style={styles.contactDate}>{date}</Text>
-      </View>
-      <View style={styles.rightSection}>
-        {hasUnread && <View style={styles.unreadDot} />}
-        <Icon name="chevron-right" size={24} color={DigiCredColors.text.secondary} />
-      </View>
-    </TouchableOpacity>
+        </View>
+
+        <View style={styles.contactContent}>
+          <View style={styles.textContainer}>
+            <Text style={styles.contactName} numberOfLines={2}>
+              {name}
+            </Text>
+            <Text style={styles.contactTime}>{time}</Text>
+            {hasNotification && <Text style={styles.notificationText}>{t('Home.NotificationPreview')}</Text>}
+          </View>
+
+          <View style={styles.rightSection}>
+            {hasNotification && <View style={styles.notificationDot} />}
+            <Icon name="chevron-right" size={24} color={ColorPalette.grayscale.white} />
+          </View>
+        </View>
+      </TouchableOpacity>
+    </View>
   )
 }
 
@@ -54,6 +76,7 @@ const Home: React.FC = () => {
   const [store] = useStore()
   const [config] = useServices([TOKENS.CONFIG])
   const contactHideList = config?.contactHideList
+  const { records: credentials = [] } = useCredentials()
 
   const connectionsResult = useConnections()
   const { records: connections = [] } = connectionsResult ?? { records: [] }
@@ -86,26 +109,24 @@ const Home: React.FC = () => {
     [navigation]
   )
 
-  const formatDate = (dateString?: string) => {
+  const formatTime = (dateString?: string) => {
     if (!dateString) return ''
     const date = new Date(dateString)
-    const now = new Date()
-    const diffMs = now.getTime() - date.getTime()
-    const diffHours = Math.floor(diffMs / (1000 * 60 * 60))
-
-    if (diffHours < 24) {
-      return date.toLocaleTimeString('en-US', {
-        hour: 'numeric',
-        minute: '2-digit',
-        hour12: true,
-      })
-    }
-    return date.toLocaleDateString('en-US', {
-      month: 'numeric',
-      day: 'numeric',
-      year: 'numeric',
+    return date.toLocaleTimeString('en-US', {
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true,
     })
   }
+
+  const connectionsMap: Record<string, (typeof connections)[number]> = {}
+
+  connections.forEach((conn) => {
+    if (conn.id) {
+      connectionsMap[conn.id] = conn
+    }
+  })
+
 
   const sortedConnections = useMemo(() => {
     return [...filteredConnections].sort((a, b) => {
@@ -116,12 +137,20 @@ const Home: React.FC = () => {
   }, [filteredConnections])
 
   const renderContact = ({ item }: { item: (typeof sortedConnections)[0] }) => {
-    const contactName = getConnectionName(item, store.preferences.alternateContactNames) || 'Unknown Contact'
+    const contactName = getConnectionName(item, store.preferences.alternateContactNames) || t('Home.UnknownContact')
+    const connectionId = item.id
+    const connection = connectionId ? connectionsMap[connectionId] : undefined
+    const logoUrl = connection?.imageUrl
+    const hasOfferReceived = credentials.some(
+      (c) => c.state === CredentialState.OfferReceived && c.connectionId === connectionId
+    )
+
     return (
       <ContactCard
         name={contactName}
-        date={formatDate((item.updatedAt || item.createdAt).toISOString())}
-        hasUnread={false}
+        time={formatTime((item.updatedAt || item.createdAt).toISOString())}
+        hasNotification={hasOfferReceived}
+        imageUrl={logoUrl}
         onPress={() => handleContactPress(item.id)}
       />
     )
@@ -133,14 +162,14 @@ const Home: React.FC = () => {
       <GradientBackground>
         <View style={styles.container}>
           <View style={styles.header}>
-            <Text style={styles.headerTitle}>{t('Screens.Home') || 'Home'}</Text>
+            <Text style={styles.headerTitle}>{t('Screens.Home')}</Text>
             <TouchableOpacity
               style={styles.scanButton}
               onPress={handleScanPress}
               testID={testIdWithKey('ScanButton')}
-              accessibilityLabel={t('Home.Scan') || 'Scan QR Code'}
+              accessibilityLabel={t('Home.Scan')}
             >
-              <Icon name="qrcode-scan" size={24} color={DigiCredColors.text.primary} />
+              <Icon name="qrcode-scan" size={33} color={DigiCredColors.text.primary} />
             </TouchableOpacity>
           </View>
           <FlatList
@@ -176,78 +205,124 @@ const styles = StyleSheet.create({
   scanButton: {
     width: 44,
     height: 44,
-    borderRadius: 12,
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
     justifyContent: 'center',
     alignItems: 'center',
   },
   listContent: {
+    alignItems: 'center',
     paddingHorizontal: 16,
     paddingBottom: 100,
     flexGrow: 1,
   },
+  contactCardContainer: {
+    marginBottom: 12,
+  },
   contactCard: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(30, 50, 50, 0.8)',
+    width: '100%',
+    height: 124,
+    padding: 12,
     borderRadius: 16,
-    padding: 16,
-    marginBottom: 12,
+    borderWidth: 1,
+    borderColor: '#2F2F2F',
+    backgroundColor: '#25272A',
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: { width: 2, height: 4 },
+        shadowOpacity: 0.32,
+        shadowRadius: 10,
+      },
+      android: {
+        shadowColor: '#000',
+        shadowOffset: { width: 2, height: 4 },
+        shadowOpacity: 0.32,
+        shadowRadius: 10,
+        elevation: 5,
+      },
+    }),
   },
   contactAvatar: {
-    width: 50,
-    height: 50,
-    borderRadius: 12,
-    marginRight: 12,
+    width: 60,
+    height: 60,
+    borderRadius: 30,
     overflow: 'hidden',
+    marginRight: 12,
+  },
+  avatarBackground: {
+    width: '100%',
+    height: '100%',
+    backgroundColor: ColorPalette.grayscale.white,
+    padding: 2,
+    borderRadius: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   avatarImage: {
     width: '100%',
     height: '100%',
+    borderRadius: 25,
+    zIndex: 10,
   },
   avatarPlaceholder: {
     width: '100%',
     height: '100%',
-    backgroundColor: DigiCredColors.card.backgroundLight,
+    backgroundColor: '#14FFEC',
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 12,
+    borderRadius: 25,
   },
   avatarText: {
-    fontSize: 20,
+    fontSize: 24,
     fontWeight: '600',
-    color: DigiCredColors.text.primary,
+    color: '#000',
   },
   contactContent: {
     flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    height: '100%',
+    marginLeft: 10,
+  },
+  textContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    gap: 8
   },
   contactName: {
     fontSize: 16,
     fontWeight: '600',
     color: DigiCredColors.text.primary,
+    lineHeight: 20,
   },
-  contactDate: {
+  contactTime: {
+    fontSize: 11,
+    color: ColorPalette.grayscale.white,
+    marginTop: 2,
+  },
+  notificationText: {
     fontSize: 12,
-    color: DigiCredColors.text.secondary,
+    color: ColorPalette.grayscale.white,
     marginTop: 4,
   },
   rightSection: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginLeft: 8,
   },
-  unreadDot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
+  notificationDot: {
+    position: 'absolute',
+    top: -25,
+    left: 5,
+    width: 10,
+    height: 10,
+    borderRadius: 5,
     backgroundColor: '#14FFEC',
     marginRight: 8,
-  },
-  statusIos: {
-    width: '100%',
-    height: '10%',
-    position: 'absolute',
-    top: 0,
-    backgroundColor: DigiCredColors.homeNoChannels.darkCircle,
+    borderWidth: 1,
+    borderColor: ColorPalette.grayscale.white,
   },
 })
 

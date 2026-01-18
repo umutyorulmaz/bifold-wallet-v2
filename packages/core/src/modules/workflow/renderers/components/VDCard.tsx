@@ -450,7 +450,7 @@ export const VDCard: React.FC<VDCardProps> = ({
                         {
                           fontSize: nameFontSize,
                           color: '#333333',
-                          marginTop: getScaledDimension(25, ratioFactor),
+                          marginTop: getScaledDimension(isInChat ? 25 : 5, ratioFactor),
                           marginBottom: getScaledDimension(6, ratioFactor),
                         },
                       ]}

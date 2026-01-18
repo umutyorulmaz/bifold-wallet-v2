@@ -3,9 +3,10 @@ import { StyleSheet, Text, View, TouchableOpacity, Animated, Dimensions, LayoutC
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import LinearGradient from 'react-native-linear-gradient'
 
 const { width: screenWidth } = Dimensions.get('window')
-void screenWidth // Available for future use
+void screenWidth
 
 interface TabItemProps {
   label: string
@@ -37,17 +38,25 @@ const TabItem: React.FC<TabItemProps> = ({
       accessibilityLabel={label}
       accessibilityState={{ selected: isActive }}
     >
-      <Animated.View
-        style={[
-          styles.iconContainer,
-          { transform: [{ scale: animatedScale }] }
-        ]}
-      >
-        <Icon
-          name={isActive ? icon : iconOutline}
-          size={26}
-          color={isActive ? '#FFFFFF' : 'rgba(255, 255, 255, 0.5)'}
-        />
+      {isActive && (
+        <View style={[styles.activeCircle]}>
+          <LinearGradient
+            colors={['#004D4D', '#005F5F', '#1A0F3D']}
+            locations={[0, 0.5, 1]}
+            style={{
+              width: 97,
+              height: 64,
+              borderRadius: 40,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+          />
+        </View>
+      )}
+      <Animated.View style={[styles.iconContainer, { transform: [{ scale: animatedScale }] }]}>
+        <Icon name={isActive ? icon : iconOutline} size={40} color={isActive ? '#FFFFFF' : '#FFFFFF'} />
         {badge !== undefined && badge > 0 && (
           <View style={styles.badge}>
             <Text style={styles.badgeText}>{badge > 99 ? '99+' : badge}</Text>
@@ -60,11 +69,15 @@ const TabItem: React.FC<TabItemProps> = ({
 
 const tabConfig = [
   { key: 'Tab Home Stack', label: 'Home', icon: 'home', iconOutline: 'home-outline' },
-  { key: 'Tab Credential Stack', label: 'ListCredentials', icon: 'text-box-multiple', iconOutline: 'text-box-multiple-outline' },
+  {
+    key: 'Tab Credential Stack',
+    label: 'ListCredentials',
+    icon: 'text-box-multiple',
+    iconOutline: 'text-box-multiple-outline',
+  },
   { key: 'Tab Connect Stack', label: 'Settings', icon: 'cog', iconOutline: 'cog-outline' },
 ]
 
-// Map route names to tab config keys (using actual TabStacks enum values)
 const routeToTabKey: Record<string, string> = {
   'Tab Home Stack': 'Tab Home Stack',
   'Tab Credential Stack': 'Tab Credential Stack',
@@ -75,37 +88,24 @@ interface DigiCredTabBarProps extends Partial<BottomTabBarProps> {
   badges?: Record<string, number>
 }
 
-const DigiCredTabBar: React.FC<DigiCredTabBarProps> = ({
-  state,
-  navigation,
-  badges = {},
-}) => {
+const DigiCredTabBar: React.FC<DigiCredTabBarProps> = ({ state, navigation, badges = {} }) => {
   const insets = useSafeAreaInsets()
 
-  // Animation values
   const pillPosition = useRef(new Animated.Value(0)).current
   const tabScales = useRef(tabConfig.map(() => new Animated.Value(1))).current
-
-  // Track tab positions for pill animation
   const tabPositions = useRef<{ x: number; width: number }[]>([]).current
-
-  // Current focused index
   const currentIndex = state?.index || 0
 
-  // Animate pill and icon when tab changes
   useEffect(() => {
     if (tabPositions.length > currentIndex && tabPositions[currentIndex]) {
       const targetTab = tabPositions[currentIndex]
-
-      // Animate pill to new position
       Animated.parallel([
         Animated.spring(pillPosition, {
-          toValue: targetTab.x + (targetTab.width / 2) - 30, // Center the pill
+          toValue: targetTab.x + targetTab.width / 2 - 30,
           useNativeDriver: true,
           friction: 8,
           tension: 80,
         }),
-        // Scale animation for the active tab icon
         ...tabScales.map((scale, index) =>
           Animated.spring(scale, {
             toValue: index === currentIndex ? 1.1 : 1,
@@ -116,32 +116,25 @@ const DigiCredTabBar: React.FC<DigiCredTabBarProps> = ({
         ),
       ]).start()
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentIndex])
+  }, [currentIndex, pillPosition, tabPositions, tabScales])
 
-  // Handle tab layout to track positions
   const handleTabLayout = (index: number) => (event: LayoutChangeEvent) => {
     const { x, width } = event.nativeEvent.layout
     tabPositions[index] = { x, width }
-
-    // Set initial pill position if this is the active tab
     if (index === currentIndex && tabPositions.length > 0) {
-      pillPosition.setValue(x + (width / 2) - 30)
+      pillPosition.setValue(x + width / 2 - 30)
     }
   }
 
-  // Render fallback if no navigation state
   if (!state || !navigation) {
     return (
       <View style={[styles.wrapper, { paddingBottom: Math.max(insets.bottom, 16) }]}>
-        <View style={styles.container}>
-          {/* Selection pill indicator */}
-          <Animated.View
-            style={[
-              styles.selectionPill,
-              { transform: [{ translateX: pillPosition }] }
-            ]}
-          />
+        <LinearGradient
+          colors={['#25272A', '#1E2023']}
+          style={styles.container}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 0 }}
+        >
           {tabConfig.map((tab, index) => (
             <TabItem
               key={tab.key}
@@ -155,26 +148,23 @@ const DigiCredTabBar: React.FC<DigiCredTabBarProps> = ({
               animatedScale={tabScales[index]}
             />
           ))}
-        </View>
+        </LinearGradient>
       </View>
     )
   }
 
   return (
     <View style={[styles.wrapper, { paddingBottom: Math.max(insets.bottom, 16) }]}>
-      <View style={styles.container}>
-        {/* Animated selection pill indicator */}
-        <Animated.View
-          style={[
-            styles.selectionPill,
-            { transform: [{ translateX: pillPosition }] }
-          ]}
-        />
-
+      <LinearGradient
+        colors={['#25272A', '#1E2023']}
+        style={styles.container}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 0 }}
+      >
         {state.routes.map((route, index) => {
           const isFocused = state.index === index
           const tabKey = routeToTabKey[route.name] || route.name
-          const config = tabConfig.find(t => t.key === tabKey) || tabConfig[index % tabConfig.length]
+          const config = tabConfig.find((t) => t.key === tabKey) || tabConfig[index % tabConfig.length]
 
           const onPress = () => {
             const event = navigation.emit({
@@ -202,7 +192,7 @@ const DigiCredTabBar: React.FC<DigiCredTabBarProps> = ({
             />
           )
         })}
-      </View>
+      </LinearGradient>
     </View>
   )
 }
@@ -217,52 +207,56 @@ const styles = StyleSheet.create({
   },
   container: {
     flexDirection: 'row',
-    backgroundColor: 'rgba(20, 45, 45, 0.95)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 65,
+    paddingHorizontal: 0,
     paddingVertical: 12,
-    paddingHorizontal: 24,
-    borderRadius: 32,
+    borderRadius: 100,
+    borderWidth: 1,
+    borderColor: '#004D4D',
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
+    shadowOffset: { width: 2, height: 4 },
+    shadowOpacity: 0.32,
+    shadowRadius: 10,
     elevation: 8,
-    position: 'relative',
-  },
-  selectionPill: {
-    position: 'absolute',
-    width: 60,
-    height: 44,
-    backgroundColor: 'rgba(40, 80, 80, 0.8)',
-    borderRadius: 22,
-    top: 10,
-    left: 0,
+    overflow: 'visible',
   },
   tabItem: {
-    flex: 1,
+    width: 80,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 8,
     zIndex: 1,
+    marginHorizontal: 28,
   },
   iconContainer: {
     position: 'relative',
   },
   badge: {
     position: 'absolute',
-    top: -8,
+    top: -20,
     right: -12,
     backgroundColor: '#FF6B6B',
-    borderRadius: 10,
-    minWidth: 20,
-    height: 20,
+    borderRadius: 20,
+    minWidth: 30,
+    height: 30,
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 4,
+    zIndex: 999,
   },
   badgeText: {
     color: '#FFFFFF',
     fontSize: 11,
     fontWeight: '600',
+  },
+  activeCircle: {
+    position: 'absolute',
+    borderRadius: 80,
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 0,
+    marginLeft: 0,
   },
 })
 

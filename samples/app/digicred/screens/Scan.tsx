@@ -190,7 +190,7 @@ const Scan: React.FC<ScanProps> = ({ navigation }) => {
               style={styles.backButton}
               testID={testIdWithKey('Back')}
             >
-              <Icon name="arrow-left" size={24} color={Colors.text.primary} />
+              <Icon name="chevron-left" size={24} color={Colors.text.primary} />
             </TouchableOpacity>
             <Text style={styles.headerTitle}>Scan QR Code</Text>
             <View style={styles.headerSpacer} />
@@ -260,7 +260,7 @@ const Scan: React.FC<ScanProps> = ({ navigation }) => {
                 style={styles.backButton}
                 testID={testIdWithKey('Back')}
               >
-                <Icon name="arrow-left" size={24} color="#FFFFFF" />
+                <Icon name="chevron-left" size={24} color="#FFFFFF" />
               </TouchableOpacity>
               <Text style={styles.scanHeaderTitle}>{t('Scan.ScanQRCode')}</Text>
               <TouchableOpacity
@@ -296,7 +296,7 @@ const Scan: React.FC<ScanProps> = ({ navigation }) => {
                 style={styles.backButton}
                 testID={testIdWithKey('Back')}
               >
-                <Icon name="arrow-left" size={24} color="#FFFFFF" />
+                <Icon name="chevron-left" size={24} color="#FFFFFF" />
               </TouchableOpacity>
               <Text style={styles.scanHeaderTitle}>{t('Scan.MyQRCode')}</Text>
               <TouchableOpacity
@@ -342,9 +342,7 @@ const Scan: React.FC<ScanProps> = ({ navigation }) => {
             size={24}
             color={activeTab === 'scan' ? Colors.button.primary : Colors.text.secondary}
           />
-          <Text style={[styles.tabText, activeTab === 'scan' && styles.activeTabText]}>
-            {t('Scan.ScanQRCode')}
-          </Text>
+          <Text style={[styles.tabText, activeTab === 'scan' && styles.activeTabText]}>{t('Scan.ScanQRCode')}</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -352,14 +350,8 @@ const Scan: React.FC<ScanProps> = ({ navigation }) => {
           onPress={() => setActiveTab('myqr')}
           testID={testIdWithKey('MyQRTab')}
         >
-          <Icon
-            name="qrcode"
-            size={24}
-            color={activeTab === 'myqr' ? Colors.button.primary : Colors.text.secondary}
-          />
-          <Text style={[styles.tabText, activeTab === 'myqr' && styles.activeTabText]}>
-            {t('Scan.MyQRCode')}
-          </Text>
+          <Icon name="qrcode" size={24} color={activeTab === 'myqr' ? Colors.button.primary : Colors.text.secondary} />
+          <Text style={[styles.tabText, activeTab === 'myqr' && styles.activeTabText]}>{t('Scan.MyQRCode')}</Text>
         </TouchableOpacity>
       </View>
     </View>

@@ -134,48 +134,22 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({ messageProps }) => {
   }
 
   // Regular messages
-  //const isMe = message.user._id === Role.me
-
+  const isMe = message.user._id === Role.me
   return (
-    <View
-      style={{
-        flex: 1,
-        flexDirection: 'row',
-        justifyContent: message.user._id === Role.me ? 'flex-end' : 'flex-start',
-      }}
-    >
-      <View
-        style={{
-          flex: 1,
-          backgroundColor: 'transparent',
-        }}
-      >
+    <View style={styles.messageContainer}>
+      <View style={[styles.bubbleContainer, isMe ? styles.bubbleRight : styles.bubbleLeft]}>
         <Bubble
           {...(messageProps as any)}
           key={messageProps.key}
           renderUsernameOnMessage={false}
           renderMessageText={() => <View style={styles.messageTextContainer}>{message.renderEvent?.() || null}</View>}
           containerStyle={{
-            left: { flex: 1, margin: 0 },
-            right: { flex: 1, margin: 0 },
+            left: styles.containerLeft,
+            right: styles.containerRight,
           }}
           wrapperStyle={{
-            left: {
-              flex: 1,
-              alignSelf: 'stretch',
-              backgroundColor: 'transparent',
-              marginRight: 0,
-              marginLeft: 0,
-              padding: 0,
-            },
-            right: {
-              flex: 1,
-              alignSelf: 'stretch',
-              backgroundColor: 'transparent',
-              marginLeft: 0,
-              marginRight: 0,
-              padding: 0,
-            },
+            left: styles.wrapperLeft,
+            right: styles.wrapperRight,
           }}
           textStyle={{
             left: styles.leftText,
@@ -190,6 +164,7 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({ messageProps }) => {
       </View>
     </View>
   )
+
 }
 
 const styles = StyleSheet.create({
@@ -212,8 +187,7 @@ const styles = StyleSheet.create({
 
   // Time
   timeContainer: {
-    width: '90%',
-    marginLeft: '-6%',
+    width: '100%',
   },
   timeLeft: {
     alignItems: 'flex-start',
@@ -228,6 +202,7 @@ const styles = StyleSheet.create({
     fontStyle: 'normal',
     fontWeight: '700',
     lineHeight: 18,
+    marginLeft: '5%'
   },
 
   // Regular messages bubble

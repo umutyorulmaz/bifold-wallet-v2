@@ -55,8 +55,7 @@ exports[`ChatMessage Credential offer renders correctly 1`] = `
     style={
       Array [
         Object {
-          "marginLeft": "-6%",
-          "width": "90%",
+          "width": "100%",
         },
         Object {
           "alignItems": "flex-start",
@@ -87,6 +86,7 @@ exports[`ChatMessage Credential offer renders correctly 1`] = `
               "fontStyle": "normal",
               "fontWeight": "700",
               "lineHeight": 18,
+              "marginLeft": "5%",
             },
           ],
         ]
@@ -154,8 +154,7 @@ exports[`ChatMessage Proof request renders correctly 1`] = `
     style={
       Array [
         Object {
-          "marginLeft": "-6%",
-          "width": "90%",
+          "width": "100%",
         },
         Object {
           "alignItems": "flex-start",
@@ -186,6 +185,7 @@ exports[`ChatMessage Proof request renders correctly 1`] = `
               "fontStyle": "normal",
               "fontWeight": "700",
               "lineHeight": 18,
+              "marginLeft": "5%",
             },
           ],
         ]
@@ -253,8 +253,7 @@ exports[`ChatMessage Sent presentation renders correctly 1`] = `
     style={
       Array [
         Object {
-          "marginLeft": "-6%",
-          "width": "90%",
+          "width": "100%",
         },
         Object {
           "alignItems": "flex-start",
@@ -285,6 +284,7 @@ exports[`ChatMessage Sent presentation renders correctly 1`] = `
               "fontStyle": "normal",
               "fontWeight": "700",
               "lineHeight": 18,
+              "marginLeft": "5%",
             },
           ],
         ]

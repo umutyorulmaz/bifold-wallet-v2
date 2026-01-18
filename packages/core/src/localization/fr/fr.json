@@ -545,7 +545,9 @@
     "Declined": "Refusé",
     "Done": "Terminé",
     "AcceptedNote": "Justificatif ajouté à votre portefeuille",
-    "UnknownCredential": "Unknown Credential"
+    "UnknownCredential": "Identifiant inconnu",
+    "RemoveCredential": "Supprimer l’identifiant",
+    "RemoveCredentialMessage": "Êtes-vous sûr de vouloir supprimer cet identifiant ? Cette action est irréversible."
   },
   "PushNotifications": {
     "EnableNotifications": "Activer les Notifications pour recevoir des alertes instantanées",
@@ -594,7 +596,21 @@
     "CredentialRemoved": "Justificatif retiré",
     "IssuedBy": "Émis par:",
     "RemoveCredential": "Supprimer l'attestation d'identité",
-    "NavigateToIssuerDetailsHint": "Cliquez pour naviguer vers les détails de l'émetteur"
+    "NavigateToIssuerDetailsHint": "Cliquez pour naviguer vers les détails de l'émetteur",
+
+    "NavigateToIssuerDetailsHint": "Appuyez pour accéder aux détails de l’émetteur",
+    "DefaultName": "Jane Doe",
+    "Transcript": "Relevé de notes",
+    "StudentCard": "Carte étudiante",
+    "Issuer": "Émetteur",
+    "GoToChannel": "Accéder au canal",
+    "PresentQRCode": "Présenter le code QR",
+    "NFCTap": "Appui NFC",
+    "ShareCredential": "Partager l’identifiant",
+    "RemoveCredentialConfirm": "Êtes-vous sûr de vouloir supprimer cet identifiant ? Cette action est irréversible.",
+    "Back": "RETOUR",
+    "RemoveCredentialAction": "SUPPRIMER L’IDENTIFIANT",
+    "ExpirationDate": "Date d’expiration"
   },
   "Home": {
     "Notification": "Notification",
@@ -854,7 +870,7 @@
     "Terms": "Conditions d'utilisation",
     "CreatePIN": "Créer un NIP à 6 chiffres",
     "EnterPIN": "Saisir le NIP",
-    "Home": "Notifications",
+    "Home": "Accueil",
     "Scan": "Numériser",
     "ScanHelp": "Aide à la numérisation",
     "Credentials": "Justificatifs",
