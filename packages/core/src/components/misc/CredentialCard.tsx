@@ -7,9 +7,9 @@ import { CredentialErrors } from '../../types/credentials'
 import { AnonCredsCredentialMetadataKey } from '@credo-ts/anoncreds'
 import { useTranslation } from 'react-i18next'
 
-const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window')
-const CARD_HEIGHT = SCREEN_HEIGHT / 5.7
-const LOGO_SIZE = Math.min(SCREEN_WIDTH * 0.16, SCREEN_HEIGHT * 0.08)
+const { width: SCREEN_WIDTH} = Dimensions.get('window')
+const CARD_HEIGHT = 125
+const LOGO_SIZE = 60
 
 interface CredentialCardCustomProps {
   credential: CredentialExchangeRecord | W3cCredentialRecord | SdJwtVcRecord | MdocRecord | undefined
@@ -104,6 +104,7 @@ const styles = StyleSheet.create({
   container: {
     width: SCREEN_WIDTH * 0.9,
     alignItems: 'stretch',
+    alignSelf: 'center',
   },
   card: {
     width: '100%',
