@@ -20,6 +20,7 @@ import { VDCard } from '../modules/workflow/renderers/components/VDCard'
 import { TranscriptCard } from '../modules/workflow/renderers/components/TranscriptCard'
 import { TOKENS, useServices } from '../container-api'
 import { ColorPalette } from '../theme'
+import { CredentialSVGRenderer, isSchemaSupported } from '../modules/credential-svg'
 
 type RootStackParamList = {
   CredentialDetails: {
@@ -45,6 +46,7 @@ const useCredentialData = (routeCredential?: CredentialExchangeRecord, credentia
   const [loading, setLoading] = useState(true)
   const [attributes, setAttributes] = useState<CredentialPreviewAttribute[]>([])
   const [credDefId, setCredDefId] = useState<string>('')
+  const [schemaId, setSchemaId] = useState<string>('')
 
   useEffect(() => {
     const fetchData = async () => {
@@ -70,7 +72,9 @@ const useCredentialData = (routeCredential?: CredentialExchangeRecord, credentia
 
         const metadata = credRecord.metadata.get(AnonCredsCredentialMetadataKey)
         const defId = metadata?.credentialDefinitionId || ''
+        const sId = metadata?.schemaId || ''
         setCredDefId(defId)
+        setSchemaId(sId)
 
         if (credRecord.credentialAttributes && credRecord.credentialAttributes.length > 0) {
           setAttributes(credRecord.credentialAttributes)
@@ -96,7 +100,7 @@ const useCredentialData = (routeCredential?: CredentialExchangeRecord, credentia
     fetchData()
   }, [agent, routeCredential, credentialId])
 
-  return { credential, loading, attributes, credDefId }
+  return { credential, loading, attributes, credDefId, schemaId }
 }
 
 const parseTranscriptData = (attributes: CredentialPreviewAttribute[]) => {
@@ -171,7 +175,7 @@ const CredentialDetails: React.FC<CredentialDetailsProps> = ({ navigation, route
   const rt = route ?? useRoute<CredentialDetailsRouteProp>()
   const { credential: routeCredential, credentialId, credentialType } = rt.params || {}
   const [GradientBackground] = useServices([TOKENS.COMPONENT_GRADIENT_BACKGROUND])
-  const { credential, loading, attributes, credDefId } = useCredentialData(routeCredential, credentialId)
+  const { credential, loading, attributes, credDefId, schemaId } = useCredentialData(routeCredential, credentialId)
 
   useEffect(() => {
     if (typeof nav.setOptions === 'function') {
@@ -287,6 +291,21 @@ const CredentialDetails: React.FC<CredentialDetailsProps> = ({ navigation, route
   const renderCredentialCard = () => {
     const issuerName = credential.connectionId || 'Issuer'
 
+    // Use new SVG renderer for supported schemas
+    if (schemaId && isSchemaSupported(schemaId)) {
+      return (
+        <CredentialSVGRenderer
+          schemaId={schemaId}
+          credDefId={credDefId}
+          attributes={attributes}
+          mode="full"
+          isInChat={false}
+          width={320}
+        />
+      )
+    }
+
+    // Fall back to existing card components for unsupported schemas
     if (isTranscript) {
       const displayFullName =
         fullName || (transcriptData.studentInfo as any)?.studentFullName || `${firstName} ${lastName}`

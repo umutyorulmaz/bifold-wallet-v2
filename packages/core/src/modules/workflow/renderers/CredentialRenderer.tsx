@@ -22,6 +22,7 @@ import { t } from 'i18next'
 import { Dimensions } from 'react-native'
 import { formatTime } from '../../../utils/helpers'
 import { ColorPalette } from '../../../theme'
+import { CredentialSVGRenderer, isSchemaSupported } from '../../credential-svg'
 
 export enum CredentialDisplayType {
   STUDENT_ID = 'student_id',
@@ -95,6 +96,9 @@ function useCredentialAttributes(credential: CredentialExchangeRecord) {
   const [credDefId, setCredDefId] = useState<string>(
     (credential as any).metadata?.data?.['_anoncreds/credential']?.credentialDefinitionId || ''
   )
+  const [schemaId, setSchemaId] = useState<string>(
+    (credential as any).metadata?.data?.['_anoncreds/credential']?.schemaId || ''
+  )
 
   useEffect(() => {
     if (credential.credentialAttributes && credential.credentialAttributes.length > 0) {
@@ -108,12 +112,16 @@ function useCredentialAttributes(credential: CredentialExchangeRecord) {
         .getFormatData(credential.id)
         .then((formatData) => {
           const { offer, offerAttributes } = formatData
-          const anoncredsOffer = offer?.anoncreds as { cred_def_id?: string } | undefined
-          const indyOffer = offer?.indy as { cred_def_id?: string } | undefined
+          const anoncredsOffer = offer?.anoncreds as { cred_def_id?: string; schema_id?: string } | undefined
+          const indyOffer = offer?.indy as { cred_def_id?: string; schema_id?: string } | undefined
           const offerData = anoncredsOffer || indyOffer
 
           if (offerData?.cred_def_id) {
             setCredDefId(offerData.cred_def_id)
+          }
+
+          if (offerData?.schema_id) {
+            setSchemaId(offerData.schema_id)
           }
 
           if (offerAttributes && offerAttributes.length > 0) {
@@ -127,7 +135,7 @@ function useCredentialAttributes(credential: CredentialExchangeRecord) {
     }
   }, [agent, credential.id, credential.state, credential.credentialAttributes])
 
-  return { attributes, loading, credDefId }
+  return { attributes, loading, credDefId, schemaId }
 }
 
 const styles = StyleSheet.create({
@@ -277,7 +285,7 @@ interface TranscriptData {
 
 export const VDCredentialCard: React.FC<CredentialCardProps> = ({ credential, context, onPress }) => {
   const { SettingsTheme } = useTheme()
-  const { attributes, loading, credDefId } = useCredentialAttributes(credential)
+  const { attributes, loading, credDefId, schemaId } = useCredentialAttributes(credential)
   const [CredentialButtons] = useServices([TOKENS.COMPONENT_CREDENTIAL_BUTTONS])
   const [SnackBarMessage] = useServices([TOKENS.COMPONENT_SNACK_BAR_MESSAGE])
   const { agent } = useAgent()
@@ -565,7 +573,23 @@ export const VDCredentialCard: React.FC<CredentialCardProps> = ({ credential, co
 
   const renderCard = () => {
     const currentCredDefId = isDeclined && declinedData ? declinedData.credDefId : credDefId
+    const currentSchemaId = isDeclined && declinedData ? declinedData.schemaId : schemaId
+    const currentAttributes = isDeclined && declinedData ? declinedData.attributes : attributes
 
+    // Use new SVG renderer for supported schemas
+    if (currentSchemaId && isSchemaSupported(currentSchemaId)) {
+      return (
+        <CredentialSVGRenderer
+          schemaId={currentSchemaId}
+          credDefId={currentCredDefId}
+          attributes={currentAttributes}
+          mode={context.isInChat ? 'compact' : 'full'}
+          isInChat={context.isInChat}
+        />
+      )
+    }
+
+    // Fall back to existing card components for unsupported schemas
     if (credentialType === CredentialDisplayType.TRANSCRIPT) {
       const displayFullName = fullName || transcriptData.studentInfo?.studentFullName || `${firstName} ${lastName}`
       const displaySchool = school || transcriptData.studentInfo?.schoolName || ''
