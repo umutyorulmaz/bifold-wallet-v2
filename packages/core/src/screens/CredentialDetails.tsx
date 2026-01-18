@@ -366,7 +366,6 @@ const CredentialDetails: React.FC<CredentialDetailsProps> = () => {
   const renderCredentialCard = () => {
     const issuerName = credential.connectionId || t('CredentialDetails.Issuer')
 
-    if (showQRCode) {
     // Use new SVG renderer for supported schemas
     if (schemaId && isSchemaSupported(schemaId)) {
       return (
@@ -564,9 +563,6 @@ const CredentialDetails: React.FC<CredentialDetailsProps> = () => {
       </SafeAreaView>
     </GradientBackground>
   )
-}
-
-  return renderCredentialCard()
 }
 
 const styles = StyleSheet.create({
