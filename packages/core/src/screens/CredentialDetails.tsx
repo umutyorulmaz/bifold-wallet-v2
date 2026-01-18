@@ -23,7 +23,6 @@ import { TranscriptCard } from '../modules/workflow/renderers/components/Transcr
 import { TOKENS, useServices } from '../container-api'
 import { ColorPalette } from '../theme'
 import { CredentialSVGRenderer, isSchemaSupported } from '../modules/credential-svg'
-import QRCode from 'react-native-qrcode-svg'
 import CloseIcon from '../assets/icons/CloseIcon.svg'
 import { useTranslation } from 'react-i18next'
 
@@ -171,23 +170,6 @@ const getAttrValue = (attributes: CredentialPreviewAttribute[], ...names: string
     if (attr?.value) return attr.value
   }
   return undefined
-}
-
-interface QRCardProps {
-  qrData: string
-}
-
-const QRCard: React.FC<QRCardProps> = ({ qrData }) => {
-  return (
-    <View style={styles.qrCard}>
-      <QRCode
-        value={qrData}
-        size={Math.min(Dimensions.get('window').width * 0.8, Dimensions.get('window').width * 0.8 * (219.69 / 350))}
-        color="#FFFFFF"
-        backgroundColor="#000000"
-      />
-    </View>
-  )
 }
 
 const CredentialDetails: React.FC<CredentialDetailsProps> = () => {
@@ -385,16 +367,6 @@ const CredentialDetails: React.FC<CredentialDetailsProps> = () => {
     const issuerName = credential.connectionId || t('CredentialDetails.Issuer')
 
     if (showQRCode) {
-      const qrData = JSON.stringify({
-        studentId,
-        fullName,
-        school: school || displayName,
-        issueDate: issuedDate,
-        expirationDate: expirationDate,
-        credentialId: credential.id,
-        credentialType: isTranscript ? 'TRANSCRIPT' : 'STUDENT_ID',
-      })
-
     // Use new SVG renderer for supported schemas
     if (schemaId && isSchemaSupported(schemaId)) {
       return (
@@ -735,17 +707,6 @@ const styles = StyleSheet.create({
     color: '#FF3B30',
     marginTop: 16,
     fontFamily: 'OpenSans-SemiBold',
-  },
-  qrCard: {
-    width: '100%',
-    aspectRatio: 350.0 / 219.69,
-    borderWidth: 1.5,
-    borderColor: ColorPalette.grayscale.white,
-    backgroundColor: ColorPalette.grayscale.digicredBackgroundModal,
-    borderRadius: 14,
-    justifyContent: 'center',
-    alignItems: 'center',
-    alignSelf: 'center',
   },
   removeModalBackdrop: {
     flex: 1,
