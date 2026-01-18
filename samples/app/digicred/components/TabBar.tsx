@@ -49,17 +49,6 @@ const TabItem: React.FC<TabItemProps> = ({
       accessibilityState={{ selected: isActive }}
     >
       <Animated.View style={[styles.iconContainer, { transform: [{ scale: animatedScale }] }]}>
-        {isActive && (
-          <View style={styles.activeCircle}>
-            <LinearGradient
-              colors={['#004D4D', '#005F5F', '#1A0F3D']}
-              locations={[0, 0.5, 1]}
-              style={styles.activeGradient}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}
-            />
-          </View>
-        )}
         <View style={styles.iconWrapper}>
           <Icon name={isActive ? icon : iconOutline} size={40} color="#FFFFFF" />
         </View>
@@ -94,6 +83,9 @@ interface DigiCredTabBarProps extends Partial<BottomTabBarProps> {
   badges?: Record<string, number>
 }
 
+// Pill indicator width (height is set in styles)
+const PILL_WIDTH = 97
+
 const DigiCredTabBar: React.FC<DigiCredTabBarProps> = ({ state, navigation, badges = {} }) => {
   const insets = useSafeAreaInsets()
 
@@ -102,12 +94,27 @@ const DigiCredTabBar: React.FC<DigiCredTabBarProps> = ({ state, navigation, badg
   const tabPositions = useRef<{ x: number; width: number }[]>([]).current
   const currentIndex = state?.index || 0
 
+  // Calculate pill position to center it on the tab
+  const calculatePillPosition = (tabX: number, tabWidth: number) => {
+    // Center the pill on the tab: tab's x + offset to center pill within tab
+    // check which tab is selected 
+    const selectedTab = tabPositions[currentIndex]
+    if (!selectedTab) {
+      return tabX + (tabWidth - PILL_WIDTH) / 2
+    }
+    if (currentIndex === 0) {
+      return selectedTab.x - 14
+    }
+    return selectedTab.x + (selectedTab.width - PILL_WIDTH) / 2
+    
+  }
+
   useEffect(() => {
     if (tabPositions.length > currentIndex && tabPositions[currentIndex]) {
       const targetTab = tabPositions[currentIndex]
       Animated.parallel([
         Animated.spring(pillPosition, {
-          toValue: targetTab.x + targetTab.width / 2 - 30,
+          toValue: calculatePillPosition(targetTab.x, targetTab.width),
           useNativeDriver: true,
           friction: 8,
           tension: 80,
@@ -128,7 +135,7 @@ const DigiCredTabBar: React.FC<DigiCredTabBarProps> = ({ state, navigation, badg
     const { x, width } = event.nativeEvent.layout
     tabPositions[index] = { x, width }
     if (index === currentIndex && tabPositions.length > 0) {
-      pillPosition.setValue(x + width / 2 - 30)
+      pillPosition.setValue(calculatePillPosition(x, width))
     }
   }
 
@@ -141,6 +148,21 @@ const DigiCredTabBar: React.FC<DigiCredTabBarProps> = ({ state, navigation, badg
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 0 }}
         >
+          {/* Sliding selection indicator */}
+          <Animated.View
+            style={[
+              styles.slidingIndicator,
+              { transform: [{ translateX: pillPosition }] }
+            ]}
+          >
+            <LinearGradient
+              colors={['#004D4D', '#005F5F', '#1A0F3D']}
+              locations={[0, 0.5, 1]}
+              style={styles.slidingIndicatorGradient}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+            />
+          </Animated.View>
           {tabConfig.map((tab, index) => (
             <TabItem
               key={tab.key}
@@ -167,6 +189,21 @@ const DigiCredTabBar: React.FC<DigiCredTabBarProps> = ({ state, navigation, badg
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 0 }}
       >
+        {/* Sliding selection indicator */}
+        <Animated.View
+          style={[
+            styles.slidingIndicator,
+            { transform: [{ translateX: pillPosition }] }
+          ]}
+        >
+          <LinearGradient
+            colors={['#004D4D', '#005F5F', '#1A0F3D']}
+            locations={[0, 0.5, 1]}
+            style={styles.slidingIndicatorGradient}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+          />
+        </Animated.View>
         {state.routes.map((route, index) => {
           const isFocused = state.index === index
           const tabKey = routeToTabKey[route.name] || route.name
@@ -219,7 +256,7 @@ const styles = StyleSheet.create({
     height: 65,
     paddingVertical: 12,
     borderRadius: 50,
-    borderWidth: 1,
+    borderWidth: 2,
     borderColor: '#004D4D',
     shadowColor: '#000',
     shadowOffset: { width: 2, height: 4 },
@@ -278,20 +315,19 @@ const styles = StyleSheet.create({
     fontSize: 11,
     fontWeight: '600',
   },
-  activeCircle: {
+  slidingIndicator: {
     position: 'absolute',
-    borderRadius: 80,
+    left: 0,
+    top: 0,
+    bottom: 0,
     justifyContent: 'center',
     alignItems: 'center',
-    zIndex: 1,
-    overflow: 'visible',
+    zIndex: 0,
   },
-  activeGradient: {
+  slidingIndicatorGradient: {
     width: 97,
     height: 64,
     borderRadius: 40,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
 })
 

@@ -23,6 +23,7 @@ import { TranscriptCard } from '../modules/workflow/renderers/components/Transcr
 import { TOKENS, useServices } from '../container-api'
 import { ColorPalette } from '../theme'
 import { CredentialSVGRenderer, isSchemaSupported } from '../modules/credential-svg'
+import QRCode from 'react-native-qrcode-svg'
 import CloseIcon from '../assets/icons/CloseIcon.svg'
 import { useTranslation } from 'react-i18next'
 
@@ -363,6 +364,9 @@ const CredentialDetails: React.FC<CredentialDetailsProps> = () => {
   const cumulativeGPA = getAttrValue(attributes, 'cumulativegpa', 'cumulative_gpa')
   const gpa = getAttrValue(attributes, 'gpa') || (transcriptData.transcript as any)?.gpa
 
+  // QR code data for modal
+  const qrData = credential.id
+
   const renderCredentialCard = () => {
     const issuerName = credential.connectionId || t('CredentialDetails.Issuer')
 
@@ -511,22 +515,43 @@ const CredentialDetails: React.FC<CredentialDetailsProps> = () => {
     </Modal>
   )
 
+  const qrCodeModal = (
+    <Modal visible={showQRCode} transparent animationType="fade" onRequestClose={onCloseQRCode}>
+      <Pressable style={styles.qrModalBackdrop} onPress={onCloseQRCode}>
+        <View style={styles.qrModalContainer}>
+          <View style={styles.qrModalCard}>
+            <Text style={styles.qrModalTitle}>{t('CredentialDetails.PresentQRCode')}</Text>
+            <View style={styles.qrCard}>
+              <QRCode
+                value={qrData}
+                size={200}
+                color="#FFFFFF"
+                backgroundColor="transparent"
+              />
+            </View>
+            <Text style={styles.qrModalSubtitle}>{fullName}</Text>
+            <Text style={styles.qrModalInfo}>{school || displayName}</Text>
+            <TouchableOpacity style={styles.qrModalCloseButton} onPress={onCloseQRCode}>
+              <Text style={styles.qrModalCloseButtonText}>{t('Global.Close')}</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Pressable>
+    </Modal>
+  )
+
   return (
     <GradientBackground>
       <SafeAreaView style={styles.safeArea}>
         {overflowMenu}
         {removeCredentialModal}
+        {qrCodeModal}
         <View style={styles.headerContainer}>
           <View style={styles.navBar}>
             <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
               <Icon name="chevron-left" size={40} color="#FFFFFF" />
             </TouchableOpacity>
             <View style={styles.spacer} />
-            {showQRCode && (
-              <TouchableOpacity style={styles.closeQRButton} onPress={onCloseQRCode}>
-                <Icon name="close" size={24} color="#FFFFFF" />
-              </TouchableOpacity>
-            )}
             <TouchableOpacity style={styles.menuButton} onPress={openOverflowMenuAtEvent}>
               <Icon name="dots-horizontal-circle-outline" size={40} color={isOverflowOpen ? '#6666CC' : '#FFFFFF'} />
             </TouchableOpacity>
@@ -594,13 +619,6 @@ const styles = StyleSheet.create({
     height: 40,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  closeQRButton: {
-    width: 40,
-    height: 40,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 10,
   },
   scrollView: {
     flex: 1,
@@ -702,6 +720,79 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#FF3B30',
     marginTop: 16,
+    fontFamily: 'OpenSans-SemiBold',
+  },
+  qrCard: {
+    backgroundColor: ColorPalette.grayscale.digicredBackgroundModal,
+    borderRadius: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 24,
+    borderWidth: 1.5,
+    borderColor: '#004D4D',
+  },
+  qrModalBackdrop: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.7)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  qrModalContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+    width: '100%',
+  },
+  qrModalCard: {
+    width: '90%',
+    maxWidth: 320,
+    padding: 24,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 16,
+    borderRadius: 20,
+    backgroundColor: '#25272A',
+    borderWidth: 2,
+    borderColor: '#004D4D',
+    shadowColor: '#000',
+    shadowOffset: { width: 2, height: 4 },
+    shadowOpacity: 0.48,
+    shadowRadius: 12,
+    elevation: 12,
+  },
+  qrModalTitle: {
+    fontSize: 20,
+    fontWeight: '600',
+    color: '#FFFFFF',
+    textAlign: 'center',
+    fontFamily: 'OpenSans-SemiBold',
+  },
+  qrModalSubtitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#FFFFFF',
+    textAlign: 'center',
+    fontFamily: 'OpenSans-SemiBold',
+    marginTop: 8,
+  },
+  qrModalInfo: {
+    fontSize: 14,
+    color: '#AAAAAA',
+    textAlign: 'center',
+    fontFamily: 'OpenSans-Regular',
+  },
+  qrModalCloseButton: {
+    backgroundColor: '#004D4D',
+    borderRadius: 25,
+    paddingVertical: 12,
+    paddingHorizontal: 32,
+    marginTop: 8,
+  },
+  qrModalCloseButtonText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#FFFFFF',
     fontFamily: 'OpenSans-SemiBold',
   },
   removeModalBackdrop: {
