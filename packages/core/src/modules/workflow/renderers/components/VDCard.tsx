@@ -1,3 +1,4 @@
+
 /**
  * VDCard - Visual Display Card
  *
@@ -74,7 +75,7 @@ const deviceSettings: {
     nameScale: 1.8,
     detailsScale: 1.6,
     avatarScale: 2.6,
-    logoScale: 1.8,
+    logoScale: 1.2,
     barcodeScale: 2,
     logoMarginLeft: Platform.OS === 'android' ? '-5%' : '-10%',
     infoGap: 2,
@@ -84,7 +85,7 @@ const deviceSettings: {
       nameScale: 1.2,
       detailsScale: 1.1,
       avatarScale: 1.11,
-      logoScale: 1.2,
+      logoScale: 0.9,
       barcodeScale: 1.0,
       logoMarginLeft: Platform.OS === 'android' ? '-14%' : '-18%',
       infoGap: 0,
@@ -127,17 +128,17 @@ const getScaledDimension = (originalValue: number, ratio: number) => {
 }
 
 export const VDCard: React.FC<VDCardProps> = ({
-  firstName,
-  lastName,
-  studentId,
-  fullName,
-  issueDate,
-  school,
-  credDefId,
-  issuerName,
-  isInChat = false,
-  studentPhoto,
-}) => {
+                                                firstName,
+                                                lastName,
+                                                studentId,
+                                                fullName,
+                                                issueDate,
+                                                school,
+                                                credDefId,
+                                                issuerName,
+                                                isInChat = false,
+                                                studentPhoto,
+                                              }) => {
   const { t } = useTranslation()
   const { SettingsTheme } = useTheme()
   const [showDefaultCard, setShowDefaultCard] = useState(false)
@@ -201,7 +202,7 @@ export const VDCard: React.FC<VDCardProps> = ({
   const infoBottomMargin = getScaledDimension(settingsToUse.infoBottomMargin, ratioFactor)
   const barcodeBottomMargin = getScaledDimension(settingsToUse.barcodeBottomMargin, ratioFactor)
 
-  const penderLogoSize = getScaledDimension(isTablet && !isInChat ? 150 : 100, ratioFactor)
+  const penderLogoSize = getScaledDimension(isTablet && !isInChat ? 120 : 100, ratioFactor)
   const hatSize = getScaledDimension(350, ratioFactor)
 
   const capeHeaderWidth = getScaledDimension(340, ratioFactor) * (isInChat ? 0.8 : 1.0)
@@ -224,10 +225,10 @@ export const VDCard: React.FC<VDCardProps> = ({
     cardType === CardType.PENDER
       ? SettingsTheme.newSettingColors.schoolCardPender || '#172554'
       : cardType === CardType.NHCS
-      ? SettingsTheme.newSettingColors.schoolCardNHCS || '#0065A4'
-      : cardType === CardType.MIAMI
-      ? SettingsTheme.newSettingColors.schoolCardMiami || '#23408F'
-      : SettingsTheme.newSettingColors.buttonColor
+        ? SettingsTheme.newSettingColors.schoolCardNHCS || '#0065A4'
+        : cardType === CardType.MIAMI
+          ? SettingsTheme.newSettingColors.schoolCardMiami || '#23408F'
+          : SettingsTheme.newSettingColors.buttonColor
 
   const getCardBackgroundColor = () => {
     if (cardType === CardType.CAPE_FEAR) return SettingsTheme.newSettingColors.schoolCardCapeFear || '#043564'
@@ -571,9 +572,11 @@ const styles = StyleSheet.create({
   },
   name: {
     fontWeight: '600',
+    color: '#333333',
   },
   details: {
     fontWeight: '400',
+    color: '#333333',
   },
   barcodeContainer: {
     marginTop: 'auto',
@@ -601,6 +604,7 @@ const styles = StyleSheet.create({
   },
   penderTitle: {
     fontWeight: 'bold',
+    color: '#333333',
   },
   penderRightSection: {
     position: 'absolute',
@@ -660,6 +664,7 @@ const styles = StyleSheet.create({
   },
   capeName: {
     fontWeight: 'bold',
+    color: '#FFFFFF',
   },
   capeDetails: {
     color: '#FFFFFF',
@@ -677,10 +682,12 @@ const styles = StyleSheet.create({
   institution: {
     fontWeight: 'bold',
     fontFamily: 'OpenSans-Regular',
+    color: '#333333',
   },
   defaultText: {
     fontWeight: 'bold',
     fontFamily: 'OpenSans-Regular',
+    color: '#333333',
   },
   defaultBody: {
     justifyContent: 'center',

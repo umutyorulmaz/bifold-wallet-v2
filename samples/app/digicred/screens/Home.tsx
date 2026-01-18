@@ -127,7 +127,6 @@ const Home: React.FC = () => {
     }
   })
 
-
   const sortedConnections = useMemo(() => {
     return [...filteredConnections].sort((a, b) => {
       const dateA = new Date(a.updatedAt || a.createdAt).getTime()
@@ -221,11 +220,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     width: '100%',
-    height: 124,
+    height: 125,
     padding: 12,
     borderRadius: 16,
     borderWidth: 1,
     borderColor: '#2F2F2F',
+    paddingHorizontal: 20,
     backgroundColor: '#25272A',
     ...Platform.select({
       ios: {
@@ -246,24 +246,24 @@ const styles = StyleSheet.create({
   contactAvatar: {
     width: 60,
     height: 60,
-    borderRadius: 30,
-    overflow: 'hidden',
+    borderRadius: 8, // Thay đổi từ 30 thành 8
     marginRight: 12,
+    overflow: 'hidden', // Thêm overflow để đảm bảo ảnh không tràn ra ngoài
   },
   avatarBackground: {
     width: '100%',
     height: '100%',
     backgroundColor: ColorPalette.grayscale.white,
     padding: 2,
-    borderRadius: 30,
+    borderRadius: 8, // Thay đổi từ 30 thành 8
     justifyContent: 'center',
     alignItems: 'center',
+    overflow: 'hidden', // Thêm overflow
   },
   avatarImage: {
     width: '100%',
     height: '100%',
-    borderRadius: 25,
-    zIndex: 10,
+    borderRadius: 6, // Thay đổi từ 25 thành 6 (8 - 2 padding)
   },
   avatarPlaceholder: {
     width: '100%',
@@ -271,7 +271,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#14FFEC',
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 25,
+    borderRadius: 6, // Thay đổi từ 25 thành 6 (8 - 2 padding)
   },
   avatarText: {
     fontSize: 24,
@@ -289,7 +289,7 @@ const styles = StyleSheet.create({
   textContainer: {
     flex: 1,
     justifyContent: 'center',
-    gap: 8
+    gap: 8,
   },
   contactName: {
     fontSize: 16,

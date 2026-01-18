@@ -56,6 +56,17 @@
 <key>NSRemindersFullAccessUsageDescription</key>
 <string>Allow $(PRODUCT_NAME) full access to your reminders</string>
 
+<key>UISupportedInterfaceOrientations</key>
+<array>
+  <string>UIInterfaceOrientationPortrait</string>
+</array>
+
+<key>UISupportedInterfaceOrientations~ipad</key>
+<array>
+  <string>UIInterfaceOrientationPortrait</string>
+</array>
+
+
 	<key>NSCameraUsageDescription</key>
 	<string>Camera used for in-app QR Code scanning and video calls</string>
 	<key>NSFaceIDUsageDescription</key>

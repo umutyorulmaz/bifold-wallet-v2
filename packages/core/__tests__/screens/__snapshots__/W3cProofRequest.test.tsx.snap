@@ -386,6 +386,7 @@ exports[`displays a proof request screen ProofRequest Screen, W3C displays a pro
                     style={
                       Object {
                         "alignItems": "stretch",
+                        "alignSelf": "center",
                         "opacity": 1,
                         "width": 675,
                       }
@@ -402,7 +403,7 @@ exports[`displays a proof request screen ProofRequest Screen, W3C displays a pro
                             "borderWidth": 2,
                             "elevation": 4,
                             "flexDirection": "row",
-                            "height": 234.03508771929825,
+                            "height": 125,
                             "justifyContent": "space-between",
                             "padding": 24,
                             "shadowColor": "#000",
@@ -435,12 +436,12 @@ exports[`displays a proof request screen ProofRequest Screen, W3C displays a pro
                               "alignItems": "center",
                               "backgroundColor": "#FFFFFF",
                               "borderRadius": 12,
-                              "height": 111.72,
+                              "height": 65,
                               "justifyContent": "center",
                               "marginRight": 16,
                               "overflow": "hidden",
                               "padding": 5,
-                              "width": 111.72,
+                              "width": 65,
                             }
                           }
                         >
@@ -465,7 +466,7 @@ exports[`displays a proof request screen ProofRequest Screen, W3C displays a pro
                                 Array [
                                   Object {
                                     "fontFamily": "OpenSans-SemiBold",
-                                    "fontSize": 40.019999999999996,
+                                    "fontSize": 22.5,
                                     "fontWeight": "600",
                                   },
                                   Object {
@@ -768,6 +769,7 @@ exports[`displays a proof request screen ProofRequest Screen, W3C displays a pro
                     style={
                       Object {
                         "alignItems": "stretch",
+                        "alignSelf": "center",
                         "opacity": 1,
                         "width": 675,
                       }
@@ -784,7 +786,7 @@ exports[`displays a proof request screen ProofRequest Screen, W3C displays a pro
                             "borderWidth": 2,
                             "elevation": 4,
                             "flexDirection": "row",
-                            "height": 234.03508771929825,
+                            "height": 125,
                             "justifyContent": "space-between",
                             "padding": 24,
                             "shadowColor": "#000",
@@ -817,12 +819,12 @@ exports[`displays a proof request screen ProofRequest Screen, W3C displays a pro
                               "alignItems": "center",
                               "backgroundColor": "#FFFFFF",
                               "borderRadius": 12,
-                              "height": 111.72,
+                              "height": 65,
                               "justifyContent": "center",
                               "marginRight": 16,
                               "overflow": "hidden",
                               "padding": 5,
-                              "width": 111.72,
+                              "width": 65,
                             }
                           }
                         >
@@ -847,7 +849,7 @@ exports[`displays a proof request screen ProofRequest Screen, W3C displays a pro
                                 Array [
                                   Object {
                                     "fontFamily": "OpenSans-SemiBold",
-                                    "fontSize": 40.019999999999996,
+                                    "fontSize": 22.5,
                                     "fontWeight": "600",
                                   },
                                   Object {

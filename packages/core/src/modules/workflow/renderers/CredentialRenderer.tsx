@@ -665,7 +665,7 @@ export const VDCredentialCard: React.FC<CredentialCardProps> = ({ credential, co
 
   if (isDeclined) {
     return (
-      <View>
+      <View key={`declined-${credential.id}`}>
         <View style={{ opacity: 0.5 }}>{cardContent}</View>
         <Text style={[styles.messageTime]}>
           {`${t('Chat.ReceivedAt')} ${formatTime(new Date(credential.createdAt), {

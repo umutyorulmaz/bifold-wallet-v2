@@ -1,5 +1,15 @@
+
 import React, { useEffect, useRef } from 'react'
-import { StyleSheet, Text, View, TouchableOpacity, Animated, Dimensions, LayoutChangeEvent } from 'react-native'
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Animated,
+  Dimensions,
+  LayoutChangeEvent,
+  Platform,
+} from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
@@ -38,31 +48,27 @@ const TabItem: React.FC<TabItemProps> = ({
       accessibilityLabel={label}
       accessibilityState={{ selected: isActive }}
     >
-      {isActive && (
-        <View style={[styles.activeCircle]}>
-          <LinearGradient
-            colors={['#004D4D', '#005F5F', '#1A0F3D']}
-            locations={[0, 0.5, 1]}
-            style={{
-              width: 97,
-              height: 64,
-              borderRadius: 40,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
-          />
-        </View>
-      )}
       <Animated.View style={[styles.iconContainer, { transform: [{ scale: animatedScale }] }]}>
-        <Icon name={isActive ? icon : iconOutline} size={40} color={isActive ? '#FFFFFF' : '#FFFFFF'} />
-        {badge !== undefined && badge > 0 && (
-          <View style={styles.badge}>
-            <Text style={styles.badgeText}>{badge > 99 ? '99+' : badge}</Text>
+        {isActive && (
+          <View style={styles.activeCircle}>
+            <LinearGradient
+              colors={['#004D4D', '#005F5F', '#1A0F3D']}
+              locations={[0, 0.5, 1]}
+              style={styles.activeGradient}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+            />
           </View>
         )}
+        <View style={styles.iconWrapper}>
+          <Icon name={isActive ? icon : iconOutline} size={40} color="#FFFFFF" />
+        </View>
       </Animated.View>
+      {badge !== undefined && badge > 0 && (
+        <View style={[styles.badge, isActive && styles.badgeActive]}>
+          <Text style={styles.badgeText}>{badge > 99 ? '99+' : badge}</Text>
+        </View>
+      )}
     </TouchableOpacity>
   )
 }
@@ -204,15 +210,15 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     paddingHorizontal: 16,
+    alignItems: 'center',
   },
   container: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     height: 65,
-    paddingHorizontal: 0,
     paddingVertical: 12,
-    borderRadius: 100,
+    borderRadius: 50,
     borderWidth: 1,
     borderColor: '#004D4D',
     shadowColor: '#000',
@@ -220,30 +226,52 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.32,
     shadowRadius: 10,
     elevation: 8,
-    overflow: 'visible',
+    maxWidth: 400,
+    width: '100%',
+    position: 'relative',
   },
   tabItem: {
     width: 80,
     alignItems: 'center',
     justifyContent: 'center',
     zIndex: 1,
-    marginHorizontal: 28,
+    marginHorizontal: Platform.OS === 'ios' ? 35 : 28,
+    position: 'relative',
   },
   iconContainer: {
     position: 'relative',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  iconWrapper: {
+    position: 'relative',
+    zIndex: 10,
   },
   badge: {
     position: 'absolute',
-    top: -20,
-    right: -12,
-    backgroundColor: '#FF6B6B',
+    top: -10,
+    right: 10,
+    backgroundColor: '#FF4445',
     borderRadius: 20,
     minWidth: 30,
     height: 30,
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 4,
-    zIndex: 999,
+    zIndex: 100,
+    elevation: 100,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
+    borderWidth: 2,
+    borderColor: '#25272A',
+  },
+  badgeActive: {
+    top: -12,
+    right: 8,
+    zIndex: 101,
+    elevation: 101,
   },
   badgeText: {
     color: '#FFFFFF',
@@ -255,8 +283,15 @@ const styles = StyleSheet.create({
     borderRadius: 80,
     justifyContent: 'center',
     alignItems: 'center',
-    zIndex: 0,
-    marginLeft: 0,
+    zIndex: 1,
+    overflow: 'visible',
+  },
+  activeGradient: {
+    width: 97,
+    height: 64,
+    borderRadius: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 })
 

@@ -860,6 +860,7 @@ exports[`Connection Screen Valid goal code aries.vc.issue extracted, show to off
                 style={
                   Object {
                     "alignItems": "stretch",
+                    "alignSelf": "center",
                     "opacity": 1,
                     "width": 675,
                   }
@@ -876,7 +877,7 @@ exports[`Connection Screen Valid goal code aries.vc.issue extracted, show to off
                         "borderWidth": 2,
                         "elevation": 4,
                         "flexDirection": "row",
-                        "height": 234.03508771929825,
+                        "height": 125,
                         "justifyContent": "space-between",
                         "padding": 24,
                         "shadowColor": "#000",
@@ -909,12 +910,12 @@ exports[`Connection Screen Valid goal code aries.vc.issue extracted, show to off
                           "alignItems": "center",
                           "backgroundColor": "#FFFFFF",
                           "borderRadius": 12,
-                          "height": 111.72,
+                          "height": 65,
                           "justifyContent": "center",
                           "marginRight": 16,
                           "overflow": "hidden",
                           "padding": 5,
-                          "width": 111.72,
+                          "width": 65,
                         }
                       }
                     >
@@ -939,7 +940,7 @@ exports[`Connection Screen Valid goal code aries.vc.issue extracted, show to off
                             Array [
                               Object {
                                 "fontFamily": "OpenSans-SemiBold",
-                                "fontSize": 40.019999999999996,
+                                "fontSize": 22.5,
                                 "fontWeight": "600",
                               },
                               Object {

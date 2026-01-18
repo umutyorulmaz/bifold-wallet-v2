@@ -182,37 +182,39 @@ const Chat: React.FC<ChatProps> = ({ route }) => {
     assertNetworkConnected()
   }, [assertNetworkConnected])
 
+
   useEffect(() => {
     navigation.setOptions({
       headerStyle: { backgroundColor: '#005F5F' },
       headerTintColor: '#FFFFFF',
       headerTitle: theirLabel,
       headerTitleStyle: {
+        fontSize: 18,
+        fontWeight: '600',
         textAlign: 'center',
-        width: '100%',
       },
-      headerTitleContainerStyle: {
-        alignSelf: 'center',
-        left: 15,
-        right: 0,
-        position: 'absolute',
-      },
+      headerTitleAlign: 'center',
       headerLeft: () => (
         <Pressable
           onPress={() => navigation.goBack()}
           accessibilityLabel={t('Global.Back') ?? 'Back'}
-          style={{ padding: 8, marginLeft: 8, zIndex: 10 }}
+          style={{ padding: 8, marginLeft: 16, zIndex: 10 }}
         >
-          <MaterialCommunityIcon name="chevron-left" size={40} color="#FFFFFF" />
+          <MaterialCommunityIcon name="chevron-left" size={32} color="#FFFFFF" />
         </Pressable>
       ),
       headerRight: () => (
         <Pressable
           onPress={(e) => openOverflowMenuAtEvent(e)}
           accessibilityLabel={t('Global.MoreOptions') ?? 'More options'}
-          style={{ padding: 8, marginRight: 8, zIndex: 1 }}
+          style={{
+            padding: 8,
+            zIndex: 1,
+            marginRight: 26,
+            marginLeft: Platform.OS === 'ios' ? -26 : 0,
+          }}
         >
-          <MaterialCommunityIcon name="dots-horizontal-circle-outline" size={40} color="#FFFFFF" />
+          <MaterialCommunityIcon name="dots-horizontal-circle-outline" size={32} color="#FFFFFF" />
         </Pressable>
       ),
     })
@@ -331,6 +333,7 @@ const Chat: React.FC<ChatProps> = ({ route }) => {
               shadowRadius: 12,
               shadowOffset: { width: 0, height: 6 },
               elevation: 8,
+              marginTop: Platform.OS === 'ios' ? 50 : 0,
             }}
           >
             <Pressable

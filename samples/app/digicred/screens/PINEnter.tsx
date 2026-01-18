@@ -253,17 +253,19 @@ const PINEnter: React.FC<PINEnterProps> = ({ setAuthenticated }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'flex-start',
     paddingTop: 0,
     paddingHorizontal: 24,
+
   },
   logoContainer: {
     alignItems: 'center',
     width: '100%',
   },
   buttonsContainer: {
-    marginTop: 60,
+    marginTop: 100,
     alignItems: 'center',
+    justifyContent: 'center',
+    alignSelf: 'center',
   },
   figmaButtonCancel: {
     borderRadius: 25,
@@ -314,8 +316,9 @@ const styles = StyleSheet.create({
   },
   orContainer: {
     flexDirection: 'row',
-    alignItems: 'center',
     marginVertical: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   orLine: {
     height: 1,
@@ -331,6 +334,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     paddingHorizontal: 16,
+
   },
   modalTitle: {
     fontSize: 22,
@@ -354,6 +358,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: 8,
+
   },
 })
 
