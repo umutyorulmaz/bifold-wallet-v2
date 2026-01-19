@@ -761,6 +761,12 @@
     "JustAMoment": "Just a moment while we prepare things for you...",
     "FromYourWallet": "From your wallet",
     "MissingCredentials": "Missing credentials",
+    "Verified": "Verified",
+    "NotVerified": "Not Verified",
+    "InformationRequest": "Information Request",
+    "RequestsInformation": "is requesting information from you",
+    "TapToView": "Tap to view details",
+    "SharedSuccessfully": "Shared Successfully",
     "PredicateGeDate": "is after",
     "PredicateLeDate": "is before",
     "PredicateGe": "is greater than or equal to",
@@ -1131,7 +1137,8 @@
     "ProofRequestSatisfied": "shared information",
     "ReceivedAt": "Received at",
     "AcceptedAt": "Accepted at",
-    "DeclinedAt": "Declined at"
+    "DeclinedAt": "Declined at",
+    "SharedAt": "Shared at"
   },
   "Verifier": {
     "UseVerifierCapability": "Use Verifier capability?",

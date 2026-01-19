@@ -25,7 +25,13 @@ export {
 } from './CredentialRenderer'
 
 // Proof renderers
-export { DefaultProofRenderer, createDefaultProofRenderer, type ProofRendererOptions } from './ProofRenderer'
+export {
+  DefaultProofRenderer,
+  createDefaultProofRenderer,
+  VDProofRenderer,
+  createVDProofRenderer,
+  type ProofRendererOptions,
+} from './ProofRenderer'
 
 // Helper to create full chat screen config
 export { createChatScreenConfig, type ChatScreenConfigOptions } from './createChatScreenConfig'

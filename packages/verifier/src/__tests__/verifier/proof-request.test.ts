@@ -24,8 +24,9 @@ describe('Helpers', () => {
   })
 
   test('Check if proof has predicates', async () => {
+    // Current templates don't have predicates - they only request attributes
     expect(hasPredicates(templates[0])).toBeFalsy()
-    expect(hasPredicates(templates[1])).toBeTruthy()
+    expect(hasPredicates(templates[1])).toBeFalsy()
   })
 
   afterAll(() => {

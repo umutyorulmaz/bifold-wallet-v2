@@ -335,6 +335,8 @@ export type TokenMapping = {
     onAccept: () => void
     onDecline: () => void
     isDisabled: boolean
+    isShare?: boolean
+    isShareDisabled?: boolean
   }>
   [COMPONENT_TOKENS.COMPONENT_SNACK_BAR_MESSAGE]: React.FC<{
     message: string
