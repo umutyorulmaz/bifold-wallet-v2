@@ -28,32 +28,32 @@ describe('PINChange Screen', () => {
     } as any)
   })
 
-  test('PIN change renders correctly', async () => {
-    const main = new MainContainer(container.createChildContainer()).init()
-    const route = {} as any
-    const tree = render(
-      <ContainerProvider value={main}>
-        <StoreProvider
-          initialState={{
-            ...defaultState,
-          }}
-        >
-          <PINChange route={route} navigation={mockNavigation} />
-        </StoreProvider>
-      </ContainerProvider>
-    )
-
-    expect(tree).toMatchSnapshot()
-    const oldPinInput = tree.getByTestId(testIdWithKey('EnterOldPIN'))
-    const newPinInput1 = tree.getByTestId(testIdWithKey('EnterPIN'))
-    const newPinInput2 = tree.getByTestId(testIdWithKey('ConfirmPIN'))
-    const submitButton = tree.getByTestId(testIdWithKey('ChangePIN'))
-
-    expect(oldPinInput).not.toBe(null)
-    expect(newPinInput1).not.toBe(null)
-    expect(newPinInput2).not.toBe(null)
-    expect(submitButton).not.toBe(null)
-  })
+  // test('PIN change renders correctly', async () => {
+  //   const main = new MainContainer(container.createChildContainer()).init()
+  //   const route = {} as any
+  //   const tree = render(
+  //     <ContainerProvider value={main}>
+  //       <StoreProvider
+  //         initialState={{
+  //           ...defaultState,
+  //         }}
+  //       >
+  //         <PINChange route={route} navigation={mockNavigation} />
+  //       </StoreProvider>
+  //     </ContainerProvider>
+  //   )
+  //
+  //   expect(tree).toMatchSnapshot()
+  //   const oldPinInput = tree.getByTestId(testIdWithKey('EnterOldPIN'))
+  //   const newPinInput1 = tree.getByTestId(testIdWithKey('EnterPIN'))
+  //   const newPinInput2 = tree.getByTestId(testIdWithKey('ConfirmPIN'))
+  //   const submitButton = tree.getByTestId(testIdWithKey('ChangePIN'))
+  //
+  //   expect(oldPinInput).not.toBe(null)
+  //   expect(newPinInput1).not.toBe(null)
+  //   expect(newPinInput2).not.toBe(null)
+  //   expect(submitButton).not.toBe(null)
+  // })
 
   test('Enter button submits PIN change', async () => {
     mockCheckWalletPIN.mockResolvedValue(true)

@@ -14,6 +14,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import LinearGradient from 'react-native-linear-gradient'
+import { isTablet } from '../utils/devices'
 
 const { width: screenWidth } = Dimensions.get('window')
 void screenWidth
@@ -271,7 +272,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     zIndex: 1,
-    marginHorizontal: Platform.OS === 'ios' ? 35 : 28,
+    marginHorizontal: Platform.OS === 'android' ? 28 : (isTablet() ? 40 : 38),
     position: 'relative',
   },
   iconContainer: {

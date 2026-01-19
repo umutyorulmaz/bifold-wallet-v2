@@ -540,7 +540,8 @@
     "Credentials": "My credentials from this contact",
     "NoCredentials": "You don't have any credentials from this contact.",
     "StartVideoCall": "Start Video Call",
-    "ListCredentials": "List Credentials"
+    "ListCredentials": "List Credentials",
+    "RemoveContactAction": "Remove Contact"
   },
   "WhatAreContacts": {
     "Title": "What are Contacts?",

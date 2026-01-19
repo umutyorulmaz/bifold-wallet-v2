@@ -10,7 +10,7 @@ import {
   TouchableOpacity,
   Modal,
   Pressable,
-  Dimensions,
+  Dimensions, Platform,
 } from 'react-native'
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
@@ -209,7 +209,7 @@ const CredentialDetails: React.FC<CredentialDetailsProps> = () => {
 
         setOverflowAnchor({
           x: pageX - 20,
-          y: pageY - 20,
+          y: pageY - (Platform.OS === 'ios' ? -20 : 20),
           w,
           h,
         })
@@ -595,7 +595,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   headerContainer: {
-    paddingTop: 10,
+    paddingTop: Platform.OS === 'ios' ? 0 : 10,
     paddingBottom: 5,
   },
   navBar: {
