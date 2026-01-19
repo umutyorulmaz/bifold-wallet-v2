@@ -43,18 +43,20 @@ describe('ListProofRequests Component', () => {
   test('Template names are human readable', async () => {
     const tree = renderView()
 
-    const fullName = await tree.findByText('Student full name', { exact: true })
-    const fullNameAndExpirationDate = await tree.findByText('Student full name and expiration date', { exact: false })
-
+    // First template should be visible
+    const fullName = await tree.findByText('High School Student Name', { exact: true })
     expect(fullName).not.toBe(null)
-    expect(fullNameAndExpirationDate).not.toBe(null)
+
+    // Check that at least one template with descriptive text is rendered
+    const description = await tree.findByText('Verify the full name of a high school student', { exact: false })
+    expect(description).not.toBe(null)
   })
 
   test('Pressing on a request template takes the user to a proof request template detail screen', async () => {
     const tree = renderView()
 
     await act(async () => {
-      const templateItemInstance = await tree.findByText('Student full name', { exact: true })
+      const templateItemInstance = await tree.findByText('High School Student Name', { exact: true })
 
       fireEvent(templateItemInstance, 'press')
 

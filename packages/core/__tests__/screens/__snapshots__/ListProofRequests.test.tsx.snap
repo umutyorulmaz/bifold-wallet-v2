@@ -23,31 +23,31 @@ exports[`ListProofRequests Component Renders correctly 1`] = `
     data={
       Array [
         Object {
-          "description": "Verify the full name of a student",
-          "id": "Aries:5:StudentFullName:0.0.1:indy",
-          "name": "Student full name",
+          "description": "Verify the full name of a high school student",
+          "id": "Aries:5:HSStudentFullName:0.0.1:indy",
+          "name": "High School Student Name",
           "payload": Object {
             "data": Array [
               Object {
                 "requestedAttributes": Array [
                   Object {
-                    "name": "student_first_name",
+                    "name": "first",
                     "restrictions": Array [
                       Object {
-                        "cred_def_id": "XUxBrVSALWHLeycAUhrNr9:3:CL:26293:student_card",
+                        "schema_id": "64zTt4edLTprWQTUkrYhZJ:2:NC High School Student Card:1.0",
                       },
                     ],
                   },
                   Object {
-                    "name": "student_last_name",
+                    "name": "last",
                     "restrictions": Array [
                       Object {
-                        "cred_def_id": "XUxBrVSALWHLeycAUhrNr9:3:CL:26293:student_card",
+                        "schema_id": "64zTt4edLTprWQTUkrYhZJ:2:NC High School Student Card:1.0",
                       },
                     ],
                   },
                 ],
-                "schema": "XUxBrVSALWHLeycAUhrNr9:3:CL:26293:Student Card",
+                "schema": "64zTt4edLTprWQTUkrYhZJ:2:NC High School Student Card:1.0",
               },
             ],
             "type": "anoncreds",
@@ -55,38 +55,111 @@ exports[`ListProofRequests Component Renders correctly 1`] = `
           "version": "0.0.1",
         },
         Object {
-          "description": "Verify that full name of a student and that he/she has a not expired student card.",
-          "id": "Aries:5:StudentFullNameAndExpirationDate:0.0.1:indy",
-          "name": "Student full name and expiration date",
+          "description": "Verify high school student ID and name",
+          "id": "Aries:5:HSStudentId:0.0.1:indy",
+          "name": "High School Student ID",
           "payload": Object {
             "data": Array [
               Object {
                 "requestedAttributes": Array [
                   Object {
                     "names": Array [
-                      "student_first_name",
-                      "student_last_name",
+                      "first",
+                      "last",
+                      "studentId",
                     ],
                     "restrictions": Array [
                       Object {
-                        "cred_def_id": "XUxBrVSALWHLeycAUhrNr9:3:CL:26293:student_card",
+                        "schema_id": "64zTt4edLTprWQTUkrYhZJ:2:NC High School Student Card:1.0",
                       },
                     ],
                   },
                 ],
-                "requestedPredicates": Array [
+                "schema": "64zTt4edLTprWQTUkrYhZJ:2:NC High School Student Card:1.0",
+              },
+            ],
+            "type": "anoncreds",
+          },
+          "version": "0.0.1",
+        },
+        Object {
+          "description": "Verify high school transcript with GPA",
+          "id": "Aries:5:HSTranscript:0.0.1:indy",
+          "name": "High School Transcript",
+          "payload": Object {
+            "data": Array [
+              Object {
+                "requestedAttributes": Array [
                   Object {
-                    "name": "expiry_date",
-                    "predicateType": ">=",
-                    "predicateValue": 20240101,
+                    "names": Array [
+                      "studentFullName",
+                      "schoolName",
+                      "cumulativeGPA",
+                    ],
                     "restrictions": Array [
                       Object {
-                        "cred_def_id": "XUxBrVSALWHLeycAUhrNr9:3:CL:26293:student_card",
+                        "schema_id": "64zTt4edLTprWQTUkrYhZJ:2:NC High School Transcript:1.4",
                       },
                     ],
                   },
                 ],
-                "schema": "XUxBrVSALWHLeycAUhrNr9:3:CL:26293:Student Card",
+                "schema": "64zTt4edLTprWQTUkrYhZJ:2:NC High School Transcript:1.4",
+              },
+            ],
+            "type": "anoncreds",
+          },
+          "version": "0.0.1",
+        },
+        Object {
+          "description": "Verify college student ID and name",
+          "id": "Aries:5:CollegeStudentId:0.0.1:indy",
+          "name": "College Student ID",
+          "payload": Object {
+            "data": Array [
+              Object {
+                "requestedAttributes": Array [
+                  Object {
+                    "names": Array [
+                      "first",
+                      "last",
+                      "studentId",
+                    ],
+                    "restrictions": Array [
+                      Object {
+                        "schema_id": "64zTt4edLTprWQTUkrYhZJ:2:College Student ID:1.1",
+                      },
+                    ],
+                  },
+                ],
+                "schema": "64zTt4edLTprWQTUkrYhZJ:2:College Student ID:1.1",
+              },
+            ],
+            "type": "anoncreds",
+          },
+          "version": "0.0.1",
+        },
+        Object {
+          "description": "Verify college transcript with GPA",
+          "id": "Aries:5:CollegeTranscript:0.0.1:indy",
+          "name": "College Transcript",
+          "payload": Object {
+            "data": Array [
+              Object {
+                "requestedAttributes": Array [
+                  Object {
+                    "names": Array [
+                      "studentFullName",
+                      "schoolName",
+                      "cumulativeGPA",
+                    ],
+                    "restrictions": Array [
+                      Object {
+                        "schema_id": "64zTt4edLTprWQTUkrYhZJ:2:NC College Transcript:1.0",
+                      },
+                    ],
+                  },
+                ],
+                "schema": "64zTt4edLTprWQTUkrYhZJ:2:NC College Transcript:1.0",
               },
             ],
             "type": "anoncreds",
@@ -190,7 +263,7 @@ exports[`ListProofRequests Component Renders correctly 1`] = `
                 ]
               }
             >
-              Student full name
+              High School Student Name
             </Text>
             <Text
               maxFontSizeMultiplier={2}
@@ -211,7 +284,7 @@ exports[`ListProofRequests Component Renders correctly 1`] = `
                 ]
               }
             >
-              Verify the full name of a student
+              Verify the full name of a high school student
             </Text>
           </View>
           <View
@@ -321,7 +394,7 @@ exports[`ListProofRequests Component Renders correctly 1`] = `
                 ]
               }
             >
-              Student full name and expiration date
+              High School Student ID
             </Text>
             <Text
               maxFontSizeMultiplier={2}
@@ -342,10 +415,100 @@ exports[`ListProofRequests Component Renders correctly 1`] = `
                 ]
               }
             >
-              Verify that full name of a student and that he/she has a not expired student card.
+              Verify high school student ID and name
             </Text>
+          </View>
+          <View
+            style={
+              Object {
+                "alignSelf": "center",
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                Array [
+                  Object {
+                    "color": undefined,
+                    "fontSize": 12,
+                  },
+                  Object {
+                    "color": "#000000",
+                    "fontSize": 36,
+                  },
+                  Object {
+                    "fontFamily": "Material Icons",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  Object {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
+        </View>
+      </View>
+      <View
+        onFocusCapture={[Function]}
+        onLayout={[Function]}
+        style={null}
+      >
+        <View
+          accessibilityLabel="Screens.ProofRequestDetails"
+          accessibilityRole="button"
+          accessibilityState={
+            Object {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            Object {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "backgroundColor": "#FFFFFF",
+              "borderRadius": 8,
+              "flexDirection": "row",
+              "marginBottom": 10,
+              "opacity": 1,
+              "padding": 12,
+            }
+          }
+          testID="com.ariesbifold:id/ProofRequestsCard"
+        >
+          <View
+            style={
+              Object {
+                "flex": 1,
+              }
+            }
+          >
             <Text
               maxFontSizeMultiplier={2}
+              numberOfLines={1}
               style={
                 Array [
                   Object {
@@ -354,13 +517,298 @@ exports[`ListProofRequests Component Renders correctly 1`] = `
                     "fontWeight": "normal",
                   },
                   Object {
-                    "color": "#606060",
-                    "fontSize": 12,
+                    "color": "#000000",
+                    "fontSize": 16,
+                    "fontWeight": "bold",
+                    "marginBottom": 4,
                   },
                 ]
               }
             >
-              Verifier.ZeroKnowledgeProof
+              High School Transcript
+            </Text>
+            <Text
+              maxFontSizeMultiplier={2}
+              numberOfLines={2}
+              style={
+                Array [
+                  Object {
+                    "color": "#FFFFFF",
+                    "fontSize": 18,
+                    "fontWeight": "normal",
+                  },
+                  Object {
+                    "color": "#000000",
+                    "fontSize": 16,
+                    "fontWeight": "normal",
+                    "marginBottom": 4,
+                  },
+                ]
+              }
+            >
+              Verify high school transcript with GPA
+            </Text>
+          </View>
+          <View
+            style={
+              Object {
+                "alignSelf": "center",
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                Array [
+                  Object {
+                    "color": undefined,
+                    "fontSize": 12,
+                  },
+                  Object {
+                    "color": "#000000",
+                    "fontSize": 36,
+                  },
+                  Object {
+                    "fontFamily": "Material Icons",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  Object {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
+        </View>
+      </View>
+      <View
+        onFocusCapture={[Function]}
+        onLayout={[Function]}
+        style={null}
+      >
+        <View
+          accessibilityLabel="Screens.ProofRequestDetails"
+          accessibilityRole="button"
+          accessibilityState={
+            Object {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            Object {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "backgroundColor": "#FFFFFF",
+              "borderRadius": 8,
+              "flexDirection": "row",
+              "marginBottom": 10,
+              "opacity": 1,
+              "padding": 12,
+            }
+          }
+          testID="com.ariesbifold:id/ProofRequestsCard"
+        >
+          <View
+            style={
+              Object {
+                "flex": 1,
+              }
+            }
+          >
+            <Text
+              maxFontSizeMultiplier={2}
+              numberOfLines={1}
+              style={
+                Array [
+                  Object {
+                    "color": "#FFFFFF",
+                    "fontSize": 18,
+                    "fontWeight": "normal",
+                  },
+                  Object {
+                    "color": "#000000",
+                    "fontSize": 16,
+                    "fontWeight": "bold",
+                    "marginBottom": 4,
+                  },
+                ]
+              }
+            >
+              College Student ID
+            </Text>
+            <Text
+              maxFontSizeMultiplier={2}
+              numberOfLines={2}
+              style={
+                Array [
+                  Object {
+                    "color": "#FFFFFF",
+                    "fontSize": 18,
+                    "fontWeight": "normal",
+                  },
+                  Object {
+                    "color": "#000000",
+                    "fontSize": 16,
+                    "fontWeight": "normal",
+                    "marginBottom": 4,
+                  },
+                ]
+              }
+            >
+              Verify college student ID and name
+            </Text>
+          </View>
+          <View
+            style={
+              Object {
+                "alignSelf": "center",
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                Array [
+                  Object {
+                    "color": undefined,
+                    "fontSize": 12,
+                  },
+                  Object {
+                    "color": "#000000",
+                    "fontSize": 36,
+                  },
+                  Object {
+                    "fontFamily": "Material Icons",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  Object {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
+        </View>
+      </View>
+      <View
+        onFocusCapture={[Function]}
+        onLayout={[Function]}
+        style={null}
+      >
+        <View
+          accessibilityLabel="Screens.ProofRequestDetails"
+          accessibilityRole="button"
+          accessibilityState={
+            Object {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            Object {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "backgroundColor": "#FFFFFF",
+              "borderRadius": 8,
+              "flexDirection": "row",
+              "marginBottom": 10,
+              "opacity": 1,
+              "padding": 12,
+            }
+          }
+          testID="com.ariesbifold:id/ProofRequestsCard"
+        >
+          <View
+            style={
+              Object {
+                "flex": 1,
+              }
+            }
+          >
+            <Text
+              maxFontSizeMultiplier={2}
+              numberOfLines={1}
+              style={
+                Array [
+                  Object {
+                    "color": "#FFFFFF",
+                    "fontSize": 18,
+                    "fontWeight": "normal",
+                  },
+                  Object {
+                    "color": "#000000",
+                    "fontSize": 16,
+                    "fontWeight": "bold",
+                    "marginBottom": 4,
+                  },
+                ]
+              }
+            >
+              College Transcript
+            </Text>
+            <Text
+              maxFontSizeMultiplier={2}
+              numberOfLines={2}
+              style={
+                Array [
+                  Object {
+                    "color": "#FFFFFF",
+                    "fontSize": 18,
+                    "fontWeight": "normal",
+                  },
+                  Object {
+                    "color": "#000000",
+                    "fontSize": 16,
+                    "fontWeight": "normal",
+                    "marginBottom": 4,
+                  },
+                ]
+              }
+            >
+              Verify college transcript with GPA
             </Text>
           </View>
           <View

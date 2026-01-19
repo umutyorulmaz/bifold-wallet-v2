@@ -90,7 +90,7 @@ exports[`ProofRequesting Component generate new qr works correctly 1`] = `
             ]
           }
         >
-          Student full name
+          High School Student Name
         </Text>
       </View>
     </View>
@@ -279,7 +279,7 @@ exports[`ProofRequesting Component renders correctly 1`] = `
             ]
           }
         >
-          Student full name
+          High School Student Name
         </Text>
       </View>
     </View>
@@ -453,7 +453,7 @@ exports[`ProofRequesting Component renders correctly 2`] = `
             ]
           }
         >
-          Student full name
+          High School Student Name
         </Text>
       </View>
     </View>
