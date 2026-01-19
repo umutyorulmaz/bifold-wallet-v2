@@ -11,6 +11,7 @@ import {
   createActionMenuHandler,
   createDIDCommWorkflowHandler,
   createVDCredentialRenderer,
+  createVDProofRenderer,
   ChatHeaderRenderer,
   DefaultScreenOptionsDictionary,
   Screens,
@@ -240,8 +241,10 @@ export class AppContainer implements Container {
       }),
       // DigiCred gradient background
       backgroundRenderer: new DigiCredChatBackgroundRenderer(),
-      // VD-style credential cards
+      // VD-style credential cards with inline buttons
       credentialRenderer: createVDCredentialRenderer(),
+      // VD-style proof request cards with inline Share/Decline buttons
+      proofRenderer: createVDProofRenderer(),
       // Feature flags
       showMenuButton: true,
       showInfoButton: true,
