@@ -139,7 +139,7 @@ const ListCredentials: React.FC = () => {
       <StatusBar barStyle="light-content" translucent backgroundColor="transparent" />
       <View style={styles.container}>
         <View style={styles.header}>
-          <Text style={styles.headerTitle}>{t('Screens.ListCredentials') || 'ListCredentials'}</Text>
+          <Text style={styles.headerTitle}>{t('Screens.Credentials') || 'Credentials'}</Text>
         </View>
 
         <FlatList

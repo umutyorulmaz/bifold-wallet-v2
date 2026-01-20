@@ -492,7 +492,8 @@
     "Credentials": "Minhas credenciais",
     "NoCredentials": "Você não tem nenhuma credencial com esse Contato.",
     "StartVideoCall": "Iniciar Videochamada",
-    "ListCredentials": "Listar Credenciais"
+    "ListCredentials": "Listar Credenciais",
+    "RemoveContactAction": "Remover contato"
   },
   "WhatAreContacts": {
     "Title": "O que são Contatos?",

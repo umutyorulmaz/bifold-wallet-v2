@@ -16,7 +16,6 @@ import {
 } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Toast from 'react-native-toast-message'
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 import CommonRemoveModal from '../components/modals/CommonRemoveModal'
 import { ToastType } from '../components/toast/BaseToast'
@@ -95,11 +94,6 @@ const ContactDetails: React.FC<ContactDetailsProps> = ({ route }) => {
       gap: Spacing.sm,
       marginBottom: Spacing.md,
     },
-    headerRow: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      gap: Spacing.sm,
-    },
     avatarImage: {
       width: contactImageSize,
       height: contactImageSize,
@@ -107,21 +101,25 @@ const ContactDetails: React.FC<ContactDetailsProps> = ({ route }) => {
     },
     contactLabel: {
       flexShrink: 1,
+      marginLeft: 20,
     },
-    section: {
-      padding: Spacing.md,
-      backgroundColor: 'transparent',
-    },
-    divider: {
-      borderTopWidth: 1,
-      borderTopColor: ColorPalette.grayscale.lightGrey,
-      marginVertical: Spacing.md,
-    },
-    actionRow: {
+    actionButton: {
+      width: '85%',
+      maxWidth: 400,
+      alignSelf: 'center',
       flexDirection: 'row',
       alignItems: 'center',
-      gap: Spacing.sm,
-      marginTop: Spacing.sm,
+      justifyContent: 'center',
+      paddingVertical: Spacing.md,
+      paddingHorizontal: Spacing.lg,
+      borderRadius: 12,
+      marginVertical: Spacing.xs,
+    },
+    actionButtonText: {
+      marginLeft: Spacing.sm,
+      fontSize: 16,
+      fontWeight: '500',
+      color: '#FFFFFF',
     },
   })
 
@@ -264,58 +262,55 @@ const ContactDetails: React.FC<ContactDetailsProps> = ({ route }) => {
             </>
           )}
 
-          <View style={{ marginTop: Spacing.lg }}>
-            <TouchableOpacity
-              testID={testIdWithKey('StartVideoCall')}
-              style={[styles.actionRow]}
-              onPress={() =>
-                navigation.navigate(Screens.VideoCall as any, {
-                  connectionId,
-                  video: true,
-                })
-              }
-            >
-              <Icon name="video" size={20} color={ColorPalette.brand.primary} />
-              <ThemedText style={{ color: ColorPalette.brand.primary }}>
-                {t('ContactDetails.StartVideoCall')}
-              </ThemedText>
-            </TouchableOpacity>
-
+          <View style={{ marginTop: 100, alignItems: 'center' }}>
+            {/*<TouchableOpacity*/}
+            {/*  testID={testIdWithKey('StartVideoCall')}*/}
+            {/*  style={[styles.actionRow]}*/}
+            {/*    onPress={() =>*/}
+            {/*       navigation.navigate(Screens.VideoCall as any, {*/}
+            {/*        connectionId,*/}
+            {/*        video: true,*/}
+            {/*     })*/}
+            {/*    }*/}
+            {/*   >*/}
+            {/*  <Icon name="video" size={20} color={ColorPalette.brand.primary} />*/}
+            {/*  <ThemedText style={{ color: ColorPalette.brand.primary }}>*/}
+            {/*     {t('ContactDetails.StartVideoCall')}*/}
+            {/*   </ThemedText>*/}
+            {/*</TouchableOpacity>*/}
             {contactDetailsOptions?.enableEditContactName && (
               <TouchableOpacity
                 testID={testIdWithKey('RenameContact')}
-                style={[styles.actionRow]}
+                style={[styles.actionButton, { backgroundColor: '#1A7A7A' }]}
                 onPress={() => navigation.navigate(Screens.RenameContact, { connectionId })}
               >
-                <Assets.svg.iconEdit width={20} height={20} />
-                <ThemedText>{t('Screens.RenameContact')}</ThemedText>
+                <Assets.svg.iconEdit width={20} height={20} color={'white'} />
+                <ThemedText style={styles.actionButtonText}>{t('Screens.RenameContact')}</ThemedText>
               </TouchableOpacity>
             )}
 
             {store.preferences.developerModeEnabled && (
               <TouchableOpacity
                 testID={testIdWithKey('JSONDetails')}
-                style={[styles.actionRow]}
+                style={[styles.actionButton, { backgroundColor: '#1A7A7A' }]}
                 onPress={() =>
                   navigation.navigate(Screens.JSONDetails, {
                     jsonBlob: connection,
                   })
                 }
               >
-                <Assets.svg.iconCode width={20} height={20} />
-                <ThemedText>{t('Global.ViewJSON')}</ThemedText>
+                <Assets.svg.iconCode width={20} height={20} color={'white'} />
+                <ThemedText style={styles.actionButtonText}>{t('Global.ViewJSON')}</ThemedText>
               </TouchableOpacity>
             )}
 
             <TouchableOpacity
               testID={testIdWithKey('RemoveFromWallet')}
-              style={[styles.actionRow]}
+              style={[styles.actionButton, { backgroundColor: '#FF3B30' }]}
               onPress={callOnRemove}
             >
-              <Assets.svg.iconDelete width={20} height={20} color={ColorPalette.semantic.error} />
-              <ThemedText style={{ color: ColorPalette.semantic.error }}>
-                {t('ContactDetails.RemoveContact')}
-              </ThemedText>
+              <Assets.svg.iconDelete width={20} height={20} color={'white'} />
+              <ThemedText style={styles.actionButtonText}>{t('ContactDetails.RemoveContact')}</ThemedText>
             </TouchableOpacity>
           </View>
         </View>

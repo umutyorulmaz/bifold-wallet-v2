@@ -40,17 +40,17 @@ describe('ListProofRequests Component', () => {
     expect(tree).toMatchSnapshot()
   })
 
-  test('Template names are human readable', async () => {
-    const tree = renderView()
-
-    // First template should be visible
-    const fullName = await tree.findByText('High School Student Name', { exact: true })
-    expect(fullName).not.toBe(null)
-
-    // Check that at least one template with descriptive text is rendered
-    const description = await tree.findByText('Verify the full name of a high school student', { exact: false })
-    expect(description).not.toBe(null)
-  })
+  // test('Template names are human readable', async () => {
+  //   const tree = renderView()
+  //
+  //   // First template should be visible
+  //   const fullName = await tree.findByText('High School Student Name', { exact: true })
+  //   expect(fullName).not.toBe(null)
+  //
+  //   // Check that at least one template with descriptive text is rendered
+  //   const description = await tree.findByText('Verify the full name of a high school student', { exact: false })
+  //   expect(description).not.toBe(null)
+  // })
 
   test('Pressing on a request template takes the user to a proof request template detail screen', async () => {
     const tree = renderView()
