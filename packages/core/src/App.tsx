@@ -25,6 +25,7 @@ import { digicredTheme } from './modules/theme/themes/teal-dark/digicredTheme'
 import ErrorBoundaryWrapper from './components/misc/ErrorBoundary'
 import { bifoldLoggerInstance } from './services/bifoldLogger'
 import { ThemeRegistry, ThemeRegistryProvider } from './modules/theme'
+import { isCameraActive } from './utils/cameraState'
 import {
   manifest as tealDarkManifest,
   tabBarConfig as tealDarkTabBar,
@@ -71,15 +72,18 @@ const createApp = (container: Container): React.FC => {
     useEffect(() => {
       const handleAppStateChange = (nextAppState: AppStateStatus) => {
         if (appState.current.match(/inactive|background/) && nextAppState === 'active') {
-          setShowSplashOnReturn(true)
+          // Skip splash overlay if camera is active (e.g., camera permission dialog, scanner screen)
+          if (!isCameraActive()) {
+            setShowSplashOnReturn(true)
 
-          if (splashTimerRef.current) {
-            clearTimeout(splashTimerRef.current)
+            if (splashTimerRef.current) {
+              clearTimeout(splashTimerRef.current)
+            }
+
+            splashTimerRef.current = setTimeout(() => {
+              setShowSplashOnReturn(false)
+            }, 1000)
           }
-
-          splashTimerRef.current = setTimeout(() => {
-            setShowSplashOnReturn(false)
-          }, 1000)
         }
 
         if (nextAppState.match(/inactive|background/)) {

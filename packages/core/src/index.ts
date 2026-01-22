@@ -136,6 +136,7 @@ export { migrateToAskar } from './utils/migration'
 export { buildFieldsFromAnonCredsCredential } from './utils/oca'
 export { KanonOCABundleResolver, createKanonOCABundleResolver } from './utils/KanonOCABundleResolver'
 export { testIdForAccessabilityLabel, testIdWithKey } from './utils/testable'
+export { setCameraActive, isCameraActive } from './utils/cameraState'
 
 export type { AnimatedComponents } from './animated-components'
 export type { ReducerAction } from './contexts/reducers/store'

@@ -15,6 +15,7 @@ import {
   MaskType,
   connectFromScanOrDeepLink,
   QRRenderer,
+  setCameraActive,
 } from '@bifold/core'
 import { QrCodeScanError } from '@bifold/core/src/types/error'
 import { ToastType } from '@bifold/core/src/components/toast/BaseToast'
@@ -165,6 +166,14 @@ const Scan: React.FC<ScanProps> = ({ navigation }) => {
     }
     return false
   }
+
+  // Set camera active flag to prevent splash overlay during camera transitions
+  useEffect(() => {
+    setCameraActive(true)
+    return () => {
+      setCameraActive(false)
+    }
+  }, [])
 
   useEffect(() => {
     const asyncEffect = async () => {
