@@ -5,7 +5,7 @@
  * Fixed: Using direct <image> element instead of pattern.
  */
 
-export const PENDER_TRANSCRIPT_TEMPLATE = `<svg width="320" height="600" viewBox="0 0 320 600" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+export const PENDER_TRANSCRIPT_TEMPLATE = `<svg width="320" height="{{HEIGHT}}" viewBox="0 0 320 {{HEIGHT}}" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
   <defs>
     <linearGradient id="headerGrad_pender" x1="0%" y1="0%" x2="100%" y2="0%">
       <stop offset="0%" stop-color="#1E3A5F"/>
@@ -14,7 +14,7 @@ export const PENDER_TRANSCRIPT_TEMPLATE = `<svg width="320" height="600" viewBox
   </defs>
 
   <!-- Background -->
-  <rect width="320" height="600" fill="#FFFFFF"/>
+  <rect width="320" height="{{HEIGHT}}" fill="#FFFFFF"/>
 
   <!-- Header -->
   <rect width="320" height="60" fill="url(#headerGrad_pender)"/>
