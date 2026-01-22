@@ -627,7 +627,8 @@
     "RemoveCredentialConfirm": "Are you sure you wish to remove this credential? This action cannot be undone.",
     "Back": "BACK",
     "RemoveCredentialAction": "REMOVE CREDENTIAL",
-    "ExpirationDate": "Expiration Date"
+    "ExpirationDate": "Expiration Date",
+    "NoExpiration": "No Expiration"
   },
   "Home": {
     "Notification": "Notification",

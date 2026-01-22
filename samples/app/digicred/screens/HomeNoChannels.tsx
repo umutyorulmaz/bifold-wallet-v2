@@ -56,8 +56,7 @@ const HomeNoChannels = () => {
         if (conn.connectionTypes.includes(ConnectionType.Mediator)) return false
         const name = conn.theirLabel || conn.alias
         if (contactHideList?.includes(name ?? '')) return false
-        return !(!store.preferences.developerModeEnabled && conn.state !== DidExchangeState.Completed);
-
+        return !(!store.preferences.developerModeEnabled && conn.state !== DidExchangeState.Completed)
       })
 
       if (hasCredential || hasConnection) {
@@ -87,7 +86,7 @@ const HomeNoChannels = () => {
         ]).start()
       })
     }
-  }, [shouldRenderHomeNoChannels, fadeAnim, translateYAnim, item1Anim, item2Anim, item3Anim])
+  }, [fadeAnim, item1Anim, item2Anim, item3Anim, shouldRenderHomeNoChannels, translateYAnim])
 
   const handleScanPress = useCallback(() => {
     navigation.navigate(Stacks.ConnectStack as string, { screen: Screens.Scan } as Record<string, unknown>)
@@ -120,7 +119,7 @@ const HomeNoChannels = () => {
   }
 
   const circleSize = isTablet() ? Math.min(SCREEN_WIDTH * 1.3, 950) : 623
-  const circleTop = isTablet() ? -circleSize * 0.22 : 0
+  const circleTop = isTablet() ? -circleSize * 0.3 : 0
 
   const howItWorksMarginTop = isTablet() ? 200 : isSmallScreen() ? 0 : 60
   const itemWidth = isTablet() ? '50%' : '90%'
@@ -154,7 +153,7 @@ const HomeNoChannels = () => {
             },
           ]}
         />
-        <View style={[styles.contentWrapper, { marginTop: isTablet() ? 180 : 0 }]}>
+        <View style={[styles.contentWrapper, { marginTop: isTablet() ? 120 : 0, marginBottom: isTablet() ? 30 : 10 }]}>
           <Animated.View
             style={[
               styles.content,
@@ -205,7 +204,7 @@ const HomeNoChannels = () => {
                 styles.animatedItem,
                 {
                   opacity: item1Anim,
-                  transform: [{ translateY: item1Anim.interpolate({ inputRange: [0, 1], outputRange: [100, 0] }) }],
+                  transform: [{ translateY: item1Anim.interpolate({ inputRange: [0, 1], outputRange: [40, 0] }) }],
                 },
               ]}
             >
@@ -229,7 +228,7 @@ const HomeNoChannels = () => {
                 styles.animatedItem,
                 {
                   opacity: item2Anim,
-                  transform: [{ translateY: item2Anim.interpolate({ inputRange: [0, 1], outputRange: [100, 0] }) }],
+                  transform: [{ translateY: item2Anim.interpolate({ inputRange: [0, 1], outputRange: [40, 0] }) }],
                 },
               ]}
             >
@@ -253,7 +252,7 @@ const HomeNoChannels = () => {
                 styles.animatedItem,
                 {
                   opacity: item3Anim,
-                  transform: [{ translateY: item3Anim.interpolate({ inputRange: [0, 1], outputRange: [100, 0] }) }],
+                  transform: [{ translateY: item3Anim.interpolate({ inputRange: [0, 1], outputRange: [40, 0] }) }],
                 },
               ]}
             >
@@ -284,6 +283,7 @@ const HomeNoChannels = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    minHeight: '100%',
     position: 'relative',
   },
   loadingContainer: {
@@ -296,9 +296,10 @@ const styles = StyleSheet.create({
     borderRadius: 1000,
     backgroundColor: DigiCredColors.homeNoChannels.darkCircle,
     left: '50%',
+    zIndex: -1,
   },
   contentWrapper: {
-    flex: 1,
+    flexGrow: 1,
     paddingTop: 20,
     paddingHorizontal: 20,
     paddingBottom: 40,

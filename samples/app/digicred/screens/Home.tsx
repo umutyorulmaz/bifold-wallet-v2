@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react'
+import React, { useCallback, useMemo, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
   View,
@@ -11,8 +11,9 @@ import {
   Dimensions,
   Platform,
 } from 'react-native'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useIsFocused } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
+import { CommonActions } from '@react-navigation/native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { useConnections, useCredentials } from '@credo-ts/react-hooks'
 import { ConnectionType, CredentialState, DidExchangeState } from '@credo-ts/core'
@@ -73,10 +74,12 @@ const ContactCard: React.FC<ContactCardProps> = ({ name, time, hasNotification, 
 const Home: React.FC = () => {
   const { t } = useTranslation()
   const navigation = useNavigation<StackNavigationProp<Record<string, object | undefined>>>()
+  const isFocused = useIsFocused()
   const [store] = useStore()
   const [config] = useServices([TOKENS.CONFIG])
   const contactHideList = config?.contactHideList
   const { records: credentials = [] } = useCredentials()
+  const [hadContacts, setHadContacts] = useState(false)
 
   const connectionsResult = useConnections()
   const { records: connections = [] } = connectionsResult ?? { records: [] }
@@ -97,6 +100,23 @@ const Home: React.FC = () => {
       return true
     })
   }, [connections, contactHideList, store.preferences.developerModeEnabled])
+
+  useEffect(() => {
+    if (filteredConnections.length > 0) {
+      setHadContacts(true)
+    }
+  }, [filteredConnections])
+
+  useEffect(() => {
+    if (isFocused && hadContacts && filteredConnections.length === 0) {
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [{ name: Stacks.HomeNoChannelStack}],
+        })
+      )
+    }
+  }, [filteredConnections, navigation, hadContacts, isFocused])
 
   const handleScanPress = useCallback(() => {
     navigation.navigate(Stacks.ConnectStack as string, { screen: Screens.Scan } as Record<string, unknown>)
@@ -246,24 +266,24 @@ const styles = StyleSheet.create({
   contactAvatar: {
     width: 60,
     height: 60,
-    borderRadius: 8, // Thay đổi từ 30 thành 8
+    borderRadius: 8,
     marginRight: 12,
-    overflow: 'hidden', // Thêm overflow để đảm bảo ảnh không tràn ra ngoài
+    overflow: 'hidden',
   },
   avatarBackground: {
     width: '100%',
     height: '100%',
     backgroundColor: ColorPalette.grayscale.white,
     padding: 2,
-    borderRadius: 8, // Thay đổi từ 30 thành 8
+    borderRadius: 8,
     justifyContent: 'center',
     alignItems: 'center',
-    overflow: 'hidden', // Thêm overflow
+    overflow: 'hidden',
   },
   avatarImage: {
     width: '100%',
     height: '100%',
-    borderRadius: 6, // Thay đổi từ 25 thành 6 (8 - 2 padding)
+    borderRadius: 6,
   },
   avatarPlaceholder: {
     width: '100%',
@@ -271,7 +291,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#14FFEC',
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 6, // Thay đổi từ 25 thành 6 (8 - 2 padding)
+    borderRadius: 6,
   },
   avatarText: {
     fontSize: 24,

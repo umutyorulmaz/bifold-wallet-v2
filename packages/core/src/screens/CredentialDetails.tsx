@@ -339,6 +339,38 @@ const CredentialDetails: React.FC<CredentialDetailsProps> = () => {
       return formatDate(expirationAttr)
     }
 
+    const noExpirationAttr = getAttrValue(attributes, 'noexpiration', 'no_expiration', 'expires', 'validity')
+    if (noExpirationAttr) {
+      const lowerAttr = noExpirationAttr.toLowerCase()
+      if (
+        lowerAttr === 'never' ||
+        lowerAttr === 'false' ||
+        lowerAttr === 'no' ||
+        lowerAttr === 'permanent' ||
+        lowerAttr === 'indefinite' ||
+        lowerAttr === 'none'
+      ) {
+        return t('CredentialDetails.NoExpiration')
+      }
+    }
+
+    // If no expiration field exists in attributes at all
+    const hasExpirationField = attributes.some((attr) =>
+      [
+        'expirationdate',
+        'expiration_date',
+        'expiration',
+        'noexpiration',
+        'no_expiration',
+        'expires',
+        'validity',
+      ].includes(attr.name.toLowerCase())
+    )
+
+    if (!hasExpirationField) {
+      return t('CredentialDetails.NoExpiration')
+    }
+
     const expirationDate = new Date(issuedDate)
     expirationDate.setFullYear(expirationDate.getFullYear() + 5)
     return expirationDate.toLocaleDateString('en-US', {

@@ -580,7 +580,8 @@
     "RemoveCredentialConfirm": "Tem certeza de que deseja remover esta credencial? Esta ação não pode ser desfeita.",
     "Back": "VOLTAR",
     "RemoveCredentialAction": "REMOVER CREDENCIAL",
-    "ExpirationDate": "Data de expiração"
+    "ExpirationDate": "Data de expiração",
+    "NoExpiration": "Sem Expiração"
   },
   "Home": {
     "Notifications": "Notificações",
