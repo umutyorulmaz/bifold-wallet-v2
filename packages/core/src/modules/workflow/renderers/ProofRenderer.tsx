@@ -278,11 +278,34 @@ export const VDProofCard: React.FC<ProofCardProps> = ({ proof, context }) => {
     </View>
   )
 
+  // Navigate to proof details to view shared credentials
+  const handleViewDetails = useCallback(() => {
+    if (!context.navigation) return
+
+    const parent = context.navigation.getParent()
+    if (parent) {
+      parent.navigate(Stacks.ProofRequestsStack, {
+        screen: Screens.ProofDetails,
+        params: { recordId: proof.id, isHistory: true, senderReview: true },
+      })
+    } else {
+      context.navigation.navigate(Stacks.ProofRequestsStack as any, {
+        screen: Screens.ProofDetails,
+        params: { recordId: proof.id, isHistory: true, senderReview: true },
+      })
+    }
+  }, [context.navigation, proof.id])
+
   // Show shared state
   if (isShared || currentProofState === ProofState.PresentationSent || currentProofState === ProofState.Done) {
     return (
       <View key={`shared-${proof.id}`}>
-        <View>{cardContent}</View>
+        <TouchableOpacity onPress={handleViewDetails} activeOpacity={0.8}>
+          {cardContent}
+          <Text style={[styles.tapHint, { color: SettingsTheme.newSettingColors.buttonColor }]}>
+            {context.t('ProofRequest.TapToView' as any) as string || 'Tap to view details'}
+          </Text>
+        </TouchableOpacity>
         <Text style={[styles.messageTime]}>
           {`${t('Chat.SharedAt') || t('Chat.AcceptedAt')} ${formatTime(new Date(proof.updatedAt || proof.createdAt), {
             includeHour: true,
@@ -404,6 +427,12 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     lineHeight: 18,
     zIndex: 10,
+  },
+  tapHint: {
+    fontSize: 12,
+    fontWeight: '500',
+    textAlign: 'center',
+    paddingVertical: 8,
   },
 })
 
