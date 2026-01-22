@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import {
   View,
   ScrollView,
@@ -9,7 +9,7 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from 'react-native'
-import { useSafeAreaInsets, SafeAreaView } from 'react-native-safe-area-context'
+import { SafeAreaView } from 'react-native-safe-area-context'
 import { StackScreenProps } from '@react-navigation/stack'
 import { useTranslation } from 'react-i18next'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
@@ -136,7 +136,7 @@ const WorkflowDetails: React.FC<WorkflowDetailsProps> = ({ route }) => {
   const { ColorPalette, SettingsTheme } = useTheme()
   const [actionLoading, setActionLoading] = useState<string | null>(null)
   const [formValues, setFormValues] = useState<Record<string, string>>({})
-  const insets = useSafeAreaInsets()
+  const scrollViewRef = useRef<ScrollView>(null)
 
   const {
     instance,
@@ -640,15 +640,17 @@ const WorkflowDetails: React.FC<WorkflowDetailsProps> = ({ route }) => {
     <SafeAreaView style={styles.container} edges={['bottom', 'left', 'right']}>
       <KeyboardAvoidingView
         style={styles.keyboardAvoid}
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        keyboardVerticalOffset={Platform.OS === 'ios' ? insets.top + 60 : 0}
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 90 : 0}
       >
         <ScrollView
+          ref={scrollViewRef}
           style={styles.scrollView}
           contentContainerStyle={styles.scrollContent}
           showsVerticalScrollIndicator={false}
           keyboardShouldPersistTaps="handled"
           keyboardDismissMode="interactive"
+          automaticallyAdjustKeyboardInsets={true}
         >
           {/* State Card */}
           <View style={styles.stateCard}>
