@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react'
-import { View, TouchableOpacity, ScrollView, StyleSheet } from 'react-native'
+import { View, TouchableOpacity, StyleSheet } from 'react-native'
 import { SvgXml } from 'react-native-svg'
 
 import { CredentialPreviewAttribute, RenderMode, CredentialType } from './types'
@@ -285,23 +285,17 @@ export const CredentialSVGRenderer: React.FC<CredentialSVGRendererProps> = ({
         </View>
       )
 
-      // Wrap in ScrollView for full mode
+      // Full mode - render at full height, let parent page scroll
       if (mode === 'full') {
         return (
           <View style={[styles.container, { width: actualWidth }]}>
-            <ScrollView
-              style={styles.scrollView}
-              contentContainerStyle={styles.scrollContent}
-              showsVerticalScrollIndicator={true}
-            >
-              {onPress ? (
-                <TouchableOpacity onPress={onPress} activeOpacity={0.8}>
-                  {transcriptContent}
-                </TouchableOpacity>
-              ) : (
-                transcriptContent
-              )}
-            </ScrollView>
+            {onPress ? (
+              <TouchableOpacity onPress={onPress} activeOpacity={0.8}>
+                {transcriptContent}
+              </TouchableOpacity>
+            ) : (
+              transcriptContent
+            )}
           </View>
         )
       }
@@ -357,7 +351,8 @@ export const CredentialSVGRenderer: React.FC<CredentialSVGRendererProps> = ({
     }
 
     if (parsedData.type === 'transcript') {
-      const transcriptContent = (
+      // Render at full height, let parent page scroll
+      return (
         <TranscriptSVG
           data={parsedData.data}
           branding={branding}
@@ -365,21 +360,6 @@ export const CredentialSVGRenderer: React.FC<CredentialSVGRendererProps> = ({
           mode={mode}
         />
       )
-
-      // Wrap in ScrollView for full mode transcripts
-      if (mode === 'full') {
-        return (
-          <ScrollView
-            style={styles.scrollView}
-            contentContainerStyle={styles.scrollContent}
-            showsVerticalScrollIndicator={true}
-          >
-            {transcriptContent}
-          </ScrollView>
-        )
-      }
-
-      return transcriptContent
     }
 
     return null
@@ -412,12 +392,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 3,
-  },
-  scrollView: {
-    maxHeight: 500, // Limit height for scrollable transcripts
-  },
-  scrollContent: {
-    flexGrow: 1,
   },
 })
 
