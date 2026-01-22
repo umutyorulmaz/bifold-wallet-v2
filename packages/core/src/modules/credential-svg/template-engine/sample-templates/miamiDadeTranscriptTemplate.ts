@@ -26,7 +26,7 @@ export const MIAMIDADE_TRANSCRIPT_TEMPLATE = `<svg width="320" height="600" view
 
   <!-- School Name and Title -->
   <text x="66.0" y="24" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#FFFFFF">Miami-Dade County Public Schools</text>
-  <text x="66.0" y="42" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#FFFFFF">OFFICIAL TRANSCRIPT</text>
+  <text x="66.0" y="42" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#FFFFFF">TRANSCRIPT</text>
 
   <!-- Student Info Section -->
   <rect x="0" y="60" width="320" height="70" fill="#F9FAFB"/>

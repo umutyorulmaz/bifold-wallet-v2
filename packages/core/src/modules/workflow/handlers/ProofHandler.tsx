@@ -86,8 +86,8 @@ export class ProofWorkflowHandler extends BaseWorkflowHandler<ProofExchangeRecor
 
     let renderEvent: () => React.ReactElement
 
-    // Use custom renderer if available (and not PresentationSent state which should be hidden)
-    if (this.renderer && context.navigation && record.state !== ProofState.PresentationSent) {
+    // Use custom renderer if available for all proof states
+    if (this.renderer && context.navigation) {
       const renderContext: RenderContext = {
         t: context.t,
         navigation: context.navigation,
