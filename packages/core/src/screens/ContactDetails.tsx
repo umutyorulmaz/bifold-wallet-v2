@@ -16,7 +16,7 @@ import {
 } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Toast from 'react-native-toast-message'
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+// import Icon from 'react-native-vector-icons/MaterialCommunityIcons' // Hidden: video call feature
 
 import CommonRemoveModal from '../components/modals/CommonRemoveModal'
 import { ToastType } from '../components/toast/BaseToast'
@@ -265,6 +265,7 @@ const ContactDetails: React.FC<ContactDetailsProps> = ({ route }) => {
           )}
 
           <View style={{ marginTop: Spacing.lg }}>
+            {/* Video call feature hidden for now
             <TouchableOpacity
               testID={testIdWithKey('StartVideoCall')}
               style={[styles.actionRow]}
@@ -280,6 +281,7 @@ const ContactDetails: React.FC<ContactDetailsProps> = ({ route }) => {
                 {t('ContactDetails.StartVideoCall')}
               </ThemedText>
             </TouchableOpacity>
+            */}
 
             {contactDetailsOptions?.enableEditContactName && (
               <TouchableOpacity
