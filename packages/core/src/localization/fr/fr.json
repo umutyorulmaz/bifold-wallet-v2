@@ -522,7 +522,8 @@
     "Credentials": "Mes justificatifs avec ce contact",
     "NoCredentials": "Vous n'avez aucun justificatif de ce contact.",
     "StartVideoCall": "Démarrer l'appel vidéo",
-    "ListCredentials": "Lister les justificatifs d'identité"
+    "ListCredentials": "Lister les justificatifs d'identité",
+    "RemoveContactAction": "Supprimer le contact"
   },
   "WhatAreContacts": {
     "Title": "Que sont les Contacts?",

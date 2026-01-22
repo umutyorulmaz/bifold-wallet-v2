@@ -19,7 +19,7 @@ import {
 } from 'react-native'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 
-import { renderComposer, renderInputToolbar, renderSend } from '../components/chat'
+import { renderComposer, renderSend } from '../components/chat'
 import ActionSlider from '../components/chat/ActionSlider'
 import { ChatMessage } from '../components/chat/ChatMessage'
 import { useNetwork } from '../contexts/network'
@@ -198,7 +198,7 @@ const Chat: React.FC<ChatProps> = ({ route }) => {
         <Pressable
           onPress={() => navigation.goBack()}
           accessibilityLabel={t('Global.Back') ?? 'Back'}
-          style={{ padding: 8, marginLeft: 16, zIndex: 10 }}
+          style={{ padding: 8, marginLeft: Platform.OS==='ios' ? 16 : 0, zIndex: 10 }}
         >
           <MaterialCommunityIcon name="chevron-left" size={32} color="#FFFFFF" />
         </Pressable>
@@ -211,7 +211,8 @@ const Chat: React.FC<ChatProps> = ({ route }) => {
             padding: 8,
             zIndex: 1,
             marginRight: 26,
-            marginLeft: Platform.OS === 'ios' ? -26 : 0,
+            marginLeft: Platform.OS === 'ios' ? -26 : -50,
+            marginTop: Platform.OS === 'ios' ? -3 : 0,
           }}
         >
           <MaterialCommunityIcon name="dots-horizontal-circle-outline" size={32} color="#FFFFFF" />
@@ -321,7 +322,7 @@ const Chat: React.FC<ChatProps> = ({ route }) => {
 
   const overflowMenu = (
     <Modal visible={isOverflowOpen} transparent animationType="fade" onRequestClose={closeOverflowMenu}>
-      <Pressable style={{ flex: 1 }} onPress={closeOverflowMenu}>
+      <Pressable style={{ flex: 1}} onPress={closeOverflowMenu}>
         <View style={[menuStyle]}>
           <View
             style={{
@@ -382,17 +383,20 @@ const Chat: React.FC<ChatProps> = ({ route }) => {
             renderAvatar={() => null}
             messageIdGenerator={(msg) => msg?._id.toString() || '0'}
             renderMessage={(props) => <ChatMessage messageProps={props} />}
-            renderInputToolbar={(props) => renderInputToolbar(props, theme)}
+            renderInputToolbar={() => null}
             renderSend={(props) => renderSend(props, theme)}
             renderComposer={(props) => renderComposer(props, theme, t('Contacts.TypeHere'))}
             disableComposer={!silentAssertConnectedNetwork()}
             onSend={onSend}
             user={{ _id: Role.me }}
             renderActions={() => null}
-            messagesContainerStyle={{ paddingHorizontal: 12, paddingBottom: 80 }}
+            messagesContainerStyle={{ alignSelf: 'center' }}
             loadEarlier={canLoadEarlier}
             isLoadingEarlier={isLoadingEarlier}
             onLoadEarlier={loadEarlier}
+            bottomOffset={0}
+            minInputToolbarHeight={0}
+            renderChatFooter={() => <View style={{ height: 0, paddingTop: 10 }} />}
           />
           {showActionSlider && <ActionSlider onDismiss={onDismiss} actions={actions as any} />}
         </KeyboardAvoidingView>

@@ -2,306 +2,148 @@
 
 exports[`CommonRemoveModal Component Credential offer decline renders correctly 1`] = `
 <Modal
-  animationType="slide"
+  animationType="fade"
   hardwareAccelerated={false}
   transparent={true}
   visible={true}
 >
   <View
+    accessibilityState={
+      Object {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      Object {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
     style={
       Object {
         "backgroundColor": "rgba(0,0,0,0.5)",
         "flex": 1,
-        "paddingTop": 65,
       }
     }
   >
-    <RNCSafeAreaView
-      edges={
-        Object {
-          "bottom": "additive",
-          "left": "additive",
-          "right": "additive",
-          "top": "off",
-        }
-      }
+    <View
       style={
         Object {
-          "backgroundColor": "#000000",
-          "borderTopLeftRadius": 10,
-          "borderTopRightRadius": 10,
+          "alignItems": "center",
+          "flex": 1,
+          "justifyContent": "center",
+          "paddingHorizontal": 16,
         }
       }
     >
       <View
         style={
           Object {
-            "alignItems": "flex-end",
-            "height": 55,
-            "paddingRight": 20,
-            "paddingTop": 10,
+            "alignItems": "center",
+            "backgroundColor": "#25272A",
+            "borderRadius": 16,
+            "elevation": 12,
+            "flexDirection": "column",
+            "maxWidth": 400,
+            "padding": 24,
+            "paddingBottom": 32,
+            "shadowColor": "#000",
+            "shadowOffset": Object {
+              "height": 4,
+              "width": 2,
+            },
+            "shadowOpacity": 0.48,
+            "shadowRadius": 12,
+            "width": "95%",
           }
         }
       >
-        <View
-          accessibilityLabel="Global.Close"
-          accessibilityRole="button"
-          accessibilityState={
-            Object {
-              "busy": undefined,
-              "checked": undefined,
-              "disabled": undefined,
-              "expanded": undefined,
-              "selected": undefined,
-            }
-          }
-          accessibilityValue={
-            Object {
-              "max": undefined,
-              "min": undefined,
-              "now": undefined,
-              "text": undefined,
-            }
-          }
-          accessible={true}
-          collapsable={false}
-          focusable={true}
-          hitSlop={
-            Object {
-              "bottom": 44,
-              "left": 44,
-              "right": 44,
-              "top": 44,
-            }
-          }
-          onClick={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
+        <
+          color="#FF4445"
+        />
+        <Text
           style={
             Object {
-              "opacity": 1,
+              "color": "#FFFFFF",
+              "fontFamily": "OpenSans-SemiBold",
+              "fontSize": 20,
+              "fontWeight": "600",
+              "marginBottom": 25,
+              "marginTop": 15,
+              "textAlign": "center",
             }
           }
-          testID="com.ariesbifold:id/Close"
         >
-          <Text
-            allowFontScaling={false}
-            selectable={false}
-            style={
-              Array [
-                Object {
-                  "color": "#FFFFFF",
-                  "fontSize": 42,
-                },
-                undefined,
-                Object {
-                  "fontFamily": "Material Icons",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
-                },
-                Object {},
-              ]
-            }
-          >
-            
-          </Text>
-        </View>
-      </View>
-      <RCTScrollView
-        style={
-          Object {
-            "height": "100%",
-            "paddingHorizontal": 20,
-            "paddingTop": 10,
-          }
-        }
-      >
-        <View>
-          <View
-            style={
+          CredentialOffer.DeclineTitle
+        </Text>
+        <Text
+          style={
+            Array [
               Object {
-                "flexDirection": "row",
-                "justifyContent": "center",
-              }
-            }
-          >
-            <
-              height={115}
-              width={115}
-            />
-          </View>
-          <View
-            style={
+                "color": "#FFFFFF",
+                "fontFamily": "OpenSans-Regular",
+                "fontSize": 16,
+                "lineHeight": 22,
+                "marginBottom": 24,
+                "textAlign": "left",
+              },
               Object {
-                "marginBottom": 25,
-              }
-            }
-          >
-            <Text
-              maxFontSizeMultiplier={2}
-              style={
-                Array [
-                  Object {
-                    "color": "#FFFFFF",
-                    "fontSize": 24,
-                    "fontWeight": "bold",
-                  },
-                  Object {
-                    "marginTop": 15,
-                  },
-                ]
-              }
-            >
-              CredentialOffer.DeclineTitle
-            </Text>
-            <Text
-              maxFontSizeMultiplier={2}
-              style={
-                Array [
-                  Object {
-                    "color": "#FFFFFF",
-                    "fontSize": 18,
-                    "fontWeight": "normal",
-                  },
-                  Object {
-                    "marginVertical": 30,
-                  },
-                ]
-              }
-            >
-              CredentialOffer.DeclineParagraph1
-            </Text>
-            <Text
-              maxFontSizeMultiplier={2}
-              style={
-                Array [
-                  Object {
-                    "color": "#FFFFFF",
-                    "fontSize": 18,
-                    "fontWeight": "normal",
-                  },
-                  undefined,
-                ]
-              }
-            >
-              CredentialOffer.DeclineParagraph2
-            </Text>
-          </View>
-        </View>
-      </RCTScrollView>
-      <View
-        style={
-          Object {
-            "marginBottom": 10,
-            "marginHorizontal": 20,
-            "marginTop": "auto",
-            "position": "relative",
+                "marginVertical": 30,
+              },
+            ]
           }
-        }
-      >
+        >
+          CredentialOffer.DeclineParagraph1
+        </Text>
+        <Text
+          style={
+            Object {
+              "color": "#FFFFFF",
+              "fontFamily": "OpenSans-Regular",
+              "fontSize": 16,
+              "lineHeight": 22,
+              "marginBottom": 24,
+              "textAlign": "left",
+            }
+          }
+        >
+          CredentialOffer.DeclineParagraph2
+        </Text>
         <View
           style={
             Object {
-              "height": 30,
-              "position": "absolute",
-              "top": -30,
+              "flexDirection": "row",
+              "gap": 8,
+              "justifyContent": "space-between",
+              "marginTop": 24,
               "width": "100%",
             }
           }
         >
-          <RNSVGSvgView
-            bbHeight="30"
-            bbWidth="100%"
-            focusable={false}
-            height="30"
-            style={
-              Array [
-                Object {
-                  "backgroundColor": "transparent",
-                  "borderWidth": 0,
-                },
-                Object {
-                  "bottom": 0,
-                  "left": 0,
-                  "position": "absolute",
-                  "right": 0,
-                  "top": 0,
-                },
-                Object {
-                  "flex": 0,
-                  "height": 30,
-                  "width": "100%",
-                },
-              ]
-            }
-            width="100%"
-          >
-            <RNSVGGroup
-              fill={
-                Object {
-                  "payload": 4278190080,
-                  "type": 0,
-                }
-              }
-            >
-              <RNSVGDefs>
-                <RNSVGLinearGradient
-                  gradient={
-                    Array [
-                      0,
-                      0,
-                      1,
-                      -16777216,
-                    ]
-                  }
-                  gradientTransform={null}
-                  gradientUnits={0}
-                  name="gradient"
-                  x1="0%"
-                  x2="0%"
-                  y1="0%"
-                  y2="100%"
-                />
-              </RNSVGDefs>
-              <RNSVGRect
-                fill={
-                  Object {
-                    "brushRef": "gradient",
-                    "type": 1,
-                  }
-                }
-                height="30"
-                propList={
-                  Array [
-                    "fill",
-                  ]
-                }
-                width="100%"
-                x="0"
-                y="0"
-              />
-            </RNSVGGroup>
-          </RNSVGSvgView>
-        </View>
-        <View
-          style={
-            Object {
-              "paddingTop": 10,
-            }
-          }
-        >
           <View
-            accessibilityLabel="Global.Decline"
-            accessibilityRole="button"
             accessibilityState={
               Object {
                 "busy": undefined,
                 "checked": undefined,
-                "disabled": false,
+                "disabled": undefined,
                 "expanded": undefined,
                 "selected": undefined,
               }
@@ -326,447 +168,235 @@ exports[`CommonRemoveModal Component Credential offer decline renders correctly 
             onStartShouldSetResponder={[Function]}
             style={
               Object {
-                "backgroundColor": "#42803E",
-                "borderRadius": 4,
+                "alignItems": "center",
+                "backgroundColor": "transparent",
+                "borderColor": "#FFFFFF",
+                "borderRadius": 25,
+                "borderWidth": 1.5,
+                "flex": 1,
                 "opacity": 1,
-                "padding": 16,
-              }
-            }
-            testID="com.ariesbifold:id/ConfirmDeclineButton"
-          >
-            <View
-              style={
-                Object {
-                  "alignItems": "center",
-                  "flexDirection": "row",
-                  "justifyContent": "center",
-                }
-              }
-            >
-              <Text
-                maxFontSizeMultiplier={2}
-                style={
-                  Array [
-                    Object {
-                      "color": "#FFFFFF",
-                      "fontSize": 18,
-                      "fontWeight": "normal",
-                    },
-                    Array [
-                      Object {
-                        "color": "#FFFFFF",
-                        "fontSize": 18,
-                        "fontWeight": "bold",
-                        "textAlign": "center",
-                      },
-                      false,
-                      false,
-                      false,
-                    ],
-                  ]
-                }
-              >
-                Global.Decline
-              </Text>
-            </View>
-          </View>
-        </View>
-        <View
-          style={
-            Object {
-              "paddingTop": 10,
-            }
-          }
-        >
-          <View
-            accessibilityLabel="Global.Cancel"
-            accessibilityRole="button"
-            accessibilityState={
-              Object {
-                "busy": undefined,
-                "checked": undefined,
-                "disabled": false,
-                "expanded": undefined,
-                "selected": undefined,
-              }
-            }
-            accessibilityValue={
-              Object {
-                "max": undefined,
-                "min": undefined,
-                "now": undefined,
-                "text": undefined,
-              }
-            }
-            accessible={true}
-            collapsable={false}
-            focusable={false}
-            onClick={[Function]}
-            onResponderGrant={[Function]}
-            onResponderMove={[Function]}
-            onResponderRelease={[Function]}
-            onResponderTerminate={[Function]}
-            onResponderTerminationRequest={[Function]}
-            onStartShouldSetResponder={[Function]}
-            style={
-              Object {
-                "borderColor": "#42803E",
-                "borderRadius": 4,
-                "borderWidth": 2,
-                "opacity": 1,
-                "padding": 16,
+                "paddingVertical": 12,
               }
             }
             testID="com.ariesbifold:id/CancelDeclineButton"
           >
-            <View
+            <Text
               style={
                 Object {
-                  "alignItems": "center",
-                  "flexDirection": "row",
-                  "justifyContent": "center",
+                  "color": "#FFFFFF",
+                  "fontFamily": "OpenSans-SemiBold",
+                  "fontSize": 14,
+                  "fontWeight": "600",
                 }
               }
             >
-              <Text
-                maxFontSizeMultiplier={2}
-                style={
-                  Array [
-                    Object {
-                      "color": "#FFFFFF",
-                      "fontSize": 18,
-                      "fontWeight": "normal",
-                    },
-                    Array [
-                      Object {
-                        "color": "#42803E",
-                        "fontSize": 18,
-                        "fontWeight": "bold",
-                        "textAlign": "center",
-                      },
-                      false,
-                      false,
-                      false,
-                    ],
-                  ]
+              CredentialDetails.Back
+            </Text>
+          </View>
+          <View
+            accessibilityState={
+              Object {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              Object {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={false}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              Object {
+                "alignItems": "center",
+                "backgroundColor": "#FF4445",
+                "borderRadius": 25,
+                "flex": 2,
+                "opacity": 1,
+                "paddingVertical": 12,
+              }
+            }
+            testID="com.ariesbifold:id/ConfirmDeclineButton"
+          >
+            <Text
+              style={
+                Object {
+                  "color": "#FFFFFF",
+                  "fontFamily": "OpenSans-SemiBold",
+                  "fontSize": 14,
+                  "fontWeight": "600",
                 }
-              >
-                Global.Cancel
-              </Text>
-            </View>
+              }
+            >
+              Global.Decline
+            </Text>
           </View>
         </View>
       </View>
-    </RNCSafeAreaView>
+    </View>
   </View>
 </Modal>
 `;
 
 exports[`CommonRemoveModal Component Custom notification decline renders correctly 1`] = `
 <Modal
-  animationType="slide"
+  animationType="fade"
   hardwareAccelerated={false}
   transparent={true}
   visible={true}
 >
   <View
+    accessibilityState={
+      Object {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      Object {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
     style={
       Object {
         "backgroundColor": "rgba(0,0,0,0.5)",
         "flex": 1,
-        "paddingTop": 65,
       }
     }
   >
-    <RNCSafeAreaView
-      edges={
-        Object {
-          "bottom": "additive",
-          "left": "additive",
-          "right": "additive",
-          "top": "off",
-        }
-      }
+    <View
       style={
         Object {
-          "backgroundColor": "#000000",
-          "borderTopLeftRadius": 10,
-          "borderTopRightRadius": 10,
+          "alignItems": "center",
+          "flex": 1,
+          "justifyContent": "center",
+          "paddingHorizontal": 16,
         }
       }
     >
       <View
         style={
           Object {
-            "alignItems": "flex-end",
-            "height": 55,
-            "paddingRight": 20,
-            "paddingTop": 10,
+            "alignItems": "center",
+            "backgroundColor": "#25272A",
+            "borderRadius": 16,
+            "elevation": 12,
+            "flexDirection": "column",
+            "maxWidth": 400,
+            "padding": 24,
+            "paddingBottom": 32,
+            "shadowColor": "#000",
+            "shadowOffset": Object {
+              "height": 4,
+              "width": 2,
+            },
+            "shadowOpacity": 0.48,
+            "shadowRadius": 12,
+            "width": "95%",
           }
         }
       >
-        <View
-          accessibilityLabel="Global.Close"
-          accessibilityRole="button"
-          accessibilityState={
-            Object {
-              "busy": undefined,
-              "checked": undefined,
-              "disabled": undefined,
-              "expanded": undefined,
-              "selected": undefined,
-            }
-          }
-          accessibilityValue={
-            Object {
-              "max": undefined,
-              "min": undefined,
-              "now": undefined,
-              "text": undefined,
-            }
-          }
-          accessible={true}
-          collapsable={false}
-          focusable={true}
-          hitSlop={
-            Object {
-              "bottom": 44,
-              "left": 44,
-              "right": 44,
-              "top": 44,
-            }
-          }
-          onClick={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
+        <
+          color="#FF4445"
+        />
+        <Text
           style={
             Object {
-              "opacity": 1,
+              "color": "#FFFFFF",
+              "fontFamily": "OpenSans-SemiBold",
+              "fontSize": 20,
+              "fontWeight": "600",
+              "marginBottom": 25,
+              "marginTop": 15,
+              "textAlign": "center",
             }
           }
-          testID="com.ariesbifold:id/Close"
         >
-          <Text
-            allowFontScaling={false}
-            selectable={false}
-            style={
-              Array [
-                Object {
-                  "color": "#FFFFFF",
-                  "fontSize": 42,
-                },
-                undefined,
-                Object {
-                  "fontFamily": "Material Icons",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
-                },
-                Object {},
-              ]
-            }
-          >
-            
-          </Text>
-        </View>
-      </View>
-      <RCTScrollView
-        style={
-          Object {
-            "height": "100%",
-            "paddingHorizontal": 20,
-            "paddingTop": 10,
-          }
-        }
-      >
-        <View>
-          <View
-            style={
+          CredentialOffer.CustomOfferTitle
+        </Text>
+        <Text
+          style={
+            Array [
               Object {
-                "flexDirection": "row",
-                "justifyContent": "center",
-              }
-            }
-          >
-            <
-              height={115}
-              style={
-                Object {
-                  "marginBottom": 15,
-                }
-              }
-              width={115}
-            />
-          </View>
-          <View
-            style={
+                "color": "#FFFFFF",
+                "fontFamily": "OpenSans-Regular",
+                "fontSize": 16,
+                "lineHeight": 22,
+                "marginBottom": 24,
+                "textAlign": "left",
+              },
               Object {
-                "marginBottom": 25,
-              }
-            }
-          >
-            <Text
-              maxFontSizeMultiplier={2}
-              style={
-                Array [
-                  Object {
-                    "color": "#FFFFFF",
-                    "fontSize": 24,
-                    "fontWeight": "bold",
-                  },
-                  undefined,
-                ]
-              }
-            >
-              CredentialOffer.CustomOfferTitle
-            </Text>
-            <Text
-              maxFontSizeMultiplier={2}
-              style={
-                Array [
-                  Object {
-                    "color": "#FFFFFF",
-                    "fontSize": 18,
-                    "fontWeight": "normal",
-                  },
-                  Object {
-                    "marginTop": 30,
-                  },
-                ]
-              }
-            >
-              CredentialOffer.CustomOfferParagraph1
-            </Text>
-            <Text
-              maxFontSizeMultiplier={2}
-              style={
-                Array [
-                  Object {
-                    "color": "#FFFFFF",
-                    "fontSize": 18,
-                    "fontWeight": "normal",
-                  },
-                  undefined,
-                ]
-              }
-            >
-              CredentialOffer.CustomOfferParagraph2
-            </Text>
-          </View>
-        </View>
-      </RCTScrollView>
-      <View
-        style={
-          Object {
-            "marginBottom": 10,
-            "marginHorizontal": 20,
-            "marginTop": "auto",
-            "position": "relative",
+                "marginTop": 30,
+              },
+            ]
           }
-        }
-      >
+        >
+          CredentialOffer.CustomOfferParagraph1
+        </Text>
+        <Text
+          style={
+            Object {
+              "color": "#FFFFFF",
+              "fontFamily": "OpenSans-Regular",
+              "fontSize": 16,
+              "lineHeight": 22,
+              "marginBottom": 24,
+              "textAlign": "left",
+            }
+          }
+        >
+          CredentialOffer.CustomOfferParagraph2
+        </Text>
         <View
           style={
             Object {
-              "height": 30,
-              "position": "absolute",
-              "top": -30,
+              "flexDirection": "row",
+              "gap": 8,
+              "justifyContent": "space-between",
+              "marginTop": 24,
               "width": "100%",
             }
           }
         >
-          <RNSVGSvgView
-            bbHeight="30"
-            bbWidth="100%"
-            focusable={false}
-            height="30"
-            style={
-              Array [
-                Object {
-                  "backgroundColor": "transparent",
-                  "borderWidth": 0,
-                },
-                Object {
-                  "bottom": 0,
-                  "left": 0,
-                  "position": "absolute",
-                  "right": 0,
-                  "top": 0,
-                },
-                Object {
-                  "flex": 0,
-                  "height": 30,
-                  "width": "100%",
-                },
-              ]
-            }
-            width="100%"
-          >
-            <RNSVGGroup
-              fill={
-                Object {
-                  "payload": 4278190080,
-                  "type": 0,
-                }
-              }
-            >
-              <RNSVGDefs>
-                <RNSVGLinearGradient
-                  gradient={
-                    Array [
-                      0,
-                      0,
-                      1,
-                      -16777216,
-                    ]
-                  }
-                  gradientTransform={null}
-                  gradientUnits={0}
-                  name="gradient"
-                  x1="0%"
-                  x2="0%"
-                  y1="0%"
-                  y2="100%"
-                />
-              </RNSVGDefs>
-              <RNSVGRect
-                fill={
-                  Object {
-                    "brushRef": "gradient",
-                    "type": 1,
-                  }
-                }
-                height="30"
-                propList={
-                  Array [
-                    "fill",
-                  ]
-                }
-                width="100%"
-                x="0"
-                y="0"
-              />
-            </RNSVGGroup>
-          </RNSVGSvgView>
-        </View>
-        <View
-          style={
-            Object {
-              "paddingTop": 10,
-            }
-          }
-        >
           <View
-            accessibilityLabel="Global.Decline"
-            accessibilityRole="button"
             accessibilityState={
               Object {
                 "busy": undefined,
                 "checked": undefined,
-                "disabled": false,
+                "disabled": undefined,
                 "expanded": undefined,
                 "selected": undefined,
               }
@@ -791,457 +421,244 @@ exports[`CommonRemoveModal Component Custom notification decline renders correct
             onStartShouldSetResponder={[Function]}
             style={
               Object {
-                "backgroundColor": "#42803E",
-                "borderRadius": 4,
+                "alignItems": "center",
+                "backgroundColor": "transparent",
+                "borderColor": "#FFFFFF",
+                "borderRadius": 25,
+                "borderWidth": 1.5,
+                "flex": 1,
                 "opacity": 1,
-                "padding": 16,
-              }
-            }
-            testID="com.ariesbifold:id/ConfirmButton"
-          >
-            <View
-              style={
-                Object {
-                  "alignItems": "center",
-                  "flexDirection": "row",
-                  "justifyContent": "center",
-                }
-              }
-            >
-              <Text
-                maxFontSizeMultiplier={2}
-                style={
-                  Array [
-                    Object {
-                      "color": "#FFFFFF",
-                      "fontSize": 18,
-                      "fontWeight": "normal",
-                    },
-                    Array [
-                      Object {
-                        "color": "#FFFFFF",
-                        "fontSize": 18,
-                        "fontWeight": "bold",
-                        "textAlign": "center",
-                      },
-                      false,
-                      false,
-                      false,
-                    ],
-                  ]
-                }
-              >
-                Global.Decline
-              </Text>
-            </View>
-          </View>
-        </View>
-        <View
-          style={
-            Object {
-              "paddingTop": 10,
-            }
-          }
-        >
-          <View
-            accessibilityLabel="Global.Cancel"
-            accessibilityRole="button"
-            accessibilityState={
-              Object {
-                "busy": undefined,
-                "checked": undefined,
-                "disabled": false,
-                "expanded": undefined,
-                "selected": undefined,
-              }
-            }
-            accessibilityValue={
-              Object {
-                "max": undefined,
-                "min": undefined,
-                "now": undefined,
-                "text": undefined,
-              }
-            }
-            accessible={true}
-            collapsable={false}
-            focusable={false}
-            onClick={[Function]}
-            onResponderGrant={[Function]}
-            onResponderMove={[Function]}
-            onResponderRelease={[Function]}
-            onResponderTerminate={[Function]}
-            onResponderTerminationRequest={[Function]}
-            onStartShouldSetResponder={[Function]}
-            style={
-              Object {
-                "borderColor": "#42803E",
-                "borderRadius": 4,
-                "borderWidth": 2,
-                "opacity": 1,
-                "padding": 16,
+                "paddingVertical": 12,
               }
             }
             testID="com.ariesbifold:id/CancelButton"
           >
-            <View
+            <Text
               style={
                 Object {
-                  "alignItems": "center",
-                  "flexDirection": "row",
-                  "justifyContent": "center",
+                  "color": "#FFFFFF",
+                  "fontFamily": "OpenSans-SemiBold",
+                  "fontSize": 14,
+                  "fontWeight": "600",
                 }
               }
             >
-              <Text
-                maxFontSizeMultiplier={2}
-                style={
-                  Array [
-                    Object {
-                      "color": "#FFFFFF",
-                      "fontSize": 18,
-                      "fontWeight": "normal",
-                    },
-                    Array [
-                      Object {
-                        "color": "#42803E",
-                        "fontSize": 18,
-                        "fontWeight": "bold",
-                        "textAlign": "center",
-                      },
-                      false,
-                      false,
-                      false,
-                    ],
-                  ]
+              CredentialDetails.Back
+            </Text>
+          </View>
+          <View
+            accessibilityState={
+              Object {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              Object {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={false}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              Object {
+                "alignItems": "center",
+                "backgroundColor": "#FF4445",
+                "borderRadius": 25,
+                "flex": 2,
+                "opacity": 1,
+                "paddingVertical": 12,
+              }
+            }
+            testID="com.ariesbifold:id/ConfirmButton"
+          >
+            <Text
+              style={
+                Object {
+                  "color": "#FFFFFF",
+                  "fontFamily": "OpenSans-SemiBold",
+                  "fontSize": 14,
+                  "fontWeight": "600",
                 }
-              >
-                Global.Cancel
-              </Text>
-            </View>
+              }
+            >
+              Global.Decline
+            </Text>
           </View>
         </View>
       </View>
-    </RNCSafeAreaView>
+    </View>
   </View>
 </Modal>
 `;
 
 exports[`CommonRemoveModal Component Proof request decline renders correctly 1`] = `
 <Modal
-  animationType="slide"
+  animationType="fade"
   hardwareAccelerated={false}
   transparent={true}
   visible={true}
 >
   <View
+    accessibilityState={
+      Object {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      Object {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
     style={
       Object {
         "backgroundColor": "rgba(0,0,0,0.5)",
         "flex": 1,
-        "paddingTop": 65,
       }
     }
   >
-    <RNCSafeAreaView
-      edges={
-        Object {
-          "bottom": "additive",
-          "left": "additive",
-          "right": "additive",
-          "top": "off",
-        }
-      }
+    <View
       style={
         Object {
-          "backgroundColor": "#000000",
-          "borderTopLeftRadius": 10,
-          "borderTopRightRadius": 10,
+          "alignItems": "center",
+          "flex": 1,
+          "justifyContent": "center",
+          "paddingHorizontal": 16,
         }
       }
     >
       <View
         style={
           Object {
-            "alignItems": "flex-end",
-            "height": 55,
-            "paddingRight": 20,
-            "paddingTop": 10,
+            "alignItems": "center",
+            "backgroundColor": "#25272A",
+            "borderRadius": 16,
+            "elevation": 12,
+            "flexDirection": "column",
+            "maxWidth": 400,
+            "padding": 24,
+            "paddingBottom": 32,
+            "shadowColor": "#000",
+            "shadowOffset": Object {
+              "height": 4,
+              "width": 2,
+            },
+            "shadowOpacity": 0.48,
+            "shadowRadius": 12,
+            "width": "95%",
           }
         }
       >
-        <View
-          accessibilityLabel="Global.Close"
-          accessibilityRole="button"
-          accessibilityState={
-            Object {
-              "busy": undefined,
-              "checked": undefined,
-              "disabled": undefined,
-              "expanded": undefined,
-              "selected": undefined,
-            }
-          }
-          accessibilityValue={
-            Object {
-              "max": undefined,
-              "min": undefined,
-              "now": undefined,
-              "text": undefined,
-            }
-          }
-          accessible={true}
-          collapsable={false}
-          focusable={true}
-          hitSlop={
-            Object {
-              "bottom": 44,
-              "left": 44,
-              "right": 44,
-              "top": 44,
-            }
-          }
-          onClick={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
+        <
+          color="#FF4445"
+        />
+        <Text
           style={
             Object {
-              "opacity": 1,
+              "color": "#FFFFFF",
+              "fontFamily": "OpenSans-SemiBold",
+              "fontSize": 20,
+              "fontWeight": "600",
+              "marginBottom": 25,
+              "marginTop": 15,
+              "textAlign": "center",
             }
           }
-          testID="com.ariesbifold:id/Close"
         >
-          <Text
-            allowFontScaling={false}
-            selectable={false}
-            style={
-              Array [
-                Object {
-                  "color": "#FFFFFF",
-                  "fontSize": 42,
-                },
-                undefined,
-                Object {
-                  "fontFamily": "Material Icons",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
-                },
-                Object {},
-              ]
+          ProofRequest.DeclineTitle
+        </Text>
+        <Text
+          style={
+            Object {
+              "color": "#FFFFFF",
+              "fontFamily": "OpenSans-Regular",
+              "fontSize": 16,
+              "lineHeight": 22,
+              "marginBottom": 24,
+              "textAlign": "left",
             }
-          >
-            
-          </Text>
-        </View>
-      </View>
-      <RCTScrollView
-        style={
-          Object {
-            "height": "100%",
-            "paddingHorizontal": 20,
-            "paddingTop": 10,
           }
-        }
-      >
-        <View>
-          <View
-            style={
-              Object {
-                "flexDirection": "row",
-                "justifyContent": "center",
-              }
+        >
+          ProofRequest.DeclineBulletPoint1
+        </Text>
+        <Text
+          style={
+            Object {
+              "color": "#FFFFFF",
+              "fontFamily": "OpenSans-Regular",
+              "fontSize": 16,
+              "lineHeight": 22,
+              "marginBottom": 24,
+              "textAlign": "left",
             }
-          >
-            <
-              height={115}
-              width={115}
-            />
-          </View>
-          <View
-            style={
-              Object {
-                "marginBottom": 25,
-              }
-            }
-          >
-            <Text
-              maxFontSizeMultiplier={2}
-              style={
-                Array [
-                  Object {
-                    "color": "#FFFFFF",
-                    "fontSize": 24,
-                    "fontWeight": "bold",
-                  },
-                  undefined,
-                ]
-              }
-            >
-              ProofRequest.DeclineTitle
-            </Text>
-            <Text
-              maxFontSizeMultiplier={2}
-              style={
-                Array [
-                  Object {
-                    "color": "#FFFFFF",
-                    "fontSize": 18,
-                    "fontWeight": "normal",
-                  },
-                  Object {
-                    "marginTop": 30,
-                  },
-                ]
-              }
-            >
-              ProofRequest.DeclineBulletPoint1
-            </Text>
-            <Text
-              maxFontSizeMultiplier={2}
-              style={
-                Array [
-                  Object {
-                    "color": "#FFFFFF",
-                    "fontSize": 18,
-                    "fontWeight": "normal",
-                  },
-                  undefined,
-                ]
-              }
-            >
-              ProofRequest.DeclineBulletPoint2
-            </Text>
-            <Text
-              maxFontSizeMultiplier={2}
-              style={
-                Array [
-                  Object {
-                    "color": "#FFFFFF",
-                    "fontSize": 18,
-                    "fontWeight": "normal",
-                  },
-                  undefined,
-                ]
-              }
-            >
-              ProofRequest.DeclineBulletPoint3
-            </Text>
-          </View>
-        </View>
-      </RCTScrollView>
-      <View
-        style={
-          Object {
-            "marginBottom": 10,
-            "marginHorizontal": 20,
-            "marginTop": "auto",
-            "position": "relative",
           }
-        }
-      >
+        >
+          ProofRequest.DeclineBulletPoint2
+        </Text>
+        <Text
+          style={
+            Object {
+              "color": "#FFFFFF",
+              "fontFamily": "OpenSans-Regular",
+              "fontSize": 16,
+              "lineHeight": 22,
+              "marginBottom": 24,
+              "textAlign": "left",
+            }
+          }
+        >
+          ProofRequest.DeclineBulletPoint3
+        </Text>
         <View
           style={
             Object {
-              "height": 30,
-              "position": "absolute",
-              "top": -30,
+              "flexDirection": "row",
+              "gap": 8,
+              "justifyContent": "space-between",
+              "marginTop": 24,
               "width": "100%",
             }
           }
         >
-          <RNSVGSvgView
-            bbHeight="30"
-            bbWidth="100%"
-            focusable={false}
-            height="30"
-            style={
-              Array [
-                Object {
-                  "backgroundColor": "transparent",
-                  "borderWidth": 0,
-                },
-                Object {
-                  "bottom": 0,
-                  "left": 0,
-                  "position": "absolute",
-                  "right": 0,
-                  "top": 0,
-                },
-                Object {
-                  "flex": 0,
-                  "height": 30,
-                  "width": "100%",
-                },
-              ]
-            }
-            width="100%"
-          >
-            <RNSVGGroup
-              fill={
-                Object {
-                  "payload": 4278190080,
-                  "type": 0,
-                }
-              }
-            >
-              <RNSVGDefs>
-                <RNSVGLinearGradient
-                  gradient={
-                    Array [
-                      0,
-                      0,
-                      1,
-                      -16777216,
-                    ]
-                  }
-                  gradientTransform={null}
-                  gradientUnits={0}
-                  name="gradient"
-                  x1="0%"
-                  x2="0%"
-                  y1="0%"
-                  y2="100%"
-                />
-              </RNSVGDefs>
-              <RNSVGRect
-                fill={
-                  Object {
-                    "brushRef": "gradient",
-                    "type": 1,
-                  }
-                }
-                height="30"
-                propList={
-                  Array [
-                    "fill",
-                  ]
-                }
-                width="100%"
-                x="0"
-                y="0"
-              />
-            </RNSVGGroup>
-          </RNSVGSvgView>
-        </View>
-        <View
-          style={
-            Object {
-              "paddingTop": 10,
-            }
-          }
-        >
           <View
-            accessibilityLabel="Global.Decline"
-            accessibilityRole="button"
             accessibilityState={
               Object {
                 "busy": undefined,
                 "checked": undefined,
-                "disabled": false,
+                "disabled": undefined,
                 "expanded": undefined,
                 "selected": undefined,
               }
@@ -1266,720 +683,394 @@ exports[`CommonRemoveModal Component Proof request decline renders correctly 1`]
             onStartShouldSetResponder={[Function]}
             style={
               Object {
-                "backgroundColor": "#42803E",
-                "borderRadius": 4,
+                "alignItems": "center",
+                "backgroundColor": "transparent",
+                "borderColor": "#FFFFFF",
+                "borderRadius": 25,
+                "borderWidth": 1.5,
+                "flex": 1,
                 "opacity": 1,
-                "padding": 16,
-              }
-            }
-            testID="com.ariesbifold:id/ConfirmDeclineButton"
-          >
-            <View
-              style={
-                Object {
-                  "alignItems": "center",
-                  "flexDirection": "row",
-                  "justifyContent": "center",
-                }
-              }
-            >
-              <Text
-                maxFontSizeMultiplier={2}
-                style={
-                  Array [
-                    Object {
-                      "color": "#FFFFFF",
-                      "fontSize": 18,
-                      "fontWeight": "normal",
-                    },
-                    Array [
-                      Object {
-                        "color": "#FFFFFF",
-                        "fontSize": 18,
-                        "fontWeight": "bold",
-                        "textAlign": "center",
-                      },
-                      false,
-                      false,
-                      false,
-                    ],
-                  ]
-                }
-              >
-                Global.Decline
-              </Text>
-            </View>
-          </View>
-        </View>
-        <View
-          style={
-            Object {
-              "paddingTop": 10,
-            }
-          }
-        >
-          <View
-            accessibilityLabel="Global.Cancel"
-            accessibilityRole="button"
-            accessibilityState={
-              Object {
-                "busy": undefined,
-                "checked": undefined,
-                "disabled": false,
-                "expanded": undefined,
-                "selected": undefined,
-              }
-            }
-            accessibilityValue={
-              Object {
-                "max": undefined,
-                "min": undefined,
-                "now": undefined,
-                "text": undefined,
-              }
-            }
-            accessible={true}
-            collapsable={false}
-            focusable={false}
-            onClick={[Function]}
-            onResponderGrant={[Function]}
-            onResponderMove={[Function]}
-            onResponderRelease={[Function]}
-            onResponderTerminate={[Function]}
-            onResponderTerminationRequest={[Function]}
-            onStartShouldSetResponder={[Function]}
-            style={
-              Object {
-                "borderColor": "#42803E",
-                "borderRadius": 4,
-                "borderWidth": 2,
-                "opacity": 1,
-                "padding": 16,
+                "paddingVertical": 12,
               }
             }
             testID="com.ariesbifold:id/CancelDeclineButton"
           >
-            <View
+            <Text
               style={
                 Object {
-                  "alignItems": "center",
-                  "flexDirection": "row",
-                  "justifyContent": "center",
+                  "color": "#FFFFFF",
+                  "fontFamily": "OpenSans-SemiBold",
+                  "fontSize": 14,
+                  "fontWeight": "600",
                 }
               }
             >
-              <Text
-                maxFontSizeMultiplier={2}
-                style={
-                  Array [
-                    Object {
-                      "color": "#FFFFFF",
-                      "fontSize": 18,
-                      "fontWeight": "normal",
-                    },
-                    Array [
-                      Object {
-                        "color": "#42803E",
-                        "fontSize": 18,
-                        "fontWeight": "bold",
-                        "textAlign": "center",
-                      },
-                      false,
-                      false,
-                      false,
-                    ],
-                  ]
+              CredentialDetails.Back
+            </Text>
+          </View>
+          <View
+            accessibilityState={
+              Object {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              Object {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={false}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              Object {
+                "alignItems": "center",
+                "backgroundColor": "#FF4445",
+                "borderRadius": 25,
+                "flex": 2,
+                "opacity": 1,
+                "paddingVertical": 12,
+              }
+            }
+            testID="com.ariesbifold:id/ConfirmDeclineButton"
+          >
+            <Text
+              style={
+                Object {
+                  "color": "#FFFFFF",
+                  "fontFamily": "OpenSans-SemiBold",
+                  "fontSize": 14,
+                  "fontWeight": "600",
                 }
-              >
-                Global.Cancel
-              </Text>
-            </View>
+              }
+            >
+              Global.Decline
+            </Text>
           </View>
         </View>
       </View>
-    </RNCSafeAreaView>
+    </View>
   </View>
 </Modal>
 `;
 
 exports[`CommonRemoveModal Component Remove contact renders correctly 1`] = `
 <Modal
-  animationType="slide"
+  animationType="fade"
   hardwareAccelerated={false}
   transparent={true}
   visible={true}
 >
   <View
+    accessibilityState={
+      Object {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      Object {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
     style={
       Object {
         "backgroundColor": "rgba(0,0,0,0.5)",
         "flex": 1,
-        "paddingTop": 65,
       }
     }
   >
-    <RNCSafeAreaView
-      edges={
-        Object {
-          "bottom": "additive",
-          "left": "additive",
-          "right": "additive",
-          "top": "off",
-        }
-      }
+    <View
       style={
         Object {
-          "backgroundColor": "#000000",
-          "borderTopLeftRadius": 10,
-          "borderTopRightRadius": 10,
+          "alignItems": "center",
+          "flex": 1,
+          "justifyContent": "center",
+          "paddingHorizontal": 16,
         }
       }
     >
       <View
         style={
           Object {
-            "alignItems": "flex-end",
-            "height": 55,
-            "paddingRight": 20,
-            "paddingTop": 10,
+            "alignItems": "center",
+            "backgroundColor": "#25272A",
+            "borderRadius": 16,
+            "elevation": 12,
+            "flexDirection": "column",
+            "maxWidth": 400,
+            "padding": 24,
+            "paddingBottom": 32,
+            "shadowColor": "#000",
+            "shadowOffset": Object {
+              "height": 4,
+              "width": 2,
+            },
+            "shadowOpacity": 0.48,
+            "shadowRadius": 12,
+            "width": "95%",
           }
         }
       >
-        <View
-          accessibilityLabel="Global.Close"
-          accessibilityRole="button"
-          accessibilityState={
-            Object {
-              "busy": undefined,
-              "checked": undefined,
-              "disabled": undefined,
-              "expanded": undefined,
-              "selected": undefined,
-            }
-          }
-          accessibilityValue={
-            Object {
-              "max": undefined,
-              "min": undefined,
-              "now": undefined,
-              "text": undefined,
-            }
-          }
-          accessible={true}
-          collapsable={false}
-          focusable={true}
-          hitSlop={
-            Object {
-              "bottom": 44,
-              "left": 44,
-              "right": 44,
-              "top": 44,
-            }
-          }
-          onClick={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
+        <
+          color="#FF4445"
+        />
+        <Text
           style={
             Object {
-              "opacity": 1,
+              "color": "#FFFFFF",
+              "fontFamily": "OpenSans-SemiBold",
+              "fontSize": 20,
+              "fontWeight": "600",
+              "marginBottom": 25,
+              "marginTop": 15,
+              "textAlign": "center",
             }
           }
-          testID="com.ariesbifold:id/Close"
         >
-          <Text
-            allowFontScaling={false}
-            selectable={false}
-            style={
-              Array [
-                Object {
-                  "color": "#FFFFFF",
-                  "fontSize": 42,
-                },
-                undefined,
-                Object {
-                  "fontFamily": "Material Icons",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
-                },
-                Object {},
-              ]
+          ContactDetails.RemoveTitle
+        </Text>
+        <Text
+          style={
+            Object {
+              "color": "#FFFFFF",
+              "fontFamily": "OpenSans-Regular",
+              "fontSize": 16,
+              "lineHeight": 22,
+              "marginBottom": 24,
+              "textAlign": "left",
             }
-          >
-            
-          </Text>
-        </View>
-      </View>
-      <RCTScrollView
-        style={
-          Object {
-            "height": "100%",
-            "paddingHorizontal": 20,
-            "paddingTop": 10,
           }
-        }
-      >
-        <View>
+        >
+          ContactDetails.RemoveContactMessageWarning
+        </Text>
+        <Text
+          style={
+            Array [
+              Object {
+                "color": "#FFFFFF",
+                "fontFamily": "OpenSans-Regular",
+                "fontSize": 16,
+                "lineHeight": 22,
+                "marginBottom": 24,
+                "textAlign": "left",
+              },
+              Object {
+                "marginBottom": 16,
+              },
+            ]
+          }
+        >
+          ContactDetails.RemoveContactMessageTop
+        </Text>
+        <View
+          style={
+            Object {
+              "alignItems": "flex-start",
+              "flexDirection": "row",
+              "marginBottom": 8,
+            }
+          }
+        >
           <View
             style={
               Object {
-                "flexDirection": "row",
-                "justifyContent": "center",
+                "backgroundColor": "#FFFFFF",
+                "borderRadius": 3,
+                "height": 6,
+                "marginRight": 12,
+                "marginTop": 8,
+                "width": 6,
               }
             }
           />
-          <View
+          <Text
             style={
               Object {
-                "marginBottom": 25,
+                "color": "#FFFFFF",
+                "flex": 1,
+                "fontFamily": "OpenSans-Regular",
+                "fontSize": 16,
+                "lineHeight": 22,
               }
             }
           >
-            <View
-              style={
-                Object {
-                  "marginBottom": 25,
-                }
-              }
-            >
-              <Text
-                maxFontSizeMultiplier={2}
-                style={
-                  Array [
-                    Object {
-                      "color": "#FFFFFF",
-                      "fontSize": 24,
-                      "fontWeight": "bold",
-                    },
-                    undefined,
-                  ]
-                }
-              >
-                ContactDetails.RemoveTitle
-              </Text>
-            </View>
-            <View>
-              <Text
-                maxFontSizeMultiplier={2}
-                style={
-                  Array [
-                    Object {
-                      "color": "#FFFFFF",
-                      "fontSize": 18,
-                      "fontWeight": "normal",
-                    },
-                    Object {
-                      "marginBottom": 24,
-                    },
-                  ]
-                }
-              >
-                ContactDetails.RemoveContactMessageWarning
-              </Text>
-              <Text
-                maxFontSizeMultiplier={2}
-                style={
-                  Array [
-                    Object {
-                      "color": "#FFFFFF",
-                      "fontSize": 18,
-                      "fontWeight": "normal",
-                    },
-                    undefined,
-                  ]
-                }
-              >
-                ContactDetails.RemoveContactMessageTop
-              </Text>
-              <View
-                style={
-                  Object {
-                    "alignItems": "flex-start",
-                    "flexDirection": "row",
-                    "marginVertical": 10,
-                  }
-                }
-              >
-                <View
-                  style={
-                    Object {
-                      "marginRight": 10,
-                      "marginVertical": 6,
-                    }
-                  }
-                >
-                  <Text
-                    allowFontScaling={false}
-                    selectable={false}
-                    style={
-                      Array [
-                        Object {
-                          "color": "#FFFFFF",
-                          "fontSize": 9,
-                        },
-                        undefined,
-                        Object {
-                          "fontFamily": "Material Icons",
-                          "fontStyle": "normal",
-                          "fontWeight": "normal",
-                        },
-                        Object {},
-                      ]
-                    }
-                  >
-                    
-                  </Text>
-                </View>
-                <Text
-                  maxFontSizeMultiplier={2}
-                  style={
-                    Array [
-                      Object {
-                        "color": "#FFFFFF",
-                        "fontSize": 18,
-                        "fontWeight": "normal",
-                      },
-                      Array [
-                        Object {
-                          "color": "#FFFFFF",
-                          "fontSize": 18,
-                          "fontWeight": "normal",
-                        },
-                        Object {
-                          "flexShrink": 1,
-                        },
-                      ],
-                    ]
-                  }
-                >
-                  ContactDetails.RemoveContactsBulletPoint1
-                </Text>
-              </View>
-              <View
-                style={
-                  Object {
-                    "alignItems": "flex-start",
-                    "flexDirection": "row",
-                    "marginVertical": 10,
-                  }
-                }
-              >
-                <View
-                  style={
-                    Object {
-                      "marginRight": 10,
-                      "marginVertical": 6,
-                    }
-                  }
-                >
-                  <Text
-                    allowFontScaling={false}
-                    selectable={false}
-                    style={
-                      Array [
-                        Object {
-                          "color": "#FFFFFF",
-                          "fontSize": 9,
-                        },
-                        undefined,
-                        Object {
-                          "fontFamily": "Material Icons",
-                          "fontStyle": "normal",
-                          "fontWeight": "normal",
-                        },
-                        Object {},
-                      ]
-                    }
-                  >
-                    
-                  </Text>
-                </View>
-                <Text
-                  maxFontSizeMultiplier={2}
-                  style={
-                    Array [
-                      Object {
-                        "color": "#FFFFFF",
-                        "fontSize": 18,
-                        "fontWeight": "normal",
-                      },
-                      Array [
-                        Object {
-                          "color": "#FFFFFF",
-                          "fontSize": 18,
-                          "fontWeight": "normal",
-                        },
-                        Object {
-                          "flexShrink": 1,
-                        },
-                      ],
-                    ]
-                  }
-                >
-                  ContactDetails.RemoveContactsBulletPoint2
-                </Text>
-              </View>
-              <View
-                style={
-                  Object {
-                    "alignItems": "flex-start",
-                    "flexDirection": "row",
-                    "marginVertical": 10,
-                  }
-                }
-              >
-                <View
-                  style={
-                    Object {
-                      "marginRight": 10,
-                      "marginVertical": 6,
-                    }
-                  }
-                >
-                  <Text
-                    allowFontScaling={false}
-                    selectable={false}
-                    style={
-                      Array [
-                        Object {
-                          "color": "#FFFFFF",
-                          "fontSize": 9,
-                        },
-                        undefined,
-                        Object {
-                          "fontFamily": "Material Icons",
-                          "fontStyle": "normal",
-                          "fontWeight": "normal",
-                        },
-                        Object {},
-                      ]
-                    }
-                  >
-                    
-                  </Text>
-                </View>
-                <Text
-                  maxFontSizeMultiplier={2}
-                  style={
-                    Array [
-                      Object {
-                        "color": "#FFFFFF",
-                        "fontSize": 18,
-                        "fontWeight": "normal",
-                      },
-                      Array [
-                        Object {
-                          "color": "#FFFFFF",
-                          "fontSize": 18,
-                          "fontWeight": "normal",
-                        },
-                        Object {
-                          "flexShrink": 1,
-                        },
-                      ],
-                    ]
-                  }
-                >
-                  ContactDetails.RemoveContactsBulletPoint3
-                </Text>
-              </View>
-              <View
-                style={
-                  Object {
-                    "alignItems": "flex-start",
-                    "flexDirection": "row",
-                    "marginVertical": 10,
-                  }
-                }
-              >
-                <View
-                  style={
-                    Object {
-                      "marginRight": 10,
-                      "marginVertical": 6,
-                    }
-                  }
-                >
-                  <Text
-                    allowFontScaling={false}
-                    selectable={false}
-                    style={
-                      Array [
-                        Object {
-                          "color": "#FFFFFF",
-                          "fontSize": 9,
-                        },
-                        undefined,
-                        Object {
-                          "fontFamily": "Material Icons",
-                          "fontStyle": "normal",
-                          "fontWeight": "normal",
-                        },
-                        Object {},
-                      ]
-                    }
-                  >
-                    
-                  </Text>
-                </View>
-                <Text
-                  maxFontSizeMultiplier={2}
-                  style={
-                    Array [
-                      Object {
-                        "color": "#FFFFFF",
-                        "fontSize": 18,
-                        "fontWeight": "normal",
-                      },
-                      Array [
-                        Object {
-                          "color": "#FFFFFF",
-                          "fontSize": 18,
-                          "fontWeight": "normal",
-                        },
-                        Object {
-                          "flexShrink": 1,
-                        },
-                      ],
-                    ]
-                  }
-                >
-                  ContactDetails.RemoveContactsBulletPoint4
-                </Text>
-              </View>
-              <Text
-                maxFontSizeMultiplier={2}
-                style={
-                  Array [
-                    Object {
-                      "color": "#FFFFFF",
-                      "fontSize": 18,
-                      "fontWeight": "normal",
-                    },
-                    Object {
-                      "marginTop": 24,
-                    },
-                  ]
-                }
-              >
-                ContactDetails.RemoveContactMessageBottom
-              </Text>
-            </View>
-          </View>
+            ContactDetails.RemoveContactsBulletPoint1
+          </Text>
         </View>
-      </RCTScrollView>
-      <View
-        style={
-          Object {
-            "marginBottom": 10,
-            "marginHorizontal": 20,
-            "marginTop": "auto",
-            "position": "relative",
-          }
-        }
-      >
         <View
           style={
             Object {
-              "height": 30,
-              "position": "absolute",
-              "top": -30,
+              "alignItems": "flex-start",
+              "flexDirection": "row",
+              "marginBottom": 8,
+            }
+          }
+        >
+          <View
+            style={
+              Object {
+                "backgroundColor": "#FFFFFF",
+                "borderRadius": 3,
+                "height": 6,
+                "marginRight": 12,
+                "marginTop": 8,
+                "width": 6,
+              }
+            }
+          />
+          <Text
+            style={
+              Object {
+                "color": "#FFFFFF",
+                "flex": 1,
+                "fontFamily": "OpenSans-Regular",
+                "fontSize": 16,
+                "lineHeight": 22,
+              }
+            }
+          >
+            ContactDetails.RemoveContactsBulletPoint2
+          </Text>
+        </View>
+        <View
+          style={
+            Object {
+              "alignItems": "flex-start",
+              "flexDirection": "row",
+              "marginBottom": 8,
+            }
+          }
+        >
+          <View
+            style={
+              Object {
+                "backgroundColor": "#FFFFFF",
+                "borderRadius": 3,
+                "height": 6,
+                "marginRight": 12,
+                "marginTop": 8,
+                "width": 6,
+              }
+            }
+          />
+          <Text
+            style={
+              Object {
+                "color": "#FFFFFF",
+                "flex": 1,
+                "fontFamily": "OpenSans-Regular",
+                "fontSize": 16,
+                "lineHeight": 22,
+              }
+            }
+          >
+            ContactDetails.RemoveContactsBulletPoint3
+          </Text>
+        </View>
+        <View
+          style={
+            Object {
+              "alignItems": "flex-start",
+              "flexDirection": "row",
+              "marginBottom": 8,
+            }
+          }
+        >
+          <View
+            style={
+              Object {
+                "backgroundColor": "#FFFFFF",
+                "borderRadius": 3,
+                "height": 6,
+                "marginRight": 12,
+                "marginTop": 8,
+                "width": 6,
+              }
+            }
+          />
+          <Text
+            style={
+              Object {
+                "color": "#FFFFFF",
+                "flex": 1,
+                "fontFamily": "OpenSans-Regular",
+                "fontSize": 16,
+                "lineHeight": 22,
+              }
+            }
+          >
+            ContactDetails.RemoveContactsBulletPoint4
+          </Text>
+        </View>
+        <Text
+          style={
+            Array [
+              Object {
+                "color": "#FFFFFF",
+                "fontFamily": "OpenSans-Regular",
+                "fontSize": 16,
+                "lineHeight": 22,
+                "marginBottom": 24,
+                "textAlign": "left",
+              },
+              Object {
+                "marginTop": 16,
+              },
+            ]
+          }
+        >
+          ContactDetails.RemoveContactMessageBottom
+        </Text>
+        <View
+          style={
+            Object {
+              "flexDirection": "row",
+              "gap": 8,
+              "justifyContent": "space-between",
+              "marginTop": 24,
               "width": "100%",
             }
           }
         >
-          <RNSVGSvgView
-            bbHeight="30"
-            bbWidth="100%"
-            focusable={false}
-            height="30"
-            style={
-              Array [
-                Object {
-                  "backgroundColor": "transparent",
-                  "borderWidth": 0,
-                },
-                Object {
-                  "bottom": 0,
-                  "left": 0,
-                  "position": "absolute",
-                  "right": 0,
-                  "top": 0,
-                },
-                Object {
-                  "flex": 0,
-                  "height": 30,
-                  "width": "100%",
-                },
-              ]
-            }
-            width="100%"
-          >
-            <RNSVGGroup
-              fill={
-                Object {
-                  "payload": 4278190080,
-                  "type": 0,
-                }
-              }
-            >
-              <RNSVGDefs>
-                <RNSVGLinearGradient
-                  gradient={
-                    Array [
-                      0,
-                      0,
-                      1,
-                      -16777216,
-                    ]
-                  }
-                  gradientTransform={null}
-                  gradientUnits={0}
-                  name="gradient"
-                  x1="0%"
-                  x2="0%"
-                  y1="0%"
-                  y2="100%"
-                />
-              </RNSVGDefs>
-              <RNSVGRect
-                fill={
-                  Object {
-                    "brushRef": "gradient",
-                    "type": 1,
-                  }
-                }
-                height="30"
-                propList={
-                  Array [
-                    "fill",
-                  ]
-                }
-                width="100%"
-                x="0"
-                y="0"
-              />
-            </RNSVGGroup>
-          </RNSVGSvgView>
-        </View>
-        <View
-          style={
-            Object {
-              "paddingTop": 10,
-            }
-          }
-        >
           <View
-            accessibilityLabel="ContactDetails.RemoveContact"
-            accessibilityRole="button"
             accessibilityState={
               Object {
                 "busy": undefined,
                 "checked": undefined,
-                "disabled": false,
+                "disabled": undefined,
                 "expanded": undefined,
                 "selected": undefined,
               }
@@ -2004,430 +1095,216 @@ exports[`CommonRemoveModal Component Remove contact renders correctly 1`] = `
             onStartShouldSetResponder={[Function]}
             style={
               Object {
-                "backgroundColor": "#42803E",
-                "borderRadius": 4,
+                "alignItems": "center",
+                "backgroundColor": "transparent",
+                "borderColor": "#FFFFFF",
+                "borderRadius": 25,
+                "borderWidth": 1.5,
+                "flex": 1,
                 "opacity": 1,
-                "padding": 16,
-              }
-            }
-            testID="com.ariesbifold:id/ConfirmRemoveButton"
-          >
-            <View
-              style={
-                Object {
-                  "alignItems": "center",
-                  "flexDirection": "row",
-                  "justifyContent": "center",
-                }
-              }
-            >
-              <Text
-                maxFontSizeMultiplier={2}
-                style={
-                  Array [
-                    Object {
-                      "color": "#FFFFFF",
-                      "fontSize": 18,
-                      "fontWeight": "normal",
-                    },
-                    Array [
-                      Object {
-                        "color": "#FFFFFF",
-                        "fontSize": 18,
-                        "fontWeight": "bold",
-                        "textAlign": "center",
-                      },
-                      false,
-                      false,
-                      false,
-                    ],
-                  ]
-                }
-              >
-                ContactDetails.RemoveContact
-              </Text>
-            </View>
-          </View>
-        </View>
-        <View
-          style={
-            Object {
-              "paddingTop": 10,
-            }
-          }
-        >
-          <View
-            accessibilityLabel="Global.Cancel"
-            accessibilityRole="button"
-            accessibilityState={
-              Object {
-                "busy": undefined,
-                "checked": undefined,
-                "disabled": false,
-                "expanded": undefined,
-                "selected": undefined,
-              }
-            }
-            accessibilityValue={
-              Object {
-                "max": undefined,
-                "min": undefined,
-                "now": undefined,
-                "text": undefined,
-              }
-            }
-            accessible={true}
-            collapsable={false}
-            focusable={false}
-            onClick={[Function]}
-            onResponderGrant={[Function]}
-            onResponderMove={[Function]}
-            onResponderRelease={[Function]}
-            onResponderTerminate={[Function]}
-            onResponderTerminationRequest={[Function]}
-            onStartShouldSetResponder={[Function]}
-            style={
-              Object {
-                "borderColor": "#42803E",
-                "borderRadius": 4,
-                "borderWidth": 2,
-                "opacity": 1,
-                "padding": 16,
+                "paddingVertical": 12,
               }
             }
             testID="com.ariesbifold:id/CancelRemoveButton"
           >
-            <View
+            <Text
               style={
                 Object {
-                  "alignItems": "center",
-                  "flexDirection": "row",
-                  "justifyContent": "center",
+                  "color": "#FFFFFF",
+                  "fontFamily": "OpenSans-SemiBold",
+                  "fontSize": 14,
+                  "fontWeight": "600",
                 }
               }
             >
-              <Text
-                maxFontSizeMultiplier={2}
-                style={
-                  Array [
-                    Object {
-                      "color": "#FFFFFF",
-                      "fontSize": 18,
-                      "fontWeight": "normal",
-                    },
-                    Array [
-                      Object {
-                        "color": "#42803E",
-                        "fontSize": 18,
-                        "fontWeight": "bold",
-                        "textAlign": "center",
-                      },
-                      false,
-                      false,
-                      false,
-                    ],
-                  ]
+              CredentialDetails.Back
+            </Text>
+          </View>
+          <View
+            accessibilityState={
+              Object {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              Object {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={false}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              Object {
+                "alignItems": "center",
+                "backgroundColor": "#FF4445",
+                "borderRadius": 25,
+                "flex": 2,
+                "opacity": 1,
+                "paddingVertical": 12,
+              }
+            }
+            testID="com.ariesbifold:id/ConfirmRemoveButton"
+          >
+            <Text
+              style={
+                Object {
+                  "color": "#FFFFFF",
+                  "fontFamily": "OpenSans-SemiBold",
+                  "fontSize": 14,
+                  "fontWeight": "600",
                 }
-              >
-                Global.Cancel
-              </Text>
-            </View>
+              }
+            >
+              ContactDetails.RemoveContactAction
+            </Text>
           </View>
         </View>
       </View>
-    </RNCSafeAreaView>
+    </View>
   </View>
 </Modal>
 `;
 
 exports[`CommonRemoveModal Component Remove contact renders correctly2 1`] = `
 <Modal
-  animationType="slide"
+  animationType="fade"
   hardwareAccelerated={false}
   transparent={true}
   visible={true}
 >
   <View
+    accessibilityState={
+      Object {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      Object {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
     style={
       Object {
         "backgroundColor": "rgba(0,0,0,0.5)",
         "flex": 1,
-        "paddingTop": 65,
       }
     }
   >
-    <RNCSafeAreaView
-      edges={
-        Object {
-          "bottom": "additive",
-          "left": "additive",
-          "right": "additive",
-          "top": "off",
-        }
-      }
+    <View
       style={
         Object {
-          "backgroundColor": "#000000",
-          "borderTopLeftRadius": 10,
-          "borderTopRightRadius": 10,
+          "alignItems": "center",
+          "flex": 1,
+          "justifyContent": "center",
+          "paddingHorizontal": 16,
         }
       }
     >
       <View
         style={
           Object {
-            "alignItems": "flex-end",
-            "height": 55,
-            "paddingRight": 20,
-            "paddingTop": 10,
+            "alignItems": "center",
+            "backgroundColor": "#25272A",
+            "borderRadius": 16,
+            "elevation": 12,
+            "flexDirection": "column",
+            "maxWidth": 400,
+            "padding": 24,
+            "paddingBottom": 32,
+            "shadowColor": "#000",
+            "shadowOffset": Object {
+              "height": 4,
+              "width": 2,
+            },
+            "shadowOpacity": 0.48,
+            "shadowRadius": 12,
+            "width": "95%",
           }
         }
       >
-        <View
-          accessibilityLabel="Global.Close"
-          accessibilityRole="button"
-          accessibilityState={
-            Object {
-              "busy": undefined,
-              "checked": undefined,
-              "disabled": undefined,
-              "expanded": undefined,
-              "selected": undefined,
-            }
-          }
-          accessibilityValue={
-            Object {
-              "max": undefined,
-              "min": undefined,
-              "now": undefined,
-              "text": undefined,
-            }
-          }
-          accessible={true}
-          collapsable={false}
-          focusable={true}
-          hitSlop={
-            Object {
-              "bottom": 44,
-              "left": 44,
-              "right": 44,
-              "top": 44,
-            }
-          }
-          onClick={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
+        <
+          color="#FF4445"
+        />
+        <Text
           style={
             Object {
-              "opacity": 1,
+              "color": "#FFFFFF",
+              "fontFamily": "OpenSans-SemiBold",
+              "fontSize": 20,
+              "fontWeight": "600",
+              "marginBottom": 25,
+              "marginTop": 15,
+              "textAlign": "center",
             }
           }
-          testID="com.ariesbifold:id/Close"
         >
-          <Text
-            allowFontScaling={false}
-            selectable={false}
-            style={
-              Array [
-                Object {
-                  "color": "#FFFFFF",
-                  "fontSize": 42,
-                },
-                undefined,
-                Object {
-                  "fontFamily": "Material Icons",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
-                },
-                Object {},
-              ]
+          ContactDetails.UnableToRemoveTitle
+        </Text>
+        <Text
+          style={
+            Object {
+              "color": "#FFFFFF",
+              "fontFamily": "OpenSans-Regular",
+              "fontSize": 16,
+              "lineHeight": 22,
+              "marginBottom": 24,
+              "textAlign": "left",
             }
-          >
-            
-          </Text>
-        </View>
-      </View>
-      <RCTScrollView
-        style={
-          Object {
-            "height": "100%",
-            "paddingHorizontal": 20,
-            "paddingTop": 10,
           }
-        }
-      >
-        <View>
-          <View
-            style={
-              Object {
-                "flexDirection": "row",
-                "justifyContent": "center",
-              }
-            }
-          />
-          <View
-            style={
-              Object {
-                "marginBottom": 25,
-              }
-            }
-          >
-            <View
-              style={
-                Object {
-                  "marginBottom": 25,
-                }
-              }
-            >
-              <Text
-                maxFontSizeMultiplier={2}
-                style={
-                  Array [
-                    Object {
-                      "color": "#FFFFFF",
-                      "fontSize": 24,
-                      "fontWeight": "bold",
-                    },
-                    undefined,
-                  ]
-                }
-              >
-                ContactDetails.UnableToRemoveTitle
-              </Text>
-            </View>
-            <View>
-              <Text
-                maxFontSizeMultiplier={2}
-                style={
-                  Array [
-                    Object {
-                      "color": "#FFFFFF",
-                      "fontSize": 18,
-                      "fontWeight": "normal",
-                    },
-                    undefined,
-                  ]
-                }
-              >
-                ContactDetails.UnableToRemoveCaption
-              </Text>
-            </View>
-          </View>
-        </View>
-      </RCTScrollView>
-      <View
-        style={
-          Object {
-            "marginBottom": 10,
-            "marginHorizontal": 20,
-            "marginTop": "auto",
-            "position": "relative",
-          }
-        }
-      >
+        >
+          ContactDetails.UnableToRemoveCaption
+        </Text>
         <View
           style={
             Object {
-              "height": 30,
-              "position": "absolute",
-              "top": -30,
+              "flexDirection": "row",
+              "gap": 8,
+              "justifyContent": "space-between",
+              "marginTop": 24,
               "width": "100%",
             }
           }
         >
-          <RNSVGSvgView
-            bbHeight="30"
-            bbWidth="100%"
-            focusable={false}
-            height="30"
-            style={
-              Array [
-                Object {
-                  "backgroundColor": "transparent",
-                  "borderWidth": 0,
-                },
-                Object {
-                  "bottom": 0,
-                  "left": 0,
-                  "position": "absolute",
-                  "right": 0,
-                  "top": 0,
-                },
-                Object {
-                  "flex": 0,
-                  "height": 30,
-                  "width": "100%",
-                },
-              ]
-            }
-            width="100%"
-          >
-            <RNSVGGroup
-              fill={
-                Object {
-                  "payload": 4278190080,
-                  "type": 0,
-                }
-              }
-            >
-              <RNSVGDefs>
-                <RNSVGLinearGradient
-                  gradient={
-                    Array [
-                      0,
-                      0,
-                      1,
-                      -16777216,
-                    ]
-                  }
-                  gradientTransform={null}
-                  gradientUnits={0}
-                  name="gradient"
-                  x1="0%"
-                  x2="0%"
-                  y1="0%"
-                  y2="100%"
-                />
-              </RNSVGDefs>
-              <RNSVGRect
-                fill={
-                  Object {
-                    "brushRef": "gradient",
-                    "type": 1,
-                  }
-                }
-                height="30"
-                propList={
-                  Array [
-                    "fill",
-                  ]
-                }
-                width="100%"
-                x="0"
-                y="0"
-              />
-            </RNSVGGroup>
-          </RNSVGSvgView>
-        </View>
-        <View
-          style={
-            Object {
-              "paddingTop": 10,
-            }
-          }
-        >
           <View
-            accessibilityLabel="ContactDetails.GoToCredentials"
-            accessibilityRole="button"
             accessibilityState={
               Object {
                 "busy": undefined,
                 "checked": undefined,
-                "disabled": false,
+                "disabled": undefined,
                 "expanded": undefined,
                 "selected": undefined,
               }
@@ -2452,801 +1329,587 @@ exports[`CommonRemoveModal Component Remove contact renders correctly2 1`] = `
             onStartShouldSetResponder={[Function]}
             style={
               Object {
-                "backgroundColor": "#42803E",
-                "borderRadius": 4,
+                "alignItems": "center",
+                "backgroundColor": "transparent",
+                "borderColor": "#FFFFFF",
+                "borderRadius": 25,
+                "borderWidth": 1.5,
+                "flex": 1,
                 "opacity": 1,
-                "padding": 16,
-              }
-            }
-            testID="com.ariesbifold:id/GoToCredentialsButton"
-          >
-            <View
-              style={
-                Object {
-                  "alignItems": "center",
-                  "flexDirection": "row",
-                  "justifyContent": "center",
-                }
-              }
-            >
-              <Text
-                maxFontSizeMultiplier={2}
-                style={
-                  Array [
-                    Object {
-                      "color": "#FFFFFF",
-                      "fontSize": 18,
-                      "fontWeight": "normal",
-                    },
-                    Array [
-                      Object {
-                        "color": "#FFFFFF",
-                        "fontSize": 18,
-                        "fontWeight": "bold",
-                        "textAlign": "center",
-                      },
-                      false,
-                      false,
-                      false,
-                    ],
-                  ]
-                }
-              >
-                ContactDetails.GoToCredentials
-              </Text>
-            </View>
-          </View>
-        </View>
-        <View
-          style={
-            Object {
-              "paddingTop": 10,
-            }
-          }
-        >
-          <View
-            accessibilityLabel="Global.Cancel"
-            accessibilityRole="button"
-            accessibilityState={
-              Object {
-                "busy": undefined,
-                "checked": undefined,
-                "disabled": false,
-                "expanded": undefined,
-                "selected": undefined,
-              }
-            }
-            accessibilityValue={
-              Object {
-                "max": undefined,
-                "min": undefined,
-                "now": undefined,
-                "text": undefined,
-              }
-            }
-            accessible={true}
-            collapsable={false}
-            focusable={false}
-            onClick={[Function]}
-            onResponderGrant={[Function]}
-            onResponderMove={[Function]}
-            onResponderRelease={[Function]}
-            onResponderTerminate={[Function]}
-            onResponderTerminationRequest={[Function]}
-            onStartShouldSetResponder={[Function]}
-            style={
-              Object {
-                "borderColor": "#42803E",
-                "borderRadius": 4,
-                "borderWidth": 2,
-                "opacity": 1,
-                "padding": 16,
+                "paddingVertical": 12,
               }
             }
             testID="com.ariesbifold:id/AbortGoToCredentialsButton"
           >
-            <View
+            <Text
               style={
                 Object {
-                  "alignItems": "center",
-                  "flexDirection": "row",
-                  "justifyContent": "center",
+                  "color": "#FFFFFF",
+                  "fontFamily": "OpenSans-SemiBold",
+                  "fontSize": 14,
+                  "fontWeight": "600",
                 }
               }
             >
-              <Text
-                maxFontSizeMultiplier={2}
-                style={
-                  Array [
-                    Object {
-                      "color": "#FFFFFF",
-                      "fontSize": 18,
-                      "fontWeight": "normal",
-                    },
-                    Array [
-                      Object {
-                        "color": "#42803E",
-                        "fontSize": 18,
-                        "fontWeight": "bold",
-                        "textAlign": "center",
-                      },
-                      false,
-                      false,
-                      false,
-                    ],
-                  ]
+              CredentialDetails.Back
+            </Text>
+          </View>
+          <View
+            accessibilityState={
+              Object {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              Object {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={false}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              Object {
+                "alignItems": "center",
+                "backgroundColor": "#FF4445",
+                "borderRadius": 25,
+                "flex": 2,
+                "opacity": 1,
+                "paddingVertical": 12,
+              }
+            }
+            testID="com.ariesbifold:id/GoToCredentialsButton"
+          >
+            <Text
+              style={
+                Object {
+                  "color": "#FFFFFF",
+                  "fontFamily": "OpenSans-SemiBold",
+                  "fontSize": 14,
+                  "fontWeight": "600",
                 }
-              >
-                Global.Cancel
-              </Text>
-            </View>
+              }
+            >
+              ContactDetails.GoToCredentials
+            </Text>
           </View>
         </View>
       </View>
-    </RNCSafeAreaView>
+    </View>
   </View>
 </Modal>
 `;
 
 exports[`CommonRemoveModal Component Remove credential renders correctly 1`] = `
 <Modal
-  animationType="slide"
+  animationType="fade"
   hardwareAccelerated={false}
   transparent={true}
   visible={true}
 >
   <View
+    accessibilityState={
+      Object {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      Object {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
     style={
       Object {
         "backgroundColor": "rgba(0,0,0,0.5)",
         "flex": 1,
-        "paddingTop": 65,
       }
     }
   >
-    <RNCSafeAreaView
-      edges={
-        Object {
-          "bottom": "additive",
-          "left": "additive",
-          "right": "additive",
-          "top": "off",
-        }
-      }
+    <View
       style={
         Object {
-          "backgroundColor": "#000000",
-          "borderTopLeftRadius": 10,
-          "borderTopRightRadius": 10,
+          "alignItems": "center",
+          "flex": 1,
+          "justifyContent": "center",
+          "paddingHorizontal": 16,
         }
       }
     >
       <View
         style={
           Object {
-            "alignItems": "flex-end",
-            "height": 55,
-            "paddingRight": 20,
-            "paddingTop": 10,
+            "alignItems": "center",
+            "backgroundColor": "#25272A",
+            "borderRadius": 16,
+            "elevation": 12,
+            "flexDirection": "column",
+            "maxWidth": 400,
+            "padding": 24,
+            "paddingBottom": 32,
+            "shadowColor": "#000",
+            "shadowOffset": Object {
+              "height": 4,
+              "width": 2,
+            },
+            "shadowOpacity": 0.48,
+            "shadowRadius": 12,
+            "width": "95%",
           }
         }
       >
-        <View
-          accessibilityLabel="Global.Close"
-          accessibilityRole="button"
-          accessibilityState={
-            Object {
-              "busy": undefined,
-              "checked": undefined,
-              "disabled": undefined,
-              "expanded": undefined,
-              "selected": undefined,
-            }
-          }
-          accessibilityValue={
-            Object {
-              "max": undefined,
-              "min": undefined,
-              "now": undefined,
-              "text": undefined,
-            }
-          }
-          accessible={true}
-          collapsable={false}
-          focusable={true}
-          hitSlop={
-            Object {
-              "bottom": 44,
-              "left": 44,
-              "right": 44,
-              "top": 44,
-            }
-          }
-          onClick={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
+        <
+          color="#FF4445"
+        />
+        <Text
           style={
             Object {
-              "opacity": 1,
+              "color": "#FFFFFF",
+              "fontFamily": "OpenSans-SemiBold",
+              "fontSize": 20,
+              "fontWeight": "600",
+              "marginBottom": 25,
+              "marginTop": 15,
+              "textAlign": "center",
             }
           }
-          testID="com.ariesbifold:id/Close"
         >
-          <Text
-            allowFontScaling={false}
-            selectable={false}
-            style={
-              Array [
-                Object {
-                  "color": "#FFFFFF",
-                  "fontSize": 42,
-                },
-                undefined,
-                Object {
-                  "fontFamily": "Material Icons",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
-                },
-                Object {},
-              ]
+          CredentialDetails.RemoveTitle
+        </Text>
+        <Text
+          style={
+            Object {
+              "color": "#FFFFFF",
+              "fontFamily": "OpenSans-Regular",
+              "fontSize": 16,
+              "lineHeight": 22,
+              "marginBottom": 24,
+              "textAlign": "left",
             }
-          >
-            
-          </Text>
-        </View>
-      </View>
-      <RCTScrollView
-        style={
-          Object {
-            "height": "100%",
-            "paddingHorizontal": 20,
-            "paddingTop": 10,
           }
-        }
-      >
-        <View>
+        >
+          CredentialDetails.RemoveCaption
+        </Text>
+        <View
+          style={
+            Object {
+              "marginTop": 25,
+            }
+          }
+        >
           <View
-            style={
+            accessibilityLabel="CredentialDetails.YouWillNotLose"
+            accessibilityState={
               Object {
-                "flexDirection": "row",
-                "justifyContent": "center",
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
               }
             }
-          />
-          <View
+            accessibilityValue={
+              Object {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
             style={
               Object {
-                "marginBottom": 25,
+                "backgroundColor": "#313132",
+                "borderRadius": 5,
+                "flexDirection": "row",
+                "justifyContent": "space-between",
+                "opacity": 1,
+                "padding": 15,
+              }
+            }
+            testID="com.ariesbifold:id/CredentialDetails.YouWillNotLose"
+          >
+            <Text
+              maxFontSizeMultiplier={2}
+              style={
+                Array [
+                  Object {
+                    "color": "#FFFFFF",
+                    "fontSize": 18,
+                    "fontWeight": "normal",
+                  },
+                  Object {
+                    "fontWeight": "bold",
+                  },
+                ]
+              }
+            >
+              CredentialDetails.YouWillNotLose
+            </Text>
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                Array [
+                  Object {
+                    "color": "#FFFFFF",
+                    "fontSize": 24,
+                  },
+                  undefined,
+                  Object {
+                    "fontFamily": "Material Icons",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  Object {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
+          <View
+            collapsable={false}
+            pointerEvents="auto"
+            style={
+              Object {
+                "height": 0,
+                "overflow": "hidden",
               }
             }
           >
             <View
-              style={
-                Object {
-                  "marginBottom": 25,
-                }
-              }
-            >
-              <Text
-                maxFontSizeMultiplier={2}
-                style={
-                  Array [
-                    Object {
-                      "color": "#FFFFFF",
-                      "fontSize": 24,
-                      "fontWeight": "bold",
-                    },
-                    undefined,
-                  ]
-                }
-              >
-                CredentialDetails.RemoveTitle
-              </Text>
-            </View>
-            <View>
-              <Text
-                maxFontSizeMultiplier={2}
-                style={
-                  Array [
-                    Object {
-                      "color": "#FFFFFF",
-                      "fontSize": 18,
-                      "fontWeight": "normal",
-                    },
-                    undefined,
-                  ]
-                }
-              >
-                CredentialDetails.RemoveCaption
-              </Text>
-            </View>
-            <View
-              style={
-                Object {
-                  "marginTop": 25,
-                }
-              }
+              collapsable={false}
+              onLayout={[Function]}
+              style={Object {}}
             >
               <View
-                accessibilityLabel="CredentialDetails.YouWillNotLose"
-                accessibilityState={
-                  Object {
-                    "busy": undefined,
-                    "checked": undefined,
-                    "disabled": undefined,
-                    "expanded": undefined,
-                    "selected": undefined,
-                  }
-                }
-                accessibilityValue={
-                  Object {
-                    "max": undefined,
-                    "min": undefined,
-                    "now": undefined,
-                    "text": undefined,
-                  }
-                }
-                accessible={true}
-                collapsable={false}
-                focusable={true}
-                onClick={[Function]}
-                onResponderGrant={[Function]}
-                onResponderMove={[Function]}
-                onResponderRelease={[Function]}
-                onResponderTerminate={[Function]}
-                onResponderTerminationRequest={[Function]}
-                onStartShouldSetResponder={[Function]}
                 style={
                   Object {
-                    "backgroundColor": "#313132",
-                    "borderRadius": 5,
-                    "flexDirection": "row",
-                    "justifyContent": "space-between",
-                    "opacity": 1,
-                    "padding": 15,
-                  }
-                }
-                testID="com.ariesbifold:id/CredentialDetails.YouWillNotLose"
-              >
-                <Text
-                  maxFontSizeMultiplier={2}
-                  style={
-                    Array [
-                      Object {
-                        "color": "#FFFFFF",
-                        "fontSize": 18,
-                        "fontWeight": "normal",
-                      },
-                      Object {
-                        "fontWeight": "bold",
-                      },
-                    ]
-                  }
-                >
-                  CredentialDetails.YouWillNotLose
-                </Text>
-                <Text
-                  allowFontScaling={false}
-                  selectable={false}
-                  style={
-                    Array [
-                      Object {
-                        "color": "#FFFFFF",
-                        "fontSize": 24,
-                      },
-                      undefined,
-                      Object {
-                        "fontFamily": "Material Icons",
-                        "fontStyle": "normal",
-                        "fontWeight": "normal",
-                      },
-                      Object {},
-                    ]
-                  }
-                >
-                  
-                </Text>
-              </View>
-              <View
-                collapsable={false}
-                pointerEvents="auto"
-                style={
-                  Object {
-                    "height": 0,
-                    "overflow": "hidden",
+                    "borderLeftColor": "#313132",
+                    "borderLeftWidth": 2,
+                    "marginTop": 10,
                   }
                 }
               >
                 <View
-                  collapsable={false}
-                  onLayout={[Function]}
-                  style={Object {}}
+                  style={
+                    Object {
+                      "display": "flex",
+                      "flexDirection": "row",
+                      "marginBottom": 5,
+                    }
+                  }
                 >
-                  <View
+                  <Text
+                    maxFontSizeMultiplier={2}
                     style={
-                      Object {
-                        "borderLeftColor": "#313132",
-                        "borderLeftWidth": 2,
-                        "marginTop": 10,
-                      }
+                      Array [
+                        Object {
+                          "color": "#FFFFFF",
+                          "fontSize": 18,
+                          "fontWeight": "normal",
+                        },
+                        Object {
+                          "color": "#FFFFFF",
+                          "paddingLeft": 5,
+                        },
+                      ]
                     }
                   >
-                    <View
-                      style={
+                    •
+                  </Text>
+                  <Text
+                    maxFontSizeMultiplier={2}
+                    style={
+                      Array [
                         Object {
-                          "display": "flex",
-                          "flexDirection": "row",
-                          "marginBottom": 5,
-                        }
-                      }
-                    >
-                      <Text
-                        maxFontSizeMultiplier={2}
-                        style={
-                          Array [
-                            Object {
-                              "color": "#FFFFFF",
-                              "fontSize": 18,
-                              "fontWeight": "normal",
-                            },
-                            Object {
-                              "color": "#FFFFFF",
-                              "paddingLeft": 5,
-                            },
-                          ]
-                        }
-                      >
-                        •
-                      </Text>
-                      <Text
-                        maxFontSizeMultiplier={2}
-                        style={
-                          Array [
-                            Object {
-                              "color": "#FFFFFF",
-                              "fontSize": 18,
-                              "fontWeight": "normal",
-                            },
-                            Object {
-                              "color": "#FFFFFF",
-                              "flex": 1,
-                              "paddingLeft": 5,
-                            },
-                          ]
-                        }
-                      >
-                        CredentialDetails.YouWillNotLoseListItem1
-                      </Text>
-                    </View>
-                    <View
-                      style={
+                          "color": "#FFFFFF",
+                          "fontSize": 18,
+                          "fontWeight": "normal",
+                        },
                         Object {
-                          "display": "flex",
-                          "flexDirection": "row",
-                          "marginBottom": 5,
-                        }
-                      }
-                    >
-                      <Text
-                        maxFontSizeMultiplier={2}
-                        style={
-                          Array [
-                            Object {
-                              "color": "#FFFFFF",
-                              "fontSize": 18,
-                              "fontWeight": "normal",
-                            },
-                            Object {
-                              "color": "#FFFFFF",
-                              "paddingLeft": 5,
-                            },
-                          ]
-                        }
-                      >
-                        •
-                      </Text>
-                      <Text
-                        maxFontSizeMultiplier={2}
-                        style={
-                          Array [
-                            Object {
-                              "color": "#FFFFFF",
-                              "fontSize": 18,
-                              "fontWeight": "normal",
-                            },
-                            Object {
-                              "color": "#FFFFFF",
-                              "flex": 1,
-                              "paddingLeft": 5,
-                            },
-                          ]
-                        }
-                      >
-                        CredentialDetails.YouWillNotLoseListItem2
-                      </Text>
-                    </View>
-                  </View>
+                          "color": "#FFFFFF",
+                          "flex": 1,
+                          "paddingLeft": 5,
+                        },
+                      ]
+                    }
+                  >
+                    CredentialDetails.YouWillNotLoseListItem1
+                  </Text>
                 </View>
-              </View>
-            </View>
-            <View
-              style={
-                Object {
-                  "marginTop": 25,
-                }
-              }
-            >
-              <View
-                accessibilityLabel="CredentialDetails.HowToGetThisCredentialBack"
-                accessibilityState={
-                  Object {
-                    "busy": undefined,
-                    "checked": undefined,
-                    "disabled": undefined,
-                    "expanded": undefined,
-                    "selected": undefined,
-                  }
-                }
-                accessibilityValue={
-                  Object {
-                    "max": undefined,
-                    "min": undefined,
-                    "now": undefined,
-                    "text": undefined,
-                  }
-                }
-                accessible={true}
-                collapsable={false}
-                focusable={true}
-                onClick={[Function]}
-                onResponderGrant={[Function]}
-                onResponderMove={[Function]}
-                onResponderRelease={[Function]}
-                onResponderTerminate={[Function]}
-                onResponderTerminationRequest={[Function]}
-                onStartShouldSetResponder={[Function]}
-                style={
-                  Object {
-                    "backgroundColor": "#313132",
-                    "borderRadius": 5,
-                    "flexDirection": "row",
-                    "justifyContent": "space-between",
-                    "opacity": 1,
-                    "padding": 15,
-                  }
-                }
-                testID="com.ariesbifold:id/CredentialDetails.HowToGetThisCredentialBack"
-              >
-                <Text
-                  maxFontSizeMultiplier={2}
-                  style={
-                    Array [
-                      Object {
-                        "color": "#FFFFFF",
-                        "fontSize": 18,
-                        "fontWeight": "normal",
-                      },
-                      Object {
-                        "fontWeight": "bold",
-                      },
-                    ]
-                  }
-                >
-                  CredentialDetails.HowToGetThisCredentialBack
-                </Text>
-                <Text
-                  allowFontScaling={false}
-                  selectable={false}
-                  style={
-                    Array [
-                      Object {
-                        "color": "#FFFFFF",
-                        "fontSize": 24,
-                      },
-                      undefined,
-                      Object {
-                        "fontFamily": "Material Icons",
-                        "fontStyle": "normal",
-                        "fontWeight": "normal",
-                      },
-                      Object {},
-                    ]
-                  }
-                >
-                  
-                </Text>
-              </View>
-              <View
-                collapsable={false}
-                pointerEvents="auto"
-                style={
-                  Object {
-                    "height": 0,
-                    "overflow": "hidden",
-                  }
-                }
-              >
                 <View
-                  collapsable={false}
-                  onLayout={[Function]}
-                  style={Object {}}
+                  style={
+                    Object {
+                      "display": "flex",
+                      "flexDirection": "row",
+                      "marginBottom": 5,
+                    }
+                  }
                 >
-                  <View
+                  <Text
+                    maxFontSizeMultiplier={2}
                     style={
-                      Object {
-                        "borderLeftColor": "#313132",
-                        "borderLeftWidth": 2,
-                        "marginTop": 10,
-                      }
+                      Array [
+                        Object {
+                          "color": "#FFFFFF",
+                          "fontSize": 18,
+                          "fontWeight": "normal",
+                        },
+                        Object {
+                          "color": "#FFFFFF",
+                          "paddingLeft": 5,
+                        },
+                      ]
                     }
                   >
-                    <View
-                      style={
+                    •
+                  </Text>
+                  <Text
+                    maxFontSizeMultiplier={2}
+                    style={
+                      Array [
                         Object {
-                          "display": "flex",
-                          "flexDirection": "row",
-                          "marginBottom": 5,
-                        }
-                      }
-                    >
-                      <Text
-                        maxFontSizeMultiplier={2}
-                        style={
-                          Array [
-                            Object {
-                              "color": "#FFFFFF",
-                              "fontSize": 18,
-                              "fontWeight": "normal",
-                            },
-                            Object {
-                              "color": "#FFFFFF",
-                              "paddingLeft": 5,
-                            },
-                          ]
-                        }
-                      >
-                        •
-                      </Text>
-                      <Text
-                        maxFontSizeMultiplier={2}
-                        style={
-                          Array [
-                            Object {
-                              "color": "#FFFFFF",
-                              "fontSize": 18,
-                              "fontWeight": "normal",
-                            },
-                            Object {
-                              "color": "#FFFFFF",
-                              "flex": 1,
-                              "paddingLeft": 5,
-                            },
-                          ]
-                        }
-                      >
-                        CredentialDetails.HowToGetThisCredentialBackListItem1
-                      </Text>
-                    </View>
-                  </View>
+                          "color": "#FFFFFF",
+                          "fontSize": 18,
+                          "fontWeight": "normal",
+                        },
+                        Object {
+                          "color": "#FFFFFF",
+                          "flex": 1,
+                          "paddingLeft": 5,
+                        },
+                      ]
+                    }
+                  >
+                    CredentialDetails.YouWillNotLoseListItem2
+                  </Text>
                 </View>
               </View>
             </View>
           </View>
         </View>
-      </RCTScrollView>
-      <View
-        style={
-          Object {
-            "marginBottom": 10,
-            "marginHorizontal": 20,
-            "marginTop": "auto",
-            "position": "relative",
-          }
-        }
-      >
         <View
           style={
             Object {
-              "height": 30,
-              "position": "absolute",
-              "top": -30,
+              "marginTop": 25,
+            }
+          }
+        >
+          <View
+            accessibilityLabel="CredentialDetails.HowToGetThisCredentialBack"
+            accessibilityState={
+              Object {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              Object {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              Object {
+                "backgroundColor": "#313132",
+                "borderRadius": 5,
+                "flexDirection": "row",
+                "justifyContent": "space-between",
+                "opacity": 1,
+                "padding": 15,
+              }
+            }
+            testID="com.ariesbifold:id/CredentialDetails.HowToGetThisCredentialBack"
+          >
+            <Text
+              maxFontSizeMultiplier={2}
+              style={
+                Array [
+                  Object {
+                    "color": "#FFFFFF",
+                    "fontSize": 18,
+                    "fontWeight": "normal",
+                  },
+                  Object {
+                    "fontWeight": "bold",
+                  },
+                ]
+              }
+            >
+              CredentialDetails.HowToGetThisCredentialBack
+            </Text>
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                Array [
+                  Object {
+                    "color": "#FFFFFF",
+                    "fontSize": 24,
+                  },
+                  undefined,
+                  Object {
+                    "fontFamily": "Material Icons",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  Object {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
+          <View
+            collapsable={false}
+            pointerEvents="auto"
+            style={
+              Object {
+                "height": 0,
+                "overflow": "hidden",
+              }
+            }
+          >
+            <View
+              collapsable={false}
+              onLayout={[Function]}
+              style={Object {}}
+            >
+              <View
+                style={
+                  Object {
+                    "borderLeftColor": "#313132",
+                    "borderLeftWidth": 2,
+                    "marginTop": 10,
+                  }
+                }
+              >
+                <View
+                  style={
+                    Object {
+                      "display": "flex",
+                      "flexDirection": "row",
+                      "marginBottom": 5,
+                    }
+                  }
+                >
+                  <Text
+                    maxFontSizeMultiplier={2}
+                    style={
+                      Array [
+                        Object {
+                          "color": "#FFFFFF",
+                          "fontSize": 18,
+                          "fontWeight": "normal",
+                        },
+                        Object {
+                          "color": "#FFFFFF",
+                          "paddingLeft": 5,
+                        },
+                      ]
+                    }
+                  >
+                    •
+                  </Text>
+                  <Text
+                    maxFontSizeMultiplier={2}
+                    style={
+                      Array [
+                        Object {
+                          "color": "#FFFFFF",
+                          "fontSize": 18,
+                          "fontWeight": "normal",
+                        },
+                        Object {
+                          "color": "#FFFFFF",
+                          "flex": 1,
+                          "paddingLeft": 5,
+                        },
+                      ]
+                    }
+                  >
+                    CredentialDetails.HowToGetThisCredentialBackListItem1
+                  </Text>
+                </View>
+              </View>
+            </View>
+          </View>
+        </View>
+        <View
+          style={
+            Object {
+              "flexDirection": "row",
+              "gap": 8,
+              "justifyContent": "space-between",
+              "marginTop": 24,
               "width": "100%",
             }
           }
         >
-          <RNSVGSvgView
-            bbHeight="30"
-            bbWidth="100%"
-            focusable={false}
-            height="30"
-            style={
-              Array [
-                Object {
-                  "backgroundColor": "transparent",
-                  "borderWidth": 0,
-                },
-                Object {
-                  "bottom": 0,
-                  "left": 0,
-                  "position": "absolute",
-                  "right": 0,
-                  "top": 0,
-                },
-                Object {
-                  "flex": 0,
-                  "height": 30,
-                  "width": "100%",
-                },
-              ]
-            }
-            width="100%"
-          >
-            <RNSVGGroup
-              fill={
-                Object {
-                  "payload": 4278190080,
-                  "type": 0,
-                }
-              }
-            >
-              <RNSVGDefs>
-                <RNSVGLinearGradient
-                  gradient={
-                    Array [
-                      0,
-                      0,
-                      1,
-                      -16777216,
-                    ]
-                  }
-                  gradientTransform={null}
-                  gradientUnits={0}
-                  name="gradient"
-                  x1="0%"
-                  x2="0%"
-                  y1="0%"
-                  y2="100%"
-                />
-              </RNSVGDefs>
-              <RNSVGRect
-                fill={
-                  Object {
-                    "brushRef": "gradient",
-                    "type": 1,
-                  }
-                }
-                height="30"
-                propList={
-                  Array [
-                    "fill",
-                  ]
-                }
-                width="100%"
-                x="0"
-                y="0"
-              />
-            </RNSVGGroup>
-          </RNSVGSvgView>
-        </View>
-        <View
-          style={
-            Object {
-              "paddingTop": 10,
-            }
-          }
-        >
           <View
-            accessibilityLabel="CredentialDetails.RemoveCredential"
-            accessibilityRole="button"
             accessibilityState={
               Object {
                 "busy": undefined,
                 "checked": undefined,
-                "disabled": false,
+                "disabled": undefined,
                 "expanded": undefined,
                 "selected": undefined,
               }
@@ -3271,720 +1934,394 @@ exports[`CommonRemoveModal Component Remove credential renders correctly 1`] = `
             onStartShouldSetResponder={[Function]}
             style={
               Object {
-                "backgroundColor": "#42803E",
-                "borderRadius": 4,
+                "alignItems": "center",
+                "backgroundColor": "transparent",
+                "borderColor": "#FFFFFF",
+                "borderRadius": 25,
+                "borderWidth": 1.5,
+                "flex": 1,
                 "opacity": 1,
-                "padding": 16,
-              }
-            }
-            testID="com.ariesbifold:id/ConfirmRemoveButton"
-          >
-            <View
-              style={
-                Object {
-                  "alignItems": "center",
-                  "flexDirection": "row",
-                  "justifyContent": "center",
-                }
-              }
-            >
-              <Text
-                maxFontSizeMultiplier={2}
-                style={
-                  Array [
-                    Object {
-                      "color": "#FFFFFF",
-                      "fontSize": 18,
-                      "fontWeight": "normal",
-                    },
-                    Array [
-                      Object {
-                        "color": "#FFFFFF",
-                        "fontSize": 18,
-                        "fontWeight": "bold",
-                        "textAlign": "center",
-                      },
-                      false,
-                      false,
-                      false,
-                    ],
-                  ]
-                }
-              >
-                CredentialDetails.RemoveFromWallet
-              </Text>
-            </View>
-          </View>
-        </View>
-        <View
-          style={
-            Object {
-              "paddingTop": 10,
-            }
-          }
-        >
-          <View
-            accessibilityLabel="Global.Cancel"
-            accessibilityRole="button"
-            accessibilityState={
-              Object {
-                "busy": undefined,
-                "checked": undefined,
-                "disabled": false,
-                "expanded": undefined,
-                "selected": undefined,
-              }
-            }
-            accessibilityValue={
-              Object {
-                "max": undefined,
-                "min": undefined,
-                "now": undefined,
-                "text": undefined,
-              }
-            }
-            accessible={true}
-            collapsable={false}
-            focusable={false}
-            onClick={[Function]}
-            onResponderGrant={[Function]}
-            onResponderMove={[Function]}
-            onResponderRelease={[Function]}
-            onResponderTerminate={[Function]}
-            onResponderTerminationRequest={[Function]}
-            onStartShouldSetResponder={[Function]}
-            style={
-              Object {
-                "borderColor": "#42803E",
-                "borderRadius": 4,
-                "borderWidth": 2,
-                "opacity": 1,
-                "padding": 16,
+                "paddingVertical": 12,
               }
             }
             testID="com.ariesbifold:id/CancelRemoveButton"
           >
-            <View
+            <Text
               style={
                 Object {
-                  "alignItems": "center",
-                  "flexDirection": "row",
-                  "justifyContent": "center",
+                  "color": "#FFFFFF",
+                  "fontFamily": "OpenSans-SemiBold",
+                  "fontSize": 14,
+                  "fontWeight": "600",
                 }
               }
             >
-              <Text
-                maxFontSizeMultiplier={2}
-                style={
-                  Array [
-                    Object {
-                      "color": "#FFFFFF",
-                      "fontSize": 18,
-                      "fontWeight": "normal",
-                    },
-                    Array [
-                      Object {
-                        "color": "#42803E",
-                        "fontSize": 18,
-                        "fontWeight": "bold",
-                        "textAlign": "center",
-                      },
-                      false,
-                      false,
-                      false,
-                    ],
-                  ]
+              CredentialDetails.Back
+            </Text>
+          </View>
+          <View
+            accessibilityState={
+              Object {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              Object {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={false}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              Object {
+                "alignItems": "center",
+                "backgroundColor": "#FF4445",
+                "borderRadius": 25,
+                "flex": 2,
+                "opacity": 1,
+                "paddingVertical": 12,
+              }
+            }
+            testID="com.ariesbifold:id/ConfirmRemoveButton"
+          >
+            <Text
+              style={
+                Object {
+                  "color": "#FFFFFF",
+                  "fontFamily": "OpenSans-SemiBold",
+                  "fontSize": 14,
+                  "fontWeight": "600",
                 }
-              >
-                Global.Cancel
-              </Text>
-            </View>
+              }
+            >
+              CredentialDetails.RemoveCredentialAction
+            </Text>
           </View>
         </View>
       </View>
-    </RNCSafeAreaView>
+    </View>
   </View>
 </Modal>
 `;
 
 exports[`CommonRemoveModal Component Rerenders correctly when not visible 1`] = `
 <Modal
-  animationType="slide"
+  animationType="fade"
   hardwareAccelerated={false}
   transparent={true}
   visible={true}
 >
   <View
+    accessibilityState={
+      Object {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      Object {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
     style={
       Object {
         "backgroundColor": "rgba(0,0,0,0.5)",
         "flex": 1,
-        "paddingTop": 65,
       }
     }
   >
-    <RNCSafeAreaView
-      edges={
-        Object {
-          "bottom": "additive",
-          "left": "additive",
-          "right": "additive",
-          "top": "off",
-        }
-      }
+    <View
       style={
         Object {
-          "backgroundColor": "#000000",
-          "borderTopLeftRadius": 10,
-          "borderTopRightRadius": 10,
+          "alignItems": "center",
+          "flex": 1,
+          "justifyContent": "center",
+          "paddingHorizontal": 16,
         }
       }
     >
       <View
         style={
           Object {
-            "alignItems": "flex-end",
-            "height": 55,
-            "paddingRight": 20,
-            "paddingTop": 10,
+            "alignItems": "center",
+            "backgroundColor": "#25272A",
+            "borderRadius": 16,
+            "elevation": 12,
+            "flexDirection": "column",
+            "maxWidth": 400,
+            "padding": 24,
+            "paddingBottom": 32,
+            "shadowColor": "#000",
+            "shadowOffset": Object {
+              "height": 4,
+              "width": 2,
+            },
+            "shadowOpacity": 0.48,
+            "shadowRadius": 12,
+            "width": "95%",
           }
         }
       >
-        <View
-          accessibilityLabel="Global.Close"
-          accessibilityRole="button"
-          accessibilityState={
-            Object {
-              "busy": undefined,
-              "checked": undefined,
-              "disabled": undefined,
-              "expanded": undefined,
-              "selected": undefined,
-            }
-          }
-          accessibilityValue={
-            Object {
-              "max": undefined,
-              "min": undefined,
-              "now": undefined,
-              "text": undefined,
-            }
-          }
-          accessible={true}
-          collapsable={false}
-          focusable={true}
-          hitSlop={
-            Object {
-              "bottom": 44,
-              "left": 44,
-              "right": 44,
-              "top": 44,
-            }
-          }
-          onClick={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
+        <
+          color="#FF4445"
+        />
+        <Text
           style={
             Object {
-              "opacity": 1,
+              "color": "#FFFFFF",
+              "fontFamily": "OpenSans-SemiBold",
+              "fontSize": 20,
+              "fontWeight": "600",
+              "marginBottom": 25,
+              "marginTop": 15,
+              "textAlign": "center",
             }
           }
-          testID="com.ariesbifold:id/Close"
         >
-          <Text
-            allowFontScaling={false}
-            selectable={false}
-            style={
-              Array [
-                Object {
-                  "color": "#FFFFFF",
-                  "fontSize": 42,
-                },
-                undefined,
-                Object {
-                  "fontFamily": "Material Icons",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
-                },
-                Object {},
-              ]
+          ContactDetails.RemoveTitle
+        </Text>
+        <Text
+          style={
+            Object {
+              "color": "#FFFFFF",
+              "fontFamily": "OpenSans-Regular",
+              "fontSize": 16,
+              "lineHeight": 22,
+              "marginBottom": 24,
+              "textAlign": "left",
             }
-          >
-            
-          </Text>
-        </View>
-      </View>
-      <RCTScrollView
-        style={
-          Object {
-            "height": "100%",
-            "paddingHorizontal": 20,
-            "paddingTop": 10,
           }
-        }
-      >
-        <View>
+        >
+          ContactDetails.RemoveContactMessageWarning
+        </Text>
+        <Text
+          style={
+            Array [
+              Object {
+                "color": "#FFFFFF",
+                "fontFamily": "OpenSans-Regular",
+                "fontSize": 16,
+                "lineHeight": 22,
+                "marginBottom": 24,
+                "textAlign": "left",
+              },
+              Object {
+                "marginBottom": 16,
+              },
+            ]
+          }
+        >
+          ContactDetails.RemoveContactMessageTop
+        </Text>
+        <View
+          style={
+            Object {
+              "alignItems": "flex-start",
+              "flexDirection": "row",
+              "marginBottom": 8,
+            }
+          }
+        >
           <View
             style={
               Object {
-                "flexDirection": "row",
-                "justifyContent": "center",
+                "backgroundColor": "#FFFFFF",
+                "borderRadius": 3,
+                "height": 6,
+                "marginRight": 12,
+                "marginTop": 8,
+                "width": 6,
               }
             }
           />
-          <View
+          <Text
             style={
               Object {
-                "marginBottom": 25,
+                "color": "#FFFFFF",
+                "flex": 1,
+                "fontFamily": "OpenSans-Regular",
+                "fontSize": 16,
+                "lineHeight": 22,
               }
             }
           >
-            <View
-              style={
-                Object {
-                  "marginBottom": 25,
-                }
-              }
-            >
-              <Text
-                maxFontSizeMultiplier={2}
-                style={
-                  Array [
-                    Object {
-                      "color": "#FFFFFF",
-                      "fontSize": 24,
-                      "fontWeight": "bold",
-                    },
-                    undefined,
-                  ]
-                }
-              >
-                ContactDetails.RemoveTitle
-              </Text>
-            </View>
-            <View>
-              <Text
-                maxFontSizeMultiplier={2}
-                style={
-                  Array [
-                    Object {
-                      "color": "#FFFFFF",
-                      "fontSize": 18,
-                      "fontWeight": "normal",
-                    },
-                    Object {
-                      "marginBottom": 24,
-                    },
-                  ]
-                }
-              >
-                ContactDetails.RemoveContactMessageWarning
-              </Text>
-              <Text
-                maxFontSizeMultiplier={2}
-                style={
-                  Array [
-                    Object {
-                      "color": "#FFFFFF",
-                      "fontSize": 18,
-                      "fontWeight": "normal",
-                    },
-                    undefined,
-                  ]
-                }
-              >
-                ContactDetails.RemoveContactMessageTop
-              </Text>
-              <View
-                style={
-                  Object {
-                    "alignItems": "flex-start",
-                    "flexDirection": "row",
-                    "marginVertical": 10,
-                  }
-                }
-              >
-                <View
-                  style={
-                    Object {
-                      "marginRight": 10,
-                      "marginVertical": 6,
-                    }
-                  }
-                >
-                  <Text
-                    allowFontScaling={false}
-                    selectable={false}
-                    style={
-                      Array [
-                        Object {
-                          "color": "#FFFFFF",
-                          "fontSize": 9,
-                        },
-                        undefined,
-                        Object {
-                          "fontFamily": "Material Icons",
-                          "fontStyle": "normal",
-                          "fontWeight": "normal",
-                        },
-                        Object {},
-                      ]
-                    }
-                  >
-                    
-                  </Text>
-                </View>
-                <Text
-                  maxFontSizeMultiplier={2}
-                  style={
-                    Array [
-                      Object {
-                        "color": "#FFFFFF",
-                        "fontSize": 18,
-                        "fontWeight": "normal",
-                      },
-                      Array [
-                        Object {
-                          "color": "#FFFFFF",
-                          "fontSize": 18,
-                          "fontWeight": "normal",
-                        },
-                        Object {
-                          "flexShrink": 1,
-                        },
-                      ],
-                    ]
-                  }
-                >
-                  ContactDetails.RemoveContactsBulletPoint1
-                </Text>
-              </View>
-              <View
-                style={
-                  Object {
-                    "alignItems": "flex-start",
-                    "flexDirection": "row",
-                    "marginVertical": 10,
-                  }
-                }
-              >
-                <View
-                  style={
-                    Object {
-                      "marginRight": 10,
-                      "marginVertical": 6,
-                    }
-                  }
-                >
-                  <Text
-                    allowFontScaling={false}
-                    selectable={false}
-                    style={
-                      Array [
-                        Object {
-                          "color": "#FFFFFF",
-                          "fontSize": 9,
-                        },
-                        undefined,
-                        Object {
-                          "fontFamily": "Material Icons",
-                          "fontStyle": "normal",
-                          "fontWeight": "normal",
-                        },
-                        Object {},
-                      ]
-                    }
-                  >
-                    
-                  </Text>
-                </View>
-                <Text
-                  maxFontSizeMultiplier={2}
-                  style={
-                    Array [
-                      Object {
-                        "color": "#FFFFFF",
-                        "fontSize": 18,
-                        "fontWeight": "normal",
-                      },
-                      Array [
-                        Object {
-                          "color": "#FFFFFF",
-                          "fontSize": 18,
-                          "fontWeight": "normal",
-                        },
-                        Object {
-                          "flexShrink": 1,
-                        },
-                      ],
-                    ]
-                  }
-                >
-                  ContactDetails.RemoveContactsBulletPoint2
-                </Text>
-              </View>
-              <View
-                style={
-                  Object {
-                    "alignItems": "flex-start",
-                    "flexDirection": "row",
-                    "marginVertical": 10,
-                  }
-                }
-              >
-                <View
-                  style={
-                    Object {
-                      "marginRight": 10,
-                      "marginVertical": 6,
-                    }
-                  }
-                >
-                  <Text
-                    allowFontScaling={false}
-                    selectable={false}
-                    style={
-                      Array [
-                        Object {
-                          "color": "#FFFFFF",
-                          "fontSize": 9,
-                        },
-                        undefined,
-                        Object {
-                          "fontFamily": "Material Icons",
-                          "fontStyle": "normal",
-                          "fontWeight": "normal",
-                        },
-                        Object {},
-                      ]
-                    }
-                  >
-                    
-                  </Text>
-                </View>
-                <Text
-                  maxFontSizeMultiplier={2}
-                  style={
-                    Array [
-                      Object {
-                        "color": "#FFFFFF",
-                        "fontSize": 18,
-                        "fontWeight": "normal",
-                      },
-                      Array [
-                        Object {
-                          "color": "#FFFFFF",
-                          "fontSize": 18,
-                          "fontWeight": "normal",
-                        },
-                        Object {
-                          "flexShrink": 1,
-                        },
-                      ],
-                    ]
-                  }
-                >
-                  ContactDetails.RemoveContactsBulletPoint3
-                </Text>
-              </View>
-              <View
-                style={
-                  Object {
-                    "alignItems": "flex-start",
-                    "flexDirection": "row",
-                    "marginVertical": 10,
-                  }
-                }
-              >
-                <View
-                  style={
-                    Object {
-                      "marginRight": 10,
-                      "marginVertical": 6,
-                    }
-                  }
-                >
-                  <Text
-                    allowFontScaling={false}
-                    selectable={false}
-                    style={
-                      Array [
-                        Object {
-                          "color": "#FFFFFF",
-                          "fontSize": 9,
-                        },
-                        undefined,
-                        Object {
-                          "fontFamily": "Material Icons",
-                          "fontStyle": "normal",
-                          "fontWeight": "normal",
-                        },
-                        Object {},
-                      ]
-                    }
-                  >
-                    
-                  </Text>
-                </View>
-                <Text
-                  maxFontSizeMultiplier={2}
-                  style={
-                    Array [
-                      Object {
-                        "color": "#FFFFFF",
-                        "fontSize": 18,
-                        "fontWeight": "normal",
-                      },
-                      Array [
-                        Object {
-                          "color": "#FFFFFF",
-                          "fontSize": 18,
-                          "fontWeight": "normal",
-                        },
-                        Object {
-                          "flexShrink": 1,
-                        },
-                      ],
-                    ]
-                  }
-                >
-                  ContactDetails.RemoveContactsBulletPoint4
-                </Text>
-              </View>
-              <Text
-                maxFontSizeMultiplier={2}
-                style={
-                  Array [
-                    Object {
-                      "color": "#FFFFFF",
-                      "fontSize": 18,
-                      "fontWeight": "normal",
-                    },
-                    Object {
-                      "marginTop": 24,
-                    },
-                  ]
-                }
-              >
-                ContactDetails.RemoveContactMessageBottom
-              </Text>
-            </View>
-          </View>
+            ContactDetails.RemoveContactsBulletPoint1
+          </Text>
         </View>
-      </RCTScrollView>
-      <View
-        style={
-          Object {
-            "marginBottom": 10,
-            "marginHorizontal": 20,
-            "marginTop": "auto",
-            "position": "relative",
-          }
-        }
-      >
         <View
           style={
             Object {
-              "height": 30,
-              "position": "absolute",
-              "top": -30,
+              "alignItems": "flex-start",
+              "flexDirection": "row",
+              "marginBottom": 8,
+            }
+          }
+        >
+          <View
+            style={
+              Object {
+                "backgroundColor": "#FFFFFF",
+                "borderRadius": 3,
+                "height": 6,
+                "marginRight": 12,
+                "marginTop": 8,
+                "width": 6,
+              }
+            }
+          />
+          <Text
+            style={
+              Object {
+                "color": "#FFFFFF",
+                "flex": 1,
+                "fontFamily": "OpenSans-Regular",
+                "fontSize": 16,
+                "lineHeight": 22,
+              }
+            }
+          >
+            ContactDetails.RemoveContactsBulletPoint2
+          </Text>
+        </View>
+        <View
+          style={
+            Object {
+              "alignItems": "flex-start",
+              "flexDirection": "row",
+              "marginBottom": 8,
+            }
+          }
+        >
+          <View
+            style={
+              Object {
+                "backgroundColor": "#FFFFFF",
+                "borderRadius": 3,
+                "height": 6,
+                "marginRight": 12,
+                "marginTop": 8,
+                "width": 6,
+              }
+            }
+          />
+          <Text
+            style={
+              Object {
+                "color": "#FFFFFF",
+                "flex": 1,
+                "fontFamily": "OpenSans-Regular",
+                "fontSize": 16,
+                "lineHeight": 22,
+              }
+            }
+          >
+            ContactDetails.RemoveContactsBulletPoint3
+          </Text>
+        </View>
+        <View
+          style={
+            Object {
+              "alignItems": "flex-start",
+              "flexDirection": "row",
+              "marginBottom": 8,
+            }
+          }
+        >
+          <View
+            style={
+              Object {
+                "backgroundColor": "#FFFFFF",
+                "borderRadius": 3,
+                "height": 6,
+                "marginRight": 12,
+                "marginTop": 8,
+                "width": 6,
+              }
+            }
+          />
+          <Text
+            style={
+              Object {
+                "color": "#FFFFFF",
+                "flex": 1,
+                "fontFamily": "OpenSans-Regular",
+                "fontSize": 16,
+                "lineHeight": 22,
+              }
+            }
+          >
+            ContactDetails.RemoveContactsBulletPoint4
+          </Text>
+        </View>
+        <Text
+          style={
+            Array [
+              Object {
+                "color": "#FFFFFF",
+                "fontFamily": "OpenSans-Regular",
+                "fontSize": 16,
+                "lineHeight": 22,
+                "marginBottom": 24,
+                "textAlign": "left",
+              },
+              Object {
+                "marginTop": 16,
+              },
+            ]
+          }
+        >
+          ContactDetails.RemoveContactMessageBottom
+        </Text>
+        <View
+          style={
+            Object {
+              "flexDirection": "row",
+              "gap": 8,
+              "justifyContent": "space-between",
+              "marginTop": 24,
               "width": "100%",
             }
           }
         >
-          <RNSVGSvgView
-            bbHeight="30"
-            bbWidth="100%"
-            focusable={false}
-            height="30"
-            style={
-              Array [
-                Object {
-                  "backgroundColor": "transparent",
-                  "borderWidth": 0,
-                },
-                Object {
-                  "bottom": 0,
-                  "left": 0,
-                  "position": "absolute",
-                  "right": 0,
-                  "top": 0,
-                },
-                Object {
-                  "flex": 0,
-                  "height": 30,
-                  "width": "100%",
-                },
-              ]
-            }
-            width="100%"
-          >
-            <RNSVGGroup
-              fill={
-                Object {
-                  "payload": 4278190080,
-                  "type": 0,
-                }
-              }
-            >
-              <RNSVGDefs>
-                <RNSVGLinearGradient
-                  gradient={
-                    Array [
-                      0,
-                      0,
-                      1,
-                      -16777216,
-                    ]
-                  }
-                  gradientTransform={null}
-                  gradientUnits={0}
-                  name="gradient"
-                  x1="0%"
-                  x2="0%"
-                  y1="0%"
-                  y2="100%"
-                />
-              </RNSVGDefs>
-              <RNSVGRect
-                fill={
-                  Object {
-                    "brushRef": "gradient",
-                    "type": 1,
-                  }
-                }
-                height="30"
-                propList={
-                  Array [
-                    "fill",
-                  ]
-                }
-                width="100%"
-                x="0"
-                y="0"
-              />
-            </RNSVGGroup>
-          </RNSVGSvgView>
-        </View>
-        <View
-          style={
-            Object {
-              "paddingTop": 10,
-            }
-          }
-        >
           <View
-            accessibilityLabel="ContactDetails.RemoveContact"
-            accessibilityRole="button"
             accessibilityState={
               Object {
                 "busy": undefined,
                 "checked": undefined,
-                "disabled": false,
+                "disabled": undefined,
                 "expanded": undefined,
                 "selected": undefined,
               }
@@ -4009,138 +2346,87 @@ exports[`CommonRemoveModal Component Rerenders correctly when not visible 1`] = 
             onStartShouldSetResponder={[Function]}
             style={
               Object {
-                "backgroundColor": "#42803E",
-                "borderRadius": 4,
+                "alignItems": "center",
+                "backgroundColor": "transparent",
+                "borderColor": "#FFFFFF",
+                "borderRadius": 25,
+                "borderWidth": 1.5,
+                "flex": 1,
                 "opacity": 1,
-                "padding": 16,
-              }
-            }
-            testID="com.ariesbifold:id/ConfirmRemoveButton"
-          >
-            <View
-              style={
-                Object {
-                  "alignItems": "center",
-                  "flexDirection": "row",
-                  "justifyContent": "center",
-                }
-              }
-            >
-              <Text
-                maxFontSizeMultiplier={2}
-                style={
-                  Array [
-                    Object {
-                      "color": "#FFFFFF",
-                      "fontSize": 18,
-                      "fontWeight": "normal",
-                    },
-                    Array [
-                      Object {
-                        "color": "#FFFFFF",
-                        "fontSize": 18,
-                        "fontWeight": "bold",
-                        "textAlign": "center",
-                      },
-                      false,
-                      false,
-                      false,
-                    ],
-                  ]
-                }
-              >
-                ContactDetails.RemoveContact
-              </Text>
-            </View>
-          </View>
-        </View>
-        <View
-          style={
-            Object {
-              "paddingTop": 10,
-            }
-          }
-        >
-          <View
-            accessibilityLabel="Global.Cancel"
-            accessibilityRole="button"
-            accessibilityState={
-              Object {
-                "busy": undefined,
-                "checked": undefined,
-                "disabled": false,
-                "expanded": undefined,
-                "selected": undefined,
-              }
-            }
-            accessibilityValue={
-              Object {
-                "max": undefined,
-                "min": undefined,
-                "now": undefined,
-                "text": undefined,
-              }
-            }
-            accessible={true}
-            collapsable={false}
-            focusable={false}
-            onClick={[Function]}
-            onResponderGrant={[Function]}
-            onResponderMove={[Function]}
-            onResponderRelease={[Function]}
-            onResponderTerminate={[Function]}
-            onResponderTerminationRequest={[Function]}
-            onStartShouldSetResponder={[Function]}
-            style={
-              Object {
-                "borderColor": "#42803E",
-                "borderRadius": 4,
-                "borderWidth": 2,
-                "opacity": 1,
-                "padding": 16,
+                "paddingVertical": 12,
               }
             }
             testID="com.ariesbifold:id/CancelRemoveButton"
           >
-            <View
+            <Text
               style={
                 Object {
-                  "alignItems": "center",
-                  "flexDirection": "row",
-                  "justifyContent": "center",
+                  "color": "#FFFFFF",
+                  "fontFamily": "OpenSans-SemiBold",
+                  "fontSize": 14,
+                  "fontWeight": "600",
                 }
               }
             >
-              <Text
-                maxFontSizeMultiplier={2}
-                style={
-                  Array [
-                    Object {
-                      "color": "#FFFFFF",
-                      "fontSize": 18,
-                      "fontWeight": "normal",
-                    },
-                    Array [
-                      Object {
-                        "color": "#42803E",
-                        "fontSize": 18,
-                        "fontWeight": "bold",
-                        "textAlign": "center",
-                      },
-                      false,
-                      false,
-                      false,
-                    ],
-                  ]
+              CredentialDetails.Back
+            </Text>
+          </View>
+          <View
+            accessibilityState={
+              Object {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              Object {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={false}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              Object {
+                "alignItems": "center",
+                "backgroundColor": "#FF4445",
+                "borderRadius": 25,
+                "flex": 2,
+                "opacity": 1,
+                "paddingVertical": 12,
+              }
+            }
+            testID="com.ariesbifold:id/ConfirmRemoveButton"
+          >
+            <Text
+              style={
+                Object {
+                  "color": "#FFFFFF",
+                  "fontFamily": "OpenSans-SemiBold",
+                  "fontSize": 14,
+                  "fontWeight": "600",
                 }
-              >
-                Global.Cancel
-              </Text>
-            </View>
+              }
+            >
+              ContactDetails.RemoveContactAction
+            </Text>
           </View>
         </View>
       </View>
-    </RNCSafeAreaView>
+    </View>
   </View>
 </Modal>
 `;
