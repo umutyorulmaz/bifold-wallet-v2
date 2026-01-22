@@ -166,11 +166,8 @@ const ProofChangeCredential: React.FC<ProofChangeProps> = ({ route, navigation }
                   credName={item.credName}
                   proof
                   credentialErrors={errors}
-                  onPress={function (): void {
-                    throw new Error('Function not implemented.')
-                  }}
-                  hasAltCredentials={undefined}
-                ></CredentialCard>
+                  onPress={() => changeCred(item.credId ?? '')}
+                />
               </TouchableOpacity>
             </View>
           )

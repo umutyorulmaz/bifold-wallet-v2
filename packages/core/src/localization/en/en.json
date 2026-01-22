@@ -835,6 +835,8 @@
     "ProofRequestStateError": "The proof request received is in: {{state}}, decline this proof and try again.",
     "ProofRequestErrorMessage": "Something went wrong with the proof request.",
     "PleaseAddress": " Please address them before continuing.",
+    "SomeAttributesMissingTitle": "The following attributes could not be found:",
+    "MissingAttributesWillBeEmpty": "These will be sent as empty values if you proceed.",
     "ListCredentials": "List Credentials"
   },
   "UnsatisfiedProofRequest": {

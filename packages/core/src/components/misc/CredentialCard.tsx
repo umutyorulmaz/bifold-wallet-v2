@@ -49,25 +49,49 @@ const formatDate = (date: Date): string => {
   })
 }
 
-const CredentialCard: React.FC<CredentialCardCustomProps> = ({ credential, logoUrl, onPress, credentialErrors, credDefId: propCredDefId }) => {
+const CredentialCard: React.FC<CredentialCardCustomProps> = ({ credential, logoUrl, onPress, credentialErrors, credDefId: propCredDefId, schemaId: propSchemaId, credName, hasAltCredentials, handleAltCredChange }) => {
   const isRevoked = credentialErrors?.includes(CredentialErrors.Revoked)
   const metadata = credential ? credential.metadata.get(AnonCredsCredentialMetadataKey) : null
   const credDefId = propCredDefId || metadata?.credentialDefinitionId || ''
-  const credDefTag = credDefId.split(':').pop() || 'Unknown Credential'
+  const schemaId = propSchemaId || metadata?.schemaId || ''
+
+  // Extract meaningful name from credDefId tag (e.g., "NHCS Student Card" from "...:NHCS Student Card")
+  const credDefTag = credDefId.split(':').pop() || ''
+
+  // Extract schema name from schemaId (e.g., "NC High School Student Card" from "...:NC High School Student Card:1.0")
+  const schemaIdParts = schemaId.split(':')
+  const schemaName = schemaIdParts.length >= 3 ? schemaIdParts[schemaIdParts.length - 2] : ''
+
+  // Use credName prop if valid, otherwise try credDefTag, then schemaName
+  const getDisplayName = (): string => {
+    if (credName && credName !== 'Credential' && credName.trim() !== '') return credName
+    if (credDefTag && credDefTag.toLowerCase() !== 'default' && credDefTag !== 'Credential') return credDefTag
+    if (schemaName && schemaName !== 'Credential') return schemaName
+    return credDefTag || schemaName || 'Credential'
+  }
+  const displayName = getDisplayName()
+
   const issuedDate = credential ? formatDate(new Date(credential.updatedAt || Date.now())) : ''
-  const schoolId = credential instanceof CredentialExchangeRecord ? getSchoolIdentifier(credential) : ''
-  const cardColor = getCardColor(schoolId)
+  const schoolId = credential instanceof CredentialExchangeRecord ? getSchoolIdentifier(credential) : (propCredDefId || '')
+  const cardColor = getCardColor(schoolId || propCredDefId || credDefId)
   const isDarkCard = cardColor !== '#FFFFFF'
   const textColor = isDarkCard ? '#FFFFFF' : '#000000'
   const { t } = useTranslation()
 
   return (
-    <TouchableOpacity style={styles.container} onPress={onPress} testID={`CredentialCard-${credDefTag}`}>
+    <TouchableOpacity style={styles.container} onPress={hasAltCredentials && handleAltCredChange ? handleAltCredChange : onPress} testID={`CredentialCard-${displayName}`}>
       <View style={[styles.card, { backgroundColor: cardColor }]}>
         {isRevoked && (
           <View style={styles.revokedIndicator}>
             <Icon name="alert-circle" size={14} color="#FF0000" />
             <Text style={styles.revokedText}>Revoked</Text>
+          </View>
+        )}
+
+        {hasAltCredentials && (
+          <View style={styles.altCredIndicator}>
+            <Icon name="swap-horizontal" size={14} color="#FFFFFF" />
+            <Text style={styles.altCredText}>{t('ProofRequest.ChangeCredential')}</Text>
           </View>
         )}
 
@@ -77,23 +101,25 @@ const CredentialCard: React.FC<CredentialCardCustomProps> = ({ credential, logoU
               <Image source={{ uri: logoUrl }} style={styles.logo} resizeMode="contain" />
             ) : (
               <View style={[styles.placeholderLogo, { backgroundColor: '#FFFFFF' }]}>
-                <Text style={[styles.placeholderText, { color: textColor }]}>
-                  {credDefTag.charAt(0).toUpperCase() || '?'}
+                <Text style={[styles.placeholderText, { color: cardColor }]}>
+                  {displayName.charAt(0).toUpperCase() || '?'}
                 </Text>
               </View>
             )}
           </View>
 
           <View style={styles.textContainer}>
-            <Text style={[styles.credentialName, { color: textColor }]}>{credDefTag}</Text>
-            <Text style={[styles.validityPeriod, { color: textColor }]}>
-              {t('CredentialDetails.IssuedOn')} {issuedDate}
-            </Text>
+            <Text style={[styles.credentialName, { color: textColor }]}>{displayName}</Text>
+            {credential && issuedDate ? (
+              <Text style={[styles.validityPeriod, { color: textColor }]}>
+                {t('CredentialDetails.IssuedOn')} {issuedDate}
+              </Text>
+            ) : null}
           </View>
         </View>
 
         <View style={styles.iconContainer}>
-          <Icon name="chevron-right" size={24} color={textColor} />
+          <Icon name={hasAltCredentials ? "swap-horizontal" : "chevron-right"} size={24} color={textColor} />
         </View>
       </View>
     </TouchableOpacity>
@@ -190,6 +216,24 @@ const styles = StyleSheet.create({
   revokedText: {
     fontSize: 11,
     color: '#FF0000',
+    marginLeft: 4,
+    fontWeight: '500',
+    fontFamily: 'OpenSans-Medium',
+  },
+  altCredIndicator: {
+    position: 'absolute',
+    top: 8,
+    right: 8,
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 128, 128, 0.8)',
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 12,
+  },
+  altCredText: {
+    fontSize: 11,
+    color: '#FFFFFF',
     marginLeft: 4,
     fontWeight: '500',
     fontFamily: 'OpenSans-Medium',
