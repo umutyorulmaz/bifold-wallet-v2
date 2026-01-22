@@ -140,8 +140,7 @@ exports[`ContactDetails Screen Renders correctly 1`] = `
       <View
         style={
           Object {
-            "alignItems": "center",
-            "marginTop": 100,
+            "marginTop": 24,
           }
         }
       >
@@ -435,8 +434,7 @@ exports[`ContactDetails Screen Renders correctly with alt contact name 1`] = `
       <View
         style={
           Object {
-            "alignItems": "center",
-            "marginTop": 100,
+            "marginTop": 24,
           }
         }
       >
