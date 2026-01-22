@@ -5,8 +5,9 @@ import { ContentProps, ContentRegistry } from '../ContentRegistry'
 const ButtonContent: React.FC<ContentProps> = ({ item, onAction, styles, colors }) => {
   const handlePress = () => {
     if (item.actionID) {
-      // If there's an invitationLink, pass it along
-      onAction(item.actionID, item.invitationLink ? { invitationLink: item.invitationLink } : undefined)
+      // If there's an invitationLink, pass it directly as a string (not as an object)
+      // The ActionMenuHandler checks for string type to detect invitation links
+      onAction(item.actionID, item.invitationLink || undefined)
     }
   }
 

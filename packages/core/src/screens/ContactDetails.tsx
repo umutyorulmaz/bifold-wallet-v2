@@ -16,6 +16,7 @@ import {
 } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Toast from 'react-native-toast-message'
+// import Icon from 'react-native-vector-icons/MaterialCommunityIcons' // Hidden: video call feature
 
 import CommonRemoveModal from '../components/modals/CommonRemoveModal'
 import { ToastType } from '../components/toast/BaseToast'
@@ -262,22 +263,25 @@ const ContactDetails: React.FC<ContactDetailsProps> = ({ route }) => {
             </>
           )}
 
-          <View style={{ marginTop: 100, alignItems: 'center' }}>
-            {/*<TouchableOpacity*/}
-            {/*  testID={testIdWithKey('StartVideoCall')}*/}
-            {/*  style={[styles.actionRow]}*/}
-            {/*    onPress={() =>*/}
-            {/*       navigation.navigate(Screens.VideoCall as any, {*/}
-            {/*        connectionId,*/}
-            {/*        video: true,*/}
-            {/*     })*/}
-            {/*    }*/}
-            {/*   >*/}
-            {/*  <Icon name="video" size={20} color={ColorPalette.brand.primary} />*/}
-            {/*  <ThemedText style={{ color: ColorPalette.brand.primary }}>*/}
-            {/*     {t('ContactDetails.StartVideoCall')}*/}
-            {/*   </ThemedText>*/}
-            {/*</TouchableOpacity>*/}
+          <View style={{ marginTop: Spacing.lg }}>
+            {/* Video call feature hidden for now
+            <TouchableOpacity
+              testID={testIdWithKey('StartVideoCall')}
+              style={[styles.actionRow]}
+              onPress={() =>
+                navigation.navigate(Screens.VideoCall as any, {
+                  connectionId,
+                  video: true,
+                })
+              }
+            >
+              <Icon name="video" size={20} color={ColorPalette.brand.primary} />
+              <ThemedText style={{ color: ColorPalette.brand.primary }}>
+                {t('ContactDetails.StartVideoCall')}
+              </ThemedText>
+            </TouchableOpacity>
+            */}
+
             {contactDetailsOptions?.enableEditContactName && (
               <TouchableOpacity
                 testID={testIdWithKey('RenameContact')}

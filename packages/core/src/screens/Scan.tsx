@@ -15,6 +15,7 @@ import { useStore } from '../contexts/store'
 import { BifoldError, QrCodeScanError } from '../types/error'
 import { ConnectStackParams } from '../types/navigators'
 import { PermissionContract } from '../types/permissions'
+import { setCameraActive } from '../utils/cameraState'
 import { connectFromScanOrDeepLink } from '../utils/helpers'
 
 export type ScanProps = StackScreenProps<ConnectStackParams>
@@ -107,6 +108,14 @@ const Scan: React.FC<ScanProps> = ({ navigation, route }) => {
 
     return false
   }
+
+  // Set camera active flag to prevent splash overlay during camera transitions
+  useEffect(() => {
+    setCameraActive(true)
+    return () => {
+      setCameraActive(false)
+    }
+  }, [])
 
   useEffect(() => {
     const asyncEffect = async () => {
