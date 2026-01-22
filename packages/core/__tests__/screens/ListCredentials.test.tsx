@@ -109,7 +109,8 @@ describe('CredentialList Screen', () => {
       )
 
       await act(async () => {
-        const credentialItem = await findByTestId('CredentialCard-default')
+        // The display name is now extracted from schemaId (unverified_person) since credDefTag is "default"
+        const credentialItem = await findByTestId('CredentialCard-unverified_person')
         fireEvent.press(credentialItem)
         expect(navigation.navigate).toBeCalledWith('Credential Details', {
           credentialId: testOpenVPCredentialRecord.id,

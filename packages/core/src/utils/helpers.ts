@@ -436,7 +436,11 @@ export const getCredentialInfo = (credId: string, fields: Fields): AnonCredsCred
   const credentialInfo: AnonCredsCredentialInfo[] = []
 
   Object.keys(fields).forEach((proofKey) => {
-    credentialInfo.push(...fields[proofKey].map((attr) => attr.credentialInfo))
+    // Filter out any entries without credentialInfo (e.g., empty matches in partial proofs)
+    const validCredentials = fields[proofKey]
+      .filter((attr) => attr.credentialInfo !== undefined)
+      .map((attr) => attr.credentialInfo)
+    credentialInfo.push(...validCredentials)
   })
 
   return !credId ? credentialInfo : credentialInfo.filter((cred) => cred.credentialId === credId)
@@ -485,13 +489,17 @@ export const evaluatePredicates =
       return []
     }
 
-    const credentialAttributes = getCredentialInfo(proofCredentialItems.credId, fields).map((ci) => ci.attributes)
+    // Filter out undefined credentialInfo entries and safely map to attributes
+    const credentialInfoList = getCredentialInfo(proofCredentialItems.credId, fields)
+    const credentialAttributes = credentialInfoList
+      .filter((ci) => ci && ci.attributes)
+      .map((ci) => ci.attributes)
 
     return predicates.map((predicate: Predicate) => {
       const { pType: pType, pValue: pValue, name: field } = predicate
       let satisfied = false
 
-      if (field) {
+      if (field && credentialAttributes.length > 0) {
         const attribute = (credentialAttributes.find((attr) => attr[field] != undefined) ?? {})[field]
 
         if (attribute && pValue) {

@@ -504,27 +504,6 @@ exports[`Connection Screen No connection, show to proof 1`] = `
           >
             <View />
           </RCTScrollView>
-          <RCTScrollView
-            data={Array []}
-            getItem={[Function]}
-            getItemCount={[Function]}
-            keyExtractor={[Function]}
-            onContentSizeChange={[Function]}
-            onLayout={[Function]}
-            onMomentumScrollBegin={[Function]}
-            onMomentumScrollEnd={[Function]}
-            onScroll={[Function]}
-            onScrollBeginDrag={[Function]}
-            onScrollEndDrag={[Function]}
-            removeClippedSubviews={false}
-            renderItem={[Function]}
-            scrollEnabled={false}
-            scrollEventThrottle={0.0001}
-            stickyHeaderIndices={Array []}
-            viewabilityConfigCallbackPairs={Array []}
-          >
-            <View />
-          </RCTScrollView>
           <View
             style={
               Array [
@@ -944,7 +923,7 @@ exports[`Connection Screen Valid goal code aries.vc.issue extracted, show to off
                                 "fontWeight": "600",
                               },
                               Object {
-                                "color": "#FFFFFF",
+                                "color": "#25272A",
                               },
                             ]
                           }

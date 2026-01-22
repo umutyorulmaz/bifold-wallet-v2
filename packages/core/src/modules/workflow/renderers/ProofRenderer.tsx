@@ -78,7 +78,7 @@ export const DefaultProofCard: React.FC<ProofCardProps> = ({ proof, context, onP
   const stateInfo = getStateInfo()
 
   const content = (
-    <View style={[styles.card, { backgroundColor: SettingsTheme.newSettingColors.bgColorUp }]}>
+    <View style={[styles.card, { backgroundColor: '#FFFFFF' }]}>
       {/* Header with state */}
       <View style={[styles.header, { backgroundColor: stateInfo.color }]}>
         <ThemedText style={[styles.headerText, { color: ColorPalette.grayscale.white }]}>{stateInfo.label}</ThemedText>
@@ -90,10 +90,10 @@ export const DefaultProofCard: React.FC<ProofCardProps> = ({ proof, context, onP
           <ActivityIndicator size="small" color={SettingsTheme.newSettingColors.buttonColor} />
         ) : (
           <>
-            <ThemedText style={[styles.title, { color: SettingsTheme.newSettingColors.textBody }]}>
+            <ThemedText style={[styles.title, { color: '#333333' }]}>
               {context.t('ProofRequest.InformationRequest' as any) as string}
             </ThemedText>
-            <ThemedText style={[styles.description, { color: SettingsTheme.newSettingColors.textColor }]}>
+            <ThemedText style={[styles.description, { color: '#666666' }]}>
               {context.theirLabel} {context.t('ProofRequest.RequestsInformation' as any) as string}
             </ThemedText>
             {proof.state === ProofState.RequestReceived && (
@@ -255,7 +255,7 @@ export const VDProofCard: React.FC<ProofCardProps> = ({ proof, context }) => {
     currentProofState === ProofState.RequestReceived && !userAction && !isDeclined && !isShared
 
   const cardContent = (
-    <View style={[styles.vdCard, { backgroundColor: SettingsTheme.newSettingColors.bgColorUp }]}>
+    <View style={[styles.vdCard, { backgroundColor: '#FFFFFF' }]}>
       {/* Header with state */}
       <View style={[styles.header, { backgroundColor: stateInfo.color }]}>
         <ThemedText style={[styles.headerText, { color: ThemeColorPalette.grayscale.white }]}>
@@ -265,10 +265,10 @@ export const VDProofCard: React.FC<ProofCardProps> = ({ proof, context }) => {
 
       {/* Body */}
       <View style={styles.body}>
-        <ThemedText style={[styles.title, { color: SettingsTheme.newSettingColors.textBody }]}>
+        <ThemedText style={[styles.title, { color: '#333333' }]}>
           {context.t('ProofRequest.InformationRequest' as any) as string}
         </ThemedText>
-        <ThemedText style={[styles.description, { color: SettingsTheme.newSettingColors.textColor }]}>
+        <ThemedText style={[styles.description, { color: '#666666' }]}>
           {context.theirLabel} {context.t('ProofRequest.RequestsInformation' as any) as string}
         </ThemedText>
       </View>
@@ -370,22 +370,12 @@ const styles = StyleSheet.create({
     minHeight: 100,
     borderRadius: 10,
     overflow: 'hidden',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
   },
   vdCard: {
     width: width * 0.85,
     minHeight: 100,
     borderRadius: 10,
     overflow: 'hidden',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
   },
   header: {
     paddingVertical: 8,

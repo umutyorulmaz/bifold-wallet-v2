@@ -98,7 +98,6 @@ const ProofRequest: React.FC<ProofRequestProps> = ({ navigation, proofId }) => {
   const [retrievedCredentials, setRetrievedCredentials] = useState<AnonCredsCredentialsForProofRequest>()
   // all credentials in the users wallet
   const [userCredentials, setUserCredentials] = useState<ProofCredentialItems[]>([])
-  const [missingCredentials, setMissingCredentials] = useState<ProofCredentialItems[]>([])
   const [descriptorMetadata, setDescriptorMetadata] = useState<DescriptorMetadata | undefined>()
   const [loading, setLoading] = useState<boolean>(true)
   const [declineModalVisible, setDeclineModalVisible] = useState(false)
@@ -360,7 +359,6 @@ const ProofRequest: React.FC<ProofRequestProps> = ({ navigation, proofId }) => {
       }
 
       const userCredentials: ProofCredentialItems[] = []
-      const missingCredentials: ProofCredentialItems[] = []
       const schemaIds = new Set(
         fullCredentials
           .map((fullCredential: CredentialExchangeRecord) => getCredentialSchemaIdForRecord(fullCredential))
@@ -372,19 +370,13 @@ const ProofRequest: React.FC<ProofRequestProps> = ({ navigation, proofId }) => {
           .filter((id) => id !== null)
       )
       activeCreds.forEach((cred) => {
-        const isMissing = !schemaIds.has(cred.schemaId ?? '') && !credDefIds.has(cred.credDefId ?? '')
         const isUserCredential = schemaIds.has(cred.schemaId ?? '') || credDefIds.has(cred.credDefId ?? '')
-
-        if (isMissing && !cred.credExchangeRecord) {
-          missingCredentials.push(cred)
-        }
 
         if (isUserCredential || cred.credExchangeRecord) {
           userCredentials.push(cred)
         }
       })
       setUserCredentials(userCredentials)
-      setMissingCredentials(missingCredentials)
 
       // Check for revoked credentials
       const records = fullCredentials.filter((record: CredentialExchangeRecord) =>
@@ -426,9 +418,14 @@ const ProofRequest: React.FC<ProofRequestProps> = ({ navigation, proofId }) => {
   }, [activeCreds, bundleResolver])
 
   const hasAvailableCredentials = useMemo(() => {
+    if (!retrievedCredentials) return false
     const fields = getCredentialsFields()
-
-    return !!retrievedCredentials && Object.values(fields).every((c) => c.length > 0)
+    // Match old bifold behavior: require all fields to have matches EXCEPT StudentPhoto
+    // StudentPhoto is exempted because it may not be present in all credentials
+    return Object.entries(fields).every(([key, value]) => {
+      const isStudentPhotoField = key.includes('StudentPhoto')
+      return isStudentPhotoField || (value && value.length > 0)
+    })
   }, [retrievedCredentials, getCredentialsFields])
 
   const hasSatisfiedPredicates = useCallback(
@@ -513,6 +510,7 @@ const ProofRequest: React.FC<ProofRequestProps> = ({ navigation, proofId }) => {
       }
 
       const formatToUse = format.request?.anoncreds ? 'anoncreds' : 'indy'
+      const proofRequest = format.request?.anoncreds ?? format.request?.indy
 
       const formatCredentials = (
         retrievedItems: Record<string, (AnonCredsRequestedAttributeMatch | AnonCredsRequestedPredicateMatch)[]>,
@@ -520,13 +518,28 @@ const ProofRequest: React.FC<ProofRequestProps> = ({ navigation, proofId }) => {
       ) => {
         return Object.keys(retrievedItems)
           .map((key) => {
-            return {
-              [key]: retrievedItems[key].find((cred) => credList.includes(cred.credentialId)),
-            }
+            // Find a matching credential from the active credentials list
+            const match = retrievedItems[key].find((cred) => credList.includes(cred.credentialId))
+            // Only include if we found a match (skip attributes with no matching credentials)
+            return match ? { [key]: match } : null
           })
+          .filter((item): item is { [key: string]: AnonCredsRequestedAttributeMatch | AnonCredsRequestedPredicateMatch } => item !== null)
           .reduce((prev, current) => {
             return { ...prev, ...current }
           }, {})
+      }
+
+      // Check for attributes with no matches that can be self-attested (no restrictions)
+      const selfAttestedAttributes: Record<string, string> = {}
+      if (proofRequest?.requested_attributes) {
+        Object.entries(proofRequest.requested_attributes).forEach(([referent, attr]: [string, any]) => {
+          const hasMatches = retrievedCredentials.attributes[referent]?.length > 0
+          const hasRestrictions = attr.restrictions && attr.restrictions.length > 0
+          // If no matches and no restrictions, we can self-attest with empty string
+          if (!hasMatches && !hasRestrictions) {
+            selfAttestedAttributes[referent] = ''
+          }
+        })
       }
 
       // this is the best way to supply our desired credentials in the proof, otherwise it selects them automatically
@@ -540,7 +553,7 @@ const ProofRequest: React.FC<ProofRequestProps> = ({ navigation, proofId }) => {
           retrievedCredentials.predicates,
           activeCreds.map((item) => item.credId)
         ),
-        selfAttestedAttributes: {},
+        selfAttestedAttributes,
       }
       const automaticRequestedCreds = { proofFormats: { [formatToUse]: { ...credObject } } }
 
@@ -882,23 +895,6 @@ const ProofRequest: React.FC<ProofRequestProps> = ({ navigation, proofId }) => {
     )
   }
 
-  const credentialListHeader = (headerText: string) => {
-    return (
-      <View style={styles.pageMargin}>
-        {!(loading || attestationLoading) && (
-          <ThemedText
-            variant="title"
-            testID={testIdWithKey('ProofRequestHeaderText')}
-            style={{
-              marginTop: 10,
-            }}
-          >
-            {headerText}
-          </ThemedText>
-        )}
-      </View>
-    )
-  }
   return (
     <SafeAreaView style={styles.pageContainer} edges={['bottom', 'left', 'right']}>
       {showErrorModal && (
@@ -951,34 +947,8 @@ const ProofRequest: React.FC<ProofRequestProps> = ({ navigation, proofId }) => {
       <ScrollView>
         <View style={styles.pageContent}>
           {proofPageHeader()}
-          {/* This list will render if any credentials in a proof request are not in the users wallet */}
+          {/* Only show user credentials - hide missing credentials section */}
           <CredentialList
-            header={
-              missingCredentials.length > 0 && userCredentials.length > 0
-                ? credentialListHeader(t('ProofRequest.MissingCredentials'))
-                : undefined
-            }
-            items={missingCredentials}
-            missing={true}
-            footer={
-              missingCredentials.length > 0 && userCredentials.length > 0 ? (
-                <View
-                  style={{
-                    width: 'auto',
-                    borderWidth: 1,
-                    borderColor: ColorPalette.grayscale.lightGrey,
-                    marginTop: 20,
-                  }}
-                />
-              ) : undefined
-            }
-          />
-          <CredentialList
-            header={
-              missingCredentials.length > 0 && userCredentials.length > 0
-                ? credentialListHeader(t('ProofRequest.FromYourWallet'))
-                : undefined
-            }
             items={userCredentials}
             missing={false}
           />
