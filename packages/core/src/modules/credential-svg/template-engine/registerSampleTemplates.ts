@@ -267,7 +267,7 @@ export function registerSampleTemplates(): void {
   })
 
   // Generic Transcript (fallback)
-  registerTemplateFromSvg('generic-transcript', 'Official Transcript', TRANSCRIPT_TEMPLATE, {
+  registerTemplateFromSvg('generic-transcript', 'Transcript', TRANSCRIPT_TEMPLATE, {
     schemaIds: TRANSCRIPT_SCHEMAS,
     credentialType: 'transcript',
     variableMapping: TRANSCRIPT_VARIABLE_MAPPING,

@@ -35,7 +35,7 @@ export const TRANSCRIPT_TEMPLATE = `<svg width="320" height="{{HEIGHT}}" viewBox
 
     <!-- Header -->
     <rect width="320" height="52" fill="url(#transcriptHeaderGrad)"/>
-    <text x="160" y="34" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#FFFFFF" text-anchor="middle">OFFICIAL TRANSCRIPT</text>
+    <text x="160" y="34" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#FFFFFF" text-anchor="middle">TRANSCRIPT</text>
 
     <!-- Student Information Section -->
     <text x="12" y="70" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#0065A4">Student Information</text>
