@@ -19,7 +19,7 @@ import {
 } from 'react-native'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 
-import { renderComposer, renderInputToolbar, renderSend } from '../components/chat'
+import { renderComposer, renderSend } from '../components/chat'
 import ActionSlider from '../components/chat/ActionSlider'
 import { ChatMessage } from '../components/chat/ChatMessage'
 import { useNetwork } from '../contexts/network'
@@ -369,7 +369,7 @@ const Chat: React.FC<ChatProps> = ({ route }) => {
   )
 
   return (
-    <SafeAreaView edges={['left', 'right']} style={{ flex: 1, marginBottom: 0 }}>
+    <SafeAreaView edges={['left', 'right']} style={{ flex: 1 }}>
       {overflowMenu}
       <GradientBackground>
         <KeyboardAvoidingView
@@ -383,17 +383,18 @@ const Chat: React.FC<ChatProps> = ({ route }) => {
             renderAvatar={() => null}
             messageIdGenerator={(msg) => msg?._id.toString() || '0'}
             renderMessage={(props) => <ChatMessage messageProps={props} />}
-            renderInputToolbar={(props) => renderInputToolbar(props, theme)}
+            renderInputToolbar={() => null}
             renderSend={(props) => renderSend(props, theme)}
             renderComposer={(props) => renderComposer(props, theme, t('Contacts.TypeHere'))}
             disableComposer={!silentAssertConnectedNetwork()}
             onSend={onSend}
             user={{ _id: Role.me }}
             renderActions={() => null}
-            messagesContainerStyle={{ paddingHorizontal: 12, paddingBottom: 80 }}
+            messagesContainerStyle={{ paddingHorizontal: 12, marginTop: 10, paddingBottom: 20 }}
             loadEarlier={canLoadEarlier}
             isLoadingEarlier={isLoadingEarlier}
             onLoadEarlier={loadEarlier}
+            minInputToolbarHeight={0}
           />
           {showActionSlider && <ActionSlider onDismiss={onDismiss} actions={actions as any} />}
         </KeyboardAvoidingView>

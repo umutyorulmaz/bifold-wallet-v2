@@ -8,6 +8,7 @@ import { ContactStackParams, Screens } from '../types/navigators'
 
 import { useDefaultStackOptions } from './defaultStackOptions'
 import { TOKENS, useServices } from '../container-api'
+import { View } from 'react-native'
 
 const ContactStack: React.FC = () => {
   const Stack = createStackNavigator<ContactStackParams>()
@@ -91,6 +92,8 @@ const ContactStack: React.FC = () => {
         component={Chat}
         options={{
           ...ScreenOptionsDictionary[Screens.Chat],
+          headerShown: true,
+          headerBackground: () => <View style={{ flex: 1, backgroundColor: '#005F5F' }} />,
         }}
       />
       <Stack.Screen
