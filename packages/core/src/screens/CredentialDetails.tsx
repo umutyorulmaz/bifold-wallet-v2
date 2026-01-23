@@ -12,7 +12,7 @@ import {
   Pressable,
   Dimensions, Platform,
 } from 'react-native'
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native'
+import { CommonActions, RouteProp, useNavigation, useRoute } from '@react-navigation/native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { CredentialExchangeRecord, CredentialPreviewAttribute } from '@credo-ts/core'
 import { AnonCredsCredentialMetadataKey } from '@credo-ts/anoncreds'
@@ -26,6 +26,7 @@ import { CredentialSVGRenderer, isSchemaSupported } from '../modules/credential-
 import QRCode from 'react-native-qrcode-svg'
 import CloseIcon from '../assets/icons/CloseIcon.svg'
 import { useTranslation } from 'react-i18next'
+import { Screens, Stacks } from '../types/navigators'
 
 type RootStackParamList = {
   CredentialDetails: {
@@ -228,8 +229,19 @@ const CredentialDetails: React.FC<CredentialDetailsProps> = () => {
 
   const onGoToChannel = useCallback(() => {
     closeOverflowMenu()
-    navigation.navigate('Home' as any)
-  }, [closeOverflowMenu, navigation])
+    if (credential?.connectionId) {
+      navigation.dispatch(
+        CommonActions.navigate({
+          name: Stacks.ContactStack,
+          params: {
+            screen: Screens.Chat,
+            params: { connectionId: credential.connectionId },
+          },
+        })
+      )
+    }
+  }, [closeOverflowMenu, navigation, credential])
+
 
   const onRemoveCredential = useCallback(() => {
     closeOverflowMenu()
@@ -628,6 +640,7 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     paddingTop: Platform.OS === 'ios' ? 0 : 10,
+    marginTop: Platform.OS === 'ios' ? -20 : 0,
     paddingBottom: 5,
   },
   navBar: {

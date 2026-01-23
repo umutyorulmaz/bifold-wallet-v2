@@ -127,3 +127,4 @@ describe('displays a home screen', () => {
     })
   })
 })
+
