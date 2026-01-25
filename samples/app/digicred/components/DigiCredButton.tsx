@@ -74,7 +74,16 @@ const DigiCredButton: React.FC<DigiCredButtonProps> = ({
       accessibilityRole="button"
     >
       <View style={styles.content}>
-        <Text style={[textStyles, loading && { opacity: 0 }]}>{title}</Text>
+        {/*<Text style={[textStyles, loading && { opacity: 0 }]}>{title}</Text>*/}
+        <Text
+          style={[textStyles, loading && { opacity: 0 }]}
+          numberOfLines={1}
+          adjustsFontSizeToFit
+          minimumFontScale={0.75}
+          allowFontScaling={false}
+        >
+          {title}
+        </Text>
 
         {iconName && !loading && <Icon name={iconName} size={iconSize} color={finalIconColor} style={styles.icon} />}
 
@@ -127,11 +136,11 @@ const styles = StyleSheet.create({
   buttonText: {
     color: DigiCredColors.toggle.thumb,
     fontSize: 16,
-    lineHeight: 16,
+    lineHeight: 18,
     fontWeight: '600',
     letterSpacing: 1,
     textTransform: 'uppercase',
-    flexWrap: 'nowrap',
+    flexShrink: 1,
   },
   secondaryButtonText: {
     color: DigiCredColors.text.primary,

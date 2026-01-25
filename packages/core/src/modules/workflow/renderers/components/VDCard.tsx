@@ -143,8 +143,8 @@ export const VDCard: React.FC<VDCardProps> = ({
   const { SettingsTheme } = useTheme()
   const [showDefaultCard, setShowDefaultCard] = useState(false)
   const [reloadKey, setReloadKey] = useState(0)
-
   const isTablet = checkIsTablet() || isTabletDevice
+
 
   const getCardType = (): CardType => {
     if (credDefId?.includes('NHCS') || credDefId?.includes('New Hanover')) {
