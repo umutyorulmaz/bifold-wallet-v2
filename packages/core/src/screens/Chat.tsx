@@ -394,7 +394,9 @@ const Chat: React.FC<ChatProps> = ({ route }) => {
             loadEarlier={canLoadEarlier}
             isLoadingEarlier={isLoadingEarlier}
             onLoadEarlier={loadEarlier}
+            bottomOffset={0}
             minInputToolbarHeight={0}
+            renderChatFooter={() => <View style={{ height: 0, paddingTop: 10 }} />}
           />
           {showActionSlider && <ActionSlider onDismiss={onDismiss} actions={actions as any} />}
         </KeyboardAvoidingView>
