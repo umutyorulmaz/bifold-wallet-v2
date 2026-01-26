@@ -1272,12 +1272,16 @@ PODS:
     - React-Core
   - RNDeviceInfo (8.7.1):
     - React-Core
-  - RNFBApp (23.8.2):
+  - RNFBApp (23.8.4):
     - Firebase/CoreOnly (= 12.8.0)
+    - glog
+    - RCT-Folly (= 2022.05.16.00)
     - React-Core
-  - RNFBMessaging (23.8.2):
+  - RNFBMessaging (23.8.4):
     - Firebase/Messaging (= 12.8.0)
     - FirebaseCoreExtension
+    - glog
+    - RCT-Folly (= 2022.05.16.00)
     - React-Core
     - RNFBApp
   - RNFS (2.20.0):
@@ -1292,6 +1296,11 @@ PODS:
     - React-Core
   - RNPermissions (5.4.4):
     - React-Core
+  - RNReanimated (3.8.0):
+    - glog
+    - RCT-Folly (= 2022.05.16.00)
+    - React-Core
+    - ReactCommon/turbomodule/core
   - RNScreens (4.4.0):
     - glog
     - RCT-Folly (= 2022.05.16.00)
@@ -1416,6 +1425,7 @@ DEPENDENCIES:
   - RNKeychain (from `../node_modules/react-native-keychain`)
   - RNLocalize (from `../node_modules/react-native-localize`)
   - RNPermissions (from `../node_modules/react-native-permissions`)
+  - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNShare (from `../node_modules/react-native-share`)
   - RNSVG (from `../node_modules/react-native-svg`)
@@ -1622,6 +1632,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-localize"
   RNPermissions:
     :path: "../node_modules/react-native-permissions"
+  RNReanimated:
+    :path: "../node_modules/react-native-reanimated"
   RNScreens:
     :path: "../node_modules/react-native-screens"
   RNShare:
@@ -1734,13 +1746,14 @@ SPEC CHECKSUMS:
   RNCClipboard: dfeb43751adff21e588657b5b6c888c72f3aa68e
   RNDateTimePicker: 5144134317b7df26573a2aff37adc18ca3e9b50e
   RNDeviceInfo: aad3c663b25752a52bf8fce93f2354001dd185aa
-  RNFBApp: ecd7e64f32ef110c02c482a25c2bfcec3edbdb45
-  RNFBMessaging: 427aff2291fb4ee9167e2ef24a3c6ab932debf23
+  RNFBApp: 1287649973ce5784da6e24e4ab342eda58eafc9d
+  RNFBMessaging: 0e013d0a44804c042ed40a4d1e93573d6451be48
   RNFS: 4ac0f0ea233904cb798630b3c077808c06931688
   RNGestureHandler: 1155b1898ceddefeebf77792927360d44fe11e77
   RNKeychain: f1b48665a4646f61191eb048c4c05c58d9a7596f
   RNLocalize: d4b8af4e442d4bcca54e68fc687a2129b4d71a81
   RNPermissions: dac97374942ee0a17b6fa22e7d2f3037f9c5a264
+  RNReanimated: 00ee495a70897aa9d541e76debec14253133b812
   RNScreens: dc2e2add1c0ae719fd469cf106a0aa16c02ec9b5
   RNShare: 4bf94507ca30b50785eb18a0389cd741f34590ff
   RNSVG: 3f65a03e0c61a8495dee92bf82545ed9041cbf3b
@@ -1750,6 +1763,6 @@ SPEC CHECKSUMS:
   VisionCamera: 2c4cb89c573c5d54d1191e433bd224998d3b14b7
   Yoga: a813a6d82538ccba91c54406404e3ed80b48a692
 
-PODFILE CHECKSUM: b758999c19d16a9b20aafe7a81c0f93f6f945167
+PODFILE CHECKSUM: 839a375ceefa9a39f0b355e133a9afdfc702ad3d
 
 COCOAPODS: 1.16.2

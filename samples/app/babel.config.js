@@ -7,4 +7,8 @@ module.exports = {
       },
     ],
   ],
+  plugins: [
+    ['module-resolver', { root: ['.'], extensions: ['.tsx', '.ts'] }],
+    'react-native-reanimated/plugin',
+  ],
 }

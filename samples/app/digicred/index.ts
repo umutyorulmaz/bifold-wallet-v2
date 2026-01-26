@@ -29,6 +29,7 @@ export {
   CredentialCard,
   DigiCredTabBar,
   DigiCredChatBackgroundRenderer,
+  ZoomableView,
 } from './components'
 
 // DigiCred Theme

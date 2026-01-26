@@ -172,7 +172,8 @@ export const COMPONENT_TOKENS = {
   COMPONENT_ABOUT_INSTITUTION: 'component.about-institution',
   COMPONENT_CREDENTIAL_BUTTONS: 'component.credential-buttons',
   COMPONENT_SNACK_BAR_MESSAGE: 'component.snackbar-message',
-  COMPONENT_CREDENTIAL_CARD : 'component.credential-card',
+  COMPONENT_CREDENTIAL_CARD: 'component.credential-card',
+  COMPONENT_ZOOMABLE_VIEW: 'component.zoomable-view',
 } as const
 
 export const NOTIFICATION_TOKENS = {
@@ -351,6 +352,12 @@ export type TokenMapping = {
     logoSource?: ImageSourcePropType | string
     onPress?: () => void
     testID?: string
+  }>
+  [TOKENS.COMPONENT_ZOOMABLE_VIEW]: React.FC<{
+    children: React.ReactNode
+    onClose?: () => void
+    isVisible?: boolean
+    backgroundColor?: string
   }>
   [TOKENS.INLINE_ERRORS]: InlineErrorConfig
   [TOKENS.CUSTOM_NAV_STACK_1]: React.FC

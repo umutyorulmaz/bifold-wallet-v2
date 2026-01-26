@@ -387,12 +387,11 @@
 
 
 
-
 import React from 'react'
 import { render } from '@testing-library/react-native'
 import CredentialDetails from '../../src/screens/CredentialDetails'
 import { BasicAppContext } from '../helpers/app'
-
+import { container } from 'tsyringe'
 
 jest.mock('@credo-ts/react-hooks', () => ({
   useAgent: jest.fn(() => ({ agent: null })),
@@ -410,6 +409,7 @@ jest.mock('@react-navigation/stack', () => ({
     Screen: ({ children }: any) => <>{children}</>,
   }),
 }))
+
 jest.mock('@react-navigation/bottom-tabs', () => ({
   createBottomTabNavigator: () => ({
     Navigator: ({ children }: any) => <>{children}</>,
@@ -418,6 +418,12 @@ jest.mock('@react-navigation/bottom-tabs', () => ({
 }))
 
 jest.mock('react-native-localize', () => ({}))
+
+beforeAll(() => {
+  (container as any).register('component.zoomable-view', {
+    useValue: [],
+  })
+})
 
 describe('CredentialDetails Screen', () => {
   test('renders without crashing', () => {
