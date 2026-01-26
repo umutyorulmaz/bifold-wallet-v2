@@ -29,8 +29,8 @@ export const CAPEFEAR_STUDENT_ID_TEMPLATE = `<svg width="275" height="175" viewB
   
   <!-- Text Group 2 -->
   <g id="Group 10153">
-    <text fill="white" xml:space="preserve" style="white-space: pre" font-family="Open Sans" font-size="8" letter-spacing="0em"><tspan x="205" y="166.604">{{Expiration}}</tspan></text>
-    <text fill="white" xml:space="preserve" style="white-space: pre" font-family="Open Sans" font-size="8" letter-spacing="0em"><tspan x="213" y="157.604">exp. date</tspan></text>
+    <text fill="white" xml:space="preserve" style="white-space: pre" font-family="Open Sans" font-size="8" letter-spacing="0em" text-anchor="end"><tspan x="250" y="166.604">{{Expiration}}</tspan></text>
+    <text fill="white" xml:space="preserve" style="white-space: pre" font-family="Open Sans" font-size="8" letter-spacing="0em" text-anchor="end"><tspan x="250" y="157.604">exp. date</tspan></text>
   </g>
 </g>
 <!-- Border -->

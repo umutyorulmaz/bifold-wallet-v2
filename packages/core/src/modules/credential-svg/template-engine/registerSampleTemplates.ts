@@ -188,6 +188,20 @@ const STUDENT_ID_VARIABLE_MAPPING = {
 }
 
 /**
+ * Cape Fear specific variable mapping with date formatting
+ */
+const CAPEFEAR_STUDENT_ID_VARIABLE_MAPPING = {
+  FullName: 'FullName',
+  StudentNumber: 'StudentNumber',
+  Expiration: {
+    attribute: 'Expiration',
+    transform: 'date' as const,
+  },
+  SchoolName: 'SchoolName',
+  Photo: 'StudentPhoto',
+}
+
+/**
  * Common variable mapping for transcript credentials
  */
 const TRANSCRIPT_VARIABLE_MAPPING = {
@@ -222,7 +236,7 @@ export function registerSampleTemplates(): void {
   // Cape Fear Student ID
   registerTemplateFromSvg('capeFear-student-id', 'Cape Fear Student ID', CAPEFEAR_STUDENT_ID_TEMPLATE, {
     credentialType: 'student-id',
-    variableMapping: STUDENT_ID_VARIABLE_MAPPING,
+    variableMapping: CAPEFEAR_STUDENT_ID_VARIABLE_MAPPING,
   })
 
   // Miami-Dade Student ID

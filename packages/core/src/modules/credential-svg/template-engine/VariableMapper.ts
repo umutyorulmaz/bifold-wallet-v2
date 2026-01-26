@@ -122,6 +122,40 @@ export function tryParseJson(value: string): unknown {
 }
 
 /**
+ * Format a date string from various formats to MM/DD/YYYY
+ */
+function formatDateValue(value: string): string {
+  // Handle YYYYMMDD format (e.g., "20260701")
+  if (/^\d{8}$/.test(value)) {
+    const year = value.substring(0, 4)
+    const month = value.substring(4, 6)
+    const day = value.substring(6, 8)
+    return `${month}/${day}/${year}`
+  }
+
+  // Handle YYYY-MM-DD format (e.g., "2026-07-01")
+  if (/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+    const [year, month, day] = value.split('-')
+    return `${month}/${day}/${year}`
+  }
+
+  // Try standard Date parsing
+  try {
+    const date = new Date(value)
+    if (!isNaN(date.getTime())) {
+      const month = String(date.getMonth() + 1).padStart(2, '0')
+      const day = String(date.getDate()).padStart(2, '0')
+      const year = date.getFullYear()
+      return `${month}/${day}/${year}`
+    }
+  } catch {
+    // Return as-is if parsing fails
+  }
+
+  return value
+}
+
+/**
  * Apply transformation to a value
  */
 export function applyTransform(
@@ -138,16 +172,7 @@ export function applyTransform(
     case 'capitalize':
       return value.charAt(0).toUpperCase() + value.slice(1).toLowerCase()
     case 'date':
-      // Try to format as date
-      try {
-        const date = new Date(value)
-        if (!isNaN(date.getTime())) {
-          return date.toLocaleDateString()
-        }
-      } catch {
-        // Return as-is if parsing fails
-      }
-      return value
+      return formatDateValue(value)
     default:
       return value
   }
