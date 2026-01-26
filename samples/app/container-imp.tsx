@@ -39,6 +39,7 @@ import {
   AboutInstitution,
   CredentialButtons,
   SnackBarMessage,
+  ZoomableView
 } from './digicred'
 
 // Import screens directly to avoid barrel file circular dependency
@@ -165,6 +166,7 @@ export class AppContainer implements Container {
     this._container.registerInstance(TOKENS.COMPONENT_ABOUT_INSTITUTION, AboutInstitution)
     this._container.registerInstance(TOKENS.COMPONENT_CREDENTIAL_BUTTONS, CredentialButtons)
     this._container.registerInstance(TOKENS.COMPONENT_SNACK_BAR_MESSAGE, SnackBarMessage)
+    this._container.registerInstance(TOKENS.COMPONENT_ZOOMABLE_VIEW, ZoomableView)
 
     // Wallet transfer screens
     this._container.registerInstance(TOKENS.SCREEN_EXPORT_WALLET_INTRO, DigiCredExportWalletIntro)

@@ -187,7 +187,10 @@ const CredentialDetails: React.FC<CredentialDetailsProps> = () => {
   const [overflowAnchor, setOverflowAnchor] = useState<{ x: number; y: number; w: number; h: number } | null>(null)
   const [showQRCode, setShowQRCode] = useState(false)
   const [showRemoveModal, setShowRemoveModal] = useState(false)
+  const [showZoomModal, setShowZoomModal] = useState(false)
   const windowWidth = Dimensions.get('window').width
+  const [ZoomableView] = useServices([TOKENS.COMPONENT_ZOOMABLE_VIEW])
+
 
   useEffect(() => {
     if (typeof navigation.setOptions === 'function') {
@@ -242,7 +245,6 @@ const CredentialDetails: React.FC<CredentialDetailsProps> = () => {
     }
   }, [closeOverflowMenu, navigation, credential])
 
-
   const onRemoveCredential = useCallback(() => {
     closeOverflowMenu()
     setShowRemoveModal(true)
@@ -271,6 +273,14 @@ const CredentialDetails: React.FC<CredentialDetailsProps> = () => {
 
   const onCloseQRCode = useCallback(() => {
     setShowQRCode(false)
+  }, [])
+
+  const handleZoomIn = useCallback(() => {
+    setShowZoomModal(true)
+  }, [])
+
+  const handleZoomOut = useCallback(() => {
+    setShowZoomModal(false)
   }, [])
 
   if (loading) {
@@ -417,13 +427,77 @@ const CredentialDetails: React.FC<CredentialDetailsProps> = () => {
     // Use new SVG renderer for supported schemas
     if (schemaId && isSchemaSupported(schemaId)) {
       return (
+        <TouchableOpacity onPress={handleZoomIn} activeOpacity={0.8}>
+          <CredentialSVGRenderer
+            schemaId={schemaId}
+            credDefId={credDefId}
+            attributes={attributes}
+            mode="full"
+            isInChat={false}
+            width={320}
+          />
+        </TouchableOpacity>
+      )
+    }
+
+    // Fall back to existing card components for unsupported schemas
+    if (isTranscript) {
+      const displayFullName =
+        fullName || (transcriptData.studentInfo as any)?.studentFullName || `${firstName} ${lastName}`
+      const displaySchool = school || (transcriptData.studentInfo as any)?.schoolName
+      const displayGPA = cumulativeGPA || termGPA || gpa
+      const displayYearStart = yearStart || transcriptData.yearStart
+      const displayYearEnd = yearEnd || transcriptData.yearEnd
+      const displayTermGPA = termGPA || transcriptData.termGPA
+
+      return (
+        <TouchableOpacity onPress={handleZoomIn} activeOpacity={0.8}>
+          <TranscriptCard
+            school={displaySchool}
+            yearStart={displayYearStart}
+            yearEnd={displayYearEnd}
+            termGPA={displayTermGPA}
+            cumulativeGPA={displayGPA}
+            fullname={displayFullName}
+            isInChat={false}
+          />
+        </TouchableOpacity>
+      )
+    } else {
+      const studentPhoto = getAttrValue(attributes, 'studentphoto', 'photo', 'student_photo')
+
+      return (
+        <TouchableOpacity onPress={handleZoomIn} activeOpacity={0.8}>
+          <VDCard
+            firstName={firstName}
+            lastName={lastName}
+            fullName={fullName}
+            studentId={studentId}
+            school={school || displayName}
+            issueDate={issuedDate}
+            credDefId={credDefId}
+            issuerName={issuerName}
+            isInChat={false}
+            studentPhoto={studentPhoto}
+          />
+        </TouchableOpacity>
+      )
+    }
+  }
+
+  const renderZoomedContent = () => {
+    const issuerName = credential.connectionId || t('CredentialDetails.Issuer')
+
+    // Use new SVG renderer for supported schemas
+    if (schemaId && isSchemaSupported(schemaId)) {
+      return (
         <CredentialSVGRenderer
           schemaId={schemaId}
           credDefId={credDefId}
           attributes={attributes}
           mode="full"
           isInChat={false}
-          width={320}
+          width={Dimensions.get('window').width * 0.9}
         />
       )
     }
@@ -453,20 +527,18 @@ const CredentialDetails: React.FC<CredentialDetailsProps> = () => {
       const studentPhoto = getAttrValue(attributes, 'studentphoto', 'photo', 'student_photo')
 
       return (
-        <View style={{ width: '100%', height: '100%' }}>
-          <VDCard
-            firstName={firstName}
-            lastName={lastName}
-            fullName={fullName}
-            studentId={studentId}
-            school={school || displayName}
-            issueDate={issuedDate}
-            credDefId={credDefId}
-            issuerName={issuerName}
-            isInChat={false}
-            studentPhoto={studentPhoto}
-          />
-        </View>
+        <VDCard
+          firstName={firstName}
+          lastName={lastName}
+          fullName={fullName}
+          studentId={studentId}
+          school={school || displayName}
+          issueDate={issuedDate}
+          credDefId={credDefId}
+          issuerName={issuerName}
+          isInChat={false}
+          studentPhoto={studentPhoto}
+        />
       )
     }
   }
@@ -590,6 +662,13 @@ const CredentialDetails: React.FC<CredentialDetailsProps> = () => {
         {overflowMenu}
         {removeCredentialModal}
         {qrCodeModal}
+
+        {showZoomModal && (
+          <ZoomableView isVisible={showZoomModal} onClose={handleZoomOut}>
+            {renderZoomedContent()}
+          </ZoomableView>
+        )}
+
         <View style={styles.headerContainer}>
           <View style={styles.navBar}>
             <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
