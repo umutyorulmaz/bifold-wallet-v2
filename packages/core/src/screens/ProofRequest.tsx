@@ -14,7 +14,7 @@ import {
 } from '@credo-ts/core'
 import { useConnectionById, useProofById } from '@credo-ts/react-hooks'
 import { Attribute, Predicate } from '@bifold/oca/build/legacy'
-import { useIsFocused } from '@react-navigation/native'
+import { CommonActions, useIsFocused } from '@react-navigation/native'
 import moment from 'moment'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -650,6 +650,24 @@ const ProofRequest: React.FC<ProofRequestProps> = ({ navigation, proofId }) => {
     navigation.getParent()?.navigate(TabStacks.HomeStack, { screen: Screens.Home })
   }, [navigation])
 
+  const onProofAcceptDismiss = useCallback(() => {
+    setPendingModalVisible(false)
+    // Navigate back to chat if we have a connectionId, otherwise go to home
+    if (proof?.connectionId) {
+      navigation.dispatch(
+        CommonActions.navigate({
+          name: Stacks.ContactStack,
+          params: {
+            screen: Screens.Chat,
+            params: { connectionId: proof.connectionId },
+          },
+        })
+      )
+    } else {
+      navigation.getParent()?.navigate(TabStacks.HomeStack, { screen: Screens.Home })
+    }
+  }, [navigation, proof?.connectionId])
+
   const callViewJSONDetails = useCallback(() => {
     navigation.navigate(Stacks.ContactStack, {
       screen: Screens.JSONDetails,
@@ -954,7 +972,7 @@ const ProofRequest: React.FC<ProofRequestProps> = ({ navigation, proofId }) => {
           />
           {proofPageFooter()}
         </View>
-        <ProofRequestAccept visible={pendingModalVisible} proofId={proofId} connectionId={proof?.connectionId} />
+        <ProofRequestAccept visible={pendingModalVisible} proofId={proofId} connectionId={proof?.connectionId} onDismiss={onProofAcceptDismiss} />
         <CommonRemoveModal
           usage={ModalUsage.ProofRequestDecline}
           visible={declineModalVisible}

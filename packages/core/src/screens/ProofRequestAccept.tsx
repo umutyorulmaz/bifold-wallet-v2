@@ -19,9 +19,10 @@ export interface ProofRequestAcceptProps {
   proofId: string
   confirmationOnly?: boolean
   connectionId?: string
+  onDismiss?: () => void
 }
 
-const ProofRequestAccept: React.FC<ProofRequestAcceptProps> = ({ visible, proofId, confirmationOnly, connectionId }) => {
+const ProofRequestAccept: React.FC<ProofRequestAcceptProps> = ({ visible, proofId, confirmationOnly, connectionId, onDismiss }) => {
   const { t } = useTranslation()
   const [proofDeliveryStatus, setProofDeliveryStatus] = useState<ProofState>(ProofState.RequestReceived)
   const proof = useProofById(proofId)
@@ -61,7 +62,13 @@ const ProofRequestAccept: React.FC<ProofRequestAcceptProps> = ({ visible, proofI
   }
 
   const onBackToHomeTouched = () => {
-    // If we have a connectionId, go back to the chat channel instead of home
+    // Use callback if provided (allows parent to handle modal dismissal and navigation)
+    if (onDismiss) {
+      onDismiss()
+      return
+    }
+
+    // Fallback: navigate directly (for backwards compatibility)
     if (connectionId) {
       navigation.dispatch(
         CommonActions.navigate({
