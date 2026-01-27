@@ -10,7 +10,7 @@ import Button, { ButtonType } from '../components/buttons/Button'
 import SafeAreaModal from '../components/modals/SafeAreaModal'
 import { useAnimatedComponents } from '../contexts/animated-components'
 import { useTheme } from '../contexts/theme'
-import { Screens, TabStacks } from '../types/navigators'
+import { Screens, Stacks, TabStacks } from '../types/navigators'
 import { testIdWithKey } from '../utils/testable'
 import { ThemedText } from '../components/texts/ThemedText'
 
@@ -18,9 +18,10 @@ export interface ProofRequestAcceptProps {
   visible: boolean
   proofId: string
   confirmationOnly?: boolean
+  connectionId?: string
 }
 
-const ProofRequestAccept: React.FC<ProofRequestAcceptProps> = ({ visible, proofId, confirmationOnly }) => {
+const ProofRequestAccept: React.FC<ProofRequestAcceptProps> = ({ visible, proofId, confirmationOnly, connectionId }) => {
   const { t } = useTranslation()
   const [proofDeliveryStatus, setProofDeliveryStatus] = useState<ProofState>(ProofState.RequestReceived)
   const proof = useProofById(proofId)
@@ -60,7 +61,15 @@ const ProofRequestAccept: React.FC<ProofRequestAcceptProps> = ({ visible, proofI
   }
 
   const onBackToHomeTouched = () => {
-    navigation.getParent()?.navigate(TabStacks.HomeStack, { screen: Screens.Home })
+    // If we have a connectionId, go back to the chat channel instead of home
+    if (connectionId) {
+      navigation.getParent()?.navigate(Stacks.ContactStack, {
+        screen: Screens.Chat,
+        params: { connectionId },
+      })
+    } else {
+      navigation.getParent()?.navigate(TabStacks.HomeStack, { screen: Screens.Home })
+    }
   }
 
   useEffect(() => {
