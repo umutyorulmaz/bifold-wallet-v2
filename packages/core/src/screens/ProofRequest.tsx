@@ -179,10 +179,11 @@ const ProofRequest: React.FC<ProofRequestProps> = ({ navigation, proofId }) => {
   })
 
   useEffect(() => {
-    if (proof && proof?.state !== ProofState.RequestReceived) {
+    // Only show error modal if proof state is invalid AND we're not in the success flow
+    if (proof && proof?.state !== ProofState.RequestReceived && !pendingModalVisible) {
       setShowErrorModal(true)
     }
-  }, [t, proof])
+  }, [t, proof, pendingModalVisible])
 
   useEffect(() => {
     if (!attestationMonitor) {
@@ -651,7 +652,6 @@ const ProofRequest: React.FC<ProofRequestProps> = ({ navigation, proofId }) => {
   }, [navigation])
 
   const onProofAcceptDismiss = useCallback(() => {
-    setPendingModalVisible(false)
     // Navigate back to chat if we have a connectionId, otherwise go to home
     // Use reset to clear the ProofRequest screen from the stack
     if (proof?.connectionId) {
