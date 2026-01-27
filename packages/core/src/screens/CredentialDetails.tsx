@@ -408,8 +408,7 @@ const CredentialDetails: React.FC<CredentialDetailsProps> = () => {
   const cumulativeGPA = getAttrValue(attributes, 'cumulativegpa', 'cumulative_gpa')
   const gpa = getAttrValue(attributes, 'gpa') || (transcriptData.transcript as any)?.gpa
 
-  // QR code data for modal
-  const qrData = credential.id
+  const qrData = studentId || credential.id
 
   const renderCredentialCard = () => {
     const issuerName = credential.connectionId || t('CredentialDetails.Issuer')
