@@ -1,6 +1,6 @@
 import { ProofState } from '@credo-ts/core'
 import { useProofById } from '@credo-ts/react-hooks'
-import { useNavigation } from '@react-navigation/native'
+import { CommonActions, useNavigation } from '@react-navigation/native'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { ScrollView, StyleSheet, View } from 'react-native'
@@ -63,10 +63,15 @@ const ProofRequestAccept: React.FC<ProofRequestAcceptProps> = ({ visible, proofI
   const onBackToHomeTouched = () => {
     // If we have a connectionId, go back to the chat channel instead of home
     if (connectionId) {
-      navigation.getParent()?.navigate(Stacks.ContactStack, {
-        screen: Screens.Chat,
-        params: { connectionId },
-      })
+      navigation.dispatch(
+        CommonActions.navigate({
+          name: Stacks.ContactStack,
+          params: {
+            screen: Screens.Chat,
+            params: { connectionId },
+          },
+        })
+      )
     } else {
       navigation.getParent()?.navigate(TabStacks.HomeStack, { screen: Screens.Home })
     }
