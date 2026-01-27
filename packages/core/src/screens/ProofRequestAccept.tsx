@@ -126,9 +126,9 @@ const ProofRequestAccept: React.FC<ProofRequestAcceptProps> = ({ visible, proofI
         <View style={styles.controlsContainer}>
           <View>
             <Button
-              title={t('Loading.BackToHome')}
-              accessibilityLabel={t('Loading.BackToHome')}
-              testID={testIdWithKey('BackToHome')}
+              title={t('Global.Back')}
+              accessibilityLabel={t('Global.Back')}
+              testID={testIdWithKey('Back')}
               onPress={onBackToHomeTouched}
               buttonType={ButtonType.ModalSecondary}
             />
