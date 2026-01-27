@@ -83,6 +83,8 @@ target 'AriesBifold' do
   pod 'GoogleUtilities', :modular_headers => true
   pod 'FirebaseCore', :modular_headers => true
 
+  # Add Reanimated
+  pod 'RNReanimated', :path => '../node_modules/react-native-reanimated', :modular_headers => true
 
   use_react_native!(
     :path => config[:reactNativePath],

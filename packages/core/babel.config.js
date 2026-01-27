@@ -6,6 +6,7 @@ const plugins = [
       root: ['.'],
       extensions: ['.tsx', 'ts'],
     },
+    'react-native-reanimated/plugin',
   ],
 ]
 

@@ -281,6 +281,7 @@ interface TranscriptData {
   termGPA?: string
 }
 
+
 export const VDCredentialCard: React.FC<CredentialCardProps> = ({ credential, context, onPress }) => {
   const { SettingsTheme } = useTheme()
   const { attributes, loading, credDefId, schemaId } = useCredentialAttributes(credential)
@@ -516,30 +517,54 @@ export const VDCredentialCard: React.FC<CredentialCardProps> = ({ credential, co
     try {
       const formatData = await agent.credentials.getFormatData(credential.id)
       const offerAttributes = formatData.offerAttributes || []
-
       const anoncredsOffer = formatData.offer?.anoncreds as { cred_def_id?: string; schema_id?: string } | undefined
       const indyOffer = formatData.offer?.indy as { cred_def_id?: string; schema_id?: string } | undefined
 
-      const credDefId =
+      const credDefIdToSave =
         anoncredsOffer?.cred_def_id ||
         indyOffer?.cred_def_id ||
         credential.metadata.data?.['_anoncreds/credential']?.credentialDefinitionId ||
         ''
 
-      const schemaId =
+      const schemaIdToSave =
         anoncredsOffer?.schema_id ||
         indyOffer?.schema_id ||
         credential.metadata.data?.['_anoncreds/credential']?.schemaId ||
         ''
 
-      await agent.credentials.declineOffer(credential.id)
-      const declinedCred = await agent.credentials.findById(credential.id)
-      if (declinedCred && offerAttributes.length > 0) {
-        await declinedCred.metadata.set('offerPreview', offerAttributes)
-        await declinedCred.metadata.set('credDefId', credDefId)
-        await declinedCred.metadata.set('schemaId', schemaId)
-        await agent.credentials.update(declinedCred)
+      const schoolAttr = offerAttributes.find(
+        (attr) =>
+          attr.name.toLowerCase().includes('school') ||
+          attr.name.toLowerCase().includes('institution') ||
+          attr.name.toLowerCase().includes('schoolname')
+      )
+
+      const credRecord = await agent.credentials.findById(credential.id)
+      if (credRecord) {
+        credRecord.metadata.set('offerPreview', offerAttributes)
+        credRecord.metadata.set('credDefId', credDefIdToSave)
+        credRecord.metadata.set('schemaId', schemaIdToSave)
+
+        if (schoolAttr) {
+          credRecord.metadata.set('schoolName', { value: schoolAttr.value })
+        }
+        credRecord.metadata.set('declinedAt', { value: new Date().toISOString() })
+
+        await agent.credentials.update(credRecord)
       }
+
+      await agent.credentials.declineOffer(credential.id)
+
+      setIsDeclined(true)
+      setIsAccepted(false)
+      setUserAction('declined')
+
+      setDeclinedData({
+        attributes: offerAttributes,
+        credDefId: credDefIdToSave,
+        schemaId: schemaIdToSave,
+        schoolName: schoolAttr?.value || '',
+      })
 
       if (credential.connectionId) {
         const connection = await agent.connections.findById(credential.connectionId)
@@ -550,7 +575,7 @@ export const VDCredentialCard: React.FC<CredentialCardProps> = ({ credential, co
           })
         }
       }
-      setUserAction('declined')
+
       if (credential.connectionId != null) {
         await agent?.basicMessages.sendMessage(credential.connectionId, ':menu')
       }
@@ -560,6 +585,7 @@ export const VDCredentialCard: React.FC<CredentialCardProps> = ({ credential, co
       DeviceEventEmitter.emit(EventTypes.ERROR_ADDED, error)
     }
   }, [agent, credential, setUserAction])
+
 
   if (loading) {
     return (
@@ -617,7 +643,7 @@ export const VDCredentialCard: React.FC<CredentialCardProps> = ({ credential, co
         studentId={studentId}
         school={school}
         issueDate={issueDate}
-        credDefId={currentCredDefId}
+        credDefId={isDeclined && declinedData ? declinedData.credDefId : credDefId}
         issuerName={context.theirLabel}
         isInChat={context.isInChat}
         studentPhoto={studentPhoto}
