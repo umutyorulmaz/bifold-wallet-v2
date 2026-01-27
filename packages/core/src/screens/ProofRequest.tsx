@@ -653,18 +653,30 @@ const ProofRequest: React.FC<ProofRequestProps> = ({ navigation, proofId }) => {
   const onProofAcceptDismiss = useCallback(() => {
     setPendingModalVisible(false)
     // Navigate back to chat if we have a connectionId, otherwise go to home
+    // Use reset to clear the ProofRequest screen from the stack
     if (proof?.connectionId) {
       navigation.dispatch(
-        CommonActions.navigate({
-          name: Stacks.ContactStack,
-          params: {
-            screen: Screens.Chat,
-            params: { connectionId: proof.connectionId },
-          },
+        CommonActions.reset({
+          index: 1,
+          routes: [
+            { name: Stacks.TabStack },
+            {
+              name: Stacks.ContactStack,
+              params: {
+                screen: Screens.Chat,
+                params: { connectionId: proof.connectionId },
+              },
+            },
+          ],
         })
       )
     } else {
-      navigation.getParent()?.navigate(TabStacks.HomeStack, { screen: Screens.Home })
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [{ name: Stacks.TabStack }],
+        })
+      )
     }
   }, [navigation, proof?.connectionId])
 
