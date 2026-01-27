@@ -954,7 +954,7 @@ const ProofRequest: React.FC<ProofRequestProps> = ({ navigation, proofId }) => {
           />
           {proofPageFooter()}
         </View>
-        <ProofRequestAccept visible={pendingModalVisible} proofId={proofId} />
+        <ProofRequestAccept visible={pendingModalVisible} proofId={proofId} connectionId={proof?.connectionId} />
         <CommonRemoveModal
           usage={ModalUsage.ProofRequestDecline}
           visible={declineModalVisible}
