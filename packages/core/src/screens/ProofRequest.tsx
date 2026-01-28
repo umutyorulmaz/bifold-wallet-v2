@@ -14,7 +14,7 @@ import {
 } from '@credo-ts/core'
 import { useConnectionById, useProofById } from '@credo-ts/react-hooks'
 import { Attribute, Predicate } from '@bifold/oca/build/legacy'
-import { useIsFocused } from '@react-navigation/native'
+import { CommonActions, useIsFocused } from '@react-navigation/native'
 import moment from 'moment'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -179,10 +179,11 @@ const ProofRequest: React.FC<ProofRequestProps> = ({ navigation, proofId }) => {
   })
 
   useEffect(() => {
-    if (proof && proof?.state !== ProofState.RequestReceived) {
+    // Only show error modal if proof state is invalid AND we're not in the success flow
+    if (proof && proof?.state !== ProofState.RequestReceived && !pendingModalVisible) {
       setShowErrorModal(true)
     }
-  }, [t, proof])
+  }, [t, proof, pendingModalVisible])
 
   useEffect(() => {
     if (!attestationMonitor) {
@@ -650,6 +651,35 @@ const ProofRequest: React.FC<ProofRequestProps> = ({ navigation, proofId }) => {
     navigation.getParent()?.navigate(TabStacks.HomeStack, { screen: Screens.Home })
   }, [navigation])
 
+  const onProofAcceptDismiss = useCallback(() => {
+    // Navigate back to chat if we have a connectionId, otherwise go to home
+    // Use reset to clear the ProofRequest screen from the stack
+    if (proof?.connectionId) {
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 1,
+          routes: [
+            { name: Stacks.TabStack },
+            {
+              name: Stacks.ContactStack,
+              params: {
+                screen: Screens.Chat,
+                params: { connectionId: proof.connectionId },
+              },
+            },
+          ],
+        })
+      )
+    } else {
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [{ name: Stacks.TabStack }],
+        })
+      )
+    }
+  }, [navigation, proof?.connectionId])
+
   const callViewJSONDetails = useCallback(() => {
     navigation.navigate(Stacks.ContactStack, {
       screen: Screens.JSONDetails,
@@ -954,7 +984,7 @@ const ProofRequest: React.FC<ProofRequestProps> = ({ navigation, proofId }) => {
           />
           {proofPageFooter()}
         </View>
-        <ProofRequestAccept visible={pendingModalVisible} proofId={proofId} />
+        <ProofRequestAccept visible={pendingModalVisible} proofId={proofId} connectionId={proof?.connectionId} onDismiss={onProofAcceptDismiss} />
         <CommonRemoveModal
           usage={ModalUsage.ProofRequestDecline}
           visible={declineModalVisible}

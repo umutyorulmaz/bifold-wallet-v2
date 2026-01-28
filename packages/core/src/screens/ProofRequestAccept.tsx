@@ -1,6 +1,6 @@
 import { ProofState } from '@credo-ts/core'
 import { useProofById } from '@credo-ts/react-hooks'
-import { useNavigation } from '@react-navigation/native'
+import { CommonActions, useNavigation } from '@react-navigation/native'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { ScrollView, StyleSheet, View } from 'react-native'
@@ -10,7 +10,7 @@ import Button, { ButtonType } from '../components/buttons/Button'
 import SafeAreaModal from '../components/modals/SafeAreaModal'
 import { useAnimatedComponents } from '../contexts/animated-components'
 import { useTheme } from '../contexts/theme'
-import { Screens, TabStacks } from '../types/navigators'
+import { Screens, Stacks, TabStacks } from '../types/navigators'
 import { testIdWithKey } from '../utils/testable'
 import { ThemedText } from '../components/texts/ThemedText'
 
@@ -18,9 +18,11 @@ export interface ProofRequestAcceptProps {
   visible: boolean
   proofId: string
   confirmationOnly?: boolean
+  connectionId?: string
+  onDismiss?: () => void
 }
 
-const ProofRequestAccept: React.FC<ProofRequestAcceptProps> = ({ visible, proofId, confirmationOnly }) => {
+const ProofRequestAccept: React.FC<ProofRequestAcceptProps> = ({ visible, proofId, confirmationOnly, connectionId, onDismiss }) => {
   const { t } = useTranslation()
   const [proofDeliveryStatus, setProofDeliveryStatus] = useState<ProofState>(ProofState.RequestReceived)
   const proof = useProofById(proofId)
@@ -60,7 +62,26 @@ const ProofRequestAccept: React.FC<ProofRequestAcceptProps> = ({ visible, proofI
   }
 
   const onBackToHomeTouched = () => {
-    navigation.getParent()?.navigate(TabStacks.HomeStack, { screen: Screens.Home })
+    // Use callback if provided (allows parent to handle modal dismissal and navigation)
+    if (onDismiss) {
+      onDismiss()
+      return
+    }
+
+    // Fallback: navigate directly (for backwards compatibility)
+    if (connectionId) {
+      navigation.dispatch(
+        CommonActions.navigate({
+          name: Stacks.ContactStack,
+          params: {
+            screen: Screens.Chat,
+            params: { connectionId },
+          },
+        })
+      )
+    } else {
+      navigation.getParent()?.navigate(TabStacks.HomeStack, { screen: Screens.Home })
+    }
   }
 
   useEffect(() => {
@@ -117,9 +138,9 @@ const ProofRequestAccept: React.FC<ProofRequestAcceptProps> = ({ visible, proofI
         <View style={styles.controlsContainer}>
           <View>
             <Button
-              title={t('Loading.BackToHome')}
-              accessibilityLabel={t('Loading.BackToHome')}
-              testID={testIdWithKey('BackToHome')}
+              title={t('Global.Back')}
+              accessibilityLabel={t('Global.Back')}
+              testID={testIdWithKey('Back')}
               onPress={onBackToHomeTouched}
               buttonType={ButtonType.ModalSecondary}
             />
